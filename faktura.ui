@@ -2604,6 +2604,28 @@ betalingsvilkår</string>
                         <string>Alt+L</string>
                     </property>
                 </widget>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>dittFirmaLagreInfo</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>10</x>
+                            <y>370</y>
+                            <width>211</width>
+                            <height>50</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string></string>
+                    </property>
+                    <property name="textFormat">
+                        <enum>RichText</enum>
+                    </property>
+                    <property name="alignment">
+                        <set>WordBreak|AlignTop|AlignLeft</set>
+                    </property>
+                </widget>
             </widget>
             <widget class="QLabel">
                 <property name="name">
@@ -4548,9 +4570,6 @@ betalingsvilkår</string>
     <tabstop>dittfirmaMva</tabstop>
     <tabstop>dittfirmaForfall</tabstop>
 </tabstops>
-<includes>
-    <include location="local" impldecl="in implementation">faktura.ui.h</include>
-</includes>
 <slots>
     <slot>fileNew()</slot>
     <slot>fileOpen()</slot>

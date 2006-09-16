@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'faktura.ui'
 #
-# Created: søn sep 10 14:21:19 2006
+# Created: Sun Sep 17 01:40:07 2006
 #      by: The PyQt User Interface Compiler (pyuic) 3.15.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -3214,6 +3214,11 @@ class faktura(QMainWindow):
         self.dittfirmaLagre = QPushButton(self.frame3,"dittfirmaLagre")
         self.dittfirmaLagre.setGeometry(QRect(62,428,110,40))
 
+        self.dittFirmaLagreInfo = QLabel(self.frame3,"dittFirmaLagreInfo")
+        self.dittFirmaLagreInfo.setGeometry(QRect(10,370,211,50))
+        self.dittFirmaLagreInfo.setTextFormat(QLabel.RichText)
+        self.dittFirmaLagreInfo.setAlignment(QLabel.WordBreak | QLabel.AlignTop | QLabel.AlignLeft)
+
         self.dittfirmaLogoPixmap = QLabel(self.TabPage_2,"dittfirmaLogoPixmap")
         self.dittfirmaLogoPixmap.setGeometry(QRect(770,10,141,140))
         self.dittfirmaLogoPixmap.setFrameShape(QLabel.Box)
@@ -3807,6 +3812,7 @@ class faktura(QMainWindow):
         self.dittfirmaHjelpetekst.setText(QString.null)
         self.dittfirmaLagre.setText(self.__tr("&Lagre"))
         self.dittfirmaLagre.setAccel(self.__tr("Alt+L"))
+        self.dittFirmaLagreInfo.setText(QString.null)
         QToolTip.add(self.dittfirmaLogoPixmap,self.__tr("Logo"))
         self.dittfirmaFinnFjernLogo.setText(self.__tr("Finn logo"))
         self.fakturaTab.changeTab(self.TabPage_2,self.__tr("&Ditt firma"))
