@@ -1,0 +1,70 @@
+
+Fryktelig fin fakura
+====================
+:oppdatert:$Date: 2006/09/10 12:38:25 $
+
+Dette er et enkelt program for å lage fakturaer. Fakturaene lages som pdf_ og kan skrives ut på skjema f60 eller sendes som epost. Programmet lager en database over varer, kunder, og utsendte fakturaer.
+
+Programmet startes ved å kjøre faktura.py. For tekstmodus, bruk opsjonen -i. 
+
+Miljøvariabelen FAKTURADIR kan brukes til å styre hvor databasen skal lagres. Eksempel:
+
+$ FAKTURADIR=/var/fakturadb ./faktura.py
+
+Systemkrav
+==========
+
+- python_ Testet i python2.4, andre versjoner kan fungere
+- python-modulen sqlite_
+- python-modulen pyqt_
+
+.. _pdf: http://en.wikipedia.org/wiki/Portable_Document_Format
+.. _python: http://python.org/
+.. _sqlite: http://pysqlite.org/
+.. _pyqt: http://www.riverbankcomputing.co.uk/pyqt
+
+Opphavsrett
+===========
+
+Idé og koding: Håvard Dahle
+Med god hjelp fra Håvard Sjøvoll
+Distribueres under GPL2 
+
+Kjente feil
+===========
+
+Hurra! Ingen!
+
+Planlagte egenskaper 
+====================
+
+#. Korrekt installasjon på Linux
+ #.. deb
+ #.. rpm
+#. Sikkerhetskopi til Gmail og fil
+#. Rapporter
+#. Purring
+#. Kredittnota
+#. Inkasso
+#. Duplisere faktura
+#. Lagre firmainfo fortløpende som de er endret
+#. Innebygget smtp-klient 2006-09-10
+#. Integrering med Gmail for sending av faktura 2006-09-10
+
+Større oppgaver:
+
+#. Logging av alt som skjer med fakturaen i løpet av dens liv
+#. Portering til PyQt4 (gir MS Windows-støtte)
+#. Korrekt installasjon på MS Windows og Apple OSX (loki installer?)
+#. Bruke PyQt's sqlite-støtte (kutte avhengighet til pysqlite)
+#. Integrere med online backup
+
+Historikk 
+=========
+2005-12-12: Første disposisjon.
+2006-05-07: Restructured Text
+2006-05-12: Lisensbetingelser
+2006-05-31: Kjente feil & Planlagte egenskaper
+
+$Id: README,v 1.6 2006/09/10 12:38:25 havardda Exp $
+
