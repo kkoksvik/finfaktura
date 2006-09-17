@@ -275,7 +275,22 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         self.connect(self.okonomiFakturaerSkrivut, SIGNAL("clicked()"), self.okonomiSkrivUtFakturaer)
 
         self.connect(self.sikkerhetskopiGmailLastopp, SIGNAL("clicked()"), self.sikkerhetskopiGmail)
-
+        
+        for obj in (self.dittfirmaFirmanavn,
+            self.dittfirmaOrganisasjonsnummer,
+            self.dittfirmaKontaktperson,
+            self.dittfirmaEpost,
+            self.dittfirmaAdresse,
+            self.dittfirmaPostnummer,
+            self.dittfirmaPoststed,
+            self.dittfirmaTelefon,
+            self.dittfirmaTelefaks,
+            self.dittfirmaMobil,
+            self.dittfirmaKontonummer,
+            self.dittfirmaVilkar,
+            self.dittfirmaFakturakatalog,
+            self.dittfirmaForfall):
+            self.connect(obj, SIGNAL("lostFocus()"), self.firmaSjekk)
 
         self.kundeKundeliste.contextMenuEvent = self.kundeContextMenu
         self.fakturaFakturaliste.contextMenuEvent = self.fakturaContextMenu
@@ -425,7 +440,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         except AttributeError:
             self.alert(u'Ingen kunde er valgt')
             return False
-        debug("ny faktura fra kunde: %s" % kunde)
+        debug("ny faktura fra kunde: %s" % kunde.ID)
         self.fakturaTab.setCurrentPage(0)
         self.nyFaktura(kunde)
 
@@ -1074,6 +1089,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         self.dittfirmaFakturakatalog.setText(self.faktura.oppsett.fakturakatalog)
         
         self.visLogo()
+        self.firmaSjekk()
         
     def visLogo(self):
         if not self.firma.logo: 
@@ -1104,33 +1120,52 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
     
         self.faktura.oppsett.fakturakatalog = self.dittfirmaFakturakatalog.text()
 
+        mangler = self.sjekkFirmaMangler()
+        if mangler:
+            mangel = u'Ufullstendige opplysninger. Du er nødt til å oppgi:\n%s' % ([ mangler[obj].lower() for obj in mangler.keys() ])
+            self.alert(mangel)
+            self.fakturaTab.showPage(self.fakturaTab.page(3))
+            obj.setFocus()
+            self.gammelTab = 3
+            return False
+        self.dittfirmaLagreInfo.setText('<font color=green><b>Opplysningene er lagret</b></font>')
+        
+    def sjekkFirmaMangler(self):
+        m = []
         kravkart = {
-                    self.dittfirmaFirmanavn:'Firmanavn',
-                    self.dittfirmaOrganisasjonsnummer:u'Organisasjonsnummer fra Brønnøysund',
-                    self.dittfirmaKontaktperson:'Kontaktperson',
-                    self.dittfirmaAdresse:'Adresse',
-                    self.dittfirmaPostnummer:'Postnummer',
-                    self.dittfirmaPoststed:'Poststed',
-                    self.dittfirmaTelefon:'Telefonnummer',
-                    self.dittfirmaMobil:'Mobilnummer',
-                    self.dittfirmaKontonummer:'Kontonummer',
-                    self.dittfirmaMva:'Momssats',
-                    self.dittfirmaForfall:'Forfallsperiode',
-                    self.dittfirmaFakturakatalog:'Lagringssted for fakturaer',
-                    }
+            self.dittfirmaFirmanavn:'Firmanavn',
+            self.dittfirmaOrganisasjonsnummer:u'Organisasjonsnummer fra Brønnøysund',
+            self.dittfirmaKontaktperson:'Kontaktperson',
+            self.dittfirmaEpost:'Epostadresse',
+            self.dittfirmaAdresse:'Adresse',
+            self.dittfirmaPostnummer:'Postnummer',
+            self.dittfirmaPoststed:'Poststed',
+            self.dittfirmaTelefon:'Telefonnummer',
+            self.dittfirmaMobil:'Mobilnummer',
+            self.dittfirmaKontonummer:'Kontonummer',
+            #self.dittfirmaMva:'Momssats',
+            self.dittfirmaForfall:'Forfallsperiode',
+            self.dittfirmaFakturakatalog:'Lagringssted for fakturaer',
+            }
         for obj in kravkart.keys():
             if isinstance(obj, QSpinBox): test = obj.value() > 0
             elif isinstance(obj, QComboBox): test = obj.currentText()
             elif isinstance(obj, (QLineEdit,QTextEdit,)): test = obj.text()
-            if not test:
-                self.alert(u'Du er nødt til å oppgi firmaets %s' % (kravkart[obj].lower()))
-                #self.fakturaTab.setCurrentPage(3)
-                self.fakturaTab.showPage(self.fakturaTab.page(3))
-                obj.setFocus()
-                self.gammelTab = 3
-                return False
-        
-        
+            if test: kravkart.pop(obj)
+        return kravkart
+
+    def firmaSjekk(self):
+        mangler = self.sjekkFirmaMangler()
+        if not mangler:
+            self.dittfirmaLagreInfo.setText('')
+            self.dittfirmaLagre.setEnabled(True) 
+            return True
+        s = u"<b><font color=red>Følgende felter må fylles ut:</font></b><ol>"
+        for o in mangler.keys():
+            s += u"<li>%s" % mangler[o]
+        s += "</ol>"
+        self.dittfirmaLagreInfo.setText(s)
+        self.dittfirmaLagre.setEnabled(False) 
 
     def finnFjernLogo(self):
         if self.firma.logo:
