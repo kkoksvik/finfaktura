@@ -9,7 +9,7 @@
 # $Id: epost.py,v 1.3 2006/09/16 22:58:36 havardda Exp $
 ###########################################################################
 
-import sys,types
+import sys,types,os 
 import smtplib
 from email.MIMEMultipart import MIMEMultipart
 from email.MIMEBase import MIMEBase
@@ -118,9 +118,33 @@ class smtp(epost):
         return True
 
 class sendmail(epost):
+    bin='/usr/lib/sendmail'
     
     def send(self):
-        pass
+        # ssmtp: 
+        #-4     Forces ssmtp to use IPv4 addresses only.
+    
+        #-6     Forces ssmtp to use IPv6 addresses only.
+    
+        #-auusername
+                #Specifies username for SMTP authentication.
+    
+        #-appassword
+                #Specifies password for SMTP authentication.
+    
+        #-ammechanism
+                #Specifies mechanism for SMTP authentication. (Only LOGIN and CRAM-MD5)
+        kmd = "%s %s" % (self.bin, self.til)
+        inn, ut = os.popen4(kmd)
+        try:
+            inn.write(self.mimemelding().as_string())
+            r = inn.close()
+        except:
+            raise Sendefeil(u'Sendingen feilet fordi:\n' + ut.read())
+        i = inn.close()
+        u = ut.close()
+        debug(u'sendmail er avsluttet; %s U %s' % (i,u))
+        return True
 
 class test(epost):
     def send(self):
