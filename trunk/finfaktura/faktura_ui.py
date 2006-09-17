@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'faktura.ui'
 #
-# Created: Sun Sep 17 01:40:07 2006
+# Created: Sun Sep 17 02:21:06 2006
 #      by: The PyQt User Interface Compiler (pyuic) 3.15.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -3154,9 +3154,6 @@ class faktura(QMainWindow):
         self.textLabel1_2 = QLabel(self.TabPage_2,"textLabel1_2")
         self.textLabel1_2.setGeometry(QRect(10,170,100,21))
 
-        self.dittfirmaEpost = QLineEdit(self.TabPage_2,"dittfirmaEpost")
-        self.dittfirmaEpost.setGeometry(QRect(120,170,290,21))
-
         self.dittfirmaKontaktperson = QLineEdit(self.TabPage_2,"dittfirmaKontaktperson")
         self.dittfirmaKontaktperson.setGeometry(QRect(120,140,290,21))
 
@@ -3201,24 +3198,6 @@ class faktura(QMainWindow):
         self.line2.setFrameShadow(QFrame.Sunken)
         self.line2.setFrameShape(QFrame.HLine)
 
-        self.frame3 = QFrame(self.TabPage_2,"frame3")
-        self.frame3.setGeometry(QRect(718,232,227,480))
-        self.frame3.setFrameShape(QFrame.StyledPanel)
-        self.frame3.setFrameShadow(QFrame.Raised)
-
-        self.dittfirmaHjelpetekst = QLabel(self.frame3,"dittfirmaHjelpetekst")
-        self.dittfirmaHjelpetekst.setGeometry(QRect(10,10,211,390))
-        self.dittfirmaHjelpetekst.setTextFormat(QLabel.RichText)
-        self.dittfirmaHjelpetekst.setAlignment(QLabel.WordBreak | QLabel.AlignTop)
-
-        self.dittfirmaLagre = QPushButton(self.frame3,"dittfirmaLagre")
-        self.dittfirmaLagre.setGeometry(QRect(62,428,110,40))
-
-        self.dittFirmaLagreInfo = QLabel(self.frame3,"dittFirmaLagreInfo")
-        self.dittFirmaLagreInfo.setGeometry(QRect(10,370,211,50))
-        self.dittFirmaLagreInfo.setTextFormat(QLabel.RichText)
-        self.dittFirmaLagreInfo.setAlignment(QLabel.WordBreak | QLabel.AlignTop | QLabel.AlignLeft)
-
         self.dittfirmaLogoPixmap = QLabel(self.TabPage_2,"dittfirmaLogoPixmap")
         self.dittfirmaLogoPixmap.setGeometry(QRect(770,10,141,140))
         self.dittfirmaLogoPixmap.setFrameShape(QLabel.Box)
@@ -3242,6 +3221,27 @@ class faktura(QMainWindow):
         self.dittfirmaVilkar.setTextFormat(QTextEdit.PlainText)
         self.dittfirmaVilkar.setTabChangesFocus(1)
         self.dittfirmaVilkar.setAutoFormatting(QTextEdit.AutoNone)
+
+        self.dittfirmaEpost = QLineEdit(self.TabPage_2,"dittfirmaEpost")
+        self.dittfirmaEpost.setGeometry(QRect(120,170,290,21))
+
+        self.frame3 = QFrame(self.TabPage_2,"frame3")
+        self.frame3.setGeometry(QRect(718,232,227,480))
+        self.frame3.setFrameShape(QFrame.StyledPanel)
+        self.frame3.setFrameShadow(QFrame.Raised)
+
+        self.dittfirmaLagre = QPushButton(self.frame3,"dittfirmaLagre")
+        self.dittfirmaLagre.setGeometry(QRect(62,428,110,40))
+
+        self.dittfirmaHjelpetekst = QLabel(self.frame3,"dittfirmaHjelpetekst")
+        self.dittfirmaHjelpetekst.setGeometry(QRect(10,10,211,220))
+        self.dittfirmaHjelpetekst.setTextFormat(QLabel.RichText)
+        self.dittfirmaHjelpetekst.setAlignment(QLabel.WordBreak | QLabel.AlignTop)
+
+        self.dittfirmaLagreInfo = QLabel(self.frame3,"dittfirmaLagreInfo")
+        self.dittfirmaLagreInfo.setGeometry(QRect(10,260,211,160))
+        self.dittfirmaLagreInfo.setTextFormat(QLabel.RichText)
+        self.dittfirmaLagreInfo.setAlignment(QLabel.WordBreak | QLabel.AlignBottom | QLabel.AlignHCenter)
         self.fakturaTab.insertTab(self.TabPage_2,QString.fromLatin1(""))
 
         self.TabPage_3 = QWidget(self.fakturaTab,"TabPage_3")
@@ -3809,12 +3809,12 @@ class faktura(QMainWindow):
         self.dittfirmaFakturakatalog.setText(self.__tr("~/fakturax"))
         self.dittfirmaFakturakatalogSok.setText(self.__trUtf8("\x53\xc3\xb8\x6b\x2e\x2e\x2e"))
         self.textLabel1_5.setText(self.__tr("Organisasjonsnummer"))
-        self.dittfirmaHjelpetekst.setText(QString.null)
-        self.dittfirmaLagre.setText(self.__tr("&Lagre"))
-        self.dittfirmaLagre.setAccel(self.__tr("Alt+L"))
-        self.dittFirmaLagreInfo.setText(QString.null)
         QToolTip.add(self.dittfirmaLogoPixmap,self.__tr("Logo"))
         self.dittfirmaFinnFjernLogo.setText(self.__tr("Finn logo"))
+        self.dittfirmaLagre.setText(self.__tr("&Lagre"))
+        self.dittfirmaLagre.setAccel(self.__tr("Alt+L"))
+        self.dittfirmaHjelpetekst.setText(QString.null)
+        self.dittfirmaLagreInfo.setText(QString.null)
         self.fakturaTab.changeTab(self.TabPage_2,self.__tr("&Ditt firma"))
         QToolTip.add(self.okonomiDetaljregnskap,self.__tr("Detaljert regnskap"))
         self.groupBox9_2.setTitle(self.__tr("Regnskap"))
