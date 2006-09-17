@@ -763,7 +763,7 @@ if __name__ == "__main__":
             print "sikkerhetskopi#%i av faktura # %s dumpet til %s" % (kopi._id, kopi.ordreID, fil)
     if "epost" in test:
         _firma = fakturaFirmainfo(cx)
-        f = fakturaOrdre(cx, Id=22, firma=_firma)
+        f = fakturaOrdre(cx, Id=1, firma=_firma)
         b = FakturaBibliotek(cx)
         pdf = b.lagPDF(f, "epost")
         print "pdf:",pdf.filnavn
@@ -771,12 +771,15 @@ if __name__ == "__main__":
         print "tester mime"
         m = epost.test(f, pdf.filnavn)
         m.send()
+        print "tester sendmail"
+        sm = epost.sendmail(f, pdf.filnavn)
+        sm.send()
         print "tester smtp"
-        m = epost.smtp(f, pdf.filnavn)
-        #m.send()
-        #print "tester gmail"
-        #g = epost.gmail(f, pdf.filnavn)
-        #g.send('a','b')
+        mp = epost.smtp(f, pdf.filnavn)
+        #mp.send()
+        print "tester gmail"
+        gm = epost.gmail(f, pdf.filnavn)
+        #gm.send('a','b')
         
 
     cx.close()
