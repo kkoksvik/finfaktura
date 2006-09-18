@@ -1182,9 +1182,20 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
                 )
             if len(unicode(logo)) > 0:
                 debug("Setter ny logo: %s" % logo)
-                f = open(unicode(logo))
-                self.firma.logo = sqlite.encode(f.read())
-                f.close()
+                #f = open(unicode(logo))
+                l = QPixmap()
+                l.loadFromData(open(unicode(logo)).read())
+                #if l.height() > 360 or l.width() > 360:
+                    #l.resize(360,360)
+                from finfaktura.ekstra import QBuffer
+                stream = QBuffer()
+                l.convertToImage().smoothScale(360,360, QImage.ScaleMax).save(stream, 'PNG')
+                #p.smoothScale(360,360, QImage.ScaleMax)
+                #stream = QBuffer()
+                #p
+                
+                self.firma.logo = sqlite.encode(stream.getData())#f.read())
+                #f.close()
                 self.visLogo()
         
 
