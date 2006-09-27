@@ -31,6 +31,7 @@ class IkkeImplementert(Exception): pass
 class epost:
       
     charset='iso-8859-15' # epostens tegnsett
+    kopi = True
     
     def __init__(self, ordre, pdfFilnavn, tekst=None, fra=None):
         self.ordre = ordre
@@ -39,14 +40,16 @@ class epost:
         self.fra = fra 
         self.til = ordre.kunde.epost
         self.tittel = u"Epostfaktura fra %s: '%s' (#%i)" % (ordre.firma.firmanavn, self.kutt(ordre.tekst), ordre.ID)
-        if tekst is None: tekst = u'Vedlagt følger epostfaktura #%i:\n%s\n\n-- \n%s\n%s' % (ordre.ID, ordre.tekst,  ordre.firma, ordre.firma.vilkar)
+        if tekst is None: tekst = u'Vedlagt følger epostfaktura #%i:\n\n%s\n\n-- \n%s\n%s' % (ordre.ID, ordre.tekst,  ordre.firma, ordre.firma.vilkar)
         self.tekst = tekst
         
     def mimemelding(self):
         m = MIMEMultipart()
         m['Subject'] = Header(self.tittel, self.charset)
-        m['From'] = '%s <%s>' % (Header(self.ordre.firma.firmanavn, self.charset), self.fra) 
-        m['To'] = '%s <%s>' % (Header(self.ordre.kunde.navn, self.charset), self.til)
+        m['From'] = '%s <%s>' % (Header(self.ordre.firma.firmanavn, self.charset), (Header(self.fra), self.charset))
+        if self.kopi:
+            m['Bcc'] = '<%s>' % (Header(self.fra), self.charset)
+        m['To'] = '%s <%s>' % (Header(self.ordre.kunde.navn, self.charset), (Header(self.til), self.charset)
         m.preamble = 'You will not see this in a MIME-aware mail reader.\n'
         # To guarantee the message ends with a newline
         m.epilogue = ''
@@ -74,11 +77,15 @@ class epost:
         return s[0:l] + "..."
     
 class gmail(epost):
-    def send(self, brukernavn, passord):
+    def auth(self, brukernavn, passord):
         brukernavn, passord = file("/home/havard/.gmailpass").read().strip().split(",")
+        self.brukernavn = brukernavn
+        self.passord = passord
+        
+    def send(self):
 
-        gmail = libgmail.GmailAccount(brukernavn, passord)
-        print "Logger inn i Gmail med brukernavn %s" % brukernavn
+        gmail = libgmail.GmailAccount(self.brukernavn, self.passord)
+        print "Logger inn i Gmail med brukernavn %s" % self.brukernavn
         gmail.login()
         print "Logget inn. Sender til %s" % self.til
         try:
@@ -93,8 +100,12 @@ class gmail(epost):
         return gmail.sendMessage(msg)
     
 class smtp(epost):
+    smtpserver='localhost'
     
-    def send(self, smtpserver='localhost'):
+    def settServer(smtpserver):
+        self.smtpserver=smtpserver
+    
+    def send(self):
         s = smtplib.SMTP()
         try:
             s.connect()
