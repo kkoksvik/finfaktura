@@ -3,12 +3,13 @@ faktura.ui
 faktura.sql
 setup.py
 finfaktura/__init__.py
+finfaktura/cli.py
+finfaktura/epost.py
 finfaktura/faktura_ui.py
 finfaktura/fakturabibliotek.py
 finfaktura/f60.py
-finfaktura/oppgradering.py
-finfaktura/cli.py
 finfaktura/myndighetene.py
+finfaktura/oppgradering.py
 finfaktura/okonomi.py
 finfaktura/sikkerhetskopi.py
 README
