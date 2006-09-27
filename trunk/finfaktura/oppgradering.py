@@ -6,7 +6,7 @@
 #
 #    Lisens: GPL2
 #
-# $Id: oppgradering.py,v 1.1 2006/06/03 00:48:23 havardda Exp $
+# $Id$
 ###########################################################################
 
 # endringer er en linjeskiftseparert streng med følgende struktur:

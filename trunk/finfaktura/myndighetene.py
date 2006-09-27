@@ -6,7 +6,7 @@
 #
 #    Lisens: GPL2
 #
-# $Id: myndighetene.py,v 1.2 2006/06/12 23:41:25 havardda Exp $
+# $Id$
 ###########################################################################
 
 __all__ = ['BRUK_MYNDIGHETENE', 'myndighetene']
