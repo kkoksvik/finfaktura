@@ -109,4 +109,4 @@
     	
 --6) =============== Oppdater tabellene ==================
 --7) ========= Sett inn default-verdier ==================
-    INSERT INTO Oppsett (databaseversjon) VALUES (2.6);
+    UPDATE Oppsett SET databaseversjon=2.6 WHERE ID=1;
