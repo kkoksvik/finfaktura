@@ -6,7 +6,7 @@
 #
 #    Lisens: GPL2
 #
-# $Id: faktura.py,v 1.31 2006/09/16 22:58:35 havardda Exp $
+# $Id$
 ###########################################################################
 
 # Sett denne til True for å skjule funksjonalitet som ikke er ferdigstilt
