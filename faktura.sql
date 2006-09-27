@@ -109,4 +109,4 @@
     	
 --6) =============== Oppdater tabellene ==================
 --7) ========= Sett inn default-verdier ==================
-    INSERT INTO Oppsett VALUES (1, 2.6, "~");
+    INSERT INTO Oppsett (databaseversjon) VALUES (2.6);
