@@ -143,6 +143,7 @@ class FakturaBibliotek:
     def sendEpost(self, ordre, pdf, tekst=None):
         import epost
         m = epost.smtp(ordre, pdf, tekst)
+        #m = epost.gmail(ordre, pdf, tekst)
         return m.send()
         
 class fakturaKomponent:
