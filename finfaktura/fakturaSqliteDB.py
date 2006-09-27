@@ -6,7 +6,7 @@
 #
 #    Lisens: GPL
 #
-# $Id: fakturaSqliteDB.py,v 1.1 2006/06/03 00:48:22 havardda Exp $
+# $Id$
 ###########################################################################
 
 def lagDatabase(database, dbsql=DATABASESQL):

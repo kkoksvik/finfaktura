@@ -6,7 +6,7 @@
 #
 #    Lisens: GPL2
 #
-# $Id: fakturabibliotek.py,v 1.6 2006/09/16 22:58:36 havardda Exp $
+# $Id$
 ###########################################################################
 
 import types, os, sys, os.path

@@ -7,7 +7,7 @@
 #
 #    Lisens: GPL2
 #
-# $Id: okonomi.py,v 1.1 2006/06/03 00:48:23 havardda Exp $
+# $Id$
 ###########################################################################
 
 from fakturabibliotek import fakturaOrdre
