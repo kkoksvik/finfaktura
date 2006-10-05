@@ -24,6 +24,7 @@ class KundeFeil(Exception): pass
 class DBKorruptFeil(Exception): pass
 class DBGammelFeil(Exception): pass
 class DBNyFeil(Exception): pass
+class DBTomFeil(Exception): pass
 class FirmainfoFeil(Exception): pass
 class SikkerhetskopiFeil(Exception): pass
 class PDFFeil(Exception): pass
@@ -203,7 +204,7 @@ class fakturaKomponent:
             return False
         self.c.execute("SELECT * FROM %s WHERE %s=%s" % (self._tabellnavn, self._IDnavn, self._id))
         r = self.c.fetchone()
-        if r is None: raise DBNyFeil(u'Det finnes ingen %s med ID %s' % (self._tabellnavn, self._id))
+        if r is None: raise DBTomFeil(u'Det finnes ingen %s med ID %s' % (self._tabellnavn, self._id))
         for z in self._egenskaper.keys():
             try:verdi = r[self._egenskaperListe.index(z)]
             except TypeError: print self._tabellnavn, self._id, z, self._egenskaperListe.index(z),r
@@ -443,9 +444,12 @@ class fakturaFirmainfo(fakturaKomponent):
 
     def __initgammel__(self, db):
         self._egenskaperBlob = ['logo',]
-        fakturaKomponent.__init__(self, db, Id=self._id)
-        if not self._egenskaper:
+        try:
+            fakturaKomponent.__init__(self, db, Id=self._id)
+        #if not self._egenskaper:
+        except DBTomFeil:
             self.lagFirma()
+            fakturaKomponent.__init__(self, db, Id=self._id)
     
     def __init__(self, db):
         self.db = db
@@ -455,8 +459,9 @@ class fakturaFirmainfo(fakturaKomponent):
         self._egenskaper = self.hentEgenskaperListe()
         try:
             self.hentEgenskaper()
-        except DBNyFeil:
+        except DBTomFeil:
             self.lagFirma()
+            self._egenskaper = self.hentEgenskaperListe()
             self.hentEgenskaper()
         #print self._egenskaper
         
@@ -480,7 +485,7 @@ class fakturaFirmainfo(fakturaKomponent):
         self.c.execute("INSERT INTO %s (ID, firmanavn, mva, forfall) VALUES (%s, '%s', %s, %s)" % (self._tabellnavn, self._id, nyFirmanavn, nyMva, nyForfall))
         
         self.db.commit()
-        #self._egenskaper = self.hentEgenskaperListe()
+        ###self._egenskaper = self.hentEgenskaperListe()
         #self.hentEgenskaper()
 
     def postadresse(self):
@@ -527,6 +532,12 @@ class fakturaOppsett(fakturaKomponent):
                 raise DBGammelFeil(u"Databasen er gammel eller korrupt, følgende felt mangler: %s" %  ",".join([o._tabellnavn for o in mangler]))
         
         try:
+            fakturaKomponent.__init__(self, db, Id=self._id)
+        except DBTomFeil:
+            # finner ikke oppsett. Ny, tom database
+            import os
+            c.execute("INSERT INTO %(tab)s (ID, databaseversjon, fakturakatalog) VALUES (%(id)s, %(ver)f, %(kat)s)",  {'tab':self._tabellnavn, 'id': self._id, 'ver': DATABASEVERSJON, 'kat':os.getenv('HOME') })
+            db.commit()
             fakturaKomponent.__init__(self, db, Id=self._id)
         except DatabaseError:
             # tabellen finnes ikke
@@ -636,7 +647,7 @@ def debug(s):
 def lagDatabase(database, dbsql=DATABASESQL):
     import sqlite
     logg = open("faktura.sqlite.lag.log", "a+")
-    print "datbase:",database
+    debug("datbase:",database)
     db = sqlite.connect(db=database, encoding="utf-8", command_logfile=logg)
     c = db.cursor()
     c.execute(file(dbsql).read())
