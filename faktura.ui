@@ -2436,22 +2436,6 @@ betalingsvilkår</string>
                     <number>21</number>
                 </property>
             </widget>
-            <widget class="QLineEdit">
-                <property name="name">
-                    <cstring>dittfirmaFakturakatalog</cstring>
-                </property>
-                <property name="geometry">
-                    <rect>
-                        <x>140</x>
-                        <y>690</y>
-                        <width>470</width>
-                        <height>21</height>
-                    </rect>
-                </property>
-                <property name="text">
-                    <string>~/fakturax</string>
-                </property>
-            </widget>
             <widget class="QPushButton">
                 <property name="name">
                     <cstring>dittfirmaFakturakatalogSok</cstring>
@@ -2705,9 +2689,9 @@ betalingsvilkår</string>
                     <property name="geometry">
                         <rect>
                             <x>10</x>
-                            <y>260</y>
+                            <y>220</y>
                             <width>211</width>
-                            <height>160</height>
+                            <height>200</height>
                         </rect>
                     </property>
                     <property name="text">
@@ -2720,6 +2704,22 @@ betalingsvilkår</string>
                         <set>WordBreak|AlignJustify|AlignBottom</set>
                     </property>
                 </widget>
+            </widget>
+            <widget class="QLineEdit">
+                <property name="name">
+                    <cstring>dittfirmaFakturakatalog</cstring>
+                </property>
+                <property name="geometry">
+                    <rect>
+                        <x>140</x>
+                        <y>690</y>
+                        <width>470</width>
+                        <height>21</height>
+                    </rect>
+                </property>
+                <property name="text">
+                    <string>~</string>
+                </property>
             </widget>
         </widget>
         <widget class="QWidget">
