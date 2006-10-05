@@ -1069,24 +1069,47 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
 
 ############## FIRMAINFO ###################
 
+    def dittfirmaKontroller(self, o=None):
+        k = {
+            self.dittfirmaFirmanavn:'Firmanavn',
+            self.dittfirmaOrganisasjonsnummer:u'Organisasjonsnummer fra Brønnøysund',
+            self.dittfirmaKontaktperson:'Kontaktperson',
+            self.dittfirmaEpost:'Epostadresse',
+            self.dittfirmaAdresse:'Adresse',
+            self.dittfirmaPostnummer:'Postnummer',
+            self.dittfirmaPoststed:'Poststed',
+            self.dittfirmaTelefon:'Telefonnummer',
+            self.dittfirmaMobil:'Mobilnummer',
+            self.dittfirmaKontonummer:'Kontonummer',
+            #self.dittfirmaMva:'Momssats',
+            self.dittfirmaForfall:'Forfallsperiode',
+            self.dittfirmaFakturakatalog:'Lagringssted for fakturaer',
+        }
+        if o is None: return k
+        else: return k[o]
+
     def visFirma(self):
         self.dittfirmaFirmanavn.setText(self.firma.firmanavn)
-        self.dittfirmaOrganisasjonsnummer.setText(self.firma.organisasjonsnummer)
-        self.dittfirmaKontaktperson.setText(self.firma.kontaktperson)
-        self.dittfirmaEpost.setText(self.firma.epost)
-        self.dittfirmaAdresse.setText(self.firma.adresse)
-        if self.firma.postnummer:
-            self.dittfirmaPostnummer.setText("%04i" % self.firma.postnummer)
-        self.dittfirmaPoststed.setText(self.firma.poststed)
-        self.dittfirmaTelefon.setText(str(self.firma.telefon))
-        self.dittfirmaTelefaks.setText(str(self.firma.telefaks))
-        self.dittfirmaMobil.setText(str(self.firma.mobil))
-        self.dittfirmaKontonummer.setText(str(self.firma.kontonummer))
-        self.dittfirmaVilkar.setText(self.firma.vilkar)
-        self.dittfirmaMva.setValue(int(self.firma.mva))
-        self.dittfirmaForfall.setValue(int(self.firma.forfall))
-
-        self.dittfirmaFakturakatalog.setText(self.faktura.oppsett.fakturakatalog)
+        try:
+            self.dittfirmaOrganisasjonsnummer.setText(self.firma.organisasjonsnummer)
+            self.dittfirmaKontaktperson.setText(self.firma.kontaktperson)
+            self.dittfirmaEpost.setText(self.firma.epost)
+            self.dittfirmaAdresse.setText(self.firma.adresse)
+            if self.firma.postnummer:
+                self.dittfirmaPostnummer.setText("%04i" % self.firma.postnummer)
+            self.dittfirmaPoststed.setText(self.firma.poststed)
+            self.dittfirmaTelefon.setText(str(self.firma.telefon))
+            self.dittfirmaTelefaks.setText(str(self.firma.telefaks))
+            self.dittfirmaMobil.setText(str(self.firma.mobil))
+            self.dittfirmaKontonummer.setText(str(self.firma.kontonummer))
+            self.dittfirmaVilkar.setText(self.firma.vilkar)
+            self.dittfirmaMva.setValue(int(self.firma.mva))
+            self.dittfirmaForfall.setValue(int(self.firma.forfall))
+    
+            self.dittfirmaFakturakatalog.setText(self.faktura.oppsett.fakturakatalog)
+        except TypeError:
+            # finnes ennå ikke
+            pass
         
         self.visLogo()
         self.firmaSjekk()
@@ -1132,21 +1155,22 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         
     def sjekkFirmaMangler(self):
         m = []
-        kravkart = {
-            self.dittfirmaFirmanavn:'Firmanavn',
-            self.dittfirmaOrganisasjonsnummer:u'Organisasjonsnummer fra Brønnøysund',
-            self.dittfirmaKontaktperson:'Kontaktperson',
-            self.dittfirmaEpost:'Epostadresse',
-            self.dittfirmaAdresse:'Adresse',
-            self.dittfirmaPostnummer:'Postnummer',
-            self.dittfirmaPoststed:'Poststed',
-            self.dittfirmaTelefon:'Telefonnummer',
-            self.dittfirmaMobil:'Mobilnummer',
-            self.dittfirmaKontonummer:'Kontonummer',
-            #self.dittfirmaMva:'Momssats',
-            self.dittfirmaForfall:'Forfallsperiode',
-            self.dittfirmaFakturakatalog:'Lagringssted for fakturaer',
-            }
+        #kravkart = {
+            #self.dittfirmaFirmanavn:'Firmanavn',
+            #self.dittfirmaOrganisasjonsnummer:u'Organisasjonsnummer fra Brønnøysund',
+            #self.dittfirmaKontaktperson:'Kontaktperson',
+            #self.dittfirmaEpost:'Epostadresse',
+            #self.dittfirmaAdresse:'Adresse',
+            #self.dittfirmaPostnummer:'Postnummer',
+            #self.dittfirmaPoststed:'Poststed',
+            #self.dittfirmaTelefon:'Telefonnummer',
+            #self.dittfirmaMobil:'Mobilnummer',
+            #self.dittfirmaKontonummer:'Kontonummer',
+            ##self.dittfirmaMva:'Momssats',
+            #self.dittfirmaForfall:'Forfallsperiode',
+            #self.dittfirmaFakturakatalog:'Lagringssted for fakturaer',
+            #}
+        kravkart = self.dittfirmaKontroller()
         for obj in kravkart.keys():
             if isinstance(obj, QSpinBox): test = obj.value() > 0
             elif isinstance(obj, QComboBox): test = obj.currentText()
@@ -1155,17 +1179,32 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         return kravkart
 
     def firmaSjekk(self):
-        mangler = self.sjekkFirmaMangler()
+        #mangler = self.sjekkFirmaMangler()
+        mangler = 0
+        s = u"<b><font color=red>Følgende felter må fylles ut:</font></b><ol>"
+        ok = QColor('white')
+        tom = QColor('red')
+        for obj in self.dittfirmaKontroller().keys():
+            if isinstance(obj, QSpinBox): test = obj.value() > 0
+            elif isinstance(obj, QComboBox): test = obj.currentText()
+            elif isinstance(obj, (QLineEdit,QTextEdit,)): test = obj.text()
+            if test: 
+                obj.setPaletteBackgroundColor(ok)
+            else:
+                s += u"<li>%s" % self.dittfirmaKontroller(obj)
+                obj.setPaletteBackgroundColor(tom)
+                mangler += 1
         if not mangler:
             self.dittfirmaLagreInfo.setText('')
             self.dittfirmaLagre.setEnabled(True) 
             return True
-        s = u"<b><font color=red>Følgende felter må fylles ut:</font></b><ol>"
-        for o in mangler.keys():
-            s += u"<li>%s" % mangler[o]
-        s += "</ol>"
-        self.dittfirmaLagreInfo.setText(s)
-        self.dittfirmaLagre.setEnabled(False) 
+        else:
+            s += "</ol>"
+            self.dittfirmaLagreInfo.setText(s)
+            self.dittfirmaLagre.setEnabled(False) 
+        #for o in mangler.keys():
+            #s += u"<li>%s" % mangler[o]
+            #o.setPaletteBackgroundColor(QColor('Red'))
 
     def finnFjernLogo(self):
         if self.firma.logo:
