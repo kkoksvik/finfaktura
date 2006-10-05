@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'faktura.ui'
 #
-# Created: Sun Sep 17 02:21:06 2006
+# Created: Thu Oct 5 23:32:38 2006
 #      by: The PyQt User Interface Compiler (pyuic) 3.15.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -3177,9 +3177,6 @@ class faktura(QMainWindow):
         self.dittfirmaForfall.setGeometry(QRect(120,527,61,21))
         self.dittfirmaForfall.setValue(21)
 
-        self.dittfirmaFakturakatalog = QLineEdit(self.TabPage_2,"dittfirmaFakturakatalog")
-        self.dittfirmaFakturakatalog.setGeometry(QRect(140,690,470,21))
-
         self.dittfirmaFakturakatalogSok = QPushButton(self.TabPage_2,"dittfirmaFakturakatalogSok")
         self.dittfirmaFakturakatalogSok.setGeometry(QRect(618,691,91,21))
 
@@ -3239,9 +3236,12 @@ class faktura(QMainWindow):
         self.dittfirmaHjelpetekst.setAlignment(QLabel.WordBreak | QLabel.AlignTop)
 
         self.dittfirmaLagreInfo = QLabel(self.frame3,"dittfirmaLagreInfo")
-        self.dittfirmaLagreInfo.setGeometry(QRect(10,260,211,160))
+        self.dittfirmaLagreInfo.setGeometry(QRect(10,220,211,200))
         self.dittfirmaLagreInfo.setTextFormat(QLabel.RichText)
-        self.dittfirmaLagreInfo.setAlignment(QLabel.WordBreak | QLabel.AlignBottom | QLabel.AlignHCenter)
+        self.dittfirmaLagreInfo.setAlignment(QLabel.WordBreak | QLabel.AlignJustify | QLabel.AlignBottom)
+
+        self.dittfirmaFakturakatalog = QLineEdit(self.TabPage_2,"dittfirmaFakturakatalog")
+        self.dittfirmaFakturakatalog.setGeometry(QRect(140,690,470,21))
         self.fakturaTab.insertTab(self.TabPage_2,QString.fromLatin1(""))
 
         self.TabPage_3 = QWidget(self.fakturaTab,"TabPage_3")
@@ -3806,7 +3806,6 @@ class faktura(QMainWindow):
         self.textLabel7.setText(self.__tr("MVA-sats"))
         self.textLabel1_7.setText(self.__tr("Katalog for fakturaer"))
         self.textLabel9.setText(self.__tr("dager"))
-        self.dittfirmaFakturakatalog.setText(self.__tr("~/fakturax"))
         self.dittfirmaFakturakatalogSok.setText(self.__trUtf8("\x53\xc3\xb8\x6b\x2e\x2e\x2e"))
         self.textLabel1_5.setText(self.__tr("Organisasjonsnummer"))
         QToolTip.add(self.dittfirmaLogoPixmap,self.__tr("Logo"))
@@ -3815,6 +3814,7 @@ class faktura(QMainWindow):
         self.dittfirmaLagre.setAccel(self.__tr("Alt+L"))
         self.dittfirmaHjelpetekst.setText(QString.null)
         self.dittfirmaLagreInfo.setText(QString.null)
+        self.dittfirmaFakturakatalog.setText(self.__tr("~"))
         self.fakturaTab.changeTab(self.TabPage_2,self.__tr("&Ditt firma"))
         QToolTip.add(self.okonomiDetaljregnskap,self.__tr("Detaljert regnskap"))
         self.groupBox9_2.setTitle(self.__tr("Regnskap"))
