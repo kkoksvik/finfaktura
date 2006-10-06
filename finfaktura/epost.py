@@ -33,7 +33,7 @@ class epost:
     charset='iso-8859-15' # epostens tegnsett
     kopi = True
     
-    def __init__(self, ordre, pdfFilnavn, tekst=None, fra=None):
+    def __init__(self, ordre, pdfFilnavn, tekst=None, fra=None, test=False, kopi=True):
         self.ordre = ordre
         self.pdfFilnavn = pdfFilnavn
         if fra is None: fra = ordre.firma.epost
@@ -42,9 +42,13 @@ class epost:
         self.tittel = u"Epostfaktura fra %s: '%s' (#%i)" % (ordre.firma.firmanavn, self.kutt(ordre.tekst), ordre.ID)
         if tekst is None: tekst = u'Vedlagt følger epostfaktura #%i:\n\n%s\n\n-- \n%s\n%s' % (ordre.ID, ordre.tekst,  ordre.firma, ordre.firma.vilkar)
         self.tekst = tekst
+        self.test = test
+        self.kopi = kopi
         
     def mimemelding(self):
         m = MIMEMultipart()
+        if self.test: # vi er i utviklingsmodus, skift tittel
+            self.tittel = u"TESTFAKTURA "+self.tittel
         m['Subject'] = Header(self.tittel, self.charset)
         m['From'] = '%s <%s>' % (Header(self.ordre.firma.firmanavn, self.charset), Header(self.fra, self.charset).encode())
         if self.kopi:
