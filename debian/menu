@@ -1,0 +1,2 @@
+?package(finfaktura):needs="X11" section="Apps/Office"\
+  title="Fryktelig Fin Faktura" command="/usr/bin/faktura"
