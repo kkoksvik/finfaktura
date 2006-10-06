@@ -11,6 +11,8 @@
 
 
 from distutils.core import setup
+#from setuptools import setup
+
 import sys, os.path
 
 import finfaktura # for versjonsnummer
@@ -28,5 +30,13 @@ setup(name="fryktelig-fin-faktura",
       #package_data={'finfaktura': ['pixmaps/*.png'] },
       scripts=["faktura.py"],
       license="GPL2",
-      long_description=file(os.path.split(os.path.realpath(sys.argv[0]))[0] + "/README").read()
+      long_description=file(os.path.split(os.path.realpath(sys.argv[0]))[0] + "/README").read(),
+      #install_requires = ['docutils>=0.3', 'reportlab'],
+      #zip_safe=True,
+      #include_package_data = True,
+          #entry_points = {
+        #'console_scripts': [
+            #'faktura_cli = faktura:cli_faktura',
+        #],
+     #}
      )
