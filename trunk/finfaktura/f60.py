@@ -115,7 +115,7 @@ class f60:
             os.mkdir(katalog)
         filnavn = os.path.join(katalog, fil)
         if not self.overskriv and os.path.exists(filnavn):
-            raise f60Eksisterer("Filen %s finnes allerede" % filnavn)
+            raise f60Eksisterer(filnavn)
         return filnavn
 
     def skrivUt(self):
