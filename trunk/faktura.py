@@ -228,6 +228,8 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             self.fakturaTab.removePage(self.fakturaTab.page(4))
             self.fakturaTab.removePage(self.fakturaTab.page(4))
             self.fakturaTab.removePage(self.fakturaTab.page(4))
+        else:
+            self.setCaption("FRYKTELIG FIN FADESE")
 
         self.connect(self.fakturaTab, SIGNAL("currentChanged(QWidget*)"), self.skiftTab)
 
@@ -345,6 +347,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             self.faktura.sjekkSikkerhetskopier(lagNyAutomatisk=True)
         except SikkerhetskopiFeil, e:
             self.alert(e.args[0])
+        self.faktura.produksjonsversjon = PRODUKSJONSVERSJON
 
     def __del__(self):
         self.db.close()
@@ -649,13 +652,14 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             pdf.settFakturainfo(ordre._id, ordre.ordredato, ordre.forfall, ordre.tekst)
             pdf.settOrdrelinje(ordre.hentOrdrelinje)
         except f60Eksisterer, (E):
+            # HACK XXX: E er nå filnavnet
             if Type == "epost":
-                self.visEpostfaktura(ordre, fakturanavn)
+                self.visEpostfaktura(ordre, unicode(E))  
                 #if self.JaNei(u"PDF-fila eksisterer fra før av: %s. \nVil du sende den til %s nå?" % (fakturanavn, ordre.kunde.epost)): 
                     #if self.faktura.sendEpost(ordre, fakturanavn): self.obs('Fakturaen er sendt')
             elif Type == "papir":
                 if self.JaNei(u"Blanketten er laget fra før av. Vil du skrive den ut nå?"): 
-                    self.faktura.skrivUt(fakturanavn)
+                    self.faktura.skrivUt(unicode(E))
             return None
         if Type == "epost": 
             pdf.lagBakgrunn()
@@ -769,11 +773,11 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         for kunde in self.faktura.hentKunder(inkluderSlettede=visFjernede):
             l = QListViewItem(self.kundeKundeliste,
                               "%03d" % kunde.ID,
-                              kunde.navn,
-                              kunde.epost,
-                              kunde.status,
+                              '%s' % kunde.navn,
+                              '%s' % kunde.epost,
+                              '%s' % kunde.status,
                               "%s, %s %s" % (kunde.adresse, kunde.postnummer, kunde.poststed),
-                              kunde.telefon
+                              '%s' % kunde.telefon
                              )
             l.kunde = kunde
             if kunde.slettet: 
@@ -1155,21 +1159,6 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         
     def sjekkFirmaMangler(self):
         m = []
-        #kravkart = {
-            #self.dittfirmaFirmanavn:'Firmanavn',
-            #self.dittfirmaOrganisasjonsnummer:u'Organisasjonsnummer fra Brønnøysund',
-            #self.dittfirmaKontaktperson:'Kontaktperson',
-            #self.dittfirmaEpost:'Epostadresse',
-            #self.dittfirmaAdresse:'Adresse',
-            #self.dittfirmaPostnummer:'Postnummer',
-            #self.dittfirmaPoststed:'Poststed',
-            #self.dittfirmaTelefon:'Telefonnummer',
-            #self.dittfirmaMobil:'Mobilnummer',
-            #self.dittfirmaKontonummer:'Kontonummer',
-            ##self.dittfirmaMva:'Momssats',
-            #self.dittfirmaForfall:'Forfallsperiode',
-            #self.dittfirmaFakturakatalog:'Lagringssted for fakturaer',
-            #}
         kravkart = self.dittfirmaKontroller()
         for obj in kravkart.keys():
             if isinstance(obj, QSpinBox): test = obj.value() > 0
@@ -1179,7 +1168,6 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         return kravkart
 
     def firmaSjekk(self):
-        #mangler = self.sjekkFirmaMangler()
         mangler = 0
         s = u"<b><font color=red>Følgende felter må fylles ut:</font></b><ol>"
         ok = QColor('white')
@@ -1202,9 +1190,6 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             s += "</ol>"
             self.dittfirmaLagreInfo.setText(s)
             self.dittfirmaLagre.setEnabled(False) 
-        #for o in mangler.keys():
-            #s += u"<li>%s" % mangler[o]
-            #o.setPaletteBackgroundColor(QColor('Red'))
 
     def finnFjernLogo(self):
         if self.firma.logo:
