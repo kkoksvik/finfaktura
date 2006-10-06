@@ -700,7 +700,7 @@ if __name__ == "__main__":
     cx = sqlite.connect(finnDatabasenavn(), encoding='utf-8', command_logfile=logg)
     if "kunde" in test:
         kunde = fakturaKunde(cx)
-        kunde.navn = "Håvard Dahle"
+        kunde.navn = u"Havard Dahle"
         kunde.epost = "havard@dahle.no"
         print "kunde:", kunde
     if "hentKunder" in test:
@@ -714,15 +714,15 @@ if __name__ == "__main__":
         v.pris = "2500"
         print "vare:", v
     if "nyfaktura" in test:
-        _kunde = fakturaKunde(cx, 3)
+        _kunde = fakturaKunde(cx, 1)
         _firma = fakturaFirmainfo(cx)
         f = fakturaOrdre(cx, kunde=_kunde, firma=_firma)
         f.tekst = u"råtøff vask"
-        v = fakturaVare(cx, 2)
+        v = fakturaVare(cx, 1)
         f.leggTilVare(v, 4, 2500, 12)
-        v2 = fakturaVare(cx, 3)
-        f.leggTilVare(v2, 1, 2000, 24)
-        print "faktura:", f
+        #v2 = fakturaVare(cx, 3)
+        #f.leggTilVare(v2, 1, 2000, 24)
+        #print "faktura:", f
         b = FakturaBibliotek(cx)
         pdf = b.lagPDF(f, "epost")
         print "pdf:",pdf.filnavn
@@ -785,7 +785,7 @@ if __name__ == "__main__":
         m.send()
         print "tester sendmail"
         sm = epost.sendmail(f, pdf.filnavn)
-        sm.send()
+        #sm.send()
         print "tester smtp"
         mp = epost.smtp(f, pdf.filnavn)
         #mp.send()
