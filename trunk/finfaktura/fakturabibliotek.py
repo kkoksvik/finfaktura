@@ -30,6 +30,9 @@ class SikkerhetskopiFeil(Exception): pass
 class PDFFeil(Exception): pass
 
 class FakturaBibliotek:
+    
+    produksjonsversjon = False # dersom false er vi i utvikling, ellers produksjon
+    
     def __init__(self, db, sjekkVersjon=True):
         self.db = db
         self.c  = db.cursor()
@@ -115,6 +118,7 @@ class FakturaBibliotek:
             raise PDFFeil(u'Modulen "reportlab" er ikke installert. Uten denne kan du ikke lage pdf-fakturaer.')
             
         pdf = f60(filnavn=_filnavn)
+        #if not self.produksjonsversjon: pdf.settTestversjon()
         pdf.settFakturainfo(ordre._id, ordre.ordredato, ordre.forfall, ordre.tekst)
         pdf.settFirmainfo(ordre.firma._egenskaper)
         try:
@@ -143,8 +147,8 @@ class FakturaBibliotek:
         
     def sendEpost(self, ordre, pdf, tekst=None):
         import epost
-        m = epost.smtp(ordre, pdf, tekst)
-        #m = epost.gmail(ordre, pdf, tekst)
+        m = epost.smtp(ordre, pdf, tekst, test=self.produksjonsversjon==False)
+        #m = epost.gmail(ordre, pdf, tekst, test=self.produksjonsversjon==False)
         return m.send()
         
 class fakturaKomponent:
@@ -686,6 +690,23 @@ def kobleTilDatabase(dbnavn=None, loggfil=None):
     db = sqlite.connect(db=dbnavn, encoding=enc, command_logfile=loggfil)
     return db
 
+def sjekkDatabaseVersjon(dbnavn):
+    # skiller melllom sqlite 2 og 3
+    #http://marc.10east.com/?l=sqlite-users&m=109382344409938&w=2
+    #> It is safe to read the first N bytes in a db file ... ?
+    #Yes.  As far as I know, that's the only sure way to determine
+    #the version.  Unfortunately, the form of the header changed in
+    #version 3, but if you read the first 33 bytes, you'll have an
+    #array that you can search for "SQLite 2" or "SQLite format 3".
+    
+    f=open(dbnavn)
+    magic=f.read(33)
+    f.close()
+    if 'SQLite 2' in magic: return 2
+    elif 'SQLite format 3' in magic: return 3
+    else: return False 
+    
+
 if __name__ == "__main__":
     #test biblioteket
     import sys
@@ -792,6 +813,11 @@ if __name__ == "__main__":
         print "tester gmail"
         gm = epost.gmail(f, pdf.filnavn)
         #gm.send('a','b')
+        
+        
+    if "dbtest" in test:
+        print "tester om %s er en sqlite-database" % sys.argv[2]
+        print sjekkDatabaseVersjon(sys.argv[2])
         
 
     cx.close()
