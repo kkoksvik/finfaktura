@@ -46,10 +46,10 @@ class epost:
     def mimemelding(self):
         m = MIMEMultipart()
         m['Subject'] = Header(self.tittel, self.charset)
-        m['From'] = '%s <%s>' % (Header(self.ordre.firma.firmanavn, self.charset), (Header(self.fra), self.charset))
+        m['From'] = '%s <%s>' % (Header(self.ordre.firma.firmanavn, self.charset), Header(self.fra, self.charset).encode())
         if self.kopi:
-            m['Bcc'] = '<%s>' % (Header(self.fra), self.charset)
-        m['To'] = '%s <%s>' % (Header(self.ordre.kunde.navn, self.charset), (Header(self.til, self.charset)))
+            m['Bcc'] = '<%s>' % (Header(self.ordre.firma.epost, self.charset))
+        m['To'] = '%s <%s>' % (Header(self.ordre.kunde.navn, self.charset), Header(self.til, self.charset).encode())
         m.preamble = 'You will not see this in a MIME-aware mail reader.\n'
         # To guarantee the message ends with a newline
         m.epilogue = ''
