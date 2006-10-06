@@ -49,7 +49,7 @@ class epost:
         m['From'] = '%s <%s>' % (Header(self.ordre.firma.firmanavn, self.charset), (Header(self.fra), self.charset))
         if self.kopi:
             m['Bcc'] = '<%s>' % (Header(self.fra), self.charset)
-        m['To'] = '%s <%s>' % (Header(self.ordre.kunde.navn, self.charset), (Header(self.til), self.charset)
+        m['To'] = '%s <%s>' % (Header(self.ordre.kunde.navn, self.charset), (Header(self.til, self.charset)))
         m.preamble = 'You will not see this in a MIME-aware mail reader.\n'
         # To guarantee the message ends with a newline
         m.epilogue = ''
