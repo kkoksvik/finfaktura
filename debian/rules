@@ -1,10 +1,20 @@
 #!/usr/bin/make -f
 # -*- makefile -*-
 # Sample debian/rules that uses debhelper.
-# GNU copyright 1997 to 1999 by Joey Hess.
+#
+# This file was originally written by Joey Hess and Craig Small.
+# As a special exception, when this file is copied by dh-make into a
+# dh-make output file, you may use that output file without restriction.
+# This special exception was added by Craig Small in version 0.37 of dh-make.
+#
+# Modified to make a template file for a multi-binary package with separated
+# build-arch and build-indep targets  by Bill Allombert 2001
 
 # Uncomment this to turn on verbose mode.
-#export DH_VERBOSE=1
+export DH_VERBOSE=1
+
+# This has to be exported to make some magic below work.
+export DH_OPTIONS
 
 DH_PY_INTERPRETER=/usr/bin/python
 
@@ -13,89 +23,92 @@ configure-stamp:
 	dh_testdir
 	# Add here commands to configure the package.
 
+	svn2cl.sh
+	debian/chl.sh >> debian/changelog
 	touch configure-stamp
 
 
+#Architecture 
 build: build-stamp
 
-build-stamp: configure-stamp 
+build-stamp: configure-stamp
 	dh_testdir
 
-	#$(DH_PY_INTERPRETER) setup.py build
+	$(DH_PY_INTERPRETER) setup.py build
 
 	# always regenerate from ui files
-	#(cd pyqtorrent3/QtGui; pyuic torrentwidget.ui > torrentwidget.py)
 	(pyuic -x faktura.ui > finfaktura/faktura_ui.py)
 	touch build-stamp
+
 
 clean:
 	dh_testdir
 	dh_testroot
-	rm -f build-stamp configure-stamp
+	rm -f build-stamp #CONFIGURE-STAMP#
 
 	# Add here commands to clean up after the build process.
-	#$(DH_PY_INTERPRETER) setup.py clean
+        #$(DH_PY_INTERPRETER) setup.py clean
 	rm -rf build/
 	find finfaktura/ -name "*.pyc" -exec rm -f {} \;
 
-	# clear out files we regenerate
-	#rm -f pyqtorrent3/QtGui/torrentwidget.py
 
 	dh_clean 
 
 install: build
 	dh_testdir
 	dh_testroot
-	dh_clean -k 
-	dh_installdirs
+	dh_clean -k -s 
+	dh_installdirs -s
 
-	# Add here commands to install the package into debian/finfaktura.
-	$(DH_PY_INTERPRETER) setup.py install --prefix=debian/finfaktura/usr
+	# Add here commands to install the arch part of the package into 
+	# debian/tmp.
+	#$(MAKE) install DESTDIR=$(CURDIR)/debian/finfaktura
+	$(DH_PY_INTERPRETER) setup.py install --prefix=$(CURDIR)/debian/finfaktura/usr
 
-	# Nuke *.pyc files that shouldn't be packaged
+        # Nuke *.pyc files that shouldn't be packaged
 	find debian/finfaktura -name "*.pyc" -exec rm {} \;
+        
 
-	# make scripts executable so that lintian is happy
-	#find debian/qtorrent -name "makemetafile.py" -exec chmod 755 {} \;
-	#find debian/qtorrent -name "launchmanycore.py" -exec chmod 755 {} \;
+	dh_install -s
 
-
-# Build architecture-dependent files here.
-binary-arch: build install
-# We have nothing to do by default.
-
-# Build architecture-independent files here.
-binary-indep: build install
+# Must not depend on anything. This is to be called by
+# binary-arch/binary-indep
+# in another 'make' thread.
+binary-common:
 	dh_testdir
 	dh_testroot
-	# generate changelog
-	#svn2cl.sh
 	dh_installchangelogs ChangeLog
-	dh_installdocs
-	dh_installexamples
-#	dh_install
-	dh_installmenu
+	#dh_installdocs
+	#dh_installexamples
+#	dh_installmenu
 #	dh_installdebconf	
-#	dh_installlogrotate
+#	dh_installlogrotate	
 #	dh_installemacsen
 #	dh_installpam
 #	dh_installmime
 #	dh_installinit
 #	dh_installcron
 #	dh_installinfo
-	dh_installman debian/finfaktura.1
+	dh_installman
 	dh_link
 	dh_strip
-	dh_compress
+	dh_compress 
 	dh_fixperms
 #	dh_perl
-	dh_python
-#	dh_makeshlibs
+#	dh_python
+	dh_makeshlibs
 	dh_installdeb
 	dh_shlibdeps
 	dh_gencontrol
 	dh_md5sums
 	dh_builddeb
+# Build architecture independant packages using the common target.
+binary-indep: build install binary-common
+	#$(MAKE) -f debian/rules DH_OPTIONS=-i binary-common
+#
+# Build architecture dependant packages using the common target.
+#binary-arch: build-arch install-arch
+	#$(MAKE) -f debian/rules DH_OPTIONS=-a binary-common
 
-binary: binary-indep binary-arch
-.PHONY: build clean binary-indep binary-arch binary install configure
+binary: binary-arch binary-indep
+.PHONY: build clean binary-indep binary-arch binary install install-indep install-arch configure
