@@ -651,7 +651,6 @@ def debug(s):
 def lagDatabase(database, dbsql=DATABASESQL):
     import sqlite
     logg = open("faktura.sqlite.lag.log", "a+")
-    debug("datbase:",database)
     db = sqlite.connect(db=database, encoding="utf-8", command_logfile=logg)
     c = db.cursor()
     c.execute(file(dbsql).read())

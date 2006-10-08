@@ -10,7 +10,7 @@
 ###########################################################################
 
 # Sett denne til True for å skjule funksjonalitet som ikke er ferdigstilt
-PRODUKSJONSVERSJON=False
+PRODUKSJONSVERSJON=True
 
 __doc__ = """Fryktelig fin faktura: skriv ut fakturaene dine"""
 
