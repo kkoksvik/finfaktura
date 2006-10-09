@@ -62,17 +62,17 @@ ENDRINGER ="""
 
 2.7:Epost+
 2.7:Epost:Id+
-2.7:Epost:smtp_from+
+2.7:Epost:smtpfra+
 2.7:Epost:transport+
-2.7:Epost:gmailuser+
-2.7:Epost:gmailpass+
+2.7:Epost:gmailbruker+
+2.7:Epost:gmailpassord+
 2.7:Epost:smtpserver+
 2.7:Epost:smtpport+
 2.7:Epost:smtptls+
 2.7:Epost:smtpauth+
-2.7:Epost:smtpuser+
-2.7:Epost:smtppass+
-2.7:Epost:sendmailpath+
+2.7:Epost:smtpbruker+
+2.7:Epost:smtppassord+
+2.7:Epost:sendmailsti+
 
 
 """
