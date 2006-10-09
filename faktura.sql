@@ -2,6 +2,7 @@
 -- #    Copyright (C) 2005-2006 - Håvard Dahle og Håvard Sjøvoll
 -- #    <havard@dahle.no>, <sjovoll@ntnu.no>
 -- #
+-- #    GPL version 2
 -- #
 -- # $Id$
 -- ###########################################################################
@@ -108,17 +109,17 @@
         
     -- Versjon 2.7
     CREATE TABLE Epost (ID INTEGER PRIMARY KEY,
-        smtp_from UNICODE,
+        smtpfra UNICODE,
         transport INT DEFAULT 0,
-        gmailuser UNICODE,
-        gmailpass UNICODE,
+        gmailbruker UNICODE,
+        gmailpassord UNICODE,
         smtpserver UNICODE,
         smtpport INT DEFAULT 25,
         smtptls INT DEFAULT 0,
         smtpauth INT DEFAULT 0,
-        smtpuser UNICODE,
-        smtppass UNICODE,
-        sendmailpath UNICODE);
+        smtpbruker UNICODE,
+        smtppassord UNICODE,
+        sendmailsti UNICODE);
 
     	
 --6) =============== Oppdater tabellene ==================
