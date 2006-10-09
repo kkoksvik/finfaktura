@@ -25,6 +25,7 @@ class DBKorruptFeil(Exception): pass
 class DBGammelFeil(Exception): pass
 class DBNyFeil(Exception): pass
 class DBTomFeil(Exception): pass
+class DBVersjonFeil(Exception): pass
 class FirmainfoFeil(Exception): pass
 class SikkerhetskopiFeil(Exception): pass
 class PDFFeil(Exception): pass
@@ -686,7 +687,15 @@ def kobleTilDatabase(dbnavn=None, loggfil=None):
     if dbnavn is None:
         dbnavn = finnDatabasenavn()
     enc = "utf-8"
-    db = sqlite.connect(db=dbnavn, encoding=enc, command_logfile=loggfil)
+    try:
+        db = sqlite.connect(db=dbnavn, encoding=enc, command_logfile=loggfil)
+    except sqlite.DatabaseError, (E):
+        debug("Vi bruker sqlite %s" % sqlite.apilevel)
+        dbver = sjekkDatabaseVersjon(dbnavn)
+        debug("Databasen er sqlite %s" % dbver)
+        if sqlite.apilevel != dbver:
+            raise DBVersjonFeil("Databasen er versjon %s, men biblioteket er versjon %s" % (sqlite.apilevel, dbver))
+        
     return db
 
 def sjekkDatabaseVersjon(dbnavn):
