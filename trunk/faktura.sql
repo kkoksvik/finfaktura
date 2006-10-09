@@ -106,7 +106,21 @@
         navn UNICODE NOT NULL,
         tekst UNICODE);
         
+    -- Versjon 2.7
+    CREATE TABLE Epost (ID INTEGER PRIMARY KEY,
+        smtp_from UNICODE,
+        transport INT DEFAULT 0,
+        gmailuser UNICODE,
+        gmailpass UNICODE,
+        smtpserver UNICODE,
+        smtpport INT DEFAULT 25,
+        smtptls INT DEFAULT 0,
+        smtpauth INT DEFAULT 0,
+        smtpuser UNICODE,
+        smtppass UNICODE,
+        sendmailpath UNICODE);
+
     	
 --6) =============== Oppdater tabellene ==================
 --7) ========= Sett inn default-verdier ==================
-    UPDATE Oppsett SET databaseversjon=2.6 WHERE ID=1;
+    UPDATE Oppsett SET databaseversjon=2.7 WHERE ID=1;
