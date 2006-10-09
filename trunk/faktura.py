@@ -20,6 +20,7 @@ from time import time, strftime, localtime, mktime
 from finfaktura.fakturabibliotek import * 
 from finfaktura.f60 import f60, f60Eksisterer
 from finfaktura.myndighetene import myndighetene
+from finfaktura.epost import BRUK_GMAIL
 import finfaktura.okonomi as fakturaOkonomi
 import finfaktura.sikkerhetskopi as sikkerhetskopi
 
@@ -229,7 +230,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             self.fakturaTab.removePage(self.fakturaTab.page(4))
             self.fakturaTab.removePage(self.fakturaTab.page(4))
         else:
-            self.setCaption("FRYKTELIG FIN FADESE")
+            self.setCaption("FRYKTELIG FIN FADESE (utviklerversjon)")
 
         self.connect(self.fakturaTab, SIGNAL("currentChanged(QWidget*)"), self.skiftTab)
 
@@ -298,6 +299,9 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         self.fakturaFakturaliste.contextMenuEvent = self.fakturaContextMenu
         self.varerVareliste.contextMenuEvent = self.vareContextMenu
 
+        self.connect(self.epostLagre, SIGNAL("clicked()"), self.oppdaterEpost)
+
+
         self.databaseTilkobler()
 
         self.fakturaForfaltLogo = QPixmap()
@@ -353,7 +357,10 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         self.db.close()
 
     def databaseTilkobler(self):
-        logg=open('faktura-qtgui.log', 'a+')
+        if not PRODUKSJONSVERSJON:
+            logg=open('faktura-qtgui.log', 'a+')
+        else:
+            logg=None
         self.db = kobleTilDatabase(loggfil=logg)
         self.c = self.db.cursor()
 
@@ -374,9 +381,10 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         elif i is 1: self.visKunder()
         elif i is 2: self.visVarer()
         elif i is 3: self.visFirma()
-        elif i is 4: self.visOkonomi()
-        elif i is 5: self.visMyndigheter()
-        elif i is 6: self.visSikkerhetskopi()
+        elif i is 4: self.visEpost()
+        elif i is 5: self.visOkonomi()
+        elif i is 6: self.visMyndigheter()
+        elif i is 7: self.visSikkerhetskopi()
         self.gammelTab = i
 #     elif i is 5. self.visOppsett()
 
@@ -1233,7 +1241,31 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             self.faktura.oppsett.fakturakatalog = unicode(ny)
             self.dittfirmaFakturakatalog.setText(unicode(ny))
             
-        
+############## Epost ###################
+
+    def visEpost(self): 
+        if not self.faktura.epostoppsett.smtpfra:
+            self.faktura.epostoppsett.smtpfra = self.firma.epost
+        self.epostAvsenderadresse.setText(self.faktura.epostoppsett.smtpfra)
+        self.epostLosning.setButton(self.faktura.epostoppsett.transport)
+        if BRUK_GMAIL:
+            self.epostSeksjonGmail.setEnabled(True)
+            self.epostGmailUbrukelig.hide()
+            self.epostGmailEpost.setText(self.faktura.epostoppsett.gmailbruker)
+            self.epostGmailPassord.setText(self.faktura.epostoppsett.gmailbruker)
+            #self.epostGmailHuskEpost.setChecked(True)
+
+    def oppdaterEpost(self):
+        debug("lagrer epost")
+        self.faktura.epostoppsett.transport = self.epostLosning.selectedId()
+        self.faktura.epostoppsett.smtpfra = self.epostAvsenderadresse.text()
+        self.faktura.epostoppsett.gmailbruker = self.epostGmailEpost.text()
+        self.faktura.epostoppsett.gmailpassord = self.epostGmailPassord.text()
+        self.faktura.epostoppsett.smtpserver = self.epostSmtpServer.text()
+        self.faktura.epostoppsett.smtpport = self.epostSmtpPort.value()
+        self.faktura.epostoppsett.smtpbruker = self.epostSmtpBruker.text()
+        self.faktura.epostoppsett.smtppassord = self.epostSmtpPassord.text()
+        self.faktura.epostoppsett.sendmailsti= self.epostSendmailSti.text()
 
 ############## ØKONOMI ###################
 
