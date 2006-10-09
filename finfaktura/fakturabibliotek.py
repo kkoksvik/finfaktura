@@ -15,7 +15,8 @@ from time import time, strftime, localtime
 import sqlite
 
 DATABASEVERSJON=2.7
-DATABASESQL="/usr/share/finfaktura/data/faktura.sql" # TODO: hvordan finne riktig katalog?
+#DATABASESQL="/usr/share/finfaktura/data/faktura.sql" # TODO: hvordan finne riktig katalog?
+DATABASESQL="faktura.sql" # TODO: hvordan finne riktig katalog?
 DATABASENAVN="faktura.db"
 #DATABASECONVERTERS={"pdf":pdfdataToType}
 
@@ -39,6 +40,11 @@ class FakturaBibliotek:
         self.c  = db.cursor()
         self.__firmainfo = None
         self.oppsett = fakturaOppsett(db, versjonsjekk=sjekkVersjon)
+        try:
+            self.epostoppsett = fakturaEpost(db)
+        except sqlite.DatabaseError,e:
+            if "no such table" in str(e).lower(): self.epostoppsett = None ## for gammel versjon
+            else: raise
 
     def versjon(self):
         v = self.oppsett.hentVersjon()
@@ -518,7 +524,8 @@ class fakturaOppsett(fakturaKomponent):
                           fakturaOrdre,
                           fakturaOrdrelinje,
                           fakturaOppsett, 
-                          fakturaSikkerhetskopi]
+                          fakturaSikkerhetskopi,
+                          fakturaEpost]
         mangler = []
         for obj in datastrukturer:
             try:
@@ -631,6 +638,23 @@ class fakturaSikkerhetskopi(fakturaKomponent):
     def skrivUt(self):
         import os
         os.system('kprinter "%s"' % self.lagFil()) 
+
+class fakturaEpost(fakturaKomponent):
+    _tabellnavn = "Epost"
+    _id = 1
+    
+    def __init__(self, db):
+        self.db = db
+        try: 
+            fakturaKomponent.__init__(self, db, Id=self._id)
+        except DBTomFeil:
+            #ikke brukt før
+            self.c.execute("INSERT INTO Epost (ID) VALUES (1)")
+            self.db.commit()
+            fakturaKomponent.__init__(self, db, Id=self._id)
+        
+    def nyId(self):
+        pass
 
 class pdfType:
     'Egen type for å holde pdf (f.eks. sikkerhetskopi)'
