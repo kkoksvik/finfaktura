@@ -2767,19 +2767,6 @@ betalingsvilkår</string>
                     <string>Avsenderadresse:</string>
                 </property>
             </widget>
-            <widget class="QLineEdit">
-                <property name="name">
-                    <cstring>epostAvsenderadresse</cstring>
-                </property>
-                <property name="geometry">
-                    <rect>
-                        <x>148</x>
-                        <y>191</y>
-                        <width>351</width>
-                        <height>21</height>
-                    </rect>
-                </property>
-            </widget>
             <widget class="QFrame">
                 <property name="name">
                     <cstring>frame3_3</cstring>
@@ -2837,133 +2824,6 @@ betalingsvilkår</string>
                     </property>
                     <property name="accel">
                         <string>Alt+L</string>
-                    </property>
-                </widget>
-            </widget>
-            <widget class="QGroupBox">
-                <property name="name">
-                    <cstring>epostSeksjonGmail</cstring>
-                </property>
-                <property name="enabled">
-                    <bool>false</bool>
-                </property>
-                <property name="geometry">
-                    <rect>
-                        <x>20</x>
-                        <y>280</y>
-                        <width>670</width>
-                        <height>141</height>
-                    </rect>
-                </property>
-                <property name="title">
-                    <string>Gmail</string>
-                </property>
-                <widget class="QLabel">
-                    <property name="name">
-                        <cstring>textLabel1_10_3</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>30</x>
-                            <y>40</y>
-                            <width>150</width>
-                            <height>14</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Full epostadresse i gmail:</string>
-                    </property>
-                </widget>
-                <widget class="QLabel">
-                    <property name="name">
-                        <cstring>textLabel2_4_3</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>30</x>
-                            <y>70</y>
-                            <width>135</width>
-                            <height>14</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Passord for innlogging:</string>
-                    </property>
-                </widget>
-                <widget class="QLineEdit">
-                    <property name="name">
-                        <cstring>epostGmailPassord</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>191</x>
-                            <y>68</y>
-                            <width>280</width>
-                            <height>21</height>
-                        </rect>
-                    </property>
-                    <property name="echoMode">
-                        <enum>Password</enum>
-                    </property>
-                </widget>
-                <widget class="QLineEdit">
-                    <property name="name">
-                        <cstring>epostGmailEpost</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>191</x>
-                            <y>34</y>
-                            <width>280</width>
-                            <height>21</height>
-                        </rect>
-                    </property>
-                </widget>
-                <widget class="QCheckBox">
-                    <property name="name">
-                        <cstring>epostGmailHuskEpost</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>480</x>
-                            <y>33</y>
-                            <width>53</width>
-                            <height>19</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Husk</string>
-                    </property>
-                </widget>
-                <widget class="QLabel">
-                    <property name="name">
-                        <cstring>sikkerhetskopiGmailUbrukelig_3</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>50</x>
-                            <y>45</y>
-                            <width>521</width>
-                            <height>60</height>
-                        </rect>
-                    </property>
-                    <property name="font">
-                        <font>
-                            <pointsize>10</pointsize>
-                            <bold>1</bold>
-                        </font>
-                    </property>
-                    <property name="frameShape">
-                        <enum>Box</enum>
-                    </property>
-                    <property name="lineWidth">
-                        <number>1</number>
-                    </property>
-                    <property name="text">
-                        <string>Du må installere modulen 'libgmail' for å sende gjennom Gmail.</string>
-                    </property>
-                    <property name="alignment">
-                        <set>WordBreak|AlignCenter</set>
                     </property>
                 </widget>
             </widget>
@@ -3081,41 +2941,6 @@ betalingsvilkår</string>
                         <string>Port:</string>
                     </property>
                 </widget>
-                <widget class="QSpinBox">
-                    <property name="name">
-                        <cstring>spinBox13</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>608</x>
-                            <y>24</y>
-                            <width>50</width>
-                            <height>21</height>
-                        </rect>
-                    </property>
-                    <property name="buttonSymbols">
-                        <enum>UpDownArrows</enum>
-                    </property>
-                    <property name="value">
-                        <number>25</number>
-                    </property>
-                </widget>
-                <widget class="QLineEdit">
-                    <property name="name">
-                        <cstring>epostSmtpServer</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>248</x>
-                            <y>24</y>
-                            <width>300</width>
-                            <height>21</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>localhost</string>
-                    </property>
-                </widget>
                 <widget class="QLineEdit">
                     <property name="name">
                         <cstring>epostSmtpAuthBrukernavn</cstring>
@@ -3146,6 +2971,41 @@ betalingsvilkår</string>
                             <width>261</width>
                             <height>21</height>
                         </rect>
+                    </property>
+                </widget>
+                <widget class="QLineEdit">
+                    <property name="name">
+                        <cstring>epostSmtpServer</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>248</x>
+                            <y>24</y>
+                            <width>300</width>
+                            <height>21</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>localhost</string>
+                    </property>
+                </widget>
+                <widget class="QSpinBox">
+                    <property name="name">
+                        <cstring>epostSmtpPort</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>608</x>
+                            <y>24</y>
+                            <width>50</width>
+                            <height>21</height>
+                        </rect>
+                    </property>
+                    <property name="buttonSymbols">
+                        <enum>UpDownArrows</enum>
+                    </property>
+                    <property name="value">
+                        <number>25</number>
                     </property>
                 </widget>
             </widget>
@@ -3199,6 +3059,19 @@ betalingsvilkår</string>
                         <string>/usr/sbin/sendmail</string>
                     </property>
                 </widget>
+            </widget>
+            <widget class="QLineEdit">
+                <property name="name">
+                    <cstring>epostAvsenderadresse</cstring>
+                </property>
+                <property name="geometry">
+                    <rect>
+                        <x>148</x>
+                        <y>191</y>
+                        <width>351</width>
+                        <height>21</height>
+                    </rect>
+                </property>
             </widget>
             <widget class="QButtonGroup">
                 <property name="name">
@@ -3280,6 +3153,133 @@ betalingsvilkår</string>
                     </property>
                     <property name="checked">
                         <bool>true</bool>
+                    </property>
+                </widget>
+            </widget>
+            <widget class="QGroupBox">
+                <property name="name">
+                    <cstring>epostSeksjonGmail</cstring>
+                </property>
+                <property name="enabled">
+                    <bool>false</bool>
+                </property>
+                <property name="geometry">
+                    <rect>
+                        <x>20</x>
+                        <y>280</y>
+                        <width>670</width>
+                        <height>141</height>
+                    </rect>
+                </property>
+                <property name="title">
+                    <string>Gmail</string>
+                </property>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>textLabel1_10_3</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>30</x>
+                            <y>40</y>
+                            <width>150</width>
+                            <height>14</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>Full epostadresse i gmail:</string>
+                    </property>
+                </widget>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>textLabel2_4_3</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>30</x>
+                            <y>70</y>
+                            <width>135</width>
+                            <height>14</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>Passord for innlogging:</string>
+                    </property>
+                </widget>
+                <widget class="QLineEdit">
+                    <property name="name">
+                        <cstring>epostGmailEpost</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>191</x>
+                            <y>34</y>
+                            <width>280</width>
+                            <height>21</height>
+                        </rect>
+                    </property>
+                </widget>
+                <widget class="QLineEdit">
+                    <property name="name">
+                        <cstring>epostGmailPassord</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>191</x>
+                            <y>68</y>
+                            <width>280</width>
+                            <height>21</height>
+                        </rect>
+                    </property>
+                    <property name="echoMode">
+                        <enum>Password</enum>
+                    </property>
+                </widget>
+                <widget class="QCheckBox">
+                    <property name="name">
+                        <cstring>epostGmailHuskEpost</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>480</x>
+                            <y>33</y>
+                            <width>53</width>
+                            <height>19</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>Husk</string>
+                    </property>
+                </widget>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>epostGmailUbrukelig</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>90</x>
+                            <y>40</y>
+                            <width>521</width>
+                            <height>60</height>
+                        </rect>
+                    </property>
+                    <property name="font">
+                        <font>
+                            <pointsize>10</pointsize>
+                            <bold>1</bold>
+                        </font>
+                    </property>
+                    <property name="frameShape">
+                        <enum>Box</enum>
+                    </property>
+                    <property name="lineWidth">
+                        <number>1</number>
+                    </property>
+                    <property name="text">
+                        <string>Du må installere modulen 'libgmail' for å sende gjennom Gmail.</string>
+                    </property>
+                    <property name="alignment">
+                        <set>WordBreak|AlignCenter</set>
                     </property>
                 </widget>
             </widget>
