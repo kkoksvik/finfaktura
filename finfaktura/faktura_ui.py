@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'faktura.ui'
 #
-# Created: Mon Oct 9 23:47:21 2006
+# Created: Tue Oct 10 01:09:34 2006
 #      by: The PyQt User Interface Compiler (pyuic) 3.15.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -3255,9 +3255,6 @@ class faktura(QMainWindow):
         self.textLabel2_6 = QLabel(self.TabPage_3,"textLabel2_6")
         self.textLabel2_6.setGeometry(QRect(28,191,110,21))
 
-        self.epostAvsenderadresse = QLineEdit(self.TabPage_3,"epostAvsenderadresse")
-        self.epostAvsenderadresse.setGeometry(QRect(148,191,351,21))
-
         self.frame3_3 = QFrame(self.TabPage_3,"frame3_3")
         self.frame3_3.setGeometry(QRect(720,240,227,480))
         self.frame3_3.setFrameShape(QFrame.StyledPanel)
@@ -3270,36 +3267,6 @@ class faktura(QMainWindow):
 
         self.epostLagre = QPushButton(self.frame3_3,"epostLagre")
         self.epostLagre.setGeometry(QRect(62,428,110,40))
-
-        self.epostSeksjonGmail = QGroupBox(self.TabPage_3,"epostSeksjonGmail")
-        self.epostSeksjonGmail.setEnabled(0)
-        self.epostSeksjonGmail.setGeometry(QRect(20,280,670,141))
-
-        self.textLabel1_10_3 = QLabel(self.epostSeksjonGmail,"textLabel1_10_3")
-        self.textLabel1_10_3.setGeometry(QRect(30,40,150,14))
-
-        self.textLabel2_4_3 = QLabel(self.epostSeksjonGmail,"textLabel2_4_3")
-        self.textLabel2_4_3.setGeometry(QRect(30,70,135,14))
-
-        self.epostGmailPassord = QLineEdit(self.epostSeksjonGmail,"epostGmailPassord")
-        self.epostGmailPassord.setGeometry(QRect(191,68,280,21))
-        self.epostGmailPassord.setEchoMode(QLineEdit.Password)
-
-        self.epostGmailEpost = QLineEdit(self.epostSeksjonGmail,"epostGmailEpost")
-        self.epostGmailEpost.setGeometry(QRect(191,34,280,21))
-
-        self.epostGmailHuskEpost = QCheckBox(self.epostSeksjonGmail,"epostGmailHuskEpost")
-        self.epostGmailHuskEpost.setGeometry(QRect(480,33,53,19))
-
-        self.sikkerhetskopiGmailUbrukelig_3 = QLabel(self.epostSeksjonGmail,"sikkerhetskopiGmailUbrukelig_3")
-        self.sikkerhetskopiGmailUbrukelig_3.setGeometry(QRect(50,45,521,60))
-        sikkerhetskopiGmailUbrukelig_3_font = QFont(self.sikkerhetskopiGmailUbrukelig_3.font())
-        sikkerhetskopiGmailUbrukelig_3_font.setPointSize(10)
-        sikkerhetskopiGmailUbrukelig_3_font.setBold(1)
-        self.sikkerhetskopiGmailUbrukelig_3.setFont(sikkerhetskopiGmailUbrukelig_3_font)
-        self.sikkerhetskopiGmailUbrukelig_3.setFrameShape(QLabel.Box)
-        self.sikkerhetskopiGmailUbrukelig_3.setLineWidth(1)
-        self.sikkerhetskopiGmailUbrukelig_3.setAlignment(QLabel.WordBreak | QLabel.AlignCenter)
 
         self.epostSeksjonSmtp = QGroupBox(self.TabPage_3,"epostSeksjonSmtp")
         self.epostSeksjonSmtp.setEnabled(0)
@@ -3323,14 +3290,6 @@ class faktura(QMainWindow):
         self.textLabel4_4 = QLabel(self.epostSeksjonSmtp,"textLabel4_4")
         self.textLabel4_4.setGeometry(QRect(566,28,29,14))
 
-        self.spinBox13 = QSpinBox(self.epostSeksjonSmtp,"spinBox13")
-        self.spinBox13.setGeometry(QRect(608,24,50,21))
-        self.spinBox13.setButtonSymbols(QSpinBox.UpDownArrows)
-        self.spinBox13.setValue(25)
-
-        self.epostSmtpServer = QLineEdit(self.epostSeksjonSmtp,"epostSmtpServer")
-        self.epostSmtpServer.setGeometry(QRect(248,24,300,21))
-
         self.epostSmtpAuthBrukernavn = QLineEdit(self.epostSeksjonSmtp,"epostSmtpAuthBrukernavn")
         self.epostSmtpAuthBrukernavn.setEnabled(0)
         self.epostSmtpAuthBrukernavn.setGeometry(QRect(198,91,261,21))
@@ -3338,6 +3297,14 @@ class faktura(QMainWindow):
         self.epostSmtpAuthPassord = QLineEdit(self.epostSeksjonSmtp,"epostSmtpAuthPassord")
         self.epostSmtpAuthPassord.setEnabled(0)
         self.epostSmtpAuthPassord.setGeometry(QRect(198,114,261,21))
+
+        self.epostSmtpServer = QLineEdit(self.epostSeksjonSmtp,"epostSmtpServer")
+        self.epostSmtpServer.setGeometry(QRect(248,24,300,21))
+
+        self.epostSmtpPort = QSpinBox(self.epostSeksjonSmtp,"epostSmtpPort")
+        self.epostSmtpPort.setGeometry(QRect(608,24,50,21))
+        self.epostSmtpPort.setButtonSymbols(QSpinBox.UpDownArrows)
+        self.epostSmtpPort.setValue(25)
 
         self.epostSeksjonSendmail = QGroupBox(self.TabPage_3,"epostSeksjonSendmail")
         self.epostSeksjonSendmail.setEnabled(0)
@@ -3348,6 +3315,9 @@ class faktura(QMainWindow):
 
         self.epostSendmailSti = QLineEdit(self.epostSeksjonSendmail,"epostSendmailSti")
         self.epostSendmailSti.setGeometry(QRect(128,35,330,21))
+
+        self.epostAvsenderadresse = QLineEdit(self.TabPage_3,"epostAvsenderadresse")
+        self.epostAvsenderadresse.setGeometry(QRect(148,191,351,21))
 
         self.epostLosning = QButtonGroup(self.TabPage_3,"epostLosning")
         self.epostLosning.setGeometry(QRect(20,20,341,140))
@@ -3364,6 +3334,36 @@ class faktura(QMainWindow):
         self.epostLosningAuto = QRadioButton(self.epostLosning,"epostLosningAuto")
         self.epostLosningAuto.setGeometry(QRect(20,30,301,21))
         self.epostLosningAuto.setChecked(1)
+
+        self.epostSeksjonGmail = QGroupBox(self.TabPage_3,"epostSeksjonGmail")
+        self.epostSeksjonGmail.setEnabled(0)
+        self.epostSeksjonGmail.setGeometry(QRect(20,280,670,141))
+
+        self.textLabel1_10_3 = QLabel(self.epostSeksjonGmail,"textLabel1_10_3")
+        self.textLabel1_10_3.setGeometry(QRect(30,40,150,14))
+
+        self.textLabel2_4_3 = QLabel(self.epostSeksjonGmail,"textLabel2_4_3")
+        self.textLabel2_4_3.setGeometry(QRect(30,70,135,14))
+
+        self.epostGmailEpost = QLineEdit(self.epostSeksjonGmail,"epostGmailEpost")
+        self.epostGmailEpost.setGeometry(QRect(191,34,280,21))
+
+        self.epostGmailPassord = QLineEdit(self.epostSeksjonGmail,"epostGmailPassord")
+        self.epostGmailPassord.setGeometry(QRect(191,68,280,21))
+        self.epostGmailPassord.setEchoMode(QLineEdit.Password)
+
+        self.epostGmailHuskEpost = QCheckBox(self.epostSeksjonGmail,"epostGmailHuskEpost")
+        self.epostGmailHuskEpost.setGeometry(QRect(480,33,53,19))
+
+        self.epostGmailUbrukelig = QLabel(self.epostSeksjonGmail,"epostGmailUbrukelig")
+        self.epostGmailUbrukelig.setGeometry(QRect(90,40,521,60))
+        epostGmailUbrukelig_font = QFont(self.epostGmailUbrukelig.font())
+        epostGmailUbrukelig_font.setPointSize(10)
+        epostGmailUbrukelig_font.setBold(1)
+        self.epostGmailUbrukelig.setFont(epostGmailUbrukelig_font)
+        self.epostGmailUbrukelig.setFrameShape(QLabel.Box)
+        self.epostGmailUbrukelig.setLineWidth(1)
+        self.epostGmailUbrukelig.setAlignment(QLabel.WordBreak | QLabel.AlignCenter)
         self.fakturaTab.insertTab(self.TabPage_3,QString.fromLatin1(""))
 
         self.TabPage_4 = QWidget(self.fakturaTab,"TabPage_4")
@@ -3820,11 +3820,6 @@ class faktura(QMainWindow):
         self.epostHjelpefelt.setText(QString.null)
         self.epostLagre.setText(self.__tr("&Lagre"))
         self.epostLagre.setAccel(self.__tr("Alt+L"))
-        self.epostSeksjonGmail.setTitle(self.__tr("Gmail"))
-        self.textLabel1_10_3.setText(self.__tr("Full epostadresse i gmail:"))
-        self.textLabel2_4_3.setText(self.__tr("Passord for innlogging:"))
-        self.epostGmailHuskEpost.setText(self.__tr("Husk"))
-        self.sikkerhetskopiGmailUbrukelig_3.setText(self.__trUtf8("\x44\x75\x20\x6d\xc3\xa5\x20\x69\x6e\x73\x74\x61\x6c\x6c\x65\x72\x65\x20\x6d\x6f\x64\x75\x6c\x65\x6e\x20\x27\x6c\x69\x62\x67\x6d\x61\x69\x6c\x27\x20\x66\x6f\x72\x20\xc3\xa5\x20\x73\x65\x6e\x64\x65\x20\x67\x6a\x65\x6e\x6e\x6f\x6d\x20\x47\x6d\x61\x69\x6c\x2e"))
         self.epostSeksjonSmtp.setTitle(self.__tr("SMTP"))
         self.textLabel1_12.setText(self.__tr("Send gjennom server (SMTP server):"))
         self.textLabel3_4.setText(self.__tr("Brukernavn:"))
@@ -3841,6 +3836,11 @@ class faktura(QMainWindow):
         self.epostLosningSendmail.setText(self.__tr("Sendmail"))
         self.epostLosningSmtp.setText(self.__tr("SMTP"))
         self.epostLosningAuto.setText(self.__tr("Velg automatisk"))
+        self.epostSeksjonGmail.setTitle(self.__tr("Gmail"))
+        self.textLabel1_10_3.setText(self.__tr("Full epostadresse i gmail:"))
+        self.textLabel2_4_3.setText(self.__tr("Passord for innlogging:"))
+        self.epostGmailHuskEpost.setText(self.__tr("Husk"))
+        self.epostGmailUbrukelig.setText(self.__trUtf8("\x44\x75\x20\x6d\xc3\xa5\x20\x69\x6e\x73\x74\x61\x6c\x6c\x65\x72\x65\x20\x6d\x6f\x64\x75\x6c\x65\x6e\x20\x27\x6c\x69\x62\x67\x6d\x61\x69\x6c\x27\x20\x66\x6f\x72\x20\xc3\xa5\x20\x73\x65\x6e\x64\x65\x20\x67\x6a\x65\x6e\x6e\x6f\x6d\x20\x47\x6d\x61\x69\x6c\x2e"))
         self.fakturaTab.changeTab(self.TabPage_3,self.__tr("Epost"))
         QToolTip.add(self.okonomiDetaljregnskap,self.__tr("Detaljert regnskap"))
         self.groupBox9_2.setTitle(self.__tr("Regnskap"))
