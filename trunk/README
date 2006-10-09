@@ -30,34 +30,10 @@ Idé og koding: Håvard Dahle
 Med god hjelp fra Håvard Sjøvoll
 Distribueres under GPL2 
 
-Kjente feil
-===========
+Kjente feil og planlagte egenskaper
+===================================
 
-Hurra! Ingen!
-
-Planlagte egenskaper 
-====================
-
-#. Korrekt installasjon på Linux
- #.. deb (2006-10-09)
- #.. rpm
-#. Sikkerhetskopi til Gmail og fil
-#. Rapporter
-#. Purring
-#. Kredittnota
-#. Inkasso
-#. Duplisere faktura
-#. Lagre firmainfo fortløpende som de er endret
-#. Innebygget smtp-klient 2006-09-10
-#. Integrering med Gmail for sending av faktura 2006-09-10
-
-Større oppgaver:
-
-#. Logging av alt som skjer med fakturaen i løpet av dens liv
-#. Portering til PyQt4 (gir MS Windows-støtte)
-#. Korrekt installasjon på MS Windows og Apple OSX (loki installer?)
-#. Bruke PyQt's sqlite-støtte (kutte avhengighet til pysqlite)
-#. Integrere med online backup
+Se http://code.google.com/p/finfaktura/issues/list
 
 Historikk 
 =========
@@ -65,6 +41,7 @@ Historikk
 2006-05-07: Restructured Text
 2006-05-12: Lisensbetingelser
 2006-05-31: Kjente feil & Planlagte egenskaper
+2006-10-09: Flyttet feil og planlagte egenskaper til code.google.com
 
 $Id$
 
