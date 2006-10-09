@@ -47,6 +47,34 @@ ENDRINGER ="""
 
 2.2:Postnummer:postnummer+
 2.2:Postnummer:poststed+
+
+2.6:Historikk+
+2.6:Historikk:ordreid+
+2.6:Historikk:dato+
+2.6:Historikk:handlinid+
+2.6:Historikk:suksess+
+2.6:Historikk:forklaring+
+
+2.6:Handling+
+2.6:Handling:Id+
+2.6:Handling:navn+
+2.6:Handling:tekst+
+
+2.7:Epost+
+2.7:Epost:Id+
+2.7:Epost:smtp_from+
+2.7:Epost:transport+
+2.7:Epost:gmailuser+
+2.7:Epost:gmailpass+
+2.7:Epost:smtpserver+
+2.7:Epost:smtpport+
+2.7:Epost:smtptls+
+2.7:Epost:smtpauth+
+2.7:Epost:smtpuser+
+2.7:Epost:smtppass+
+2.7:Epost:sendmailpath+
+
+
 """
 
 

@@ -14,7 +14,7 @@ from string import join
 from time import time, strftime, localtime
 import sqlite
 
-DATABASEVERSJON=2.6
+DATABASEVERSJON=2.7
 DATABASESQL="/usr/share/finfaktura/data/faktura.sql" # TODO: hvordan finne riktig katalog?
 DATABASENAVN="faktura.db"
 #DATABASECONVERTERS={"pdf":pdfdataToType}
