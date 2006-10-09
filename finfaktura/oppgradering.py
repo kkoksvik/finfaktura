@@ -48,19 +48,19 @@ ENDRINGER ="""
 2.2:Postnummer:postnummer+
 2.2:Postnummer:poststed+
 
-2.6:Historikk+
+2.6:Historikk:+
 2.6:Historikk:ordreid+
 2.6:Historikk:dato+
 2.6:Historikk:handlinid+
 2.6:Historikk:suksess+
 2.6:Historikk:forklaring+
 
-2.6:Handling+
+2.6:Handling:+
 2.6:Handling:Id+
 2.6:Handling:navn+
 2.6:Handling:tekst+
 
-2.7:Epost+
+2.7:Epost:+
 2.7:Epost:Id+
 2.7:Epost:smtpfra+
 2.7:Epost:transport+
@@ -196,7 +196,8 @@ class oppgrader:
             for kopi in self.gmlbib.hentSikkerhetskopier():
                 self._oppgrader(kopi)
         except sqlite.DatabaseError,e:
-            if str(e).upper().startswith('NO SUCH TABLE'): pass #for gammel versjon
+            #if str(e).upper().startswith('NO SUCH TABLE'): pass #for gammel versjon
+            if 'NO SUCH TABLE' in str(e).upper(): pass #for gammel versjon
             else: raise
         for kunde in self.gmlbib.hentKunder(inkluderSlettede=True):
             self._oppgrader(kunde)
