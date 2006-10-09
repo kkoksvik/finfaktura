@@ -1,7 +1,7 @@
 
 Fryktelig fin fakura
 ====================
-:oppdatert:$Date: 2006/09/10 12:38:25 $
+:oppdatert:$Date$
 
 Dette er et enkelt program for å lage fakturaer. Fakturaene lages som pdf_ og kan skrives ut på skjema f60 eller sendes som epost. Programmet lager en database over varer, kunder, og utsendte fakturaer.
 
