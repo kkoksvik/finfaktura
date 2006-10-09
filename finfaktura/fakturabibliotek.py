@@ -694,7 +694,7 @@ def kobleTilDatabase(dbnavn=None, loggfil=None):
         dbver = sjekkDatabaseVersjon(dbnavn)
         debug("Databasen er sqlite %s" % dbver)
         if sqlite.apilevel != dbver:
-            raise DBVersjonFeil("Databasen er versjon %s, men biblioteket er versjon %s" % (sqlite.apilevel, dbver))
+            raise DBVersjonFeil("Databasen er versjon %s, men biblioteket er versjon %s" % (dbver, sqlite.apiver))
         
     return db
 
