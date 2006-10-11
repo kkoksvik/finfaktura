@@ -52,7 +52,7 @@ class epost:
         m['Subject'] = Header(self.tittel, self.charset)
         m['From'] = '%s <%s>' % (Header(self.ordre.firma.firmanavn, self.charset), Header(self.fra, self.charset).encode())
         if self.kopi:
-            m['Bcc'] = '<%s>' % (Header(self.ordre.firma.epost, self.charset))
+            m['Bcc'] = '%s' % (Header(self.ordre.firma.epost, self.charset))
         m['To'] = '%s <%s>' % (Header(self.ordre.kunde.navn, self.charset), Header(self.til, self.charset).encode())
         m.preamble = 'You will not see this in a MIME-aware mail reader.\n'
         # To guarantee the message ends with a newline
@@ -82,7 +82,7 @@ class epost:
     
 class gmail(epost):
     def auth(self, brukernavn, passord):
-        brukernavn, passord = file("/home/havard/.gmailpass").read().strip().split(",")
+        #brukernavn, passord = file("/home/havard/.gmailpass").read().strip().split(",")
         self.brukernavn = brukernavn
         self.passord = passord
         
@@ -96,23 +96,31 @@ class gmail(epost):
             msg = libgmail.GmailComposedMessage(self.til,
                                                 self.tittel.encode('utf-8'),
                                                 self.tekst.encode('utf-8'),
-                                                filenames=[self.pdf.filnavn,]
+                                                filenames=[self.pdfFilnavn,]
                                                 )
             
         except:
-            raise u'Sikkerhetskopiering til Gmail som %s feilet!' % brukernavn
+            raise #u'Epostsending med Gmail som %s feilet!' % self.brukernavn
         return gmail.sendMessage(msg)
     
 class smtp(epost):
     smtpserver='localhost'
+    tls = False
+    auth = False
     
-    def settServer(smtpserver):
+    def settServer(self, smtpserver, port=25):
         self.smtpserver=smtpserver
+        self.smtpport=port
+    
+    def auth(self, brukernavn, passord):
+        self.auth = True
+        self.brukernavn = brukernavn
+        self.passord = passord
     
     def send(self):
         s = smtplib.SMTP()
         try:
-            s.connect()
+            s.connect(self.smtpserver)
         except socket.error,E:
             raise SendeFeil(E)
         except:
@@ -134,6 +142,9 @@ class smtp(epost):
 
 class sendmail(epost):
     bin='/usr/lib/sendmail'
+    
+    def settSti(self, sti):
+        self.bin = sti
     
     def send(self):
         # ssmtp: 
@@ -158,12 +169,13 @@ class sendmail(epost):
             raise Sendefeil(u'Sendingen feilet fordi:\n' + ut.read())
         i = inn.close()
         u = ut.close()
-        debug(u'sendmail er avsluttet; %s U %s' % (i,u))
+        print(u'[epost.py]: sendmail er avsluttet; %s U %s' % (i,u))
         return True
 
 class test(epost):
     def send(self):
         print self.mimemelding().as_string()
+        return True
         
     def xsend(self):
         f = open('/tmp/eposttest.msg', 'w')

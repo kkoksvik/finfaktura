@@ -225,10 +225,10 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         #skjul ikke-ferdige tabs dersom vi er i produksjon
         # TODO: gjøre dem klare for produksjon
         if PRODUKSJONSVERSJON:
-            self.fakturaTab.removePage(self.fakturaTab.page(4))
-            self.fakturaTab.removePage(self.fakturaTab.page(4))
-            self.fakturaTab.removePage(self.fakturaTab.page(4))
-            self.fakturaTab.removePage(self.fakturaTab.page(4))
+            #self.fakturaTab.removePage(self.fakturaTab.page(4))
+            self.fakturaTab.removePage(self.fakturaTab.page(5))
+            self.fakturaTab.removePage(self.fakturaTab.page(5))
+            self.fakturaTab.removePage(self.fakturaTab.page(5))
         else:
             self.setCaption("FRYKTELIG FIN FADESE (utviklerversjon)")
 
@@ -270,6 +270,8 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         self.connect(self.dittfirmaFinnFjernLogo, SIGNAL("clicked()"), self.finnFjernLogo)
         self.connect(self.dittfirmaLagre, SIGNAL("clicked()"), self.oppdaterFirma)
         self.connect(self.dittfirmaFakturakatalogSok, SIGNAL("clicked()"), self.endreFakturakatalog)
+
+        self.connect(self.epostLosning, SIGNAL("clicked(int)"), self.roterAktivSeksjon)
 
         self.connect(self.okonomiAvgrensningerDato, SIGNAL("toggled(bool)"), self.okonomiFyllDato)
         self.connect(self.okonomiAvgrensningerKunde, SIGNAL("toggled(bool)"), self.okonomiFyllKunder)
@@ -689,7 +691,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             else: 
                 if Type == "epost":
                     #self.obs("Lagde pdf: %s" % pdf.filnavn)
-                    self.visEpostfaktura(ordre, fakturanavn)
+                    self.visEpostfaktura(ordre, pdf.filnavn)
                     #if self.JaNei(u'Blanketten er lagret i <b>%s</b><br>Vil du sende den til %s nå?' % (pdf.filnavn, ordre.kunde.epost)):
                         #if self.faktura.sendEpost(ordre, pdf.filnavn): self.obs('Fakturaen er sendt')
                 elif Type == "papir":
@@ -743,11 +745,19 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         
     def sendEpostfaktura(self):
         try:
-            self.faktura.sendEpost(self.fakturaSendepostBoks.ordre, self.fakturaSendepostBoks.pdfFilnavn, unicode(self.fakturaSendepostTekst.text()))
-            #self.fakturaSendepostBoks.ordre.sendt = time() # logg tid for sending
+            debug('sender epostfaktura: ordre # %i, til: %s' % (self.fakturaSendepostBoks.ordre._id, self.fakturaSendepostBoks.ordre.kunde.epost))
+            trans = ['sendmail', 'gmail', 'smtp', 'sendmail']
+            debug('bruker transport %s' % trans[self.faktura.epostoppsett.transport])
+            self.faktura.sendEpost(self.fakturaSendepostBoks.ordre, 
+                                   self.fakturaSendepostBoks.pdfFilnavn,
+                                   unicode(self.fakturaSendepostTekst.text()),
+                                   #'test'
+                                   trans[self.faktura.epostoppsett.transport]
+                                   )
+            #self.fakturaSendepostBoks.ordre.sendt = time() # XXX TODO: logg tid for sending
 
         except:
-            self.alert('Feil ved sending av faktura!\n%s' % sys.exc_info()[1])
+            self.alert(u'Feil ved sending av faktura. Prøv å sende med en annen epostmetode.\nDetaljer:\n%s' % sys.exc_info()[1])
         else:
             self.fakturaSendepostBoks.hide()
             self.obs('Fakturaen er sendt')
@@ -1243,12 +1253,18 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             self.faktura.epostoppsett.smtpfra = self.firma.epost
         self.epostAvsenderadresse.setText(self.faktura.epostoppsett.smtpfra)
         self.epostLosning.setButton(self.faktura.epostoppsett.transport)
+        self.roterAktivSeksjon(self.faktura.epostoppsett.transport)
         if BRUK_GMAIL:
-            self.epostSeksjonGmail.setEnabled(True)
+            #self.epostSeksjonGmail.setEnabled(True)
             self.epostGmailUbrukelig.hide()
             self.epostGmailEpost.setText(self.faktura.epostoppsett.gmailbruker)
-            self.epostGmailPassord.setText(self.faktura.epostoppsett.gmailbruker)
+            self.epostGmailPassord.setText(self.faktura.epostoppsett.gmailpassord)
             #self.epostGmailHuskEpost.setChecked(True)
+        self.epostSmtpServer.setText(self.faktura.epostoppsett.smtpserver)
+        self.epostSmtpPort.setValue(self.faktura.epostoppsett.smtpport)
+        self.epostSmtpBrukernavn.setText(self.faktura.epostoppsett.smtpbruker)
+        self.epostSmtpPassord.setText(self.faktura.epostoppsett.smtppassord)
+        self.epostSendmailSti.setText(self.faktura.epostoppsett.sendmailsti)
 
     def oppdaterEpost(self):
         debug("lagrer epost")
@@ -1258,9 +1274,18 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         self.faktura.epostoppsett.gmailpassord = self.epostGmailPassord.text()
         self.faktura.epostoppsett.smtpserver = self.epostSmtpServer.text()
         self.faktura.epostoppsett.smtpport = self.epostSmtpPort.value()
-        self.faktura.epostoppsett.smtpbruker = self.epostSmtpBruker.text()
+        self.faktura.epostoppsett.smtpbruker = self.epostSmtpBrukernavn.text()
         self.faktura.epostoppsett.smtppassord = self.epostSmtpPassord.text()
         self.faktura.epostoppsett.sendmailsti= self.epostSendmailSti.text()
+
+    def roterAktivSeksjon(self, aktivId=None):
+        if aktivId is None: aktivId = self.epostLosning.selectedId()
+        i = 1
+        debug("roterer til %i er synlig" % aktivId)
+        for seksjon in [self.epostSeksjonGmail, self.epostSeksjonSmtp, self.epostSeksjonSendmail]:
+            seksjon.setEnabled(aktivId == i)
+            i += 1
+        
 
 ############## ØKONOMI ###################
 
