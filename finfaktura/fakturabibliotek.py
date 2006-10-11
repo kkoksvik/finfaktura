@@ -152,10 +152,19 @@ class FakturaBibliotek:
         ## XXX: TODO: Skrive ut for alle os
         os.system('kprinter "%s"' % filnavn)
         
-    def sendEpost(self, ordre, pdf, tekst=None):
+    def sendEpost(self, ordre, pdf, tekst=None, transport='sendmail'):
         import epost
-        m = epost.smtp(ordre, pdf, tekst, test=self.produksjonsversjon==False)
-        #m = epost.gmail(ordre, pdf, tekst, test=self.produksjonsversjon==False)
+        _transport = getattr(epost,transport) 
+        m = _transport(ordre, pdf, tekst, test=self.produksjonsversjon==False)
+        set = self.epostoppsett
+        if transport == 'gmail':
+            m.auth(set.gmailbruker, set.gmailpassord)
+        elif transport == 'smtp':
+            m.tls = set.smtptls > 0
+            m.settServer(set.smtpserver, set.smtpport)
+            if set.smtpbruker: m.auth(set.smtpbruker, set.smtppassord)
+        elif transport == 'sendmail':
+            m.settSti(set.sendmailsti)
         return m.send()
         
 class fakturaKomponent:
