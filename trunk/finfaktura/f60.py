@@ -21,7 +21,7 @@ try:
 except ImportError:
     REPORTLAB=False
 
-__version__ = '0.52'
+__version__ = '0.57'
 
 __doc__ = """Modul for å produsere en faktura etter norsk standard f60"""
 
@@ -39,10 +39,7 @@ class f60:
     def __init__(self, filnavn, overskriv = False):
         self.overskriv = overskriv
         if filnavn is None: # lag tempfil
-            from tempfile import mkstemp
-            f,self.filnavn = mkstemp(".pdf", "faktura-")
-            #print dir(f)
-            #f.close()
+            self.filnavn = self.lagTempFilnavn()
         else:
             self.filnavn = self.sjekkFilnavn(filnavn)
         self.canvas = canvas.Canvas(filename=self.filnavn)
@@ -103,6 +100,18 @@ class f60:
         self.lagKopimerke()
         return self.settSammen()
 
+    def lagTempFilnavn(self):
+        from tempfile import mkstemp
+        f,filnavn = mkstemp(".pdf", "faktura-")
+        #print dir(f)
+        #f.close()
+        return filnavn
+
+    def skrivUt(self):
+        if not os.path.exists(self.filnavn):
+            raise "Feil filnavn"
+        os.system('kprinter "%s"' % self.filnavn)
+
     # ==================== INTERNE FUNKSJONER ================ #
     
     def sjekkFilnavn(self, filnavnUtf8):
@@ -117,11 +126,6 @@ class f60:
         if not self.overskriv and os.path.exists(filnavn):
             raise f60Eksisterer(filnavn)
         return filnavn
-
-    def skrivUt(self):
-        if not os.path.exists(self.filnavn):
-            raise "Feil filnavn"
-        os.system('kprinter "%s"' % self.filnavn)
 
     def paragraf(self, t, par_bredde = 80):
         """Setter inn linjeskift for å sørge for at teksten aldri overskrider en viss bredde"""
