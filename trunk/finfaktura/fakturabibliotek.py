@@ -14,6 +14,8 @@ from string import join
 from time import time, strftime, localtime
 import sqlite
 
+
+PRODUKSJONSVERSJON=False # Sett denne til True for å skjule funksjonalitet som ikke er ferdigstilt
 DATABASEVERSJON=2.7
 #DATABASESQL="/usr/share/finfaktura/data/faktura.sql" # TODO: hvordan finne riktig katalog?
 DATABASESQL="faktura.sql" # TODO: hvordan finne riktig katalog?
@@ -154,8 +156,7 @@ class FakturaBibliotek:
         
     def sendEpost(self, ordre, pdf, tekst=None, transport='sendmail'):
         import epost
-        _transport = getattr(epost,transport) 
-        m = _transport(ordre, pdf, tekst, test=self.produksjonsversjon==False)
+        m = getattr(epost,transport)() # laster riktig transport (gmail/smtp/sendmail) 
         set = self.epostoppsett
         if transport == 'gmail':
             m.auth(set.gmailbruker, set.gmailpassord)
@@ -165,7 +166,57 @@ class FakturaBibliotek:
             if set.smtpbruker: m.auth(set.smtpbruker, set.smtppassord)
         elif transport == 'sendmail':
             m.settSti(set.sendmailsti)
+        m.faktura(ordre, pdf, tekst, testmelding=self.produksjonsversjon==False)
         return m.send()
+        
+    def testEpost(self, transport='auto'):
+        import epost
+        # finn riktig transport (gmail/smtp/sendmail)
+        debug(epost.transportmetoder)
+        if not transport in epost.transportmetoder: #ugyldig transport oppgitt
+            transport = 'auto' 
+        if transport == 'auto':
+            feil = []
+            for mt in epost.transportmetoder:
+                try:
+                    if self.testEpost(mt): 
+                        return mt
+                except epost.SendeFeil,E:
+                    feil += E
+            ex = epost.SendeFeil()
+            ex.transport = transport
+            ex.transportmetoder = epost.transportmetoder[:]
+            ex.message = ', '.join(feil)
+            #return (False, transport, epost.transportmetoder)
+            raise ex
+        debug('tester epost. transport: %s' % transport)
+        m = getattr(epost,transport)() # laster riktig transport
+        assert(m, epost.epost)  
+        set = self.epostoppsett
+        if transport == 'gmail':
+            m.auth(set.gmailbruker, set.gmailpassord)
+        elif transport == 'smtp':
+            m.tls = set.smtptls and True
+            m.settServer(set.smtpserver, set.smtpport)
+            if set.smtpbruker: m.auth(set.smtpbruker, set.smtppassord)
+        elif transport == 'sendmail':
+            m.settSti(set.sendmailsti)
+        try:
+            t = m.test()
+        except Exception,inst:
+            debug("%s gikk %s" % (transport, inst.__str__())) 
+            ex = epost.SendeFeil()
+            ex.transport = transport
+            ex.transportmetoder = epost.transportmetoder[:]
+            ex.message = inst.__str__()
+            raise ex 
+        else:
+            if t:
+                debug("%s gikk %s" % (transport, t)) 
+                return transport
+            else: 
+                return None
+        
         
 class fakturaKomponent:
     _egenskaper = {}
@@ -680,7 +731,7 @@ class pdfType:
         return self.data
 
 def debug(s):
-    print "[FAKTURA]: %s" % s
+    if not PRODUKSJONSVERSJON: print "[faktura]: %s" % s
 
 def lagDatabase(database, dbsql=DATABASESQL):
     import sqlite

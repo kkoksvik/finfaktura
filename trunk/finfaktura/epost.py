@@ -18,9 +18,11 @@ from email import Encoders
 from email.Header import Header, decode_header
 import socket
 
+transportmetoder = ['smtp', 'sendmail']
 try:
     import libgmail
     BRUK_GMAIL=True
+    transportmetoder.insert(0, 'gmail') # gmail er foretrukket transportmetode
 except ImportError:
     BRUK_GMAIL=False
     
@@ -33,7 +35,7 @@ class epost:
     charset='iso-8859-15' # epostens tegnsett
     kopi = True
     
-    def __init__(self, ordre, pdfFilnavn, tekst=None, fra=None, test=False, kopi=True):
+    def faktura(self, ordre, pdfFilnavn, tekst=None, fra=None, testmelding=False, kopi=True):
         self.ordre = ordre
         self.pdfFilnavn = pdfFilnavn
         if fra is None: fra = ordre.firma.epost
@@ -42,13 +44,13 @@ class epost:
         self.tittel = u"Epostfaktura fra %s: '%s' (#%i)" % (ordre.firma.firmanavn, self.kutt(ordre.tekst), ordre.ID)
         if tekst is None: tekst = u'Vedlagt følger epostfaktura #%i:\n\n%s\n\n-- \n%s\n%s' % (ordre.ID, ordre.tekst,  ordre.firma, ordre.firma.vilkar)
         self.tekst = tekst
-        self.test = test
+        self.testmelding = testmelding
+        if self.testmelding: # vi er i utviklingsmodus, skift tittel
+            self.tittel = u"TESTFAKTURA "+self.tittel
         self.kopi = kopi
         
     def mimemelding(self):
         m = MIMEMultipart()
-        if self.test: # vi er i utviklingsmodus, skift tittel
-            self.tittel = u"TESTFAKTURA "+self.tittel
         m['Subject'] = Header(self.tittel, self.charset)
         m['From'] = '%s <%s>' % (Header(self.ordre.firma.firmanavn, self.charset), Header(self.fra, self.charset).encode())
         if self.kopi:
@@ -73,8 +75,9 @@ class epost:
         Encoders.encode_base64(b) #base64 encode subpart
         return m
     
-    def send(self):
-        pass
+    def send(self): pass
+    
+    def test(self): pass
     
     def kutt(self, s, l=30):
         if len(s) < l: return s
@@ -82,12 +85,10 @@ class epost:
     
 class gmail(epost):
     def auth(self, brukernavn, passord):
-        #brukernavn, passord = file("/home/havard/.gmailpass").read().strip().split(",")
         self.brukernavn = brukernavn
         self.passord = passord
         
     def send(self):
-
         gmail = libgmail.GmailAccount(self.brukernavn, self.passord)
         print "Logger inn i Gmail med brukernavn %s" % self.brukernavn
         gmail.login()
@@ -103,24 +104,42 @@ class gmail(epost):
             raise #u'Epostsending med Gmail som %s feilet!' % self.brukernavn
         return gmail.sendMessage(msg)
     
+    def test(self):
+        gmail = libgmail.GmailAccount(self.brukernavn, self.passord)
+        print "Logger inn i Gmail med brukernavn %s" % self.brukernavn
+        gmail.login()
+        print "Logget inn."
+        return True
+        
+    
 class smtp(epost):
     smtpserver='localhost'
-    tls = False
-    auth = False
+    _tls = False
+    _auth = False
     
     def settServer(self, smtpserver, port=25):
         self.smtpserver=smtpserver
         self.smtpport=port
     
     def auth(self, brukernavn, passord):
-        self.auth = True
+        self._auth = True
         self.brukernavn = brukernavn
         self.passord = passord
+    
+    def test(self):
+        s = smtplib.SMTP()
+        s.connect(self.smtpserver, self.smtpport)
+        if self._tls: s.starttls()
+        if self._auth: s.login(self.brukernavn, self.passord)
+        s.close()
+        return True
     
     def send(self):
         s = smtplib.SMTP()
         try:
-            s.connect(self.smtpserver)
+            s.connect(self.smtpserver, self.smtpport)
+            if self._tls: s.starttls()
+            if self._auth: s.login(self.brukernavn, self.passord)
         except socket.error,E:
             raise SendeFeil(E)
         except:
@@ -128,6 +147,7 @@ class smtp(epost):
         res = s.sendmail(self.fra, [self.til], self.mimemelding().as_string())
         s.close()
         if len(res) > 0:
+            ### Fra help(smtplib):
             # >>> s.sendmail("me@my.org",tolist,msg)
             #|       { "three@three.org" : ( 550 ,"User unknown" ) }
             #|
@@ -137,36 +157,46 @@ class smtp(epost):
             #|      empty dictionary.
 
             feil = [ "%s: %s" % (a, res[a][1]) for a in res.keys() ]
-            raise Sendefeil(u'Sendingen feilet for følgende adresser:\n%s' % feil.join('\n'))
+            raise SendeFeil(u'Sendingen feilet for følgende adresser:\n%s' % feil.join('\n'))
         return True
 
 class sendmail(epost):
     bin='/usr/lib/sendmail'
+    _auth=False
     
     def settSti(self, sti):
         self.bin = sti
     
+    def test(self):
+        import os.path as p
+        real = p.realpath(self.bin)
+        if not (p.exists(real) and p.isfile(real)): # er dette tilstrekkelig?
+            raise SendeFeil(u'%s er ikke en gyldig sendmail-kommando' % self.bin)
+        return True
+    
+    def auth(self, brukernavn, passord):
+        self._auth = True
+        self.brukernavn = brukernavn
+        self.passord = passord
+    
     def send(self):
-        # ssmtp: 
+        # ssmtp opsjoner: 
         #-4     Forces ssmtp to use IPv4 addresses only.
-    
         #-6     Forces ssmtp to use IPv6 addresses only.
-    
         #-auusername
                 #Specifies username for SMTP authentication.
-    
         #-appassword
                 #Specifies password for SMTP authentication.
-    
         #-ammechanism
                 #Specifies mechanism for SMTP authentication. (Only LOGIN and CRAM-MD5)
+        # XXX TODO: Hvordan gjøre auth uavhengig av sendmail-implementasjon?
         kmd = "%s %s" % (self.bin, self.til)
         inn, ut = os.popen4(kmd)
         try:
             inn.write(self.mimemelding().as_string())
             r = inn.close()
         except:
-            raise Sendefeil(u'Sendingen feilet fordi:\n' + ut.read())
+            raise SendeFeil(u'Sendingen feilet fordi:\n' + ut.read())
         i = inn.close()
         u = ut.close()
         print(u'[epost.py]: sendmail er avsluttet; %s U %s' % (i,u))
@@ -177,10 +207,6 @@ class test(epost):
         print self.mimemelding().as_string()
         return True
         
-    def xsend(self):
-        f = open('/tmp/eposttest.msg', 'w')
-        print "skriver epost til filen /tmp/eposttest.msg"
-        f.write(self.mimemelding().as_string())
-        f.close()
-        print "ferdig"
-        
+    def test(self):
+        return isinstance(self.mimemelding(), MIMEMultipart)
+    

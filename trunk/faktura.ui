@@ -1046,7 +1046,7 @@
                     <property name="geometry">
                         <rect>
                             <x>8</x>
-                            <y>19</y>
+                            <y>17</y>
                             <width>420</width>
                             <height>21</height>
                         </rect>
@@ -2727,46 +2727,8 @@ betalingsvilkår</string>
                 <cstring>TabPage</cstring>
             </property>
             <attribute name="title">
-                <string>Epost</string>
+                <string>&amp;Epost</string>
             </attribute>
-            <widget class="Line">
-                <property name="name">
-                    <cstring>line6_2</cstring>
-                </property>
-                <property name="geometry">
-                    <rect>
-                        <x>10</x>
-                        <y>240</y>
-                        <width>660</width>
-                        <height>20</height>
-                    </rect>
-                </property>
-                <property name="frameShape">
-                    <enum>HLine</enum>
-                </property>
-                <property name="frameShadow">
-                    <enum>Sunken</enum>
-                </property>
-                <property name="orientation">
-                    <enum>Horizontal</enum>
-                </property>
-            </widget>
-            <widget class="QLabel">
-                <property name="name">
-                    <cstring>textLabel2_6</cstring>
-                </property>
-                <property name="geometry">
-                    <rect>
-                        <x>28</x>
-                        <y>191</y>
-                        <width>110</width>
-                        <height>21</height>
-                    </rect>
-                </property>
-                <property name="text">
-                    <string>Avsenderadresse:</string>
-                </property>
-            </widget>
             <widget class="QFrame">
                 <property name="name">
                     <cstring>frame3_3</cstring>
@@ -2824,114 +2786,6 @@ betalingsvilkår</string>
                     </property>
                     <property name="accel">
                         <string>Alt+L</string>
-                    </property>
-                </widget>
-            </widget>
-            <widget class="QLineEdit">
-                <property name="name">
-                    <cstring>epostAvsenderadresse</cstring>
-                </property>
-                <property name="geometry">
-                    <rect>
-                        <x>148</x>
-                        <y>191</y>
-                        <width>351</width>
-                        <height>21</height>
-                    </rect>
-                </property>
-            </widget>
-            <widget class="QButtonGroup">
-                <property name="name">
-                    <cstring>epostLosning</cstring>
-                </property>
-                <property name="geometry">
-                    <rect>
-                        <x>20</x>
-                        <y>20</y>
-                        <width>341</width>
-                        <height>140</height>
-                    </rect>
-                </property>
-                <property name="title">
-                    <string>Epostløsning for sending av e-faktura</string>
-                </property>
-                <widget class="QRadioButton">
-                    <property name="name">
-                        <cstring>epostLosningSendmail</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>20</x>
-                            <y>103</y>
-                            <width>301</width>
-                            <height>21</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Sendmail</string>
-                    </property>
-                    <property name="buttonGroupId">
-                        <number>3</number>
-                    </property>
-                </widget>
-                <widget class="QRadioButton">
-                    <property name="name">
-                        <cstring>epostLosningGmail</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>20</x>
-                            <y>53</y>
-                            <width>301</width>
-                            <height>21</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Gmail</string>
-                    </property>
-                    <property name="buttonGroupId">
-                        <number>1</number>
-                    </property>
-                </widget>
-                <widget class="QRadioButton">
-                    <property name="name">
-                        <cstring>epostLosningAuto</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>20</x>
-                            <y>30</y>
-                            <width>301</width>
-                            <height>21</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Velg automatisk</string>
-                    </property>
-                    <property name="checked">
-                        <bool>true</bool>
-                    </property>
-                    <property name="buttonGroupId">
-                        <number>0</number>
-                    </property>
-                </widget>
-                <widget class="QRadioButton">
-                    <property name="name">
-                        <cstring>epostLosningSmtp</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>20</x>
-                            <y>77</y>
-                            <width>301</width>
-                            <height>21</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>SMTP</string>
-                    </property>
-                    <property name="buttonGroupId">
-                        <number>2</number>
                     </property>
                 </widget>
             </widget>
@@ -3300,6 +3154,168 @@ betalingsvilkår</string>
                         <set>WordBreak|AlignCenter</set>
                     </property>
                 </widget>
+            </widget>
+            <widget class="QButtonGroup">
+                <property name="name">
+                    <cstring>epostLosning</cstring>
+                </property>
+                <property name="geometry">
+                    <rect>
+                        <x>20</x>
+                        <y>20</y>
+                        <width>340</width>
+                        <height>140</height>
+                    </rect>
+                </property>
+                <property name="title">
+                    <string>Epostløsning for sending av e-faktura</string>
+                </property>
+                <widget class="QRadioButton">
+                    <property name="name">
+                        <cstring>epostLosningGmail</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>20</x>
+                            <y>53</y>
+                            <width>301</width>
+                            <height>21</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>Gmail</string>
+                    </property>
+                    <property name="buttonGroupId">
+                        <number>1</number>
+                    </property>
+                </widget>
+                <widget class="QRadioButton">
+                    <property name="name">
+                        <cstring>epostLosningAuto</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>20</x>
+                            <y>30</y>
+                            <width>301</width>
+                            <height>21</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>Velg automatisk</string>
+                    </property>
+                    <property name="checked">
+                        <bool>true</bool>
+                    </property>
+                    <property name="buttonGroupId">
+                        <number>0</number>
+                    </property>
+                </widget>
+                <widget class="QRadioButton">
+                    <property name="name">
+                        <cstring>epostLosningSmtp</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>20</x>
+                            <y>77</y>
+                            <width>301</width>
+                            <height>21</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>SMTP</string>
+                    </property>
+                    <property name="buttonGroupId">
+                        <number>2</number>
+                    </property>
+                </widget>
+                <widget class="QRadioButton">
+                    <property name="name">
+                        <cstring>epostLosningSendmail</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>20</x>
+                            <y>103</y>
+                            <width>301</width>
+                            <height>21</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>Sendmail</string>
+                    </property>
+                    <property name="buttonGroupId">
+                        <number>3</number>
+                    </property>
+                </widget>
+            </widget>
+            <widget class="QLineEdit">
+                <property name="name">
+                    <cstring>epostAvsenderadresse</cstring>
+                </property>
+                <property name="geometry">
+                    <rect>
+                        <x>150</x>
+                        <y>170</y>
+                        <width>351</width>
+                        <height>21</height>
+                    </rect>
+                </property>
+            </widget>
+            <widget class="QLabel">
+                <property name="name">
+                    <cstring>textLabel2_6</cstring>
+                </property>
+                <property name="geometry">
+                    <rect>
+                        <x>22</x>
+                        <y>169</y>
+                        <width>110</width>
+                        <height>21</height>
+                    </rect>
+                </property>
+                <property name="text">
+                    <string>Avsenderadresse:</string>
+                </property>
+            </widget>
+            <widget class="QPushButton">
+                <property name="name">
+                    <cstring>epostLosningTest</cstring>
+                </property>
+                <property name="geometry">
+                    <rect>
+                        <x>20</x>
+                        <y>200</y>
+                        <width>124</width>
+                        <height>23</height>
+                    </rect>
+                </property>
+                <property name="text">
+                    <string>Test forbindelse</string>
+                </property>
+            </widget>
+            <widget class="Line">
+                <property name="name">
+                    <cstring>line6_2</cstring>
+                </property>
+                <property name="geometry">
+                    <rect>
+                        <x>10</x>
+                        <y>240</y>
+                        <width>700</width>
+                        <height>20</height>
+                    </rect>
+                </property>
+                <property name="frameShape">
+                    <enum>HLine</enum>
+                </property>
+                <property name="frameShadow">
+                    <enum>Sunken</enum>
+                </property>
+                <property name="orientation">
+                    <enum>Horizontal</enum>
+                </property>
             </widget>
         </widget>
         <widget class="QWidget">
