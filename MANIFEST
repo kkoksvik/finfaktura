@@ -12,4 +12,5 @@ finfaktura/myndighetene.py
 finfaktura/oppgradering.py
 finfaktura/okonomi.py
 finfaktura/sikkerhetskopi.py
+finfaktura/test.py
 README
