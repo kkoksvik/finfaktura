@@ -154,7 +154,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         self.connect(self.okonomiFakturaerSkrivut, SIGNAL("clicked()"), self.okonomiSkrivUtFakturaer)
 
         self.connect(self.sikkerhetskopiGmailLastopp, SIGNAL("clicked()"), self.sikkerhetskopiGmail)
-        self.connect(self.sikkerhetskopiKvitteringerVis, SIGNAL("clicked()"), self.visKvittering)
+        #self.connect(self.sikkerhetskopiKvitteringerVis, SIGNAL("clicked()"), self.visKvittering)
         
         for obj in (self.dittfirmaFirmanavn,
             self.dittfirmaOrganisasjonsnummer,
@@ -283,6 +283,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             meny.insertItem("Send purring", self.purrFaktura)
             meny.insertItem("Send til inkasso", self.inkassoFaktura)
             meny.insertItem(u"Kansellér", self.kansellerFaktura)
+            meny.insertItem("Vis kvittering", self.visFakturaKvittering)
         else:
             meny.insertItem("Ikke kansellert", self.avkansellerFaktura)
         meny.exec_loop(QCursor.pos())
@@ -514,6 +515,15 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             return False
         kvitt = ordre.hentSikkerhetskopi()
         kvitt.skrivUt()
+
+    def visFakturaKvittering(self):
+        try:
+            ordre = self.fakturaFakturaliste.selectedItem().ordre
+        except AttributeError:
+            self.alert(u'Ingen faktura er valgt')
+            return False
+        kvitt = ordre.hentSikkerhetskopi()
+        kvitt.vis()
 
     def lagFakturaEpost(self): return self.lagFaktura(Type='epost')
     def lagFakturaPapir(self): return self.lagFaktura(Type='papir')
@@ -1294,9 +1304,9 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             self.sikkerhetskopiGmailUbrukelig.show()
             self.sikkerhetskopiGmailLastopp.setEnabled(False)
 
-        ins = self.sikkerhetskopiKvitteringer.insertItem
-        for kvit in self.faktura.hentSikkerhetskopier():
-            ins("Kvittering #%i (laget %s): Ordre #%i" % (kvit._id, strftime('%Y-%m-%d', localtime(kvit.dato)), kvit.ordreID), 0)
+        #ins = self.sikkerhetskopiKvitteringer.insertItem
+        #for kvit in self.faktura.hentSikkerhetskopier():
+            #ins("Kvittering #%i (laget %s): Ordre #%i" % (kvit._id, strftime('%Y-%m-%d', localtime(kvit.dato)), kvit.ordreID), 0)
             #self.sikkerhetskopiKvitteringer.
 
     def sikkerhetskopiGmail(self):
@@ -1315,12 +1325,12 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             self.faktura.epostoppsett.gmailpassord = self.sikkerhetskopiGmailPassord.text()
         return r
         
-    def visKvittering(self):
-        kvits = self.faktura.hentSikkerhetskopier()
-        kvits.reverse()
-        kvit = kvits[self.sikkerhetskopiKvitteringer.currentItem()]
-        debug(kvit)
-        os.system('kpdf %s' % kvit.lagFil())
+    #def visKvittering(self):
+        #kvits = self.faktura.hentSikkerhetskopier()
+        #kvits.reverse()
+        #kvit = kvits[self.sikkerhetskopiKvitteringer.currentItem()]
+        #debug(kvit)
+        #os.system('kpdf %s' % kvit.lagFil())
         
 
 ############## GENERELLE METODER ###################
