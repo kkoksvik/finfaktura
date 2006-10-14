@@ -24,7 +24,7 @@ configure-stamp:
 	# Add here commands to configure the package.
 
 	svn2cl.sh
-	debian/chl.sh >> debian/changelog
+	debian/chl.sh debian/changelog
 	touch configure-stamp
 
 
@@ -62,14 +62,12 @@ install: build
 
 	# Add here commands to install the arch part of the package into 
 	# debian/tmp.
-	#$(MAKE) install DESTDIR=$(CURDIR)/debian/finfaktura
-	$(DH_PY_INTERPRETER) setup.py install --prefix=$(CURDIR)/debian/finfaktura/usr
+	$(DH_PY_INTERPRETER) setup.py install --prefix=$(CURDIR)/debian/tmp/usr
 
         # Nuke *.pyc files that shouldn't be packaged
-	find debian/finfaktura -name "*.pyc" -exec rm {} \;
+	find debian/tmp -name "*.pyc" -exec rm {} \;
         
-
-	dh_install -s
+	dh_install -s 
 
 # Must not depend on anything. This is to be called by
 # binary-arch/binary-indep
