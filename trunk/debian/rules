@@ -2,6 +2,9 @@
 # -*- makefile -*-
 # Sample debian/rules that uses debhelper.
 #
+# Adapted for finfaktura by Håvard Dahle <havard@dahle.no> 2006
+# $Id$
+#
 # This file was originally written by Joey Hess and Craig Small.
 # As a special exception, when this file is copied by dh-make into a
 # dh-make output file, you may use that output file without restriction.
