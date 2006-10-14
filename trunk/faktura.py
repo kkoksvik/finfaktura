@@ -154,6 +154,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         self.connect(self.okonomiFakturaerSkrivut, SIGNAL("clicked()"), self.okonomiSkrivUtFakturaer)
 
         self.connect(self.sikkerhetskopiGmailLastopp, SIGNAL("clicked()"), self.sikkerhetskopiGmail)
+        self.connect(self.sikkerhetskopiKvitteringerVis, SIGNAL("clicked()"), self.visKvittering)
         
         for obj in (self.dittfirmaFirmanavn,
             self.dittfirmaOrganisasjonsnummer,
@@ -1283,11 +1284,20 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         if sikkerhetskopi.BRUK_GMAIL:
             self.sikkerhetskopiGmailUbrukelig.hide()
             self.sikkerhetskopiGmailLastopp.setEnabled(True)
+            if len(self.faktura.epostoppsett.gmailbruker):
+                self.sikkerhetskopiGmailHuskEpost.setChecked(True)
+            if len(self.faktura.epostoppsett.gmailpassord):
+                self.sikkerhetskopiGmailHuskPassord.setChecked(True)
+            self.sikkerhetskopiGmailEpost.setText(self.faktura.epostoppsett.gmailbruker)
+            self.sikkerhetskopiGmailPassord.setText(self.faktura.epostoppsett.gmailpassord)
         else:
-            #self.sikkerhetskopiGmailUbrukelig.setText(u"Du må installere modulen 'libgmail' for å sikkerhetskopiere til Gmail")
             self.sikkerhetskopiGmailUbrukelig.show()
             self.sikkerhetskopiGmailLastopp.setEnabled(False)
 
+        ins = self.sikkerhetskopiKvitteringer.insertItem
+        for kvit in self.faktura.hentSikkerhetskopier():
+            ins("Kvittering #%i (laget %s): Ordre #%i" % (kvit._id, strftime('%Y-%m-%d', localtime(kvit.dato)), kvit.ordreID), 0)
+            #self.sikkerhetskopiKvitteringer.
 
     def sikkerhetskopiGmail(self):
         bruker = self.sikkerhetskopiGmailEpost.text()
@@ -1296,9 +1306,22 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             self.alert(u'Du har ikke oppgitt brukernavn og passord i Gmail')
             return False
         if PRODUKSJONSVERSJON: label = "finfaktura"
-        else: label = "test"
+        else: label = "fakturatest"
         sikker = sikkerhetskopi.gmailkopi(finnDatabasenavn(), bruker, passord, label)
-        return sikker.lagre()
+        r = sikker.lagre()
+        if self.sikkerhetskopiGmailHuskEpost.isChecked():
+            self.faktura.epostoppsett.gmailbruker = self.sikkerhetskopiGmailEpost.text()
+        if self.sikkerhetskopiGmailHuskPassord.isChecked():
+            self.faktura.epostoppsett.gmailpassord = self.sikkerhetskopiGmailPassord.text()
+        return r
+        
+    def visKvittering(self):
+        kvits = self.faktura.hentSikkerhetskopier()
+        kvits.reverse()
+        kvit = kvits[self.sikkerhetskopiKvitteringer.currentItem()]
+        debug(kvit)
+        os.system('kpdf %s' % kvit.lagFil())
+        
 
 ############## GENERELLE METODER ###################
 

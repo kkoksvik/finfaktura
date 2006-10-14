@@ -3956,7 +3956,7 @@ betalingsvilkår</string>
                 </property>
                 <widget class="QComboBox">
                     <property name="name">
-                        <cstring>comboBox9</cstring>
+                        <cstring>sikkerhetskopiKvitteringer</cstring>
                     </property>
                     <property name="geometry">
                         <rect>
@@ -3969,7 +3969,7 @@ betalingsvilkår</string>
                 </widget>
                 <widget class="QPushButton">
                     <property name="name">
-                        <cstring>pushButton19</cstring>
+                        <cstring>sikkerhetskopiKvitteringerVis</cstring>
                     </property>
                     <property name="geometry">
                         <rect>
@@ -3999,22 +3999,6 @@ betalingsvilkår</string>
                 <property name="title">
                     <string>Gmail</string>
                 </property>
-                <widget class="QCheckBox">
-                    <property name="name">
-                        <cstring>sikkerhetskopiGmailHuskPassord</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>460</x>
-                            <y>50</y>
-                            <width>53</width>
-                            <height>19</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Husk</string>
-                    </property>
-                </widget>
                 <widget class="QLineEdit">
                     <property name="name">
                         <cstring>sikkerhetskopiGmailPassord</cstring>
@@ -4104,6 +4088,35 @@ betalingsvilkår</string>
                         </rect>
                     </property>
                 </widget>
+                <widget class="QProgressBar">
+                    <property name="name">
+                        <cstring>sikkerhetskopiGmailFramgang</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>231</x>
+                            <y>80</y>
+                            <width>320</width>
+                            <height>22</height>
+                        </rect>
+                    </property>
+                </widget>
+                <widget class="QCheckBox">
+                    <property name="name">
+                        <cstring>sikkerhetskopiGmailHuskPassord</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>460</x>
+                            <y>50</y>
+                            <width>53</width>
+                            <height>19</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>Husk</string>
+                    </property>
+                </widget>
                 <widget class="QCheckBox">
                     <property name="name">
                         <cstring>sikkerhetskopiGmailHuskEpost</cstring>
@@ -4118,19 +4131,6 @@ betalingsvilkår</string>
                     </property>
                     <property name="text">
                         <string>Husk</string>
-                    </property>
-                </widget>
-                <widget class="QProgressBar">
-                    <property name="name">
-                        <cstring>sikkerhetskopiGmailFramgang</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>231</x>
-                            <y>80</y>
-                            <width>320</width>
-                            <height>22</height>
-                        </rect>
                     </property>
                 </widget>
                 <widget class="QLabel">
