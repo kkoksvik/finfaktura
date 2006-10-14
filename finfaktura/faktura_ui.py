@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'faktura.ui'
 #
-# Created: Sat Oct 14 01:48:27 2006
+# Created: Sat Oct 14 15:52:13 2006
 #      by: The PyQt User Interface Compiler (pyuic) 3.15.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -3163,9 +3163,6 @@ class faktura(QMainWindow):
         self.textLabel7 = QLabel(self.TabPage_2,"textLabel7")
         self.textLabel7.setGeometry(QRect(9,500,60,21))
 
-        self.textLabel1_7 = QLabel(self.TabPage_2,"textLabel1_7")
-        self.textLabel1_7.setGeometry(QRect(8,691,118,20))
-
         self.dittfirmaMva = QSpinBox(self.TabPage_2,"dittfirmaMva")
         self.dittfirmaMva.setGeometry(QRect(120,500,61,21))
         self.dittfirmaMva.setValue(25)
@@ -3176,9 +3173,6 @@ class faktura(QMainWindow):
         self.dittfirmaForfall = QSpinBox(self.TabPage_2,"dittfirmaForfall")
         self.dittfirmaForfall.setGeometry(QRect(120,527,61,21))
         self.dittfirmaForfall.setValue(21)
-
-        self.dittfirmaFakturakatalogSok = QPushButton(self.TabPage_2,"dittfirmaFakturakatalogSok")
-        self.dittfirmaFakturakatalogSok.setGeometry(QRect(618,691,91,21))
 
         self.textLabel1_5 = QLabel(self.TabPage_2,"textLabel1_5")
         self.textLabel1_5.setGeometry(QRect(10,40,141,21))
@@ -3240,8 +3234,14 @@ class faktura(QMainWindow):
         self.dittfirmaLagreInfo.setTextFormat(QLabel.RichText)
         self.dittfirmaLagreInfo.setAlignment(QLabel.WordBreak | QLabel.AlignJustify | QLabel.AlignBottom)
 
+        self.textLabel1_7 = QLabel(self.TabPage_2,"textLabel1_7")
+        self.textLabel1_7.setGeometry(QRect(8,691,118,20))
+
         self.dittfirmaFakturakatalog = QLineEdit(self.TabPage_2,"dittfirmaFakturakatalog")
         self.dittfirmaFakturakatalog.setGeometry(QRect(140,690,470,21))
+
+        self.dittfirmaFakturakatalogSok = QPushButton(self.TabPage_2,"dittfirmaFakturakatalogSok")
+        self.dittfirmaFakturakatalogSok.setGeometry(QRect(618,691,91,21))
         self.fakturaTab.insertTab(self.TabPage_2,QString.fromLatin1(""))
 
         self.TabPage_3 = QWidget(self.fakturaTab,"TabPage_3")
@@ -3501,18 +3501,6 @@ class faktura(QMainWindow):
 
         self.TabPage_6 = QWidget(self.fakturaTab,"TabPage_6")
 
-        self.groupBox11 = QGroupBox(self.TabPage_6,"groupBox11")
-        self.groupBox11.setGeometry(QRect(18,181,581,161))
-
-        self.groupBox11_2 = QGroupBox(self.TabPage_6,"groupBox11_2")
-        self.groupBox11_2.setGeometry(QRect(20,510,581,200))
-
-        self.sikkerhetskopiKvitteringer = QComboBox(0,self.groupBox11_2,"sikkerhetskopiKvitteringer")
-        self.sikkerhetskopiKvitteringer.setGeometry(QRect(108,31,460,21))
-
-        self.sikkerhetskopiKvitteringerVis = QPushButton(self.groupBox11_2,"sikkerhetskopiKvitteringerVis")
-        self.sikkerhetskopiKvitteringerVis.setGeometry(QRect(448,71,120,21))
-
         self.groupBox10 = QGroupBox(self.TabPage_6,"groupBox10")
         self.groupBox10.setGeometry(QRect(20,30,580,130))
 
@@ -3553,6 +3541,62 @@ class faktura(QMainWindow):
         self.sikkerhetskopiGmailUbrukelig.setFrameShape(QLabel.Box)
         self.sikkerhetskopiGmailUbrukelig.setLineWidth(1)
         self.sikkerhetskopiGmailUbrukelig.setAlignment(QLabel.WordBreak | QLabel.AlignCenter)
+
+        self.groupBox11 = QGroupBox(self.TabPage_6,"groupBox11")
+        self.groupBox11.setGeometry(QRect(18,181,790,210))
+
+        self.textLabel1_7_2 = QLabel(self.groupBox11,"textLabel1_7_2")
+        self.textLabel1_7_2.setGeometry(QRect(8,20,170,20))
+
+        self.sikkerhetskopiKatalog = QLineEdit(self.groupBox11,"sikkerhetskopiKatalog")
+        self.sikkerhetskopiKatalog.setGeometry(QRect(180,20,470,21))
+
+        self.sikkerhetskopiKatalogSok = QPushButton(self.groupBox11,"sikkerhetskopiKatalogSok")
+        self.sikkerhetskopiKatalogSok.setGeometry(QRect(660,20,91,21))
+
+        self.sikkerhetskopiVedAvslutt = QCheckBox(self.groupBox11,"sikkerhetskopiVedAvslutt")
+        self.sikkerhetskopiVedAvslutt.setGeometry(QRect(10,50,393,19))
+
+        self.sikkerhetskopiVedFaktura = QCheckBox(self.groupBox11,"sikkerhetskopiVedFaktura")
+        self.sikkerhetskopiVedFaktura.setGeometry(QRect(11,70,353,19))
+        self.sikkerhetskopiVedFaktura.setAutoMask(1)
+
+        self.groupBox17 = QGroupBox(self.TabPage_6,"groupBox17")
+        self.groupBox17.setGeometry(QRect(18,401,790,321))
+
+        self.textLabel2_5_2 = QLabel(self.groupBox17,"textLabel2_5_2")
+        self.textLabel2_5_2.setGeometry(QRect(60,94,93,14))
+
+        self.radioButton5 = QRadioButton(self.groupBox17,"radioButton5")
+        self.radioButton5.setGeometry(QRect(170,61,58,19))
+
+        self.textLabel2_5 = QLabel(self.groupBox17,"textLabel2_5")
+        self.textLabel2_5.setGeometry(QRect(60,63,93,14))
+
+        self.radioButton5_2 = QRadioButton(self.groupBox17,"radioButton5_2")
+        self.radioButton5_2.setGeometry(QRect(240,61,151,20))
+
+        self.textLabel1_6 = QLabel(self.groupBox17,"textLabel1_6")
+        self.textLabel1_6.setGeometry(QRect(20,20,720,30))
+        self.textLabel1_6.setPaletteForegroundColor(QColor(255,0,0))
+        self.textLabel1_6.setAlignment(QLabel.WordBreak | QLabel.AlignTop | QLabel.AlignLeft)
+
+        self.comboBox10 = QComboBox(0,self.groupBox17,"comboBox10")
+        self.comboBox10.setGeometry(QRect(170,90,490,21))
+
+        self.textLabel3_3 = QLabel(self.groupBox17,"textLabel3_3")
+        self.textLabel3_3.setGeometry(QRect(61,125,81,20))
+
+        self.textLabel4_3 = QLabel(self.groupBox17,"textLabel4_3")
+        self.textLabel4_3.setGeometry(QRect(170,130,590,141))
+        self.textLabel4_3.setTextFormat(QLabel.RichText)
+        self.textLabel4_3.setAlignment(QLabel.WordBreak | QLabel.AlignTop | QLabel.AlignLeft)
+
+        self.textLabel5_3 = QLabel(self.groupBox17,"textLabel5_3")
+        self.textLabel5_3.setGeometry(QRect(670,90,111,21))
+
+        self.pushButton29 = QPushButton(self.groupBox17,"pushButton29")
+        self.pushButton29.setGeometry(QRect(440,290,331,21))
         self.fakturaTab.insertTab(self.TabPage_6,QString.fromLatin1(""))
 
         self.fileNewAction = QAction(self,"fileNewAction")
@@ -3813,9 +3857,7 @@ class faktura(QMainWindow):
         self.textLabel1_2.setText(self.__tr("Epost"))
         self.textLabel7_2.setText(self.__tr("Forfall"))
         self.textLabel7.setText(self.__tr("MVA-sats"))
-        self.textLabel1_7.setText(self.__tr("Katalog for fakturaer"))
         self.textLabel9.setText(self.__tr("dager"))
-        self.dittfirmaFakturakatalogSok.setText(self.__trUtf8("\x53\xc3\xb8\x6b\x2e\x2e\x2e"))
         self.textLabel1_5.setText(self.__tr("Organisasjonsnummer"))
         QToolTip.add(self.dittfirmaLogoPixmap,self.__tr("Logo"))
         self.dittfirmaFinnFjernLogo.setText(self.__tr("Finn logo"))
@@ -3823,7 +3865,9 @@ class faktura(QMainWindow):
         self.dittfirmaLagre.setAccel(self.__tr("Alt+L"))
         self.dittfirmaHjelpetekst.setText(QString.null)
         self.dittfirmaLagreInfo.setText(QString.null)
+        self.textLabel1_7.setText(self.__tr("Katalog for fakturaer"))
         self.dittfirmaFakturakatalog.setText(self.__tr("~"))
+        self.dittfirmaFakturakatalogSok.setText(self.__trUtf8("\x53\xc3\xb8\x6b\x2e\x2e\x2e"))
         self.fakturaTab.changeTab(self.TabPage_2,self.__tr("&Ditt firma"))
         self.epostHjelpefelt.setText(QString.null)
         self.epostLagre.setText(self.__tr("&Lagre"))
@@ -3883,9 +3927,6 @@ class faktura(QMainWindow):
         self.myndigheteneRegistrertHent_2.setText(self.__trUtf8("\x48\x65\x6e\x74\x20\x70\xc3\xa5\x20\x6e\x79\x74\x74"))
         self.myndigheteneRegistrertTekst_2.setText(self.__tr("textLabel2"))
         self.fakturaTab.changeTab(self.TabPage_5,self.__tr("&Myndighetene"))
-        self.groupBox11.setTitle(self.__tr("Filsystem"))
-        self.groupBox11_2.setTitle(self.__tr("Kvitteringer"))
-        self.sikkerhetskopiKvitteringerVis.setText(self.__tr("Vis"))
         self.groupBox10.setTitle(self.__tr("Gmail"))
         QToolTip.add(self.sikkerhetskopiGmailPassord,self.__tr("Ditt passord ved Gmail"))
         self.textLabel1_10.setText(self.__tr("Full epostadresse i gmail:"))
@@ -3894,6 +3935,22 @@ class faktura(QMainWindow):
         self.sikkerhetskopiGmailHuskPassord.setText(self.__tr("Husk"))
         self.sikkerhetskopiGmailHuskEpost.setText(self.__tr("Husk"))
         self.sikkerhetskopiGmailUbrukelig.setText(self.__trUtf8("\x44\x75\x20\x6d\xc3\xa5\x20\x69\x6e\x73\x74\x61\x6c\x6c\x65\x72\x65\x20\x6d\x6f\x64\x75\x6c\x65\x6e\x20\x27\x6c\x69\x62\x67\x6d\x61\x69\x6c\x27\x20\x66\x6f\x72\x20\xc3\xa5\x20\x6c\x61\x73\x74\x65\x20\x6f\x70\x70\x20\x73\x69\x6b\x6b\x65\x72\x68\x65\x74\x73\x6b\x6f\x70\x69\x65\x72\x20\x74\x69\x6c\x20\x47\x6d\x61\x69\x6c\x2e"))
+        self.groupBox11.setTitle(self.__tr("Filsystem"))
+        self.textLabel1_7_2.setText(self.__tr("Katalog for sikkerhetskopier"))
+        self.sikkerhetskopiKatalog.setText(self.__tr("~"))
+        self.sikkerhetskopiKatalogSok.setText(self.__trUtf8("\x53\xc3\xb8\x6b\x2e\x2e\x2e"))
+        self.sikkerhetskopiVedAvslutt.setText(self.__tr("Lag sikkerhetskopi automatisk hver gang jeg lukker programmet"))
+        self.sikkerhetskopiVedFaktura.setText(self.__tr("Lag sikkerhetskopi hver gang jeg legger inn en ny faktura"))
+        self.groupBox17.setTitle(self.__tr("Gjenopprett"))
+        self.textLabel2_5_2.setText(self.__tr("Tilgjengelig:"))
+        self.radioButton5.setText(self.__tr("Gmail"))
+        self.textLabel2_5.setText(self.__tr("Gjenopprett fra:"))
+        self.radioButton5_2.setText(self.__tr("Filsystem"))
+        self.textLabel1_6.setText(self.__trUtf8("\x44\x65\x74\x74\x65\x20\x67\x6a\x65\x6e\x6f\x70\x70\x72\x65\x74\x74\x65\x72\x20\x64\x61\x74\x61\x62\x61\x73\x65\x6e\x20\x66\x72\x61\x20\x65\x6e\x20\x3c\x62\x3e\x67\x61\x6d\x6d\x65\x6c\x20\x76\x65\x72\x73\x6a\x6f\x6e\x3c\x2f\x62\x3e\x2e\x20\x44\x65\x74\x74\x65\x20\x6d\xc3\xa5\x20\x64\x75\x20\x62\x61\x72\x65\x20\x67\x6a\xc3\xb8\x72\x65\x20\x64\x65\x72\x73\x6f\x6d\x20\x64\x75\x20\x65\x72\x20\x73\x69\x6b\x6b\x65\x72\x20\x70\xc3\xa5\x20\x68\x76\x61\x20\x64\x75\x20\x67\x6a\xc3\xb8\x72\x21"))
+        self.textLabel3_3.setText(self.__tr("Informasjon:"))
+        self.textLabel4_3.setText(self.__tr("textLabel4"))
+        self.textLabel5_3.setText(self.__tr("textLabel5"))
+        self.pushButton29.setText(self.__tr("Gjenopprett fra valgt sikkerhetskopi"))
         self.fakturaTab.changeTab(self.TabPage_6,self.__tr("&Sikkerhetskopi"))
         self.fileNewAction.setText(self.__tr("New"))
         self.fileNewAction.setMenuText(self.__tr("&New"))

@@ -2372,22 +2372,6 @@ betalingsvilkår</string>
                     <string>MVA-sats</string>
                 </property>
             </widget>
-            <widget class="QLabel">
-                <property name="name">
-                    <cstring>textLabel1_7</cstring>
-                </property>
-                <property name="geometry">
-                    <rect>
-                        <x>8</x>
-                        <y>691</y>
-                        <width>118</width>
-                        <height>20</height>
-                    </rect>
-                </property>
-                <property name="text">
-                    <string>Katalog for fakturaer</string>
-                </property>
-            </widget>
             <widget class="QSpinBox">
                 <property name="name">
                     <cstring>dittfirmaMva</cstring>
@@ -2434,22 +2418,6 @@ betalingsvilkår</string>
                 </property>
                 <property name="value">
                     <number>21</number>
-                </property>
-            </widget>
-            <widget class="QPushButton">
-                <property name="name">
-                    <cstring>dittfirmaFakturakatalogSok</cstring>
-                </property>
-                <property name="geometry">
-                    <rect>
-                        <x>618</x>
-                        <y>691</y>
-                        <width>91</width>
-                        <height>21</height>
-                    </rect>
-                </property>
-                <property name="text">
-                    <string>Søk...</string>
                 </property>
             </widget>
             <widget class="QLabel">
@@ -2705,6 +2673,22 @@ betalingsvilkår</string>
                     </property>
                 </widget>
             </widget>
+            <widget class="QLabel">
+                <property name="name">
+                    <cstring>textLabel1_7</cstring>
+                </property>
+                <property name="geometry">
+                    <rect>
+                        <x>8</x>
+                        <y>691</y>
+                        <width>118</width>
+                        <height>20</height>
+                    </rect>
+                </property>
+                <property name="text">
+                    <string>Katalog for fakturaer</string>
+                </property>
+            </widget>
             <widget class="QLineEdit">
                 <property name="name">
                     <cstring>dittfirmaFakturakatalog</cstring>
@@ -2719,6 +2703,22 @@ betalingsvilkår</string>
                 </property>
                 <property name="text">
                     <string>~</string>
+                </property>
+            </widget>
+            <widget class="QPushButton">
+                <property name="name">
+                    <cstring>dittfirmaFakturakatalogSok</cstring>
+                </property>
+                <property name="geometry">
+                    <rect>
+                        <x>618</x>
+                        <y>691</y>
+                        <width>91</width>
+                        <height>21</height>
+                    </rect>
+                </property>
+                <property name="text">
+                    <string>Søk...</string>
                 </property>
             </widget>
         </widget>
@@ -3925,67 +3925,6 @@ betalingsvilkår</string>
             </attribute>
             <widget class="QGroupBox">
                 <property name="name">
-                    <cstring>groupBox11</cstring>
-                </property>
-                <property name="geometry">
-                    <rect>
-                        <x>18</x>
-                        <y>181</y>
-                        <width>581</width>
-                        <height>161</height>
-                    </rect>
-                </property>
-                <property name="title">
-                    <string>Filsystem</string>
-                </property>
-            </widget>
-            <widget class="QGroupBox">
-                <property name="name">
-                    <cstring>groupBox11_2</cstring>
-                </property>
-                <property name="geometry">
-                    <rect>
-                        <x>20</x>
-                        <y>510</y>
-                        <width>581</width>
-                        <height>200</height>
-                    </rect>
-                </property>
-                <property name="title">
-                    <string>Kvitteringer</string>
-                </property>
-                <widget class="QComboBox">
-                    <property name="name">
-                        <cstring>sikkerhetskopiKvitteringer</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>108</x>
-                            <y>31</y>
-                            <width>460</width>
-                            <height>21</height>
-                        </rect>
-                    </property>
-                </widget>
-                <widget class="QPushButton">
-                    <property name="name">
-                        <cstring>sikkerhetskopiKvitteringerVis</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>448</x>
-                            <y>71</y>
-                            <width>120</width>
-                            <height>21</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Vis</string>
-                    </property>
-                </widget>
-            </widget>
-            <widget class="QGroupBox">
-                <property name="name">
                     <cstring>groupBox10</cstring>
                 </property>
                 <property name="geometry">
@@ -4162,6 +4101,294 @@ betalingsvilkår</string>
                     </property>
                     <property name="alignment">
                         <set>WordBreak|AlignCenter</set>
+                    </property>
+                </widget>
+            </widget>
+            <widget class="QGroupBox">
+                <property name="name">
+                    <cstring>groupBox11</cstring>
+                </property>
+                <property name="geometry">
+                    <rect>
+                        <x>18</x>
+                        <y>181</y>
+                        <width>790</width>
+                        <height>210</height>
+                    </rect>
+                </property>
+                <property name="title">
+                    <string>Filsystem</string>
+                </property>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>textLabel1_7_2</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>8</x>
+                            <y>20</y>
+                            <width>170</width>
+                            <height>20</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>Katalog for sikkerhetskopier</string>
+                    </property>
+                </widget>
+                <widget class="QLineEdit">
+                    <property name="name">
+                        <cstring>sikkerhetskopiKatalog</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>180</x>
+                            <y>20</y>
+                            <width>470</width>
+                            <height>21</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>~</string>
+                    </property>
+                </widget>
+                <widget class="QPushButton">
+                    <property name="name">
+                        <cstring>sikkerhetskopiKatalogSok</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>660</x>
+                            <y>20</y>
+                            <width>91</width>
+                            <height>21</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>Søk...</string>
+                    </property>
+                </widget>
+                <widget class="QCheckBox">
+                    <property name="name">
+                        <cstring>sikkerhetskopiVedAvslutt</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>10</x>
+                            <y>50</y>
+                            <width>393</width>
+                            <height>19</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>Lag sikkerhetskopi automatisk hver gang jeg lukker programmet</string>
+                    </property>
+                </widget>
+                <widget class="QCheckBox">
+                    <property name="name">
+                        <cstring>sikkerhetskopiVedFaktura</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>11</x>
+                            <y>70</y>
+                            <width>353</width>
+                            <height>19</height>
+                        </rect>
+                    </property>
+                    <property name="autoMask">
+                        <bool>true</bool>
+                    </property>
+                    <property name="text">
+                        <string>Lag sikkerhetskopi hver gang jeg legger inn en ny faktura</string>
+                    </property>
+                </widget>
+            </widget>
+            <widget class="QGroupBox">
+                <property name="name">
+                    <cstring>groupBox17</cstring>
+                </property>
+                <property name="geometry">
+                    <rect>
+                        <x>18</x>
+                        <y>401</y>
+                        <width>790</width>
+                        <height>321</height>
+                    </rect>
+                </property>
+                <property name="title">
+                    <string>Gjenopprett</string>
+                </property>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>textLabel2_5_2</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>60</x>
+                            <y>94</y>
+                            <width>93</width>
+                            <height>14</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>Tilgjengelig:</string>
+                    </property>
+                </widget>
+                <widget class="QRadioButton">
+                    <property name="name">
+                        <cstring>radioButton5</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>170</x>
+                            <y>61</y>
+                            <width>58</width>
+                            <height>19</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>Gmail</string>
+                    </property>
+                </widget>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>textLabel2_5</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>60</x>
+                            <y>63</y>
+                            <width>93</width>
+                            <height>14</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>Gjenopprett fra:</string>
+                    </property>
+                </widget>
+                <widget class="QRadioButton">
+                    <property name="name">
+                        <cstring>radioButton5_2</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>240</x>
+                            <y>61</y>
+                            <width>151</width>
+                            <height>20</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>Filsystem</string>
+                    </property>
+                </widget>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>textLabel1_6</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>20</x>
+                            <y>20</y>
+                            <width>720</width>
+                            <height>30</height>
+                        </rect>
+                    </property>
+                    <property name="paletteForegroundColor">
+                        <color>
+                            <red>255</red>
+                            <green>0</green>
+                            <blue>0</blue>
+                        </color>
+                    </property>
+                    <property name="text">
+                        <string>Dette gjenoppretter databasen fra en &lt;b&gt;gammel versjon&lt;/b&gt;. Dette må du bare gjøre dersom du er sikker på hva du gjør!</string>
+                    </property>
+                    <property name="alignment">
+                        <set>WordBreak|AlignTop|AlignLeft</set>
+                    </property>
+                </widget>
+                <widget class="QComboBox">
+                    <property name="name">
+                        <cstring>comboBox10</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>170</x>
+                            <y>90</y>
+                            <width>490</width>
+                            <height>21</height>
+                        </rect>
+                    </property>
+                </widget>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>textLabel3_3</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>61</x>
+                            <y>125</y>
+                            <width>81</width>
+                            <height>20</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>Informasjon:</string>
+                    </property>
+                </widget>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>textLabel4_3</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>170</x>
+                            <y>130</y>
+                            <width>590</width>
+                            <height>141</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>textLabel4</string>
+                    </property>
+                    <property name="textFormat">
+                        <enum>RichText</enum>
+                    </property>
+                    <property name="alignment">
+                        <set>WordBreak|AlignTop|AlignLeft</set>
+                    </property>
+                </widget>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>textLabel5_3</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>670</x>
+                            <y>90</y>
+                            <width>111</width>
+                            <height>21</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>textLabel5</string>
+                    </property>
+                </widget>
+                <widget class="QPushButton">
+                    <property name="name">
+                        <cstring>pushButton29</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>440</x>
+                            <y>290</y>
+                            <width>331</width>
+                            <height>21</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>Gjenopprett fra valgt sikkerhetskopi</string>
                     </property>
                 </widget>
             </widget>

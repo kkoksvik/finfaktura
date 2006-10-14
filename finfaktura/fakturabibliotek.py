@@ -699,6 +699,11 @@ class fakturaSikkerhetskopi(fakturaKomponent):
         import os
         os.system('kprinter "%s"' % self.lagFil()) 
 
+    def vis(self):
+        import os
+        os.system('kpdf %s' % self.lagFil())
+
+
 class fakturaEpost(fakturaKomponent):
     _tabellnavn = "Epost"
     _id = 1
