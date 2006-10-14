@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'faktura.ui'
 #
-# Created: Thu Oct 12 00:07:42 2006
+# Created: Sat Oct 14 01:48:27 2006
 #      by: The PyQt User Interface Compiler (pyuic) 3.15.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -3507,17 +3507,14 @@ class faktura(QMainWindow):
         self.groupBox11_2 = QGroupBox(self.TabPage_6,"groupBox11_2")
         self.groupBox11_2.setGeometry(QRect(20,510,581,200))
 
-        self.comboBox9 = QComboBox(0,self.groupBox11_2,"comboBox9")
-        self.comboBox9.setGeometry(QRect(108,31,460,21))
+        self.sikkerhetskopiKvitteringer = QComboBox(0,self.groupBox11_2,"sikkerhetskopiKvitteringer")
+        self.sikkerhetskopiKvitteringer.setGeometry(QRect(108,31,460,21))
 
-        self.pushButton19 = QPushButton(self.groupBox11_2,"pushButton19")
-        self.pushButton19.setGeometry(QRect(448,71,120,21))
+        self.sikkerhetskopiKvitteringerVis = QPushButton(self.groupBox11_2,"sikkerhetskopiKvitteringerVis")
+        self.sikkerhetskopiKvitteringerVis.setGeometry(QRect(448,71,120,21))
 
         self.groupBox10 = QGroupBox(self.TabPage_6,"groupBox10")
         self.groupBox10.setGeometry(QRect(20,30,580,130))
-
-        self.sikkerhetskopiGmailHuskPassord = QCheckBox(self.groupBox10,"sikkerhetskopiGmailHuskPassord")
-        self.sikkerhetskopiGmailHuskPassord.setGeometry(QRect(460,50,53,19))
 
         self.sikkerhetskopiGmailPassord = QLineEdit(self.groupBox10,"sikkerhetskopiGmailPassord")
         self.sikkerhetskopiGmailPassord.setGeometry(QRect(170,50,280,21))
@@ -3538,11 +3535,14 @@ class faktura(QMainWindow):
         self.sikkerhetskopiGmailEpost = QLineEdit(self.groupBox10,"sikkerhetskopiGmailEpost")
         self.sikkerhetskopiGmailEpost.setGeometry(QRect(170,22,280,21))
 
-        self.sikkerhetskopiGmailHuskEpost = QCheckBox(self.groupBox10,"sikkerhetskopiGmailHuskEpost")
-        self.sikkerhetskopiGmailHuskEpost.setGeometry(QRect(460,23,53,19))
-
         self.sikkerhetskopiGmailFramgang = QProgressBar(self.groupBox10,"sikkerhetskopiGmailFramgang")
         self.sikkerhetskopiGmailFramgang.setGeometry(QRect(231,80,320,22))
+
+        self.sikkerhetskopiGmailHuskPassord = QCheckBox(self.groupBox10,"sikkerhetskopiGmailHuskPassord")
+        self.sikkerhetskopiGmailHuskPassord.setGeometry(QRect(460,50,53,19))
+
+        self.sikkerhetskopiGmailHuskEpost = QCheckBox(self.groupBox10,"sikkerhetskopiGmailHuskEpost")
+        self.sikkerhetskopiGmailHuskEpost.setGeometry(QRect(460,23,53,19))
 
         self.sikkerhetskopiGmailUbrukelig = QLabel(self.groupBox10,"sikkerhetskopiGmailUbrukelig")
         self.sikkerhetskopiGmailUbrukelig.setGeometry(QRect(30,30,521,60))
@@ -3885,13 +3885,13 @@ class faktura(QMainWindow):
         self.fakturaTab.changeTab(self.TabPage_5,self.__tr("&Myndighetene"))
         self.groupBox11.setTitle(self.__tr("Filsystem"))
         self.groupBox11_2.setTitle(self.__tr("Kvitteringer"))
-        self.pushButton19.setText(self.__tr("Vis"))
+        self.sikkerhetskopiKvitteringerVis.setText(self.__tr("Vis"))
         self.groupBox10.setTitle(self.__tr("Gmail"))
-        self.sikkerhetskopiGmailHuskPassord.setText(self.__tr("Husk"))
         QToolTip.add(self.sikkerhetskopiGmailPassord,self.__tr("Ditt passord ved Gmail"))
         self.textLabel1_10.setText(self.__tr("Full epostadresse i gmail:"))
         self.textLabel2_4.setText(self.__tr("Passord for innlogging:"))
         self.sikkerhetskopiGmailLastopp.setText(self.__tr("Last opp sikkerhetskopi"))
+        self.sikkerhetskopiGmailHuskPassord.setText(self.__tr("Husk"))
         self.sikkerhetskopiGmailHuskEpost.setText(self.__tr("Husk"))
         self.sikkerhetskopiGmailUbrukelig.setText(self.__trUtf8("\x44\x75\x20\x6d\xc3\xa5\x20\x69\x6e\x73\x74\x61\x6c\x6c\x65\x72\x65\x20\x6d\x6f\x64\x75\x6c\x65\x6e\x20\x27\x6c\x69\x62\x67\x6d\x61\x69\x6c\x27\x20\x66\x6f\x72\x20\xc3\xa5\x20\x6c\x61\x73\x74\x65\x20\x6f\x70\x70\x20\x73\x69\x6b\x6b\x65\x72\x68\x65\x74\x73\x6b\x6f\x70\x69\x65\x72\x20\x74\x69\x6c\x20\x47\x6d\x61\x69\x6c\x2e"))
         self.fakturaTab.changeTab(self.TabPage_6,self.__tr("&Sikkerhetskopi"))
