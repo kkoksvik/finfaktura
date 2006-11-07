@@ -80,6 +80,7 @@ class epost:
     def test(self): pass
     
     def kutt(self, s, l=30):
+        assert(type(s) in (types.StringType, types.UnicodeType))
         if len(s) < l: return s
         return s[0:l] + "..."
     
@@ -207,6 +208,3 @@ class test(epost):
         print self.mimemelding().as_string()
         return True
         
-    def test(self):
-        return isinstance(self.mimemelding(), MIMEMultipart)
-    
