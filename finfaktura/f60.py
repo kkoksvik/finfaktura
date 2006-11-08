@@ -14,6 +14,7 @@ import time, os, types
 from string import join
 
 try:
+    import reportlab
     from reportlab.pdfgen import canvas
     from reportlab.lib.units import mm
     from reportlab.lib.colors import yellow, pink, white
@@ -21,7 +22,7 @@ try:
 except ImportError:
     REPORTLAB=False
 
-__version__ = '0.57'
+__version__ = '0.7'
 
 __doc__ = """Modul for å produsere en faktura etter norsk standard f60"""
 
@@ -151,10 +152,18 @@ class f60:
     def _s(self, t):
         """Sørger for at tekst er i riktig kodesett (encoding)"""
         if not type(t) in (types.StringType,types.UnicodeType): return t
-        try: 
-            return unicode(t).encode('latin1')
-        except UnicodeDecodeError:
-            return unicode(t, 'latin1').encode('latin1')
+        # Reportlab 2.x vil ha unicode
+        if reportlab.Version[0] == '2':
+            try: 
+                return unicode(t)
+            except UnicodeDecodeError:
+                return unicode(t, 'latin1')
+        #elif reportlab.Version[0] == '1':
+        else: # Reportlab 1.x vil ha latin1
+            try: 
+                return unicode(t).encode('latin1')
+            except UnicodeDecodeError:
+                return unicode(t, 'latin1').encode('latin1')
 
     def lagBakgrunn(self):
         "Lager den gule giroblanketten, bare for bruk til epostpdf, ikke print"
