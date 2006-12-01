@@ -754,6 +754,9 @@ def byggDatabase(db):
     return db
 
 def finnDatabasenavn(databasenavn="faktura.db"):
+    db = os.getenv('FAKTURADB')
+    if db is not None and os.path.exists(db):
+        return db
     fdir = os.getenv('FAKTURADIR')
     if not fdir:
         #sjekk for windows
