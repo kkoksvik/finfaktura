@@ -31,14 +31,17 @@ ENDRINGER ="""
 1.7:Firma:telefaks+
 1.7:Firma:vilkar+
 
+1.8:Ordrehode:mva-
+1.8:Ordrelinje:mva+
+
 1.9:Database=Oppsett:None
 
 2.0:Oppsett:ID+
 2.0:Oppsett:fakturakatalog+
 2.0:Oppsett:databaseversjon+
 
-2.1:Ordrehode:mva-
-2.1:Ordrelinje:mva+
+#2.1:Ordrehode:mva-         # Denne endringen ble gjort ~1.8
+#2.1:Ordrelinje:mva+
 
 2.1:Sikkerhetskopi:ID+
 2.1:Sikkerhetskopi:ordreID+
@@ -80,7 +83,7 @@ ENDRINGER ="""
 
 import fakturabibliotek 
 import sqlite
-import types
+import types, sys
 from string import join
 
 class OppgraderingsFeil(Exception): pass
@@ -89,7 +92,11 @@ class oppgrader:
     "For oppgradering mellom databaseversjoner"
     endringskart = {}
     
-    def __init__(self):
+    def __init__(self, logg=None):
+        if logg is None:
+            from StringIO import StringIO
+            logg = StringIO()
+        self.logg = logg
         self.lastEndringer(ENDRINGER)
     
     def lastNyDatabase(self, database):
@@ -99,17 +106,19 @@ class oppgrader:
             self.nybib = fakturabibliotek.FakturaBibliotek(database, sjekkVersjon=True)
         except fakturabibliotek.DBNyFeil:  #tom fil, sql er ikke lastet
             self.nydb = fakturabibliotek.byggDatabase(self.nydb) #last sql
-            print "lager db"
+            self.logg.write("lager NyDB\n")
             self.nybib = fakturabibliotek.FakturaBibliotek(self.nydb, sjekkVersjon=False)
         #except DBGammelFeil:
+        self.logg.write("Ny database laget (versjon %s)\n" % self.nybib.versjon())
     
     def lastGammelDatabase(self, database):
         self.gmldb = database
         self.gmldbc = database.cursor()
         self.gmlbib = fakturabibliotek.FakturaBibliotek(database, sjekkVersjon=False)
+        self.logg.write("Gammel database lastet (versjon %s)\n" % self.gmlbib.versjon())
         
     def _oppgrader(self, objekt):
-        print "oppgraderer %s #%s fra versjon %s til versjon %s" % (objekt._tabellnavn, objekt._id, self.gmlbib.versjon(), self.nybib.versjon())
+        self.logg.write("oppgraderer %s #%s fra versjon %s til versjon %s\n" % (objekt._tabellnavn, objekt._id, self.gmlbib.versjon(), self.nybib.versjon()))
         # først laster vi alle egenskapene til objektet inn i en ny dict
         # så går vi gjennom alle endringene og gjør endringene på den nye dict-en
         # returnerer den nye dict.
@@ -120,6 +129,7 @@ class oppgrader:
         #print egenskaper
         if self.gmlbib.versjon() < 2.2:
             # gamle versjoner brukte ikke utf8
+            self.logg.write("Gammel versjon < 2.2 oppdaget, konverterer fra latin1 til unicode\n")
             egenskaper = self._unicode(egenskaper)
         for endringer in self.endringsmegler(objekt._tabellnavn):
             for felt in endringer.keys():
@@ -127,17 +137,28 @@ class oppgrader:
                     if not egenskaper.has_key(felt):
                         egenskaper[felt] = 0
                 elif endringer[felt] == False: #fjernet
-                    print "fjerner felt:",felt
+                    self.logg.write("fjerner felt: %s\n" % felt)
                     egenskaper.pop(felt)
                 else: #navnebytte
-                    print "endrer navn på felt %s til %s" % (felt, endringer[felt])
+                    self.logg.write("endrer navn på felt %s til %s\n" % (felt, endringer[felt]))
                     egenskaper[endringer[felt]] = egenskaper[felt]
                     egenskaper.pop(felt)
             
         k = objekt
         sql = "INSERT INTO %s (%s) VALUES (%s)" % (k._tabellnavn, join(egenskaper.keys(), ","), join(["%s" for z in egenskaper.values()], ","))
-        self.nydbc.execute(sql, egenskaper.values())
-        self.nydb.commit()
+        try:
+            self.nydbc.execute(sql, egenskaper.values())
+        except:
+            exctype, value = sys.exc_info()[:2]
+            self.logg.write('Oppradering feilet: %s: %s\n' % (exctype, value))
+            self.logg.write('SQL-kode som feilet: \n\n=====\n%s\n======\n' % repr(sql))
+            #self.logg.close()
+            ex = OppgraderingsFeil("Oppgradering feilet:\n%s" % value)
+            ex.info = repr(sql)
+            ex.logg = self.lesLogg()
+            raise ex
+        else:
+            self.nydb.commit()
     
     def _unicode(self, d):
         if self.gmlbib.versjon() < 2.2: fra = 'latin1'
@@ -166,7 +187,8 @@ class oppgrader:
             ver,tabell,felt = linje.strip().split(":")
             self.endre(float(ver),tabell,felt)
         from pprint import pprint
-        pprint(self.endringskart)
+        self.logg.write('ENDRINGSKART:\n================\n')
+        pprint(self.endringskart, stream=self.logg)
     
     def endre(self,ver,tabell,felt):
         k = self.endringskart
@@ -215,7 +237,7 @@ class oppgrader:
         # databaseintegritet:
         print "kontrollerer den nye databasen"
         self.nybib.sjekkSikkerhetskopier(lagNyAutomatisk=True)
-
+        self.logg.write('Ny database kontrollert')
 
     def oppgraderSamme(self, dbSti):
         #flytt gammel database 
@@ -234,18 +256,38 @@ class oppgrader:
         self.oppgrader()
         return True
         
-        
+    def lesLogg(self):
+        self.logg.seek(0)
+        r = self.logg.read()
+        self.logg.close()
+        return r
 
 if __name__ == '__main__':
     import sqlite
     from pprint import pprint
-    loggNy = open("faktura.nydb.log", "a+")
-    loggGml = open("faktura.gmldb.log", "a+")
+    loggNy = open("faktura.nydb.log", "wb")
+    loggGml = open("faktura.gmldb.log", "wb")
+    logg = open('faktura.oppgradering.log', 'wb+')
     enc = "utf-8"
-    ny = sqlite.connect(db="faktura.nydb", encoding=enc, command_logfile=loggNy)
-    #gml = sqlite.connect(db="faktura.juksedb", encoding=enc, command_logfile=loggGml)
-    gml = sqlite.connect(db="faktura.gmldb", encoding=enc, command_logfile=loggGml)
-    opp = oppgrader(endringer)
+    #ny = sqlite.connect(db="faktura.nydb", encoding=enc, command_logfile=loggNy)
+    ny = fakturabibliotek.kobleTilDatabase(dbnavn="faktura.nydb", loggfil=loggNy)
+    print "Ny database koblet til"
+    #gml = sqlite.connect(db="faktura.gmldb", encoding=enc, command_logfile=loggGml)
+    gml = fakturabibliotek.kobleTilDatabase(dbnavn="faktura.gmldb", loggfil=loggGml)
+    print "Gammel database koblet til"
+    opp = oppgrader(logg)
     opp.lastNyDatabase(ny)
+    print "Ny database lastet"
     opp.lastGammelDatabase(gml)
-    opp.oppgrader()
+    print "Gammel database lastet"
+    print "Oppgraderer..."
+    try:
+        opp.oppgrader()
+    except OppgraderingsFeil,(E):
+        print "Det gikk skikkelig galt."
+        print E.__str__()
+        print "mer info i loggen: faktura.oppgradering.log"
+        sys.exit(1)
+    else:
+        print u"Oppgradering fullført. Logg følger: \n\n=========\n"
+        print opp.lesLogg()
