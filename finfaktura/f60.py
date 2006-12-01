@@ -11,7 +11,7 @@
 ###########################################################################
 
 import time, os, types
-from string import join
+from string import join, split
 
 try:
     import reportlab
@@ -142,7 +142,8 @@ class f60:
             else:
                 i -= 1
         ret += (t, )
-        return join(ret, "\n")
+        return list(ret)
+        #return join(ret, "\n")
 
     def kutt(self, t, lengde = 200):
         """Kutter en tekst hvis den overstiger en gitt lengde"""
@@ -235,13 +236,13 @@ class f60:
         firmainfo.setTextOrigin(160*mm, 290*mm)
         firmainfo.setFont("Helvetica", 8)
         firmainfo.setFillGray(0.3)
-        firmainfo.textLines("""%(kontaktperson)s
+        firmainfo.textLines(split("""%(kontaktperson)s
                                %(adresse)s
                                %(postnummer)04i %(poststed)s
                                Telefon: %(telefon)s
                                Bankkonto: %(kontonummer)s
                                Org.nr: %(organisasjonsnummer)s
-                               Epost: %(epost)s""" % (self.firma))
+                               Epost: %(epost)s""" % (self.firma), "\n"))
         self.canvas.drawText(firmainfo)
 
 
@@ -252,7 +253,7 @@ class f60:
         kunde = self.canvas.beginText()
         kunde.setFillGray(0.0)
         kunde.setTextOrigin(20*mm, 260*mm)
-        kunde.textLines("Kunde# %03i\n%s" % (self.kunde['nr'], self.kunde['adresse']))
+        kunde.textLines(split("Kunde# %03i\n%s" % (self.kunde['nr'], self.kunde['adresse']), '\n'))
         self.canvas.drawText(kunde)
 
         # detaljer om fakturaen
@@ -364,13 +365,13 @@ class f60:
         # mottakerfelt
         kundeinfo = self.canvas.beginText()
         kundeinfo.setTextOrigin(15*mm, 70*mm)
-        kundeinfo.textLines(self.kunde['adresse'])
+        kundeinfo.textLines(split(self.kunde['adresse'], '\n'))
         self.canvas.drawText(kundeinfo)
 
         # avsenderfelt
         firmaadresse = self.canvas.beginText()
         firmaadresse.setTextOrigin(115*mm, 70*mm)
-        firmaadresse.textLines("%(firmanavn)s\n%(kontaktperson)s\n%(adresse)s\n%(postnummer)04i %(poststed)s" % (self.firma))
+        firmaadresse.textLines(split("%(firmanavn)s\n%(kontaktperson)s\n%(adresse)s\n%(postnummer)04i %(poststed)s" % (self.firma), '\n'))
         self.canvas.drawText(firmaadresse)
 
         # KID
