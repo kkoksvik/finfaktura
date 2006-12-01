@@ -18,9 +18,9 @@ if __name__ == "__main__":
     #test biblioteket
     import sys
     test = sys.argv[1:]
-    if "hjelp" in test:
+    if sys.argv[1] in ("hjelp", '-h', '-help', '--help'):
         from os import execl
-        execl("/bin/grep", "grep", "in test:", "test.py")
+        execl("/bin/grep", "grep", "in test:", sys.argv[0])
     import sqlite
     from pprint import pprint
     logg = open("faktura.sqlite.log", "a+")
@@ -31,7 +31,7 @@ if __name__ == "__main__":
         kunde.navn = u"Havard Dahle"
         kunde.epost = "havard@dahle.no"
         print "kunde:", kunde
-    if "hentKunder" in test:
+    if "hentkunder" in test:
         b = FakturaBibliotek(cx)
         pprint(b.hentKunder())
     if "vare" in test:
