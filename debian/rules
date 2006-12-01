@@ -27,7 +27,7 @@ configure-stamp:
 	# Add here commands to configure the package.
 
 	svn2cl.sh
-	debian/chl.sh debian/changelog
+	dch -i
 	touch configure-stamp
 
 
@@ -78,7 +78,8 @@ install: build
 binary-common:
 	dh_testdir
 	dh_testroot
-	dh_installchangelogs ChangeLog
+#	dh_installchangelogs ChangeLog
+	dh_installchangelogs 
 	#dh_installdocs
 	#dh_installexamples
 #	dh_installmenu
