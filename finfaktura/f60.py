@@ -131,7 +131,7 @@ class f60:
     def paragraf(self, t, par_bredde = 80):
         """Setter inn linjeskift for å sørge for at teksten aldri overskrider en viss bredde"""
         if not t: return ''
-        if len(t) < par_bredde: return t
+        if len(t) < par_bredde: return [t,]
 
         ret = ()
         i = par_bredde
