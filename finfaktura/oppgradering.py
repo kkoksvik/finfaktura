@@ -40,7 +40,7 @@ ENDRINGER ="""
 2.0:Oppsett:fakturakatalog+
 2.0:Oppsett:databaseversjon+
 
-#2.1:Ordrehode:mva-         # Denne endringen ble gjort ~1.8
+#2.1:Ordrehode:mva-         # Denne endringen ble gjort ~1.8, ikke 2.1
 #2.1:Ordrelinje:mva+
 
 2.1:Sikkerhetskopi:ID+
@@ -86,7 +86,9 @@ import sqlite
 import types, sys
 from string import join
 
-class OppgraderingsFeil(Exception): pass
+class OppgraderingsFeil(Exception): 
+    info = ""
+    logg = ""
 
 class oppgrader:
     "For oppgradering mellom databaseversjoner"
@@ -152,7 +154,8 @@ class oppgrader:
             exctype, value = sys.exc_info()[:2]
             self.logg.write('Oppradering feilet: %s: %s\n' % (exctype, value))
             self.logg.write('SQL-kode som feilet: \n\n=====\n%s\n======\n' % repr(sql))
-            #self.logg.close()
+            self.logg.write('Data:\n')
+            pprint(egenskaper, stream=self.logg)
             ex = OppgraderingsFeil("Oppgradering feilet:\n%s" % value)
             ex.info = repr(sql)
             ex.logg = self.lesLogg()
@@ -171,8 +174,9 @@ class oppgrader:
     def endringsmegler(self, tabell):
         gmlver = self.gmlbib.versjon()
         nyver  = self.nybib.versjon()
+        # finner de aktuelle endringene mellom versjonene: 
         deltaer = [kartver for kartver in self.endringskart.keys() if kartver > gmlver and kartver <= nyver]
-        if not deltaer: return
+        if not deltaer: return # ingen endringer skal gjøres
         deltaer.sort()
         for ver in deltaer:
             endringer = self.endringskart[ver]
@@ -286,8 +290,10 @@ if __name__ == '__main__':
     except OppgraderingsFeil,(E):
         print "Det gikk skikkelig galt."
         print E.__str__()
+        print "=="
+        print E.info
+        print "=="
         print "mer info i loggen: faktura.oppgradering.log"
         sys.exit(1)
     else:
-        print u"Oppgradering fullført. Logg følger: \n\n=========\n"
-        print opp.lesLogg()
+        print u"Oppgradering fullført. Den nye databasen heter faktura.nydb. \nLogg finnes i faktura.oppgradering.log. "
