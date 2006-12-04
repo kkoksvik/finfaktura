@@ -17,8 +17,6 @@ import sqlite
 
 PRODUKSJONSVERSJON=False # Sett denne til True for å skjule funksjonalitet som ikke er ferdigstilt
 DATABASEVERSJON=2.7
-#DATABASESQL="/usr/share/finfaktura/data/faktura.sql" # TODO: hvordan finne riktig katalog?
-DATABASESQL="faktura.sql" # TODO: hvordan finne riktig katalog?
 DATABASENAVN="faktura.db"
 #DATABASECONVERTERS={"pdf":pdfdataToType}
 
@@ -738,27 +736,29 @@ class pdfType:
 def debug(s):
     if not PRODUKSJONSVERSJON: print "[faktura]: %s" % s
 
-def lagDatabase(database, dbsql=DATABASESQL):
+def lagDatabase(database, sqlfile=None):
     import sqlite
     logg = open("faktura.sqlite.lag.log", "a+")
-    db = sqlite.connect(db=database, encoding="utf-8", command_logfile=logg)
-    c = db.cursor()
-    c.execute(file(dbsql).read())
+    db = sqlite.connect(database, encoding="utf-8", command_logfile=logg)
+    return byggDatabase(db, sqlfile)
+
+def byggDatabase(db, sqlfile=None):
+    if not sqlfile:
+        if not PRODUKSJONSVERSJON: sqlfile = "faktura.sql"
+        else: "/usr/share/finfaktura/data/faktura.sql"
+    db.cursor().execute(file(sqlfile).read())
     db.commit()
     return db
 
-def byggDatabase(db):
-    c = db.cursor()
-    c.execute(file(DATABASESQL).read())
-    db.commit()
-    return db
-
-def finnDatabasenavn(databasenavn="faktura.db"):
+def finnDatabasenavn(databasenavn=DATABASENAVN):
     db = os.getenv('FAKTURADB')
     if db is not None and os.path.exists(db):
-        return db
+        return db # returnerer miljøvariabelen $FAKTURADB
     fdir = os.getenv('FAKTURADIR')
     if not fdir:
+        #sjekk for utviklermodus
+        if not PRODUKSJONSVERSJON:
+            return databasenavn # returner DATABASENAVN ('faktura.py'?) i samme katalog
         #sjekk for windows
         if sys.platform.startswith('win'):
             pdir = os.getenv('USERPROFILE')
