@@ -237,12 +237,12 @@ class f60:
         firmainfo.setFont("Helvetica", 8)
         firmainfo.setFillGray(0.3)
         firmainfo.textLines(split("""%(kontaktperson)s
-                               %(adresse)s
-                               %(postnummer)04i %(poststed)s
-                               Telefon: %(telefon)s
-                               Bankkonto: %(kontonummer)s
-                               Org.nr: %(organisasjonsnummer)s
-                               Epost: %(epost)s""" % (self.firma), "\n"))
+%(adresse)s
+%(postnummer)04i %(poststed)s
+Telefon: %(telefon)s
+Bankkonto: %(kontonummer)s
+Org.nr: %(organisasjonsnummer)s
+Epost: %(epost)s""" % (self.firma), "\n"))
         self.canvas.drawText(firmainfo)
 
 
@@ -261,11 +261,11 @@ class f60:
         totalsider = 1
         fakturafakta = self.canvas.beginText()
         fakturafakta.setTextOrigin(150*mm, 260*mm)
-        fakturafakta.textLines(""" FAKTURA
-        Fakturanr : %04i
-        Fakturadato: %s
-        Forfallsdato: %s
-        Side: %i av %i
+        fakturafakta.textLines("""FAKTURA
+Fakturanr : %04i
+Fakturadato: %s
+Forfallsdato: %s
+Side: %i av %i
         """ % (self.faktura['nr'],
                self.faktura['utstedt'],
                self.faktura['forfall'],
