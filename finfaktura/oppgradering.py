@@ -54,7 +54,7 @@ ENDRINGER ="""
 2.6:Historikk:+
 2.6:Historikk:ordreid+
 2.6:Historikk:dato+
-2.6:Historikk:handlinid+
+2.6:Historikk:handlingid+
 2.6:Historikk:suksess+
 2.6:Historikk:forklaring+
 
@@ -85,7 +85,8 @@ import fakturabibliotek
 import sqlite
 import types, sys
 from string import join
-
+from pprint import pprint
+    
 class OppgraderingsFeil(Exception): 
     info = ""
     logg = ""
@@ -190,7 +191,6 @@ class oppgrader:
             if linje.strip()[0] == '#': continue #utkommentert
             ver,tabell,felt = linje.strip().split(":")
             self.endre(float(ver),tabell,felt)
-        from pprint import pprint
         self.logg.write('ENDRINGSKART:\n================\n')
         pprint(self.endringskart, stream=self.logg)
     
@@ -268,7 +268,6 @@ class oppgrader:
 
 if __name__ == '__main__':
     import sqlite
-    from pprint import pprint
     loggNy = open("faktura.nydb.log", "wb")
     loggGml = open("faktura.gmldb.log", "wb")
     logg = open('faktura.oppgradering.log', 'wb+')
