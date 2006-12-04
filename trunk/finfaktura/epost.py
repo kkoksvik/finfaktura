@@ -53,8 +53,6 @@ class epost:
         m = MIMEMultipart()
         m['Subject'] = Header(self.tittel, self.charset)
         m['From'] = '%s <%s>' % (Header(self.ordre.firma.firmanavn, self.charset), Header(self.fra, self.charset).encode())
-        if self.kopi:
-            m['Bcc'] = '%s' % (Header(self.ordre.firma.epost, self.charset))
         m['To'] = '%s <%s>' % (Header(self.ordre.kunde.navn, self.charset), Header(self.til, self.charset).encode())
         m.preamble = 'You will not see this in a MIME-aware mail reader.\n'
         # To guarantee the message ends with a newline
@@ -145,7 +143,9 @@ class smtp(epost):
             raise SendeFeil(E)
         except:
             raise
-        res = s.sendmail(self.fra, [self.til], self.mimemelding().as_string())
+        mottakere = [self.til,]
+        if self.kopi: mottakere += self.ordre.firma.epost # sender kopi til oss selv (BCC)
+        res = s.sendmail(self.fra, mottakere, self.mimemelding().as_string())
         s.close()
         if len(res) > 0:
             ### Fra help(smtplib):
@@ -192,15 +192,16 @@ class sendmail(epost):
                 #Specifies mechanism for SMTP authentication. (Only LOGIN and CRAM-MD5)
         # XXX TODO: Hvordan gjøre auth uavhengig av sendmail-implementasjon?
         kmd = "%s %s" % (self.bin, self.til)
+        if self.kopi: kmd += " %s" % self.ordre.firma.epost # kopi til oss selv (BCC)
         inn, ut = os.popen4(kmd)
         try:
             inn.write(self.mimemelding().as_string())
             r = inn.close()
         except:
             raise SendeFeil(u'Sendingen feilet fordi:\n' + ut.read())
-        i = inn.close()
+        #i = inn.close()
         u = ut.close()
-        print(u'[epost.py]: sendmail er avsluttet; %s U %s' % (i,u))
+        print(u'[epost.py]: sendmail er avsluttet; %s U %s' % (r,u))
         return True
 
 class test(epost):
