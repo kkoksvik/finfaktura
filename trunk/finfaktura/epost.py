@@ -17,6 +17,7 @@ from email.MIMEText import MIMEText
 from email import Encoders
 from email.Header import Header, decode_header
 import socket
+from string import join
 
 transportmetoder = ['smtp', 'sendmail']
 try:
@@ -113,6 +114,7 @@ class gmail(epost):
     
 class smtp(epost):
     smtpserver='localhost'
+    smtpport=25
     _tls = False
     _auth = False
     
@@ -158,7 +160,7 @@ class smtp(epost):
             #|      empty dictionary.
 
             feil = [ "%s: %s" % (a, res[a][1]) for a in res.keys() ]
-            raise SendeFeil(u'Sendingen feilet for følgende adresser:\n%s' % feil.join('\n'))
+            raise SendeFeil(u'Sendingen feilet for følgende adresser:\n%s' % join(feil, '\n'))
         return True
 
 class sendmail(epost):
@@ -204,7 +206,7 @@ class sendmail(epost):
         print(u'[epost.py]: sendmail er avsluttet; %s U %s' % (r,u))
         return True
 
-class test(epost):
+class dump(epost):
     def send(self):
         print self.mimemelding().as_string()
         return True
