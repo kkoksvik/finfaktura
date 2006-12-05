@@ -56,7 +56,7 @@ if __name__ == "__main__":
         print "pdf:",pdf.filnavn
     if "pdf" in test:
         _firma = fakturaFirmainfo(cx)
-        f = fakturaOrdre(cx, Id=22, firma=_firma)
+        f = fakturaOrdre(cx, Id=3, firma=_firma)
         b = FakturaBibliotek(cx)
         pdf = b.lagPDF(f, "epost")
         print "pdf:",pdf.filnavn
@@ -108,18 +108,13 @@ if __name__ == "__main__":
         pdf = b.lagPDF(f, "epost")
         print "pdf:",pdf.filnavn
         import epost
-        print "tester mime"
-        m = epost.test(f, pdf.filnavn)
-        m.send()
-        print "tester sendmail"
-        sm = epost.sendmail(f, pdf.filnavn)
-        #sm.send()
-        print "tester smtp"
-        mp = epost.smtp(f, pdf.filnavn)
-        #mp.send()
-        print "tester gmail"
-        gm = epost.gmail(f, pdf.filnavn)
-        #gm.send('a','b')
+        for metode in ('dump', 'sendmail', 'smtp', 'gmail'):
+            m = getattr(epost, metode)()
+            m.faktura(f, pdf.filnavn)
+            print 'tester %s' % metode
+            print m.test()
+            print 'sender %s' % metode
+            print m.send()
         
         
     if "dbtest" in test:
