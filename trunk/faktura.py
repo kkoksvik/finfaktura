@@ -10,7 +10,7 @@
 ###########################################################################
 
 # Sett denne til True for å skjule funksjonalitet som ikke er ferdigstilt
-PRODUKSJONSVERSJON=False
+#PRODUKSJONSVERSJON=False
 
 __doc__ = """Fryktelig fin faktura: skriv ut fakturaene dine"""
 
@@ -154,23 +154,43 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         self.connect(self.okonomiFakturaerSkrivut, SIGNAL("clicked()"), self.okonomiSkrivUtFakturaer)
 
         self.connect(self.sikkerhetskopiGmailLastopp, SIGNAL("clicked()"), self.sikkerhetskopiGmail)
-        #self.connect(self.sikkerhetskopiKvitteringerVis, SIGNAL("clicked()"), self.visKvittering)
         
         for obj in (self.dittfirmaFirmanavn,
             self.dittfirmaOrganisasjonsnummer,
             self.dittfirmaKontaktperson,
             self.dittfirmaEpost,
-            self.dittfirmaAdresse,
             self.dittfirmaPostnummer,
             self.dittfirmaPoststed,
             self.dittfirmaTelefon,
             self.dittfirmaTelefaks,
             self.dittfirmaMobil,
             self.dittfirmaKontonummer,
-            self.dittfirmaVilkar,
-            self.dittfirmaFakturakatalog,
-            self.dittfirmaForfall):
+            self.dittfirmaFakturakatalog):
             self.connect(obj, SIGNAL("lostFocus()"), self.firmaSjekk)
+
+        for obj in (self.dittfirmaAdresse,
+            #self.dittfirmaVilkar
+            ):
+            obj.focusOutEvent = self.firmaSjekk
+            
+        self.connect(self.dittfirmaForfall, SIGNAL("valueChanged(int)"), self.firmaSjekk)
+
+        self.dittfirmaKontrollKart = {
+            self.dittfirmaFirmanavn:'Firmanavn',
+            self.dittfirmaOrganisasjonsnummer:u'Organisasjonsnummer fra Brønnøysund',
+            self.dittfirmaKontaktperson:'Kontaktperson',
+            self.dittfirmaEpost:'Epostadresse',
+            self.dittfirmaAdresse:'Adresse',
+            self.dittfirmaPostnummer:'Postnummer',
+            self.dittfirmaPoststed:'Poststed',
+            self.dittfirmaTelefon:'Telefonnummer',
+            self.dittfirmaMobil:'Mobilnummer',
+            self.dittfirmaKontonummer:'Kontonummer',
+            #self.dittfirmaMva:'Momssats',
+            self.dittfirmaForfall:'Forfallsperiode',
+            self.dittfirmaFakturakatalog:'Lagringssted for fakturaer',
+        }
+
 
         self.kundeKundeliste.contextMenuEvent = self.kundeContextMenu
         self.fakturaFakturaliste.contextMenuEvent = self.fakturaContextMenu
@@ -240,7 +260,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
 
     def skiftTab(self, w):
         i = self.fakturaTab.currentPageIndex()
-        pass
+        #pass
         #debug("gammel tab:%s, ny:%s" % (self.gammelTab, i))
         # stygt hack!
         # TODO: finne ut hvorfor denne blir kalt to ganger for hvert bytte
@@ -967,24 +987,24 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
 
 ############## FIRMAINFO ###################
 
-    def dittfirmaKontroller(self, o=None):
-        k = {
-            self.dittfirmaFirmanavn:'Firmanavn',
-            self.dittfirmaOrganisasjonsnummer:u'Organisasjonsnummer fra Brønnøysund',
-            self.dittfirmaKontaktperson:'Kontaktperson',
-            self.dittfirmaEpost:'Epostadresse',
-            self.dittfirmaAdresse:'Adresse',
-            self.dittfirmaPostnummer:'Postnummer',
-            self.dittfirmaPoststed:'Poststed',
-            self.dittfirmaTelefon:'Telefonnummer',
-            self.dittfirmaMobil:'Mobilnummer',
-            self.dittfirmaKontonummer:'Kontonummer',
-            #self.dittfirmaMva:'Momssats',
-            self.dittfirmaForfall:'Forfallsperiode',
-            self.dittfirmaFakturakatalog:'Lagringssted for fakturaer',
-        }
-        if o is None: return k
-        else: return k[o]
+    #def dittfirmaKontroller(self, o=None):
+        #k = {
+            #self.dittfirmaFirmanavn:'Firmanavn',
+            #self.dittfirmaOrganisasjonsnummer:u'Organisasjonsnummer fra Brønnøysund',
+            #self.dittfirmaKontaktperson:'Kontaktperson',
+            #self.dittfirmaEpost:'Epostadresse',
+            #self.dittfirmaAdresse:'Adresse',
+            #self.dittfirmaPostnummer:'Postnummer',
+            #self.dittfirmaPoststed:'Poststed',
+            #self.dittfirmaTelefon:'Telefonnummer',
+            #self.dittfirmaMobil:'Mobilnummer',
+            #self.dittfirmaKontonummer:'Kontonummer',
+            ##self.dittfirmaMva:'Momssats',
+            #self.dittfirmaForfall:'Forfallsperiode',
+            #self.dittfirmaFakturakatalog:'Lagringssted for fakturaer',
+        #}
+        #if o is None: return k
+        #else: return k[o]
 
     def visFirma(self):
         self.dittfirmaFirmanavn.setText(self.firma.firmanavn)
@@ -1022,6 +1042,31 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             self.dittfirmaLogoPixmap.setPixmap(logo)
             self.dittfirmaFinnFjernLogo.setText('Fjern logo')
 
+    def oppdaterFirmainfo(self, fraObj):
+        kart = {
+            self.dittfirmaFirmanavn            :  self.firma.firmanavn,
+            self.dittfirmaOrganisasjonsnummer  :  self.firma.organisasjonsnummer,
+            self.dittfirmaKontaktperson        :  self.firma.kontaktperson,
+            self.dittfirmaEpost                :  self.firma.epost,
+            self.dittfirmaAdresse              :  self.firma.adresse, 
+            self.dittfirmaPostnummer           :  self.firma.postnummer, 
+            self.dittfirmaPoststed             :  self.firma.poststed,   
+            self.dittfirmaTelefon              :  self.firma.telefon,    
+            self.dittfirmaMobil                :  self.firma.mobil,      
+            self.dittfirmaTelefaks             :  self.firma.telefaks,   
+            self.dittfirmaKontonummer          :  self.firma.kontonummer,
+            self.dittfirmaVilkar               :  self.firma.vilkar,     
+            self.dittfirmaMva                 :  self.firma.mva,        
+            self.dittfirmaForfall            :  self.firma.forfall,    
+            self.dittfirmaFakturakatalog       :  self.faktura.oppsett.fakturakatalog
+            }
+        if isinstance(fraObj, QSpinBox): fun = fraObj.value
+        elif isinstance(fraObj, QComboBox): fun = fraObj.currentText
+        elif isinstance(fraObj, (QLineEdit,QTextEdit,)): fun = fraObj.text
+        
+        debug(u'oppdatere %s til %s' % (fraObj, kart[fraObj]))
+        kart[fraObj] = fun() # finner riktig lagringssted og kjører riktig funksjon
+
     def oppdaterFirma(self):
         self.firma.firmanavn  = self.dittfirmaFirmanavn.text()
         self.firma.organisasjonsnummer = self.dittfirmaOrganisasjonsnummer.text()
@@ -1051,8 +1096,8 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         self.dittfirmaLagreInfo.setText('<font color=green><b>Opplysningene er lagret</b></font>')
         
     def sjekkFirmaMangler(self):
-        m = []
-        kravkart = self.dittfirmaKontroller()
+        kravkart = {}
+        kravkart.update(self.dittfirmaKontrollKart)
         for obj in kravkart.keys():
             if isinstance(obj, QSpinBox): test = obj.value() > 0
             elif isinstance(obj, QComboBox): test = obj.currentText()
@@ -1060,19 +1105,20 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             if test: kravkart.pop(obj)
         return kravkart
 
-    def firmaSjekk(self):
+    def firmaSjekk(self, event=None):
         mangler = 0
         s = u"<b><font color=red>Følgende felter må fylles ut:</font></b><ol>"
         ok = QColor('white')
         tom = QColor('red')
-        for obj in self.dittfirmaKontroller().keys():
+        for obj in self.dittfirmaKontrollKart.keys():
             if isinstance(obj, QSpinBox): test = obj.value() > 0
             elif isinstance(obj, QComboBox): test = obj.currentText()
             elif isinstance(obj, (QLineEdit,QTextEdit,)): test = obj.text()
             if test: 
                 obj.setPaletteBackgroundColor(ok)
+                #self.oppdaterFirmainfo(obj) # lagrer informasjonen
             else:
-                s += u"<li>%s" % self.dittfirmaKontroller(obj)
+                s += u"<li>%s" % self.dittfirmaKontrollKart[obj]
                 obj.setPaletteBackgroundColor(tom)
                 mangler += 1
         if not mangler:
@@ -1304,10 +1350,6 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             self.sikkerhetskopiGmailUbrukelig.show()
             self.sikkerhetskopiGmailLastopp.setEnabled(False)
 
-        #ins = self.sikkerhetskopiKvitteringer.insertItem
-        #for kvit in self.faktura.hentSikkerhetskopier():
-            #ins("Kvittering #%i (laget %s): Ordre #%i" % (kvit._id, strftime('%Y-%m-%d', localtime(kvit.dato)), kvit.ordreID), 0)
-            #self.sikkerhetskopiKvitteringer.
 
     def sikkerhetskopiGmail(self):
         bruker = self.sikkerhetskopiGmailEpost.text()
@@ -1324,13 +1366,6 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         if self.sikkerhetskopiGmailHuskPassord.isChecked():
             self.faktura.epostoppsett.gmailpassord = self.sikkerhetskopiGmailPassord.text()
         return r
-        
-    #def visKvittering(self):
-        #kvits = self.faktura.hentSikkerhetskopier()
-        #kvits.reverse()
-        #kvit = kvits[self.sikkerhetskopiKvitteringer.currentItem()]
-        #debug(kvit)
-        #os.system('kpdf %s' % kvit.lagFil())
         
 
 ############## GENERELLE METODER ###################
@@ -1354,6 +1389,9 @@ if __name__ == "__main__":
         print __doc__
         print "Bruk %s -i for å lage kommandolinjefaktura" % sys.argv[0]
         sys.exit()
+    elif '-v' in sys.argv[1:]:
+        import finfaktura
+        print finfaktura.__version__
     elif nogui or "-i" in sys.argv[1:]:
         #interactive"
         cli_faktura()
