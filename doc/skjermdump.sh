@@ -9,7 +9,8 @@
 ###########################################################################
 
 
-PROGRAMNAVN="FRYKTELIG FIN FADESE (utviklerversjon)" 
+#PROGRAMNAVN="FRYKTELIG FIN FADESE (utviklerversjon)" 
+PROGRAMNAVN="Fryktelig fin faktura"
 
 TESTNAVN="finfaktura" 
 TESTDATO=$(date +%Y-%m-%d);
@@ -55,7 +56,7 @@ BILDEKATALOG=skjermbilder-$TESTNAVN-$VERSJON-$TESTDATO;
 test -d "$BILDEKATALOG" || mkdir "$BILDEKATALOG";
 
 # START PROGRAMMET
-{ FAKTURADB=testdata.db ./faktura.py & };
+{ FAKTURADB=faktura.testdb ./faktura.py & };
 
 # VENT TIL PROGRAMMET HAR STARTET
 sleep 5;
