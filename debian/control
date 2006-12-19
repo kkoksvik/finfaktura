@@ -7,14 +7,15 @@ Standards-Version: 3.6.2
 
 Package: finfaktura
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, ${python:Depends}, python-qt3, python-reportlab, python-sqlite
+Depends: ${shlibs:Depends}, ${misc:Depends}, ${python:Depends}, python-qt3, python-reportlab, python-sqlite |
+python-pysqlite1.1
 Suggests: python-psyco, python-libgmail, python-beautifulsoup
 Description: Create and manage invoices (Norwegian specs)
  Invoices, customers, products. Creates PDF invoices.
  Automatic email submission and backup.
  .
- Requires python and the reportlab extension.
- Extra value added with the beautifulsoup and libgmail modules.
+ Requires python, python-qt3 and the reportlab extension.
+ Extra value added with the beautifulsoup and libgmail python modules.
 
 #Package: finfaktura-doc
 #Architecture: all
