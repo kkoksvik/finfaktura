@@ -9,9 +9,6 @@
 # $Id$
 ###########################################################################
 
-# Sett denne til True for å skjule funksjonalitet som ikke er ferdigstilt
-#PRODUKSJONSVERSJON=False
-
 __doc__ = """Fryktelig fin faktura: skriv ut fakturaene dine"""
 
 import sys, os.path, dircache, mimetypes, re
@@ -82,8 +79,6 @@ except ImportError:
     cli_faktura()
     sys.exit()
 
-
-# sys.setappdefaultencoding("utf-8")
 class Faktura (faktura): ## leser gui fra faktura_ui.py
     db = None
     denne_kunde = None
@@ -260,17 +255,6 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
 
     def skiftTab(self, w):
         i = self.fakturaTab.currentPageIndex()
-        #pass
-        #debug("gammel tab:%s, ny:%s" % (self.gammelTab, i))
-        # stygt hack!
-        # TODO: finne ut hvorfor denne blir kalt to ganger for hvert bytte
-        #if self.gammelTab == i: return
-        #if self.gammelTab == 3:
-            #skifter bort fra firmainfo, lagre automatisk
-            #debug("Lagrer firmainfo automatisk")
-            #self.oppdaterFirma()
-            #self.gammelTab = i
-        #debug("setter gammeltab til: %s" % i)
         if i is 0: self.visFaktura()
         elif i is 1: self.visKunder()
         elif i is 2: self.visVarer()
@@ -280,7 +264,6 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         elif i is 6: self.visMyndigheter()
         elif i is 7: self.visSikkerhetskopi()
         self.gammelTab = i
-#     elif i is 5. self.visOppsett()
 
 ################## FAKTURA ########################
 
@@ -986,25 +969,6 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         self.visVarer()
 
 ############## FIRMAINFO ###################
-
-    #def dittfirmaKontroller(self, o=None):
-        #k = {
-            #self.dittfirmaFirmanavn:'Firmanavn',
-            #self.dittfirmaOrganisasjonsnummer:u'Organisasjonsnummer fra Brønnøysund',
-            #self.dittfirmaKontaktperson:'Kontaktperson',
-            #self.dittfirmaEpost:'Epostadresse',
-            #self.dittfirmaAdresse:'Adresse',
-            #self.dittfirmaPostnummer:'Postnummer',
-            #self.dittfirmaPoststed:'Poststed',
-            #self.dittfirmaTelefon:'Telefonnummer',
-            #self.dittfirmaMobil:'Mobilnummer',
-            #self.dittfirmaKontonummer:'Kontonummer',
-            ##self.dittfirmaMva:'Momssats',
-            #self.dittfirmaForfall:'Forfallsperiode',
-            #self.dittfirmaFakturakatalog:'Lagringssted for fakturaer',
-        #}
-        #if o is None: return k
-        #else: return k[o]
 
     def visFirma(self):
         self.dittfirmaFirmanavn.setText(self.firma.firmanavn)
