@@ -334,6 +334,11 @@ class fakturaKunde(fakturaKomponent):
         except TypeError:
             raise KundeFeil(u"Kundeinfo ikke korrekt utfylt")
 
+    def epostadresse(self):
+        "Gir en korrekt epostadresse"
+        ### XXX: TODO: quote riktig
+        return '"%s" <%s>' % (self.navn, self.epost)
+
     def settSlettet(self, erSlettet=True):
         debug("sletter kunde %s: %s" % (self._id, str(erSlettet)))
         if erSlettet: self.slettet = time()

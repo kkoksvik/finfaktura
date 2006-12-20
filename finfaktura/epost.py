@@ -210,4 +210,5 @@ class dump(epost):
     def send(self):
         print self.mimemelding().as_string()
         return True
+    def test(self): return self.send()
         

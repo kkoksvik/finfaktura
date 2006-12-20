@@ -114,7 +114,7 @@ if __name__ == "__main__":
             print 'tester %s' % metode
             print m.test()
             print 'sender %s' % metode
-            print m.send()
+            #print m.send()
         
         
     if "dbtest" in test:
