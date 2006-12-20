@@ -1,10 +1,9 @@
 This is finfaktura, written and maintained by Håvard Dahle <havard@dahle.no>
-on Sat,  7 Oct 2006 17:24:30 +0200.
 
 The original source can always be found at:
-	ftp://ftp.debian.org/dists/unstable/main/source/
+	http://code.google.com/p/finfaktura/source
 
-Copyright (C) 2005-2006  Håvard Dahle
+Copyright (C) 2005-2006  Håvard Dahle. Parts (C) Håvard Sjøvoll
 
 License:
 
