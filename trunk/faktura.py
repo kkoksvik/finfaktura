@@ -322,8 +322,8 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             else: bet = "Nei"
             l = QListViewItem(self.fakturaFakturaliste,
                               "%06d" % ordre.ID,
-                              ordre.tekst,
-                              ordre.kunde.navn,
+                              '%s' % ordre.tekst,
+                              '%s' % ordre.kunde.navn,
                               "%.2f kr" % (ordre.finnPris() + ordre.finnMva()),
                               strftime("%Y-%m-%d %H:%M", localtime(ordre.forfall)),
                               bet
