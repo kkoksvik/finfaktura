@@ -28,6 +28,7 @@ configure-stamp:
 
 	svn2cl.sh
 	dch -i
+	svn commit -m 'Pakker for release' ChangeLog ChangeLog.Debian 
 	touch configure-stamp
 
 
