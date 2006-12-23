@@ -16,7 +16,7 @@ import sqlite
 
 
 PRODUKSJONSVERSJON=False # Sett denne til True for å skjule funksjonalitet som ikke er ferdigstilt
-DATABASEVERSJON=2.7
+DATABASEVERSJON=2.8
 DATABASENAVN="faktura.db"
 #DATABASECONVERTERS={"pdf":pdfdataToType}
 
@@ -154,6 +154,10 @@ class FakturaBibliotek:
         
     def sendEpost(self, ordre, pdf, tekst=None, transport='sendmail'):
         import epost
+        t = epost.dump()
+        t.faktura(ordre, pdf, tekst, testmelding=True)
+        t.send()
+        
         m = getattr(epost,transport)() # laster riktig transport (gmail/smtp/sendmail) 
         set = self.epostoppsett
         if transport == 'gmail':
@@ -367,13 +371,13 @@ class fakturaVare(fakturaKomponent):
         
     def finnKjopere(self):
         u"Finner hvem som har kjøpt denne varen, returnerer liste av fakturaKunde"
-        sql='SELECT DISTINCT kundeID FROM Ordrehode INNER JOIN Ordrelinje ON Ordrehode.ID=Ordrelinje.ordrehodeID WHERE vareID=%i'
+        sql='SELECT DISTINCT kundeID FROM Ordrehode INNER JOIN Ordrelinje ON Ordrehode.ID=Ordrelinje.ordrehodeID WHERE kansellert=0 AND vareID=%i'
         self.c.execute(sql % self._id)
         return [fakturaKunde(self.db, Id=i[0]) for i in self.c.fetchall()]
 
     def finnTotalsalg(self):
         u'Finner det totale salgsbeløpet (eks mva) for denne varen'
-        self.c.execute('SELECT SUM(kvantum*enhetspris) FROM Ordrelinje WHERE vareID=%i' % self._id)
+        self.c.execute('SELECT SUM(kvantum*enhetspris) FROM Ordrelinje INNER JOIN Ordrehode ON Ordrelinje.ordrehodeID=Ordrehode.ID WHERE kansellert=0 AND vareID=%i' % self._id)
         try:
             return self.c.fetchone()[0]
         except TypeError:
@@ -381,7 +385,7 @@ class fakturaVare(fakturaKomponent):
 
     def finnAntallSalg(self):
         u'Finner det totale antallet salg denne varen har gjort'
-        self.c.execute('SELECT COUNT(*) FROM Ordrelinje WHERE vareID=%i' % self._id)
+        self.c.execute('SELECT COUNT(*) FROM Ordrelinje INNER JOIN Ordrehode ON Ordrelinje.ordrehodeID=Ordrehode.ID WHERE kansellert=0 AND vareID=%i' % self._id)
         try:
             return self.c.fetchone()[0]
         except TypeError:
@@ -389,7 +393,7 @@ class fakturaVare(fakturaKomponent):
 
     def finnSisteSalg(self):
         u'Finner det siste salg denne varen har var med i'
-        self.c.execute('SELECT Ordrehode.ID FROM Ordrehode INNER JOIN Ordrelinje ON Ordrehode.ID=Ordrelinje.ordrehodeID WHERE vareID=%i ORDER BY ordredato DESC LIMIT 1' % self._id)
+        self.c.execute('SELECT Ordrehode.ID FROM Ordrehode INNER JOIN Ordrelinje ON Ordrehode.ID=Ordrelinje.ordrehodeID WHERE kansellert=0 AND vareID=%i ORDER BY ordredato DESC LIMIT 1' % self._id)
         try:
             return fakturaOrdre(self.db, Id=self.c.fetchone()[0])
         except TypeError:
