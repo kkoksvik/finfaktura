@@ -20,7 +20,6 @@ from finfaktura.myndighetene import myndighetene
 from finfaktura.epost import BRUK_GMAIL
 import finfaktura.okonomi as fakturaOkonomi
 import finfaktura.sikkerhetskopi as sikkerhetskopi
-from finfaktura.ekstra import QBuffer, slettetLogo_data, forfaltLogo_data
 
 def cli_faktura():
     from finfaktura.cli import CLIListe, CLIInput
@@ -71,6 +70,7 @@ def cli_faktura():
 nogui = False
 try:
     from qt import *
+    from finfaktura.ekstra import QBuffer, slettetLogo_data, forfaltLogo_data
     from finfaktura.faktura_ui import faktura ## husk å kjøre "pyuic -x faktura.ui > faktura_ui.py" først!
 except ImportError:
     print u"OOPS! Problemer med å laste moduler (er PyQT installert?)"
@@ -636,7 +636,8 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             #self.fakturaSendepostBoks.ordre.sendt = time() # XXX TODO: logg tid for sending
 
         except:
-            self.alert(u'Feil ved sending av faktura. Prøv å sende med en annen epostmetode.\nDetaljer:\n%s' % sys.exc_info()[1])
+            f = sys.exc_info()[1]
+            self.alert(u'Feil ved sending av faktura. Prøv å sende med en annen epostmetode.\n\nDetaljer:\n%s' % f)
         else:
             self.fakturaSendepostBoks.hide()
             self.obs('Fakturaen er sendt')
