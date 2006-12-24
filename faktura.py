@@ -1021,7 +1021,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             self.dittfirmaKontonummer          :  self.firma.kontonummer,
             self.dittfirmaVilkar               :  self.firma.vilkar,     
             self.dittfirmaMva                 :  self.firma.mva,        
-            self.dittfirmaForfall            :  self.firma.forfall,    
+            self.dittfirmaForfall             :  self.firma.forfall,    
             self.dittfirmaFakturakatalog       :  self.faktura.oppsett.fakturakatalog
             }
         if isinstance(fraObj, QSpinBox): fun = fraObj.value
@@ -1132,9 +1132,9 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
 ############## Epost ###################
 
     def visEpost(self): 
-        if not self.faktura.epostoppsett.smtpfra:
-            self.faktura.epostoppsett.smtpfra = self.firma.epost
-        self.epostAvsenderadresse.setText(self.faktura.epostoppsett.smtpfra)
+        if self.faktura.epostoppsett.bcc:
+            self.epostSendkopi.setChecked(True)
+        self.epostKopiadresse.setText(self.faktura.epostoppsett.bcc)
         self.epostLosning.setButton(self.faktura.epostoppsett.transport)
         self.roterAktivSeksjon(self.faktura.epostoppsett.transport)
         if BRUK_GMAIL:
@@ -1151,7 +1151,9 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
     def oppdaterEpost(self):
         debug("lagrer epost")
         self.faktura.epostoppsett.transport = self.epostLosning.selectedId()
-        self.faktura.epostoppsett.smtpfra = self.epostAvsenderadresse.text()
+        if not self.epostSendkopi.isChecked():
+            self.epostKopiadresse.setText('')
+        self.faktura.epostoppsett.bcc = self.epostKopiadresse.text()
         self.faktura.epostoppsett.gmailbruker = self.epostGmailEpost.text()
         self.faktura.epostoppsett.gmailpassord = self.epostGmailPassord.text()
         self.faktura.epostoppsett.smtpserver = self.epostSmtpServer.text()
@@ -1214,7 +1216,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             debug("%s %s %s %s" % (bmnd, smnd, beg, slutt))
             ordreliste.begrensDato(beg, slutt)
         if self.okonomiAvgrensningerKunde.isChecked():
-            krex = re.search(re.compile(r'kunde\ #\s?(\d+)'), 
+            krex = re.search(re.compile(r'kunde\ #\s?(\d+)'), ### TODO: Det er alt for sårbart å bruke regex her... Gjøre dette som andre steder.
                 unicode(self.okonomiAvgrensningerKundeliste.currentText()))
             try:
                 ordreliste.begrensKunde(self.faktura.hentKunde(int(krex.group(1))))

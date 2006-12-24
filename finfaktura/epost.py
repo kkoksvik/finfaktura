@@ -34,9 +34,9 @@ class IkkeImplementert(Exception): pass
 class epost:
       
     charset='iso-8859-15' # epostens tegnsett
-    kopi = True
+    kopi = None
     
-    def faktura(self, ordre, pdfFilnavn, tekst=None, fra=None, testmelding=False, kopi=True):
+    def faktura(self, ordre, pdfFilnavn, tekst=None, fra=None, testmelding=False):
         self.ordre = ordre
         self.pdfFilnavn = pdfFilnavn
         if fra is None: fra = ordre.firma.epost
@@ -48,7 +48,6 @@ class epost:
         self.testmelding = testmelding
         if self.testmelding: # vi er i utviklingsmodus, skift tittel
             self.tittel = u"TESTFAKTURA "+self.tittel
-        self.kopi = kopi
         
     def mimemelding(self):
         m = MIMEMultipart()
@@ -82,6 +81,13 @@ class epost:
         assert(type(s) in (types.StringType, types.UnicodeType))
         if len(s) < l: return s
         return s[0:l] + "..."
+    
+    def settKopi(self, s):
+        # setter BCC-kopi til s
+        assert(type(s) in (types.UnicodeType, types.StringType)
+        # sjekk at s er en gyldig epostadresse
+        # XXX TOODO
+        self.kopi = s
     
 class gmail(epost):
     def auth(self, brukernavn, passord):
@@ -146,7 +152,7 @@ class smtp(epost):
         except:
             raise
         mottakere = [self.til,]
-        if self.kopi: mottakere += self.ordre.firma.epost # sender kopi til oss selv (BCC)
+        if self.kopi: mottakere += self.kopi # sender kopi til oss selv (BCC)
         res = s.sendmail(self.fra, mottakere, self.mimemelding().as_string())
         s.close()
         if len(res) > 0:
@@ -194,7 +200,7 @@ class sendmail(epost):
                 #Specifies mechanism for SMTP authentication. (Only LOGIN and CRAM-MD5)
         # XXX TODO: Hvordan gjøre auth uavhengig av sendmail-implementasjon?
         kmd = "%s %s" % (self.bin, self.til)
-        if self.kopi: kmd += " %s" % self.ordre.firma.epost # kopi til oss selv (BCC)
+        if self.kopi: kmd += " %s" % self.kopi # kopi til oss selv (BCC)
         inn, ut = os.popen4(kmd)
         try:
             inn.write(self.mimemelding().as_string())

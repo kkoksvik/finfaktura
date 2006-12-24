@@ -109,7 +109,7 @@
         
     -- Versjon 2.7
     CREATE TABLE Epost (ID INTEGER PRIMARY KEY,
-        smtpfra UNICODE,
+        bcc UNICODE,
         transport INT DEFAULT 0,
         gmailbruker UNICODE,
         gmailpassord UNICODE,
@@ -124,4 +124,4 @@
     	
 --6) =============== Oppdater tabellene ==================
 --7) ========= Sett inn default-verdier ==================
-    UPDATE Oppsett SET databaseversjon=2.7 WHERE ID=1;
+    UPDATE Oppsett SET databaseversjon=2.8 WHERE ID=1;
