@@ -27,14 +27,23 @@
     dch --newversion $VERSJON
     -> skrive inn hva som har skjedd siden $VERSJON-1
     
+8. Committe endringer til svn
+    svn commit -m 'pakker og klargjør $VERSJON'
+
 9. Lage .deb
     debian/rules binary
 
-10. Lage skjermdump
+10. Tagge versjonen
+    svn copy https://finfaktura.googlecode.com/svn/branches/$VERSJON https://finfaktura.googlecode.com/svn/tags/versjon-$VERSJON
+
+
+11. Lage skjermdump
     doc/skjermdump.sh
     -> navngi etter .deb-dir: finfaktura-0.95.deb-dir
     
     
-11. Kopier til lurtgjort.no
+12. Kopier til lurtgjort.no
     -> .deb
     -> skjermdump
+    
+13- Hurra!
