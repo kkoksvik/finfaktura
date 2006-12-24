@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'faktura.ui'
 #
-# Created: Sat Dec 23 02:41:13 2006
+# Created: Sun Dec 24 02:04:14 2006
 #      by: The PyQt User Interface Compiler (pyuic) 3.16
 #
 # WARNING! All changes made in this file will be lost!
@@ -2794,12 +2794,12 @@ class faktura(QMainWindow):
         self.line1_2.setFrameShadow(QFrame.Sunken)
         self.line1_2.setFrameShape(QFrame.HLine)
 
+        self.fakturaLagPapir = QPushButton(self.groupBox8_2,"fakturaLagPapir")
+        self.fakturaLagPapir.setGeometry(QRect(120,50,60,23))
+
         self.fakturaLagEpost = QPushButton(self.groupBox8_2,"fakturaLagEpost")
         self.fakturaLagEpost.setGeometry(QRect(48,50,60,23))
         self.fakturaLagEpost.setAutoMask(0)
-
-        self.fakturaLagPapir = QPushButton(self.groupBox8_2,"fakturaLagPapir")
-        self.fakturaLagPapir.setGeometry(QRect(120,50,60,23))
 
         self.fakturaVisKansellerte = QCheckBox(self.tab,"fakturaVisKansellerte")
         self.fakturaVisKansellerte.setGeometry(QRect(750,40,180,20))
@@ -3750,12 +3750,12 @@ class faktura(QMainWindow):
         self.fakturaLagKvittering.setAccel(QKeySequence(self.__tr("Alt+U")))
         QToolTip.add(self.fakturaLagKvittering,self.__trUtf8("\x53\x6b\x72\x69\x76\x65\x72\x20\x75\x74\x20\x65\x6e\x20\x6b\x76\x69\x74\x74\x65\x72\x69\x6e\x67\x20\x70\xc3\xa5\x20\x73\x6b\x72\x69\x76\x65\x72\x65\x6e"))
         self.textLabel2_2.setText(self.__tr("Du skal sende fakturaen:"))
-        self.fakturaLagEpost.setText(self.__tr("Epost"))
-        self.fakturaLagEpost.setAccel(QKeySequence(QString.null))
-        QToolTip.add(self.fakturaLagEpost,self.__tr("Lager en faktura av angitt type"))
         self.fakturaLagPapir.setText(self.__tr("Papir"))
         self.fakturaLagPapir.setAccel(QKeySequence(QString.null))
         QToolTip.add(self.fakturaLagPapir,self.__tr("Lager en faktura av angitt type"))
+        self.fakturaLagEpost.setText(self.__tr("Ep&ost"))
+        self.fakturaLagEpost.setAccel(QKeySequence(self.__tr("Alt+O")))
+        QToolTip.add(self.fakturaLagEpost,self.__tr("Lager en faktura av angitt type"))
         self.fakturaVisKansellerte.setText(self.__tr("vis kan&sellerte"))
         self.fakturaVisKansellerte.setAccel(QKeySequence(self.__tr("Alt+S")))
         QToolTip.add(self.fakturaVisKansellerte,self.__tr("Angir om kansellerte fakturaer skal vises"))

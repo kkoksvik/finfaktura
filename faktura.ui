@@ -432,31 +432,6 @@
                 </widget>
                 <widget class="QPushButton">
                     <property name="name">
-                        <cstring>fakturaLagEpost</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>48</x>
-                            <y>50</y>
-                            <width>60</width>
-                            <height>23</height>
-                        </rect>
-                    </property>
-                    <property name="autoMask">
-                        <bool>false</bool>
-                    </property>
-                    <property name="text">
-                        <string>Epost</string>
-                    </property>
-                    <property name="accel">
-                        <string></string>
-                    </property>
-                    <property name="toolTip" stdset="0">
-                        <string>Lager en faktura av angitt type</string>
-                    </property>
-                </widget>
-                <widget class="QPushButton">
-                    <property name="name">
                         <cstring>fakturaLagPapir</cstring>
                     </property>
                     <property name="geometry">
@@ -472,6 +447,31 @@
                     </property>
                     <property name="accel">
                         <string></string>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>Lager en faktura av angitt type</string>
+                    </property>
+                </widget>
+                <widget class="QPushButton">
+                    <property name="name">
+                        <cstring>fakturaLagEpost</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>48</x>
+                            <y>50</y>
+                            <width>60</width>
+                            <height>23</height>
+                        </rect>
+                    </property>
+                    <property name="autoMask">
+                        <bool>false</bool>
+                    </property>
+                    <property name="text">
+                        <string>Ep&amp;ost</string>
+                    </property>
+                    <property name="accel">
+                        <string>Alt+O</string>
                     </property>
                     <property name="toolTip" stdset="0">
                         <string>Lager en faktura av angitt type</string>
