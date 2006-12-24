@@ -168,6 +168,8 @@ class FakturaBibliotek:
             if set.smtpbruker: m.auth(set.smtpbruker, set.smtppassord)
         elif transport == 'sendmail':
             m.settSti(set.sendmailsti)
+        if set.bcc is not None and len(set.bcc) > 0:
+            m.settKopi(set.bcc)
         m.faktura(ordre, pdf, tekst, testmelding=self.produksjonsversjon==False)
         return m.send()
         

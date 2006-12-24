@@ -77,6 +77,7 @@ ENDRINGER ="""
 2.7:Epost:smtppassord+
 2.7:Epost:sendmailsti+
 
+2.8:Epost:smtpfra=bcc
 
 """
 

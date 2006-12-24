@@ -3155,6 +3155,44 @@ betalingsvilkår</string>
                     </property>
                 </widget>
             </widget>
+            <widget class="Line">
+                <property name="name">
+                    <cstring>line6_2</cstring>
+                </property>
+                <property name="geometry">
+                    <rect>
+                        <x>10</x>
+                        <y>260</y>
+                        <width>700</width>
+                        <height>20</height>
+                    </rect>
+                </property>
+                <property name="frameShape">
+                    <enum>HLine</enum>
+                </property>
+                <property name="frameShadow">
+                    <enum>Sunken</enum>
+                </property>
+                <property name="orientation">
+                    <enum>Horizontal</enum>
+                </property>
+            </widget>
+            <widget class="QPushButton">
+                <property name="name">
+                    <cstring>epostLosningTest</cstring>
+                </property>
+                <property name="geometry">
+                    <rect>
+                        <x>20</x>
+                        <y>230</y>
+                        <width>124</width>
+                        <height>23</height>
+                    </rect>
+                </property>
+                <property name="text">
+                    <string>Test forbindelse</string>
+                </property>
+            </widget>
             <widget class="QButtonGroup">
                 <property name="name">
                     <cstring>epostLosning</cstring>
@@ -3163,7 +3201,7 @@ betalingsvilkår</string>
                     <rect>
                         <x>20</x>
                         <y>20</y>
-                        <width>340</width>
+                        <width>470</width>
                         <height>140</height>
                     </rect>
                 </property>
@@ -3250,72 +3288,56 @@ betalingsvilkår</string>
                     </property>
                 </widget>
             </widget>
-            <widget class="QLineEdit">
+            <widget class="QGroupBox">
                 <property name="name">
-                    <cstring>epostAvsenderadresse</cstring>
-                </property>
-                <property name="geometry">
-                    <rect>
-                        <x>150</x>
-                        <y>170</y>
-                        <width>351</width>
-                        <height>21</height>
-                    </rect>
-                </property>
-            </widget>
-            <widget class="QLabel">
-                <property name="name">
-                    <cstring>textLabel2_6</cstring>
-                </property>
-                <property name="geometry">
-                    <rect>
-                        <x>22</x>
-                        <y>169</y>
-                        <width>110</width>
-                        <height>21</height>
-                    </rect>
-                </property>
-                <property name="text">
-                    <string>Avsenderadresse:</string>
-                </property>
-            </widget>
-            <widget class="QPushButton">
-                <property name="name">
-                    <cstring>epostLosningTest</cstring>
+                    <cstring>epostSendkopi</cstring>
                 </property>
                 <property name="geometry">
                     <rect>
                         <x>20</x>
-                        <y>200</y>
-                        <width>124</width>
-                        <height>23</height>
+                        <y>170</y>
+                        <width>470</width>
+                        <height>50</height>
                     </rect>
                 </property>
-                <property name="text">
-                    <string>Test forbindelse</string>
+                <property name="title">
+                    <string>Send kopi av e-faktura</string>
                 </property>
-            </widget>
-            <widget class="Line">
-                <property name="name">
-                    <cstring>line6_2</cstring>
+                <property name="checkable">
+                    <bool>true</bool>
                 </property>
-                <property name="geometry">
-                    <rect>
-                        <x>10</x>
-                        <y>240</y>
-                        <width>700</width>
-                        <height>20</height>
-                    </rect>
+                <property name="checked">
+                    <bool>false</bool>
                 </property>
-                <property name="frameShape">
-                    <enum>HLine</enum>
-                </property>
-                <property name="frameShadow">
-                    <enum>Sunken</enum>
-                </property>
-                <property name="orientation">
-                    <enum>Horizontal</enum>
-                </property>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>textLabel2_6</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>10</x>
+                            <y>24</y>
+                            <width>80</width>
+                            <height>10</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>Send kopi (BCC) til:</string>
+                    </property>
+                </widget>
+                <widget class="QLineEdit">
+                    <property name="name">
+                        <cstring>epostKopiadresse</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>100</x>
+                            <y>20</y>
+                            <width>350</width>
+                            <height>21</height>
+                        </rect>
+                    </property>
+                </widget>
             </widget>
         </widget>
         <widget class="QWidget">
