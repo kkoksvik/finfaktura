@@ -1,0 +1,28 @@
+finfaktura (0.95) 1; urgency=low
+
+  * Fikser grov bug i BCC-kode, og fikser opp brukergrensesnittet for BCC
+  * Bug i kundeoversikten: inkluderte kansellerte fakturaer i kundedetaljer
+
+ -- Håvard Dahle <hadahl@hadahl>  Sun, 24 Dec 2006 02:33:27 +0100
+
+
+finfaktura (0.94-1) 1; urgency=low
+
+  * Støtte for python-reportlab2.0 (som edgy edge og debian etch bruker)
+  * Kan sende epost-faktura fra programmet
+  * Bedre feilmelding ved oppgradering
+
+ -- Håvard Dahle <havard@mediestasjon>  Mon, 11 Dec 2006 21:44:17 +0100
+
+finfaktura (0.7) unstable; urgency=low
+
+  * More releases
+
+ -- Havard Dahle <havard@dahle.no>  Sat, 14 Oct 2006 02:31:12 +0100
+
+finfaktura (0.6b1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Håvard Dahle <havard@dahle.no>  Sat,  7 Oct 2006 17:24:30 +0200
+
