@@ -1,0 +1,505 @@
+2006-12-24 01:06  havard.dahle
+
+	* .: Lager grein for 0.95-release
+
+2006-12-24 01:04  havard.dahle
+
+	* trunk/faktura.ui, trunk/finfaktura/faktura_ui.py: lager snarvei
+	  til sende-epost-knapp
+
+2006-12-24 01:00  havard.dahle
+
+	* trunk/faktura.testdb: testdata, mer
+
+2006-12-24 01:00  havard.dahle
+
+	* trunk/faktura.py: 1. feiler på riktig måte når pyqt mangler. 2.
+	  småendring på feilmelding ved epostsending
+
+2006-12-24 00:56  havard.dahle
+
+	* trunk/finfaktura/epost.py: bug: bcc-adresser blei føkka opp, det
+	  likte ikke sendmail
+
+2006-12-24 00:20  havard.dahle
+
+	* trunk/finfaktura/epost.py: bug: typo
+
+2006-12-24 00:18  havard.dahle
+
+	* trunk/finfaktura/epost.py: fjerner bug i påvente av korrekt
+	  implementasjon som følger rfc 2822. vi later som alle
+	  epostadresser er ascii
+
+2006-12-24 00:08  havard.dahle
+
+	* trunk/faktura.py, trunk/faktura.sql, trunk/faktura.ui,
+	  trunk/finfaktura/epost.py, trunk/finfaktura/faktura_ui.py,
+	  trunk/finfaktura/fakturabibliotek.py,
+	  trunk/finfaktura/oppgradering.py: sender bcc på en mer fornuftig
+	  måte (endringer i ui og logikk)
+
+2006-12-23 23:59  havard.dahle
+
+	* trunk/faktura.testdb: mer testdata
+
+2006-12-23 23:34  havard.dahle
+
+	* trunk/finfaktura/fakturabibliotek.py: viskunde: Viser bare
+	  fakturaer som ikke er kansellert
+
+2006-12-20 23:35  havard.dahle
+
+	* trunk/finfaktura/epost.py, trunk/finfaktura/fakturabibliotek.py,
+	  trunk/finfaktura/test.py: eposttest og epostadresse
+
+2006-12-20 23:33  havard.dahle
+
+	* trunk/debian/copyright, trunk/debian/rules: bedre pakke
+
+2006-12-20 23:33  havard.dahle
+
+	* trunk/finfaktura/__init__.py: Bumper versjon til 0.95
+
+2006-12-20 07:35  havard.dahle
+
+	* trunk/faktura.py: fjerner gammelt skrot
+
+2006-12-20 07:33  havard.dahle
+
+	* trunk/faktura.py: mer robust rutine for å fylle fakturaoversikten
+
+2006-12-20 07:05  havard.dahle
+
+	* trunk/finfaktura/epost.py: Putter fnutter rundt navnet i til- og
+	  fra-adressene (det kan inneholde komma)
+
+2006-12-19 20:22  havard.dahle
+
+	* trunk/debian/control: vi kan bruke python-sqlite1.1 også, legger
+	  det til som alternativ til python-sqlite i Depends
+
+2006-12-11 01:30  havard.dahle
+
+	* trunk/faktura.testdb: fjerner passord fra testdata (doh!)
+
+2006-12-11 01:21  havard.dahle
+
+	* trunk/faktura.testdb: Legger inn testdata
+
+2006-12-11 00:59  havard.dahle
+
+	* trunk/faktura.py: statisk liste over objekter gir bedre
+	  responstid (?)
+	  
+	  -v for versjonsnummer
+
+2006-12-11 00:41  havard.dahle
+
+	* trunk/doc/skjermdump.sh: Bruker xautomation/xte til å ta
+	  skjermdump av de forskjellige skjermene
+
+2006-12-05 00:36  havard.dahle
+
+	* trunk/finfaktura/test.py: synkroniserer med epost.py
+
+2006-12-05 00:35  havard.dahle
+
+	* trunk/finfaktura/historikk.py: første forsøk på en brukbar
+	  infrastruktur for registrering av hendelser
+
+2006-12-05 00:34  havard.dahle
+
+	* trunk/finfaktura/epost.py: bruker string.join istf list.join
+
+2006-12-04 23:52  havard.dahle
+
+	* trunk/finfaktura/__init__.py, trunk/finfaktura/historikk.py:
+	  legger til historikk.py for faktura-historikk
+
+2006-12-04 23:46  havard.dahle
+
+	* trunk/finfaktura/oppgradering.py: Fikser typo i endringskart
+
+2006-12-04 23:16  havard.dahle
+
+	* trunk/finfaktura/fakturabibliotek.py: mer logikk for å finne
+	  riktig databasesti og -sql. Nå er det helt avhengig av
+	  PRODUKSJONSVERSJON-variabelen
+
+2006-12-04 23:14  havard.dahle
+
+	* trunk/finfaktura/f60.py: Fikser følgefeil (regresjon) etter #72
+	  && #73: teksten i blokker ble forskjøvet mot høyre
+
+2006-12-04 22:37  havard.dahle
+
+	* trunk/finfaktura/epost.py: fikser BCC
+
+2006-12-03 15:27  havard.dahle
+
+	* trunk/finfaktura/oppgradering.py: skriver mer informasjon om
+	  sql-feilmelding til loggen for debugging
+
+2006-12-01 01:51  havard.dahle
+
+	* trunk/finfaktura/f60.py: Springe sirkler rundt bug i reportlab
+	  2.0, andre forsøk
+
+2006-12-01 01:43  havard.dahle
+
+	* trunk/finfaktura/f60.py: Springe sirkler rundt bug i reportlab
+	  2.0
+
+2006-12-01 01:24  havard.dahle
+
+	* trunk/finfaktura/fakturabibliotek.py: Nå kan også miljøvariabelen
+	  'FAKTURADB' brukes. Den må peke rett på en database
+
+2006-12-01 01:23  havard.dahle
+
+	* trunk/finfaktura/test.py: småflikk for å gjøre litt korrektere å
+	  bruke
+
+2006-12-01 00:55  havard.dahle
+
+	* trunk/finfaktura/oppgradering.py: Forbedrer feilsjekking og
+	  feilmeldinger om lag 2000 %.
+	  
+	  Se <http://code.google.com/p/finfaktura/issues/detail?id=17>
+
+2006-12-01 00:11  havard.dahle
+
+	* trunk/debian/chl.sh, trunk/debian/rules: Går bort fra
+	  hjemmesnekret changelog-program til å bruke 'dch' fra pakken
+	  devscripts
+
+2006-11-08 20:37  havard.dahle
+
+	* trunk/finfaktura/f60.py: Reportlab 2.0 (i Ubuntu 6.10 og Debian
+	  4.0) bruker Unicode. Sjekk versjonen og gi riktig tegnsett
+
+2006-11-07 22:33  havard.dahle
+
+	* trunk/finfaktura/epost.py: legger til en assert
+
+2006-10-14 14:07  havard.dahle
+
+	* trunk/faktura.py, trunk/faktura.ui,
+	  trunk/finfaktura/faktura_ui.py,
+	  trunk/finfaktura/fakturabibliotek.py: rydder opp i
+	  sikkerhetskopi: flytter viskvittering til høyreklikkmeny i
+	  "faktura" og endrer gui: sikkerhetskopi-til-fil + gjenoppretting
+	  fra gmail eller fil
+
+2006-10-14 13:51  havard.dahle
+
+	* trunk/debian/rules: legger til informasjon om forfatter og
+	  endringer og $Id$
+
+2006-10-14 13:26  havard.dahle
+
+	* trunk/debian/rules: fletter inn r61 (dh_install-endringer)
+
+2006-10-14 00:13  havard.dahle
+
+	* trunk/faktura.py, trunk/faktura.ui,
+	  trunk/finfaktura/faktura_ui.py: sikkerhetskopi: henter
+	  gmailbruker og -passord fra EPOST. Populerer listen over
+	  kvitteringer og gjør det mulig å se dem gjennom kpdf
+
+2006-10-13 23:45  havard.dahle
+
+	* trunk/finfaktura/f60.py: små omrokkeringer i koden
+
+2006-10-13 23:19  havard.dahle
+
+	* trunk/MANIFEST: legger til test.py
+
+2006-10-13 23:18  havard.dahle
+
+	* trunk/finfaktura/fakturabibliotek.py, trunk/finfaktura/test.py:
+	  flytter test-funksjoner til test.py
+
+2006-10-13 23:16  havard.dahle
+
+	* trunk/faktura.py, trunk/faktura.ui, trunk/finfaktura/ekstra.py,
+	  trunk/finfaktura/epost.py, trunk/finfaktura/faktura_ui.py,
+	  trunk/finfaktura/fakturabibliotek.py: Kan teste om epostoppsettet
+	  funker. Velger beste epostoppsett ut i fra hva som funker.
+	  
+	  + flytter ikon-data til ekstra.py
+
+2006-10-11 18:42  havard.dahle
+
+	* trunk/faktura.py, trunk/faktura.ui, trunk/finfaktura/epost.py,
+	  trunk/finfaktura/faktura_ui.py,
+	  trunk/finfaktura/fakturabibliotek.py: Ferdigstiller
+	  epost-funksjonaliteten. Nå fullt brukbar gmail-støtte, sende
+	  gjennom smtp og sendmail. Gmail krever frisk python-libgmail
+
+2006-10-11 17:43  havard.dahle
+
+	* trunk/faktura.py: fjerner gammel koode
+
+2006-10-10 14:54  havard.dahle
+
+	* trunk/debian/control, trunk/debian/rules: deb-pakke: riktigere
+	  avhengighet på python og bruker dh_python i prosessen
+
+2006-10-09 23:13  havard.dahle
+
+	* trunk/debian/finfaktura.1: hmm, fin tekst.. engelsk?
+
+2006-10-09 23:11  havard.dahle
+
+	* trunk/faktura.py, trunk/finfaktura/fakturabibliotek.py: starten
+	  på fungerende epostside
+
+2006-10-09 23:09  havard.dahle
+
+	* trunk/faktura.ui, trunk/finfaktura/faktura_ui.py: småfiksing på
+	  epostsiden
+
+2006-10-09 23:08  havard.dahle
+
+	* trunk/finfaktura/oppgradering.py: fikser syntax på nye tabeller
+
+2006-10-09 22:30  havard.dahle
+
+	* trunk/faktura.sql, trunk/finfaktura/oppgradering.py:
+	  norskifisiering
+
+2006-10-09 22:05  havard.dahle
+
+	* trunk/faktura.ui, trunk/finfaktura/faktura_ui.py: flytter epost
+	  s.a. den blir brukbar i produksjon
+
+2006-10-09 22:04  havard.dahle
+
+	* trunk/faktura.sql, trunk/finfaktura/fakturabibliotek.py,
+	  trunk/finfaktura/oppgradering.py: Legger til 'Epost'-objekt i
+	  databasen
+
+2006-10-09 19:06  havard.dahle
+
+	* trunk/finfaktura/fakturabibliotek.py: Typo i bib-versjonssjekk
+
+2006-10-09 19:04  havard.dahle
+
+	* trunk/finfaktura/fakturabibliotek.py: Riktig rekkefølge på db- og
+	  bib-versjonssjekk
+
+2006-10-09 19:02  havard.dahle
+
+	* trunk/finfaktura/fakturabibliotek.py: Sjekker om sqlite-databasen
+	  og pysqlite bruker samme api-versjon dersom vi har problemer med
+	  å koble til
+
+2006-10-09 18:40  havard.dahle
+
+	* trunk/README: flytter feil og planlagte egenskaper til
+	  code.google.com
+
+2006-10-09 17:42  havard.dahle
+
+	* trunk/README, trunk/debian/README, trunk/debian/chl.sh,
+	  trunk/debian/conffiles.ex, trunk/debian/control,
+	  trunk/debian/copyright, trunk/debian/cron.d.ex,
+	  trunk/debian/dirs, trunk/debian/docs,
+	  trunk/debian/finfaktura-doc.docs,
+	  trunk/debian/finfaktura-doc.install, trunk/debian/finfaktura.1,
+	  trunk/debian/finfaktura.doc-base.EX, trunk/debian/manpage.1.ex,
+	  trunk/debian/manpage.sgml.ex, trunk/debian/manpage.xml.ex,
+	  trunk/debian/menu.ex, trunk/debian/postinst.ex,
+	  trunk/debian/postrm.ex, trunk/debian/preinst.ex,
+	  trunk/debian/prerm.ex, trunk/debian/rules,
+	  trunk/finfaktura/__init__.py, trunk/finfaktura/faktura_ui.py,
+	  trunk/finfaktura/fakturabibliotek.py: henter inn lærdom fra beta1
+	  ++
+
+2006-10-06 23:12  havard.dahle
+
+	* trunk/branches, trunk/doc, trunk/trunk: idiot
+
+2006-10-06 23:09  havard.dahle
+
+	* trunk/branches, trunk/doc, trunk/finfaktura/faktura_ui.py,
+	  trunk/trunk, trunk/trunk/doc: begynner på ordentlig svn-struktur
+
+2006-10-06 22:35  havard.dahle
+
+	* trunk/finfaktura/f60.py: hack for å sende eksisterende filnavn
+	  tilbake
+
+2006-10-06 22:25  havard.dahle
+
+	* trunk/finfaktura/fakturabibliotek.py: mer tydelig skille mellom
+	  produksjon og test-versjoner
+	  begynnelsen på å kunne skille mellom sqlite2 og 3
+
+2006-10-06 22:23  havard.dahle
+
+	* trunk/finfaktura/epost.py: mer tydelig skille mellom produksjon
+	  og test-versjoner
+
+2006-10-06 22:22  havard.dahle
+
+	* trunk/faktura.py: trygt med unicode filnavn
+	  mer tydelig skille mellom produksjon og test-versjoner
+
+2006-10-06 20:44  havard.dahle
+
+	* trunk/finfaktura/fakturabibliotek.py: småendringer på testene
+
+2006-10-06 20:43  havard.dahle
+
+	* trunk/finfaktura/epost.py: skrive ut epostadressene skikkelig
+
+2006-10-06 20:31  havard.dahle
+
+	* trunk/debian/rules: installasjon som funker
+
+2006-10-06 20:30  havard.dahle
+
+	* trunk/setup.py: installasjon som funker
+
+2006-10-06 20:28  havard.dahle
+
+	* trunk/finfaktura/epost.py: syntax
+
+2006-10-06 20:08  havard.dahle
+
+	* trunk/debian, trunk/debian/control, trunk/debian/copyright,
+	  trunk/debian/finfaktura.1, trunk/debian/menu, trunk/debian/rules,
+	  trunk/debian/watch: debianisering
+
+2006-10-05 21:58  havard.dahle
+
+	* trunk/finfaktura/faktura_ui.py: bedre plass til manglende
+	  firmainfo og ny default fakturakatalog
+
+2006-10-05 21:57  havard.dahle
+
+	* trunk/finfaktura/fakturabibliotek.py: fiks regresjon: feilet ved
+	  første gangs oppstart
+
+2006-10-05 21:55  havard.dahle
+
+	* trunk/faktura.ui: bedre plass til manglende firmainfo og ny
+	  default fakturakatalog
+
+2006-10-05 21:55  havard.dahle
+
+	* trunk/faktura.py: rød bakgrunn på manglende firmainfo
+
+2006-09-27 21:33  havard.dahle
+
+	* trunk/MANIFEST: legger til epost.py
+
+2006-09-27 21:32  havard.dahle
+
+	* trunk/MANIFEST, trunk/README, trunk/faktura.py,
+	  trunk/faktura.sql, trunk/setup.py: setter keywords Id, URL og Rev
+	  på ordentlig denne gangen
+
+2006-09-27 21:30  havard.dahle
+
+	* trunk/finfaktura/__init__.py, trunk/finfaktura/cli.py,
+	  trunk/finfaktura/ekstra.py, trunk/finfaktura/epost.py,
+	  trunk/finfaktura/f60.py, trunk/finfaktura/fakturaSqliteDB.py,
+	  trunk/finfaktura/faktura_ui.py,
+	  trunk/finfaktura/fakturabibliotek.py,
+	  trunk/finfaktura/myndighetene.py, trunk/finfaktura/okonomi.py,
+	  trunk/finfaktura/oppgradering.py,
+	  trunk/finfaktura/sikkerhetskopi.py: setter keywords Id, URL og
+	  Rev på ordentlig denne gangen
+
+2006-09-27 21:28  havard.dahle
+
+	* trunk/finfaktura/__init__.py, trunk/finfaktura/cli.py,
+	  trunk/finfaktura/ekstra.py, trunk/finfaktura/epost.py,
+	  trunk/finfaktura/f60.py, trunk/finfaktura/fakturaSqliteDB.py,
+	  trunk/finfaktura/faktura_ui.py,
+	  trunk/finfaktura/fakturabibliotek.py,
+	  trunk/finfaktura/myndighetene.py, trunk/finfaktura/okonomi.py,
+	  trunk/finfaktura/oppgradering.py,
+	  trunk/finfaktura/sikkerhetskopi.py: setter keywords Id, URL og
+	  Rev
+
+2006-09-27 21:22  havard.dahle
+
+	* trunk/faktura.py: Legger til $ID$
+
+2006-09-27 21:06  havard.dahle
+
+	* trunk/finfaktura/epost.py: rydder opp i api: send()-metoden må
+	  være lik i alle subklasser
+
+2006-09-27 21:05  havard.dahle
+
+	* trunk/faktura.sql: fikser bug på ordentlig!: overskriver
+	  fakturakatalog ved oppdatering
+
+2006-09-27 21:03  havard.dahle
+
+	* trunk/faktura.sql: fikser bug: overskriver fakturakatalog ved
+	  oppdatering
+
+2006-09-18 00:07  havard.dahle
+
+	* trunk/faktura.py: ny og bedre(?) behandling av logo: skalerer ned
+	  til riktig størrelse før lagring i db
+
+2006-09-18 00:06  havard.dahle
+
+	* trunk/finfaktura/__init__.py: + ekstra
+	  + versjonspuff
+
+2006-09-18 00:05  havard.dahle
+
+	* trunk/finfaktura/ekstra.py: ekstra: QBuffer
+
+2006-09-17 01:18  havard.dahle
+
+	* trunk/faktura.ui, trunk/finfaktura/faktura_ui.py: småjusteringer
+
+2006-09-17 01:18  havard.dahle
+
+	* trunk/finfaktura/epost.py, trunk/finfaktura/fakturabibliotek.py:
+	  Epost: støtte for sendmail
+
+2006-09-17 01:17  havard.dahle
+
+	* trunk/faktura.py: Ditt firma: tilbakemelding på manglende felt
+
+2006-09-16 23:40  havard.dahle
+
+	* trunk/faktura.ui, trunk/finfaktura/faktura_ui.py: nytt tekstfelt
+
+2006-09-16 23:27  havard.dahle
+
+	* trunk/MANIFEST, trunk/README, trunk/doc,
+	  trunk/doc/faktura-0.1-fakuraliste.png,
+	  trunk/doc/faktura-0.1-kundeliste.png,
+	  trunk/doc/faktura-0.1-oppsett.png,
+	  trunk/doc/faktura-0.7-fakturaliste.png,
+	  trunk/doc/faktura-0.7-kundeliste.png,
+	  trunk/doc/faktura-0.7-nyfaktura.png,
+	  trunk/doc/faktura-0.7-nyvare.png,
+	  trunk/doc/faktura-0.7-vareliste.png, trunk/faktura.py,
+	  trunk/faktura.sql, trunk/faktura.ui, trunk/finfaktura,
+	  trunk/finfaktura/__init__.py, trunk/finfaktura/cli.py,
+	  trunk/finfaktura/epost.py, trunk/finfaktura/f60.py,
+	  trunk/finfaktura/fakturaSqliteDB.py,
+	  trunk/finfaktura/faktura_ui.py,
+	  trunk/finfaktura/fakturabibliotek.py,
+	  trunk/finfaktura/myndighetene.py, trunk/finfaktura/okonomi.py,
+	  trunk/finfaktura/oppgradering.py,
+	  trunk/finfaktura/sikkerhetskopi.py, trunk/postkort.txt,
+	  trunk/setup.py: initial import
+
+2006-09-16 21:09  
+
+	* branches, tags, trunk: Initial directory structure.
+
