@@ -756,7 +756,7 @@ def lagDatabase(database, sqlfile=None):
 def byggDatabase(db, sqlfile=None):
     if not sqlfile:
         if not PRODUKSJONSVERSJON: sqlfile = "faktura.sql"
-        else: "/usr/share/finfaktura/data/faktura.sql"
+        else: sqlfile = "/usr/share/finfaktura/data/faktura.sql"
     db.cursor().execute(file(sqlfile).read())
     db.commit()
     return db
