@@ -1,0 +1,40 @@
+## Hvordan utvikle finfaktura
+## $Id$
+## Håvard Dahle <havard@dahle.no> (C) 2006
+
+
+### Lage ny release ###
+
+1. Dytte på versjonsnummeret i finfaktura/__init__.py => $VERSJON
+
+2. Kopiere til ny grein:
+    svn copy https://finfaktura.googlecode.com/svn/trunk https://finfaktura.googlecode.com/svn/branches/$VERSJON
+    
+3. Sjekke ut den nye greina, og begynne å jobbe på den
+    cd /tmp
+    svn co https://finfaktura.googlecode.com/svn/branches/$VERSJON
+    cd $VERSJON
+    
+4. Endre på PRODUKSJONSVERDI-variabelen (til True) i finfaktura/fakturabibliotek.py
+
+5. Prøvestarte programmet og se at alt ser greit ut
+    FAKTURADB=faktura.testdb ./faktura.py
+    
+6. Laste ned svn-logg
+    svn2cl.sh 
+    
+7, Oppgradere debian changelog
+    dch --newversion $VERSJON
+    -> skrive inn hva som har skjedd siden $VERSJON-1
+    
+9. Lage .deb
+    debian/rules binary
+
+10. Lage skjermdump
+    doc/skjermdump.sh
+    -> navngi etter .deb-dir: finfaktura-0.95.deb-dir
+    
+    
+11. Kopier til lurtgjort.no
+    -> .deb
+    -> skjermdump
