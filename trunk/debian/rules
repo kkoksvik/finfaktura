@@ -26,9 +26,6 @@ configure-stamp:
 	dh_testdir
 	# Add here commands to configure the package.
 
-	svn2cl.sh
-	dch -i
-	svn commit -m 'Pakker for release' ChangeLog ChangeLog.Debian 
 	touch configure-stamp
 
 
@@ -79,7 +76,7 @@ install: build
 binary-common:
 	dh_testdir
 	dh_testroot
-#	dh_installchangelogs ChangeLog
+	dh_installchangelogs ChangeLog
 	dh_installchangelogs 
 	#dh_installdocs
 	#dh_installexamples
