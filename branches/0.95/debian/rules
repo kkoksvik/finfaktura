@@ -26,9 +26,9 @@ configure-stamp:
 	dh_testdir
 	# Add here commands to configure the package.
 
-	svn2cl.sh
-	dch -i
-	svn commit -m 'Pakker for release' ChangeLog ChangeLog.Debian 
+	#svn2cl.sh
+	#dch -i
+	#svn commit -m 'Pakker for release' ChangeLog ChangeLog.Debian 
 	touch configure-stamp
 
 
