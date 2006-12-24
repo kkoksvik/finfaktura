@@ -152,7 +152,7 @@ class smtp(epost):
         except:
             raise
         mottakere = [self.til,]
-        if self.kopi: mottakere += self.kopi # sender kopi til oss selv (BCC)
+        if self.kopi: mottakere.append(self.kopi) # sender kopi til oss selv (BCC)
         res = s.sendmail(self.fra, mottakere, self.mimemelding().as_string())
         s.close()
         if len(res) > 0:
@@ -166,7 +166,7 @@ class smtp(epost):
             #|      empty dictionary.
 
             feil = [ "%s: %s" % (a, res[a][1]) for a in res.keys() ]
-            raise SendeFeil(u'Sendingen feilet for følgende adresser:\n%s' % join(feil, '\n'))
+            raise SendeFeil(u'Sendingen feilet for disse adressene:\n%s' % join(feil, '\n'))
         return True
 
 class sendmail(epost):
