@@ -84,7 +84,7 @@ class epost:
     
     def settKopi(self, s):
         # setter BCC-kopi til s
-        assert(type(s) in (types.UnicodeType, types.StringType)
+        assert(type(s) in (types.UnicodeType, types.StringType))
         # sjekk at s er en gyldig epostadresse
         # XXX TOODO
         self.kopi = s
