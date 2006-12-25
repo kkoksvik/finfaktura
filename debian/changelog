@@ -2,8 +2,10 @@ finfaktura (0.95) 1; urgency=low
 
   * Fikser grov bug i BCC-kode, og fikser opp brukergrensesnittet for BCC
   * Bug i kundeoversikten: inkluderte kansellerte fakturaer i kundedetaljer
+  * Fikser grov bug: førstegangsoppstart feilet fordi sqlkoden ikke ble funnet
 
- -- Håvard Dahle <hadahl@hadahl>  Sun, 24 Dec 2006 02:33:27 +0100
+ -- Håvard Dahle <hadahl@hadahl>  Sun, 24 Dec 2006 03:03:35 +0100
+
 
 
 finfaktura (0.94-1) 1; urgency=low
