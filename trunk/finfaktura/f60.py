@@ -22,7 +22,7 @@ try:
 except ImportError:
     REPORTLAB=False
 
-__version__ = '0.7'
+__version__ = '0.8'
 
 __doc__ = """Modul for å produsere en faktura etter norsk standard f60"""
 
@@ -111,7 +111,7 @@ class f60:
     def skrivUt(self):
         if not os.path.exists(self.filnavn):
             raise "Feil filnavn"
-        os.system('kprinter "%s"' % self.filnavn)
+        os.system('kprinter "%s"' % self.filnavn) ### XXX: fiks dette 
 
     # ==================== INTERNE FUNKSJONER ================ #
     
@@ -284,9 +284,10 @@ Side: %i av %i
 
         regnestykkeY = 215
         if fakturatekstNedreY < regnestykkeY: regnestykkeY = fakturatekstNedreY - 10
-        self.canvas.drawString(20*mm, regnestykkeY*mm, "TEKST")
-        self.canvas.drawRightString(160*mm, regnestykkeY*mm, "MVA")
-        self.canvas.drawRightString(180*mm, regnestykkeY*mm, "PRIS")
+        self.canvas.drawString(20*mm, regnestykkeY*mm, "Beskrivelse")
+        self.canvas.drawRightString(140*mm, regnestykkeY*mm, "U/mva")
+        self.canvas.drawRightString(160*mm, regnestykkeY*mm, "Mva")
+        self.canvas.drawRightString(180*mm, regnestykkeY*mm, "Pris")
         self.canvas.setDash(1,0)
         self.canvas.setLineWidth(0.2*mm)
         self.canvas.line(15*mm, (regnestykkeY-2)*mm, 195*mm, (regnestykkeY-2)*mm)
@@ -294,30 +295,38 @@ Side: %i av %i
 
         tekstX = 20*mm
         Y      = (regnestykkeY-10)*mm
+        bruttoX= 140*mm
         mvaX   = 160*mm
         prisX  = 180*mm
 
         totalBelop = 0
         totalMva = 0
+        totalBrutto = 0
         
         if type(self.ordrelinje) in (types.FunctionType, types.MethodType):
             for vare in self.ordrelinje():
-                mva = vare.kvantum * vare.enhetspris * vare.mva / 100
-                pris = vare.kvantum * vare.enhetspris + mva
+                brutto = vare.kvantu * vare.enhetspris
+                mva = brutto * vare.mva / 100
+                pris = brutto + mva
+                totalBrutto += brutto
                 totalMva += mva
                 totalBelop += pris
                 self.canvas.drawString(tekstX, Y, self._s(vare.detaljertBeskrivelse()))
+                self.canvas.drawRightString(bruttoX, Y, "%.2f" % (brutto))
                 self.canvas.drawRightString(mvaX, Y, "%.2f" % (mva))
                 self.canvas.drawRightString(prisX, Y, "%.2f" % (pris))
                 Y -= 7*mm
         elif type(self.ordrelinje) == types.ListType:
             for vare in self.ordrelinje:
                 # [tekst, kvantum, enhetspris, mva]
-                mva = vare[1] * vare[2] * vare[3] / 100
-                pris = vare[1] * vare[2] + mva
+                brutto = vare[1] * vare[2]
+                mva = brutto * vare[3] / 100
+                pris = brutto + mva
+                totalBrutto += brutto
                 totalMva += mva
                 totalBelop += pris
                 self.canvas.drawString(tekstX, Y, "%s %s a kr %s" % (vare[1], vare[0], vare[2]))
+                self.canvas.drawRightString(bruttoX, Y, "%.2f" % (brutto))
                 self.canvas.drawRightString(mvaX, Y, "%.2f" % (mva))
                 self.canvas.drawRightString(prisX, Y, "%.2f" % (pris))
                 Y -= 7*mm
@@ -328,9 +337,14 @@ Side: %i av %i
         sumY = 131*mm
         #belop = faktura.finnPris() + faktura.finnMva()
         self.canvas.line(110*mm, sumY, 190*mm, sumY)
-        self.canvas.drawRightString(prisX-30*mm, sumY-7*mm, "MVA: %.2f" % totalMva)
+        #self.canvas.drawRightString(prisX-30*mm, sumY-7*mm, "MVA: %.2f" % totalMva)
+        #self.canvas.setFont("Helvetica-Bold", 10)
+        #self.canvas.drawRightString(prisX, sumY-7*mm, "SUM: %.2f" % totalBelop)
+
+        self.canvas.drawRightString(prisX-70*mm, sumY-7*mm, "Sum u/MVA: %.2f" % totalBrutto)
+        self.canvas.drawRightString(prisX-40*mm, sumY-7*mm, "Sum MVA: %.2f" % totalMva)
         self.canvas.setFont("Helvetica-Bold", 10)
-        self.canvas.drawRightString(prisX, sumY-7*mm, "SUM: %.2f" % totalBelop)
+        self.canvas.drawRightString(prisX, sumY-7*mm, "TOTALT: %.2f" % totalBelop)
 
         # standard betalingsvilkår
         if len(self.faktura['vilkaar']):
