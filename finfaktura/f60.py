@@ -305,7 +305,7 @@ Side: %i av %i
         
         if type(self.ordrelinje) in (types.FunctionType, types.MethodType):
             for vare in self.ordrelinje():
-                brutto = vare.kvantu * vare.enhetspris
+                brutto = vare.kvantum * vare.enhetspris
                 mva = brutto * vare.mva / 100
                 pris = brutto + mva
                 totalBrutto += brutto
