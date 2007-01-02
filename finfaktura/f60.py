@@ -285,9 +285,9 @@ Side: %i av %i
         regnestykkeY = 215
         if fakturatekstNedreY < regnestykkeY: regnestykkeY = fakturatekstNedreY - 10
         self.canvas.drawString(20*mm, regnestykkeY*mm, "Beskrivelse")
-        self.canvas.drawRightString(140*mm, regnestykkeY*mm, "U/mva")
+        self.canvas.drawRightString(140*mm, regnestykkeY*mm, "Pris")
         self.canvas.drawRightString(160*mm, regnestykkeY*mm, "Mva")
-        self.canvas.drawRightString(180*mm, regnestykkeY*mm, "Pris")
+        self.canvas.drawRightString(180*mm, regnestykkeY*mm, "SUM")
         self.canvas.setDash(1,0)
         self.canvas.setLineWidth(0.2*mm)
         self.canvas.line(15*mm, (regnestykkeY-2)*mm, 195*mm, (regnestykkeY-2)*mm)
@@ -341,8 +341,8 @@ Side: %i av %i
         #self.canvas.setFont("Helvetica-Bold", 10)
         #self.canvas.drawRightString(prisX, sumY-7*mm, "SUM: %.2f" % totalBelop)
 
-        self.canvas.drawRightString(prisX-70*mm, sumY-7*mm, "Sum u/MVA: %.2f" % totalBrutto)
-        self.canvas.drawRightString(prisX-40*mm, sumY-7*mm, "Sum MVA: %.2f" % totalMva)
+        self.canvas.drawRightString(prisX-70*mm, sumY-7*mm, "Netto: %.2f" % totalBrutto)
+        self.canvas.drawRightString(prisX-40*mm, sumY-7*mm, "MVA: %.2f" % totalMva)
         self.canvas.setFont("Helvetica-Bold", 10)
         self.canvas.drawRightString(prisX, sumY-7*mm, "TOTALT: %.2f" % totalBelop)
 
