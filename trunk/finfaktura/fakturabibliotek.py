@@ -157,7 +157,6 @@ class FakturaBibliotek:
         t = epost.dump()
         t.faktura(ordre, pdf, tekst, testmelding=True)
         t.send()
-        
         m = getattr(epost,transport)() # laster riktig transport (gmail/smtp/sendmail) 
         set = self.epostoppsett
         if transport == 'gmail':
