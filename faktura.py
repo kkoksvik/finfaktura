@@ -624,6 +624,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         
     def sendEpostfaktura(self):
         o = self.fakturaSendepostBoks.ordre
+        print repr(o.kunde.epost)
         try:
             debug('sender epostfaktura: ordre # %i, til: %s' % (o._id, o.kunde.epost))
             trans = ['auto', 'gmail', 'smtp', 'sendmail']
