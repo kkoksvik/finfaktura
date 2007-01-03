@@ -22,12 +22,13 @@ try:
 except ImportError:
     REPORTLAB=False
 
-__version__ = '0.8'
+__version__ = '0.9'
 
 __doc__ = """Modul for å produsere en faktura etter norsk standard f60"""
 
 class f60Eksisterer(Exception): pass
-class f60Feil(Exception):pass
+class f60Feil(Exception): pass
+class f60FeilKID(Exception): pass
 
 class f60:
     standardskrift = "Helvetica"
@@ -53,12 +54,14 @@ class f60:
 
     # ============= MÅ FYLLES INN AV BRUKER =============== #
 
-    def settFakturainfo(self, fakturanr, utstedtEpoch, forfallEpoch, fakturatekst, vilkaar = ''):
+    def settFakturainfo(self, fakturanr, utstedtEpoch, forfallEpoch, fakturatekst, vilkaar = '', kid = None):
         self.faktura['nr'] = int(fakturanr)
         self.faktura['utstedt'] = time.strftime("%Y-%m-%d", time.localtime(utstedtEpoch))
         self.faktura['forfall'] = time.strftime("%Y-%m-%d", time.localtime(forfallEpoch))
         self.faktura['tekst'] = self._s(fakturatekst)
         self.faktura['vilkaar'] = self._s(vilkaar)
+        if kid and not self.sjekkKid(kid): raise f60FeilKID(u'KID-nummeret er ikke riktig')
+        self.faktura['kid'] = kid
 
     def settOrdrelinje(self, ordrelinje):
         self.ordrelinje = ordrelinje
@@ -113,6 +116,31 @@ class f60:
             raise "Feil filnavn"
         os.system('kprinter "%s"' % self.filnavn) ### XXX: fiks dette 
 
+    def sjekkKid(self, kid):
+        "Sjekker en kid etter mod10/luhner-algoritmen. -> bool"
+        #http://no.wikipedia.org/wiki/KID
+        #hvert andre siffer (bakfra) skal dobles og tverrsummene av alle produktene legges sammen
+        #totalsummen skal så moduleres med 10, uten rest
+        
+        #denne implementasjonen opprinnelig fra 
+        # http://www.elifulkerson.com
+        try:
+            cc = map(int, kid) 
+            cc.reverse() # snu rekken slik at vi jobber bakfra
+        except TypeError:
+            return False
+    
+        total = 0
+        for a in range(0, len(cc)):
+            if (a % 2) == 1: # hvert andre siffer 
+                assert(cc[a] >= 0 and cc[a] <= 9)
+                d = cc[a]*2 # dobles
+                if d < 10: total += d
+                else: total += d - 9 # tverrsum
+            else:
+                total += cc[a]
+        return (total % 10) == 0 # mod10 uten rest
+        
     # ==================== INTERNE FUNKSJONER ================ #
     
     def sjekkFilnavn(self, filnavnUtf8):
@@ -143,7 +171,6 @@ class f60:
                 i -= 1
         ret += (t, )
         return list(ret)
-        #return join(ret, "\n")
 
     def kutt(self, t, lengde = 200):
         """Kutter en tekst hvis den overstiger en gitt lengde"""
@@ -172,7 +199,6 @@ class f60:
         # a4 format spec:
         # http://www.cl.cam.ac.uk/~mgk25/iso-paper.html
         # 210 x 297
-
         # faktura spek:
         # Norsk Standard f60
         # url: ?
@@ -278,8 +304,8 @@ Side: %i av %i
         fakturatekst.setTextOrigin(20*mm, 230*mm)
         fakturatekst.textLines(self.paragraf(self.faktura['tekst'], 100))
         fakturatekstNedreY = int(fakturatekst.getY() / mm)
-        debug("fakturateksten strekker seg ned til Y: %i mm (%i PDF pt)" % (fakturatekstNedreY/mm, fakturatekstNedreY))
-#         if fakturatekstNedreY > sikkerhetsgrense: tekst = self.kutt(faktura.tekst) ...
+        #debug("fakturateksten strekker seg ned til Y: %i mm (%i PDF pt)" % (fakturatekstNedreY/mm, fakturatekstNedreY))
+        #if fakturatekstNedreY > sikkerhetsgrense: tekst = self.kutt(faktura.tekst) ...
         self.canvas.drawText(fakturatekst)
 
         regnestykkeY = 215
@@ -303,55 +329,71 @@ Side: %i av %i
         totalMva = 0
         totalBrutto = 0
         
+        mvagrunnlag = {} # Holder en oppsummering av salg per mva-sats
+        
         if type(self.ordrelinje) in (types.FunctionType, types.MethodType):
             for vare in self.ordrelinje():
+                
+                # regn ut alt som skal regnes
                 brutto = vare.kvantum * vare.enhetspris
                 mva = brutto * vare.mva / 100
                 pris = brutto + mva
                 totalBrutto += brutto
                 totalMva += mva
                 totalBelop += pris
+                
+                if not vare.mva in mvagrunnlag.keys(): # legg til i oppsummeringen av salg
+                    mvagrunnlag[vare.mva] = []
+                mvagrunnlag[vare.mva] += [brutto,]
+                
                 self.canvas.drawString(tekstX, Y, self._s(vare.detaljertBeskrivelse()))
                 self.canvas.drawRightString(bruttoX, Y, "%.2f" % (brutto))
                 self.canvas.drawRightString(mvaX, Y, "%.2f" % (mva))
                 self.canvas.drawRightString(prisX, Y, "%.2f" % (pris))
-                Y -= 7*mm
+                Y -= 3*mm
         elif type(self.ordrelinje) == types.ListType:
             for vare in self.ordrelinje:
                 # [tekst, kvantum, enhetspris, mva]
+                
+                # regn ut alt som skal regnes
                 brutto = vare[1] * vare[2]
                 mva = brutto * vare[3] / 100
                 pris = brutto + mva
                 totalBrutto += brutto
                 totalMva += mva
                 totalBelop += pris
+                
+                if not vare[3] in mvagrunnlag.keys(): # legg til i oppsummeringen av salg
+                    mvagrunnlag[vare[3]] = []
+                mvagrunnlag[vare[3]] += [brutto,]
+                
                 self.canvas.drawString(tekstX, Y, "%s %s a kr %s" % (vare[1], vare[0], vare[2]))
                 self.canvas.drawRightString(bruttoX, Y, "%.2f" % (brutto))
                 self.canvas.drawRightString(mvaX, Y, "%.2f" % (mva))
                 self.canvas.drawRightString(prisX, Y, "%.2f" % (pris))
-                Y -= 7*mm
+                Y -= 3*mm
 
-        debug("Nå har vi kommet til Y: %i (%i)" % (Y/mm, Y))
-#         if Y < 140*mm: self.lagNySide() # vi har lagt inn for mange varer til at vi får plass på en side
+        #debug("Nå har vi kommet til Y: %i (%i)" % (Y/mm, Y))
+        #if Y < 140*mm: self.lagNySide() # vi har lagt inn for mange varer til at vi får plass på en side
 
         sumY = 131*mm
-        #belop = faktura.finnPris() + faktura.finnMva()
-        self.canvas.line(110*mm, sumY, 190*mm, sumY)
-        #self.canvas.drawRightString(prisX-30*mm, sumY-7*mm, "MVA: %.2f" % totalMva)
-        #self.canvas.setFont("Helvetica-Bold", 10)
-        #self.canvas.drawRightString(prisX, sumY-7*mm, "SUM: %.2f" % totalBelop)
+        self.canvas.line(90*mm, sumY, 190*mm, sumY)
 
+        # legg sammen totalen
         self.canvas.drawRightString(prisX-70*mm, sumY-7*mm, "Netto: %.2f" % totalBrutto)
         self.canvas.drawRightString(prisX-40*mm, sumY-7*mm, "MVA: %.2f" % totalMva)
         self.canvas.setFont("Helvetica-Bold", 10)
         self.canvas.drawRightString(prisX, sumY-7*mm, "TOTALT: %.2f" % totalBelop)
 
+        # sum mvagrunnlag
+        
+
         # standard betalingsvilkår
         if len(self.faktura['vilkaar']):
             self.canvas.setFont("Helvetica", 10)
             vilkar = self.canvas.beginText()
-            vilkar.setTextOrigin(15*mm, 130*mm)
-            vilkar.textLines(self.paragraf(self.faktura['vilkaar'], 35).upper())
+            vilkar.setTextOrigin(9*mm, 131*mm)
+            vilkar.textLines(self.paragraf(self.faktura['vilkaar'].upper(), 35))
             self.canvas.drawText(vilkar)
 
         # Nederste del av skjemaet
@@ -389,7 +431,8 @@ Side: %i av %i
         self.canvas.drawText(firmaadresse)
 
         # KID
-        #self.canvas.drawString(14*mm, 20*mm, str(self.lagKid()))
+        if self.faktura['kid'] and self.sjekkKid(self.faktura['kid']):
+            self.canvas.drawString(14*mm, 20*mm, str(self.faktura['kid']))
 
         # SUM
         kr = int(totalBelop)
@@ -411,7 +454,7 @@ if __name__ == '__main__':
     #test
     filnavn = '/tmp/testfaktura.pdf'
     faktura = f60(filnavn, overskriv=True)
-    faktura.settFakturainfo(03, 1145542709, 1146546709, u"Rå løk")
+    faktura.settFakturainfo(03, 1145542709, 1146546709, u"Rå løk", u"Takk for handelen, kom gjerne igjen når du vil, eller ikke hvis du ikke vil.", kid='4466986711175280')
     faktura.settFirmainfo({'firmanavn':'Test Firma Ein',
                            'kontaktperson':'Rattatta Hansen',
                            'adresse':u'Surdalsøyra',
