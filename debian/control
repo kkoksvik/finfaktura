@@ -7,8 +7,7 @@ Standards-Version: 3.6.2
 
 Package: finfaktura
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, ${python:Depends}, python-qt3, python-reportlab, python-sqlite |
-python-pysqlite1.1
+Depends: ${shlibs:Depends}, ${misc:Depends}, ${python:Depends}, python-qt3, python-reportlab, python-sqlite | python-pysqlite1.1
 Suggests: python-psyco, python-libgmail, python-beautifulsoup
 Description: Create and manage invoices (Norwegian specs)
  Invoices, customers, products. Creates PDF invoices.

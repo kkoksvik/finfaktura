@@ -1,4 +1,4 @@
-finfaktura (0.96); urgency=low
+finfaktura (0.96) 1; urgency=low
 
   * PDF-fakturaen inneholder nå informasjon om prisen med og uten mva, samt
     mva-beløpet, som forespurt av frode@ubuntu.com
