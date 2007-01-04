@@ -11,39 +11,42 @@
     dch --newversion $VERSJON
     -> skrive inn hva som har skjedd siden $VERSJON-1
 
-3. Kopiere til ny grein:
+3. Commite endringer til svn
+    svn commit finfaktura/__init__.py debian/changelog -m 'Gjør $VERSJON klar til utgivelse'
+
+4. Kopiere til ny grein:
     svn copy https://finfaktura.googlecode.com/svn/trunk https://finfaktura.googlecode.com/svn/branches/$VERSJON
     
-4. Sjekke ut den nye greina, og begynne å jobbe på den
+5. Sjekke ut den nye greina, og begynne å jobbe på den
     cd /tmp
     svn co https://finfaktura.googlecode.com/svn/branches/$VERSJON
     cd $VERSJON
     
-5. Endre på PRODUKSJONSVERDI-variabelen (til True) i finfaktura/fakturabibliotek.py
+6. Endre på PRODUKSJONSVERDI-variabelen (til True) i finfaktura/fakturabibliotek.py
 
-6. Prøvestarte programmet og se at alt ser greit ut
+7. Prøvestarte programmet og se at alt ser greit ut
     FAKTURADB=faktura.testdb ./faktura.py
     
-7. Laste ned svn-logg
+8. Laste ned svn-logg
     svn2cl.sh 
     
-8. Committe endringer til svn
-    svn commit -m 'pakker og klargjør $VERSJON'
+9. Committe endringer til svn
+    svn commit -m 'pakker og klargjør $VERSJON til produksjon'
 
-9. Lage .deb
+10. Lage .deb
     fakeroot debian/rules binary
 
-10. Tagge versjonen
+11. Tagge versjonen
     svn copy https://finfaktura.googlecode.com/svn/branches/$VERSJON https://finfaktura.googlecode.com/svn/tags/versjon-$VERSJON
 
-11. Lage skjermdump
+12. Lage skjermdump
     doc/skjermdump.sh
     -> navngi etter .deb-dir: finfaktura-$DEBVERSJON.deb-dir
     
     
-12. Kopier til http://code.google.com/p/finfaktura/downloads/entry
+13. Kopier til http://code.google.com/p/finfaktura/downloads/entry
     -> .deb
     -> skjermdump
     
-13- Hurra!
+14- Hurra!
 
