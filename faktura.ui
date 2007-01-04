@@ -3309,6 +3309,19 @@ betalingsvilkår</string>
                 <property name="checked">
                     <bool>false</bool>
                 </property>
+                <widget class="QLineEdit">
+                    <property name="name">
+                        <cstring>epostKopiadresse</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>120</x>
+                            <y>20</y>
+                            <width>340</width>
+                            <height>21</height>
+                        </rect>
+                    </property>
+                </widget>
                 <widget class="QLabel">
                     <property name="name">
                         <cstring>textLabel2_6</cstring>
@@ -3317,25 +3330,12 @@ betalingsvilkår</string>
                         <rect>
                             <x>10</x>
                             <y>24</y>
-                            <width>80</width>
-                            <height>10</height>
+                            <width>107</width>
+                            <height>14</height>
                         </rect>
                     </property>
                     <property name="text">
                         <string>Send kopi (BCC) til:</string>
-                    </property>
-                </widget>
-                <widget class="QLineEdit">
-                    <property name="name">
-                        <cstring>epostKopiadresse</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>100</x>
-                            <y>20</y>
-                            <width>350</width>
-                            <height>21</height>
-                        </rect>
                     </property>
                 </widget>
             </widget>
