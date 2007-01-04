@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'faktura.ui'
 #
-# Created: Sun Dec 24 02:04:14 2006
+# Created: fre jan 5 00:09:26 2007
 #      by: The PyQt User Interface Compiler (pyuic) 3.16
 #
 # WARNING! All changes made in this file will be lost!
@@ -3373,11 +3373,11 @@ class faktura(QMainWindow):
         self.epostSendkopi.setCheckable(1)
         self.epostSendkopi.setChecked(0)
 
-        self.textLabel2_6 = QLabel(self.epostSendkopi,"textLabel2_6")
-        self.textLabel2_6.setGeometry(QRect(10,24,80,10))
-
         self.epostKopiadresse = QLineEdit(self.epostSendkopi,"epostKopiadresse")
-        self.epostKopiadresse.setGeometry(QRect(100,20,350,21))
+        self.epostKopiadresse.setGeometry(QRect(120,20,340,21))
+
+        self.textLabel2_6 = QLabel(self.epostSendkopi,"textLabel2_6")
+        self.textLabel2_6.setGeometry(QRect(10,24,107,14))
         self.fakturaTab.insertTab(self.TabPage_3,QString.fromLatin1(""))
 
         self.TabPage_4 = QWidget(self.fakturaTab,"TabPage_4")
