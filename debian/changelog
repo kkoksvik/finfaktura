@@ -1,3 +1,10 @@
+finfaktura (0.96); urgency=low
+
+  * PDF-fakturaen inneholder nå informasjon om prisen med og uten mva, samt
+    mva-beløpet, som forespurt av frode@ubuntu.com
+
+ -- Håvard Dahle <havard@lurtgjort.no>  Fri,  5 Jan 2007 00:22:49 +0100
+
 finfaktura (0.95) 1; urgency=low
 
   * Fikser grov bug i BCC-kode, og fikser opp brukergrensesnittet for BCC
