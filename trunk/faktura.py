@@ -506,9 +506,9 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         if linje.ordre.betalt:
             s += "<font color=darkgreen>Betalt: %s</font><br>" % strftime("%Y-%m-%d", localtime(linje.ordre.betalt))
         self.fakturaDetaljerTekst.setText(s)
-        
-        minstedato = localtime(linje.ordre.ordredato)
-        self.fakturaBetaltDato.setMinValue(QDate(minstedato[0],minstedato[1],minstedato[2]))
+        # oppdater datofeltet. minste dato er ordredato. største dato er i dag
+        minst, maks = localtime(linje.ordre.ordredato), localtime()
+        self.fakturaBetaltDato.setRange(QDate(minst[0]-1, minst[1], minst[2]), QDate(maks[0]+1, maks[1], maks[2])) # utvider rangen med ett år i hver retning slik at QDateEdit-kontrollen skal bli brukelig
 
     def lagFakturaKvittering(self): 
         try:
@@ -591,6 +591,12 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             return False
         d = self.fakturaBetaltDato.date()
         dato = mktime((d.year(),d.month(),d.day(),0,0,0,0,0,0))
+        if dato < ordre.ordredato:
+            self.obs(u'Betalingsdato kan ikke være tidligere enn ordredato')
+            return False
+        if dato > mktime(localtime()):
+            self.obs(u'Betalingsdato kan ikke være i fremtiden')
+            return False
         ordre.betal(dato)
         self.visFaktura()
 
