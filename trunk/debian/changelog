@@ -1,3 +1,10 @@
+finfaktura (0.96.2) 1; urgency=low
+
+  * Datofeltet for betaling av fakturaer oppfører seg nå slik man forventer
+    av det. 
+
+ -- Håvard Dahle <havard@dahle.no>  Tue, 16 Jan 2007 00:50:04 +0100
+
 finfaktura (0.96) 1; urgency=low
 
   * PDF-fakturaen inneholder nå informasjon om prisen med og uten mva, samt
