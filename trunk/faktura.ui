@@ -262,32 +262,6 @@
                 <property name="title">
                     <string>Handlinger</string>
                 </property>
-                <widget class="QDateEdit">
-                    <property name="name">
-                        <cstring>fakturaBetaltDato</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>9</x>
-                            <y>200</y>
-                            <width>100</width>
-                            <height>21</height>
-                        </rect>
-                    </property>
-                    <property name="order">
-                        <enum>YMD</enum>
-                    </property>
-                    <property name="date">
-                        <date>
-                            <year>2006</year>
-                            <month>1</month>
-                            <day>1</day>
-                        </date>
-                    </property>
-                    <property name="autoAdvance">
-                        <bool>true</bool>
-                    </property>
-                </widget>
                 <widget class="QLabel">
                     <property name="name">
                         <cstring>textLabel3_2</cstring>
@@ -475,6 +449,29 @@
                     </property>
                     <property name="toolTip" stdset="0">
                         <string>Lager en faktura av angitt type</string>
+                    </property>
+                </widget>
+                <widget class="QDateEdit">
+                    <property name="name">
+                        <cstring>fakturaBetaltDato</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>9</x>
+                            <y>200</y>
+                            <width>100</width>
+                            <height>21</height>
+                        </rect>
+                    </property>
+                    <property name="date">
+                        <date>
+                            <year>2007</year>
+                            <month>1</month>
+                            <day>1</day>
+                        </date>
+                    </property>
+                    <property name="autoAdvance">
+                        <bool>true</bool>
                     </property>
                 </widget>
             </widget>
