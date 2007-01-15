@@ -6,7 +6,7 @@
 ### Lage ny release ###
 
 1. Dytte på versjonsnummeret i finfaktura/__init__.py => $VERSJON
-    export VERSJON=xxx
+    export VERSJON=$(./faktura.py -v);
 
 2. Oppgradere debian changelog
     dch --newversion $VERSJON
