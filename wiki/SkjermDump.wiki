@@ -1,0 +1,14 @@
+#summary Slik ser Fryktelig fin faktura ut
+#labels Featured,Phase-Support
+
+== PDF-fakturaene ==
+
+Programmet lager kompakte pdf-fakturaer. De kan lages for sending gjennom epost eller for utskrift på standard skjema F60.
+
+http://finfaktura.googlecode.com/svn/trunk/doc/faktura-0.96-epostfaktura.jpg
+
+== Programmet ==
+
+=== Fakturaliste med detaljer ===
+
+http://finfaktura.googlecode.com/svn/trunk/doc/faktura-0.96-fakturadetaljer.png
