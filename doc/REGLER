@@ -46,7 +46,19 @@
     
     
 13. Kopier til http://code.google.com/p/finfaktura/downloads/entry
-    -> .deb
+    #http://support.googlecode.com/svn/trunk/scripts/googlecode-upload.py
+    
+    cd /tmp
+    
+    -> .deb 
+    googlecode-upload.py -s "Fryktelig fin faktura (debian/ubuntu), versjon $VERSJON" -p finfaktura -u havard.dahle -l "Featured,Type-Package,OpSys-Linux" finfaktura_${VERSJON}_i386.deb
+    
+    -> .rpm
+    fakeroot alien --to-rpm finfaktura_${VERSJON}_i386.deb
+    
+    googlecode-upload.py -s "Fryktelig fin faktura (fedora/suse), versjon $VERSJON" -p finfaktura -u havard.dahle -l "Featured,Type-Package,OpSys-Linux" finfaktura-${VERSJON}-*.rpm
+    
+    
     -> skjermdump
     
 14- Hurra!
