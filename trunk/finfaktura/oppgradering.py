@@ -83,8 +83,9 @@ ENDRINGER ="""
 
 
 import fakturabibliotek 
-import sqlite
-import types, sys
+#import sqlite
+from pysqlite2 import dbapi2 as sqlite
+import os, time, types, sys, shutil
 from string import join
 from pprint import pprint
     
@@ -95,6 +96,8 @@ class OppgraderingsFeil(Exception):
 class oppgrader:
     "For oppgradering mellom databaseversjoner"
     endringskart = {}
+    
+    gammelDatabaseSti = "" # sti til den gamle databasen, i tilfelle det går galt. se .rullTilbake()
     
     def __init__(self, logg=None):
         if logg is None:
@@ -246,19 +249,38 @@ class oppgrader:
 
     def oppgraderSamme(self, dbSti):
         #flytt gammel database 
-        import os, time
         katalog, database = os.path.split(dbSti)
         dbBackupNavn = "%s-%s~" % (database, int(time.time()))
         dbBackup = os.path.join(katalog, dbBackupNavn)
-        os.rename(dbSti, dbBackup)
+        self.gammelDatabaseSti = dbBackup
+        #os.rename(dbSti, dbBackup)
         
         #kjør oppgradering
-        from fakturabibliotek import kobleTilDatabase
-        ny = kobleTilDatabase(dbSti)
-        gml = kobleTilDatabase(dbBackup)
-        self.lastNyDatabase(ny)
-        self.lastGammelDatabase(gml)
-        self.oppgrader()
+        try:
+            shutil.move(dbSti, dbBackup)
+            from fakturabibliotek import kobleTilDatabase
+            ny = kobleTilDatabase(dbSti)
+            gml = kobleTilDatabase(dbBackup)
+            self.lastNyDatabase(ny)
+            self.lastGammelDatabase(gml)
+            self.oppgrader()
+            return True
+        except:
+            self.rullTilbake(dbSti, dbBackup) # rull tilbake til gammel database
+            raise
+        
+    def rullTilbake(self, dbSti, dbBackup=None):
+        "ruller tilbake til backup. dbBackup kan være stien til en gammel database, eller None for siste (basert på filnavn)"
+        try:
+            self.gmldb.close()
+            self.nydb.close()
+        except:
+            raise
+        if dbBackup is None:
+            dbBackup = self.gammelDatabaseSti
+        if not dbBackup:
+            raise "trbl"
+        shutil.copy(dbBackup, dbSti) #skriver over dbSti med backup
         return True
         
     def lesLogg(self):

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'faktura.ui'
 #
-# Created: fre jan 5 00:09:26 2007
+# Created: Tue Jan 16 00:32:21 2007
 #      by: The PyQt User Interface Compiler (pyuic) 3.16
 #
 # WARNING! All changes made in this file will be lost!
@@ -2761,12 +2761,6 @@ class faktura(QMainWindow):
         self.groupBox8_2 = QGroupBox(self.tab,"groupBox8_2")
         self.groupBox8_2.setGeometry(QRect(750,420,200,300))
 
-        self.fakturaBetaltDato = QDateEdit(self.groupBox8_2,"fakturaBetaltDato")
-        self.fakturaBetaltDato.setGeometry(QRect(9,200,100,21))
-        self.fakturaBetaltDato.setOrder(QDateEdit.YMD)
-        self.fakturaBetaltDato.setDate(QDate(2006,1,1))
-        self.fakturaBetaltDato.setAutoAdvance(1)
-
         self.textLabel3_2 = QLabel(self.groupBox8_2,"textLabel3_2")
         self.textLabel3_2.setGeometry(QRect(8,179,114,14))
 
@@ -2800,6 +2794,11 @@ class faktura(QMainWindow):
         self.fakturaLagEpost = QPushButton(self.groupBox8_2,"fakturaLagEpost")
         self.fakturaLagEpost.setGeometry(QRect(48,50,60,23))
         self.fakturaLagEpost.setAutoMask(0)
+
+        self.fakturaBetaltDato = QDateEdit(self.groupBox8_2,"fakturaBetaltDato")
+        self.fakturaBetaltDato.setGeometry(QRect(9,200,100,21))
+        self.fakturaBetaltDato.setDate(QDate(2007,1,1))
+        self.fakturaBetaltDato.setAutoAdvance(1)
 
         self.fakturaVisKansellerte = QCheckBox(self.tab,"fakturaVisKansellerte")
         self.fakturaVisKansellerte.setGeometry(QRect(750,40,180,20))
