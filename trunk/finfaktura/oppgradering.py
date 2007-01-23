@@ -152,7 +152,10 @@ class oppgrader:
                     egenskaper.pop(felt)
             
         k = objekt
-        sql = "INSERT INTO %s (%s) VALUES (%s)" % (k._tabellnavn, join(egenskaper.keys(), ","), join(["%s" for z in egenskaper.values()], ","))
+        
+        if sqlite.paramstyle == 'qmark': param = '?' # tilpass sqlite-versjonen
+        elif sqlite.paramstyle == 'pyformat': param = '%s'
+        sql = "INSERT INTO %s (%s) VALUES (%s)" % (k._tabellnavn, join(egenskaper.keys(), ","), join([param for z in egenskaper.values()], ","))
         try:
             self.nydbc.execute(sql, egenskaper.values())
         except:
