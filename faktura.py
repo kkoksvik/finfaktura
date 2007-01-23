@@ -1123,6 +1123,8 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
 
                 stream = QBuffer()
                 l.convertToImage().smoothScale(360,360, QImage.ScaleMax).save(stream, 'PNG')
+                
+                import sqlite
 
                 self.firma.logo = sqlite.encode(stream.getData())
                 self.visLogo()

@@ -12,7 +12,9 @@
 import types, os, sys, os.path
 from string import join
 from time import time, strftime, localtime
-import sqlite
+#import sqlite
+#from sqlite import DatabaseError
+from pysqlite2 import dbapi2 as sqlite
 
 
 PRODUKSJONSVERSJON=False # Sett denne til True for å skjule funksjonalitet som ikke er ferdigstilt
@@ -584,7 +586,7 @@ class fakturaOppsett(fakturaKomponent):
     
     def __init__(self, db, versjonsjekk=True):
     
-        from _sqlite import DatabaseError
+        #from _sqlite import DatabaseError
         c = db.cursor()
         datastrukturer = [fakturaFirmainfo,
                           fakturaKunde,
@@ -597,8 +599,9 @@ class fakturaOppsett(fakturaKomponent):
         mangler = []
         for obj in datastrukturer:
             try:
+                print obj._tabellnavn
                 c.execute("SELECT * FROM %s" % obj._tabellnavn)
-            except DatabaseError,e:
+            except sqlite.DatabaseError:
                 # db mangler eller er korrupt
                 # for å finne ut om det er en gammel versjon
                 # sparer vi på tabellene som mangler og sammenligner
@@ -616,10 +619,11 @@ class fakturaOppsett(fakturaKomponent):
         except DBTomFeil:
             # finner ikke oppsett. Ny, tom database
             import os
-            c.execute("INSERT INTO %(tab)s (ID, databaseversjon, fakturakatalog) VALUES (%(id)s, %(ver)f, %(kat)s)",  {'tab':self._tabellnavn, 'id': self._id, 'ver': DATABASEVERSJON, 'kat':os.getenv('HOME') })
+            c.execute("INSERT INTO %s (ID, databaseversjon, fakturakatalog) VALUES (:id, :ver, :kat)" % self._tabellnavn,  {'tab':self._tabellnavn, 'id': self._id, 'ver': DATABASEVERSJON, 'kat':os.getenv('HOME') })
+            #c.execute("INSERT INTO %(tab)s (ID, databaseversjon, fakturakatalog) VALUES (%(id)s, %(ver)f, %(kat)s)",  {'tab':self._tabellnavn, 'id': self._id, 'ver': DATABASEVERSJON, 'kat':os.getenv('HOME') })
             db.commit()
             fakturaKomponent.__init__(self, db, Id=self._id)
-        except DatabaseError:
+        except sqlite.DatabaseError:
             # tabellen finnes ikke
             self._sqlExists = False
             if versjonsjekk: 
@@ -747,16 +751,22 @@ def debug(s):
     if not PRODUKSJONSVERSJON: print "[faktura]: %s" % s
 
 def lagDatabase(database, sqlfile=None):
-    import sqlite
     logg = open("faktura.sqlite.lag.log", "a+")
-    db = sqlite.connect(database, encoding="utf-8", command_logfile=logg)
+    db = sqlite.connect(database)#, encoding="utf-8")#, command_logfile=logg)
     return byggDatabase(db, sqlfile)
 
 def byggDatabase(db, sqlfile=None):
     if not sqlfile:
         if not PRODUKSJONSVERSJON: sqlfile = "faktura.sql"
         else: sqlfile = "/usr/share/finfaktura/data/faktura.sql"
-    db.cursor().execute(file(sqlfile).read())
+    #sjekk versjon
+    if sqlite.version_info[0] == 1:
+        # pysqlite 1 kan lese en hel fil gjennom .execute
+        db.cursor().execute(file(sqlfile).read())
+    elif sqlite.version_info[0] >= 2:
+        # pysqlite2s .execute kan ikke lese mer enn én kommando av gangen, 
+        # men man kan bruke den ikke-standard metoden .executescript
+        db.cursor().executescript(file(sqlfile).read())
     db.commit()
     return db
 
@@ -790,7 +800,8 @@ def kobleTilDatabase(dbnavn=None, loggfil=None):
         dbnavn = finnDatabasenavn()
     enc = "utf-8"
     try:
-        db = sqlite.connect(db=dbnavn, encoding=enc, command_logfile=loggfil)
+        #db = sqlite.connect(db=dbnavn, encoding=enc, command_logfile=loggfil)
+        db = sqlite.connect(database=dbnavn)#, encoding=enc)#, command_logfile=loggfil)
     except sqlite.DatabaseError, (E):
         debug("Vi bruker sqlite %s" % sqlite.apilevel)
         dbver = sjekkDatabaseVersjon(dbnavn)
