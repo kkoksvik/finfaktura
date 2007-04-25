@@ -66,9 +66,11 @@ class FakturaBibliotek:
     def nyKunde(self):
         return fakturaKunde(self.db)
 
-    def hentVarer(self, inkluderSlettede=False):
+    def hentVarer(self, inkluderSlettede=False, sorterEtterKunde=None):
         sql = "SELECT ID FROM %s" % fakturaVare._tabellnavn
         if not inkluderSlettede: sql += " WHERE slettet IS NULL OR slettet = 0"
+        if sorterEtterKunde is not None:
+            sql += " ORDER BY "
         self.c.execute(sql)
         return [fakturaVare(self.db, z[0]) for z in self.c.fetchall()]
 
@@ -267,7 +269,11 @@ class fakturaKomponent:
         else: self.__dict__[egenskap] = verdi
 
     def hentEgenskaperListe(self):
-        self.c.execute("SELECT * FROM %s LIMIT 1" % self._tabellnavn)
+        try:
+            self.c.execute("SELECT * FROM %s LIMIT 1" % self._tabellnavn)
+        except sqlite.OperationalError:
+            #pysqlite2 klager på blobs
+            pass
         self._egenskaperListe = map(lambda z: z[0], self.c.description)
         r = {}
         for z in self._egenskaperListe:
@@ -304,6 +310,9 @@ class fakturaKomponent:
         except ImportError: pass
         #self.c.execute("UPDATE %s SET %s=%%s WHERE %s=%s" % (self._tabellnavn, egenskap, self._IDnavn, self._id), verdi)
         _sql = "UPDATE %s SET %s=%%s WHERE %s=%s" % (self._tabellnavn, egenskap, self._IDnavn, self._id)
+        if sqlite.version_info[0] == 2:
+            _sql = _sql % '?'
+            print _sql, verdi
         #print _sql, type(verdi)
         self.c.execute(_sql, (verdi,))
         self.db.commit()
@@ -599,8 +608,7 @@ class fakturaOppsett(fakturaKomponent):
         mangler = []
         for obj in datastrukturer:
             try:
-                print obj._tabellnavn
-                c.execute("SELECT * FROM %s" % obj._tabellnavn)
+                c.execute("SELECT * FROM %s LIMIT 1" % obj._tabellnavn)
             except sqlite.DatabaseError:
                 # db mangler eller er korrupt
                 # for å finne ut om det er en gammel versjon
@@ -619,7 +627,12 @@ class fakturaOppsett(fakturaKomponent):
         except DBTomFeil:
             # finner ikke oppsett. Ny, tom database
             import os
-            c.execute("INSERT INTO %s (ID, databaseversjon, fakturakatalog) VALUES (:id, :ver, :kat)" % self._tabellnavn,  {'tab':self._tabellnavn, 'id': self._id, 'ver': DATABASEVERSJON, 'kat':os.getenv('HOME') })
+            if sqlite.paramstyle == 'pyformat':
+                sql = "INSERT INTO %(tab)s (ID, databaseversjon, fakturakatalog) VALUES (%(id)s, %(ver)f, %(kat)s)"
+            elif sqlite.paramstyle == 'qmark':
+                sql = "INSERT INTO %s (ID, databaseversjon, fakturakatalog) VALUES (:id, :ver, :kat)" % self._tabellnavn
+                
+            c.execute(sql,  {'tab':self._tabellnavn, 'id': self._id, 'ver': DATABASEVERSJON, 'kat':os.getenv('HOME') })
             #c.execute("INSERT INTO %(tab)s (ID, databaseversjon, fakturakatalog) VALUES (%(id)s, %(ver)f, %(kat)s)",  {'tab':self._tabellnavn, 'id': self._id, 'ver': DATABASEVERSJON, 'kat':os.getenv('HOME') })
             db.commit()
             fakturaKomponent.__init__(self, db, Id=self._id)
@@ -693,7 +706,12 @@ class fakturaSikkerhetskopi(fakturaKomponent):
     def hentEgenskaper(self):
         if self._id is None:
             return False
-        self.c.execute("SELECT ID,ordreID,dato,data FROM %s WHERE %s=%s" % (self._tabellnavn, self._IDnavn, self._id))
+        # blob-behandling er annerledes i pysqlite2 fra sqlite1
+        if sqlite.version_info[0] == 2:
+            sql = "SELECT ID, ordreID, dato, CAST(data as blob) FROM %s WHERE %s=%s" % (self._tabellnavn, self._IDnavn, self._id)
+        elif sqlite.version_info[0] == 1:
+            sql = "SELECT ID,ordreID,dato,data FROM %s WHERE %s=%s" % (self._tabellnavn, self._IDnavn, self._id)
+        self.c.execute(sql)
         r = self.c.fetchone()
         self._egenskaper['ordreID'] = r[1]
         self._egenskaper['dato']    = r[2]
@@ -742,10 +760,15 @@ class pdfType:
         'Returnerer streng som kan puttes rett inn i sqlite. Kalles internt av pysqlite'
         if not self.data: return "''"
         import sqlite
-        return "'%s'" % sqlite.encode(self.data)
+        #return "'%s'" % sqlite.encode(self.data)
+        return str(sqlite.Binary(self.data))
     
     def __str__(self):
-        return self.data
+        return str(self.data)
+
+    def __conform__(self, protocol):
+        if protocol is sqlite.PrepareProtocol:
+            return sqlite.Binary(self.data)
 
 def debug(s):
     if not PRODUKSJONSVERSJON: print "[faktura]: %s" % s
