@@ -70,6 +70,7 @@ def cli_faktura():
 nogui = False
 try:
     from qt import *
+    from qttable import *
     from finfaktura.ekstra import QBuffer, slettetLogo_data, forfaltLogo_data
     from finfaktura.faktura_ui import faktura ## husk å kjøre "pyuic -x faktura.ui > faktura_ui.py" først!
 except ImportError:
@@ -106,6 +107,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         self.connect(self.fakturaFaktaLegginn, SIGNAL("clicked()"), self.leggTilFaktura)
         #self.connect(self.fakturaFaktaVare, SIGNAL("highlighted(int)"), self.fakturaVareOppdater)
         self.connect(self.fakturaFakturaliste, SIGNAL("selectionChanged(QListViewItem*)"), self.visFakturadetaljer)
+        self.connect(self.fakturaFaktaVareliste, SIGNAL("valueChanged(int,int)"), self.fakturaVarelisteSynk)
         self.connect(self.fakturaFaktaVareLeggtil, SIGNAL("clicked()"), self.leggVareTilOrdre)
         #self.connect(self.fakturaFaktaVareFjern, SIGNAL("clicked()"), self.fjernVareFraOrdre)
         self.connect(self.fakturaLagEpost, SIGNAL("clicked()"), self.lagFakturaEpost)
@@ -150,19 +152,10 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
 
         self.connect(self.sikkerhetskopiGmailLastopp, SIGNAL("clicked()"), self.sikkerhetskopiGmail)
         
-        try:
-            for layout in self.fakturaFaktaLinjerRom.children():
-                self.fakturaFaktaLinjerRom.removeChild(layout)
-                del(layout)
-        except TypeError: pass # no children
-        print self.fakturaFaktaLinjerRom.children()
-        self.fakturaFaktaVarelinjer = QVBoxLayout(self.fakturaFaktaLinjerRom, 5, 0, "fakturaFaktaVarelinjer")
-        self.fakturaFaktaVarelinjer.setGeometry(QRect(0,0,661,170))
-        #self.fakturaFaktaVarelinjer.setGeometry(QRect(20,150,661,170))
-        self.fakturaFaktaVarelinjer.addStretch(10)
-        
-        #self.fakturaFaktaLinjerScroll = QScrollBar(self.fakturaFaktaLinjerRom, "linjescroll")
-        
+        self.fakturaFaktaVareliste.setColumnStretchable(0, True)
+        self.fakturaFaktaVareliste.setColumnWidth(1, 70)
+        self.fakturaFaktaVareliste.setColumnWidth(2, 70)
+        self.fakturaFaktaVareliste.setColumnWidth(3, 70)
         
         for obj in (self.dittfirmaFirmanavn,
             self.dittfirmaOrganisasjonsnummer,
@@ -280,9 +273,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
 
 ################## FAKTURA ########################
 
-    fakturaOrdrelinjeDummytekst = u"[Legg inn en vare]"
-
-    fakturaOrdrelinjerListe = []
+    fakturaVarelisteCache = []
 
     def lukkFakta(self, *ev):self.fakturaFakta.hide()
 
@@ -372,13 +363,11 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             self.fyllFakturaMottaker()
             self.fakturaFaktaMottaker.setFocus()
         self.fakturaFaktaTekst.setText("")
-        self.fyllFakturaVare()
+        #self.fyllFakturaVare()
+        self.fakturaVarelisteCache = self.faktura.hentVarer()
+        self.fakturaFaktaVareliste.removeRows(range(self.fakturaFaktaVareliste.numRows())) # fjern alle
+        self.leggVareTilOrdre() # legg til tom rad
         self.fakturaFaktaDato.setDate(QDate.currentDate())
-        self.fakturaFaktaVarelinjer.deleteAllItems()
-        for r in self.fakturaOrdrelinjerListe: 
-            #self.fakturaFaktaVarelinjer.removeChild(r)
-            del(r)
-        self.leggVareTilOrdre() #legg inn første rad
         self.fakturaFakta.show()
 
     def leggTilFaktura(self):
@@ -429,135 +418,63 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         for kunde in self.faktura.hentKunder():
             i(unicode(kunde))
 
-    def fyllFakturaVare(self):
-        self.fakturaKartVarer = {}
-        self.fakturaFaktaVare.setEnabled(True)
-        self.fakturaFaktaVare.clear()
-        i = self.fakturaFaktaVare.insertItem
-        for v in self.faktura.hentVarer():
-            i(unicode(v.navn))
-            self.fakturaKartVarer[self.fakturaFaktaVare.count() - 1] = v
-        #self.fakturaVareOppdater(0)
-
-    def leggVareTilOrdreGML(self):
-        #if self.fakturaFaktaOrdrelinje.count() == 1 and \
-            #self.fakturaOrdrelinjeDummytekst == self.fakturaFaktaOrdrelinje.item(0).text(): # er det dummy-tekst?
-            #self.fakturaFaktaOrdrelinje.clear()
-        vare = self.fakturaKartVarer[self.fakturaFaktaVare.currentItem()]
-        if self.fakturaOrdrelinje.has_key(vare):
-            self.alert(u"Du har allerede lagt inn %s i fakturaen.\nDersom du vil endre antallet %ser må du fjerne den gamle posten først" % \
-                (vare.navn, vare.navn))
-            return False
-        #self.fakturaFaktaOrdrelinje.insertItem("%s %s %s" % (self.fakturaFaktaAntall.value(), vare.enhet, vare))
-        #self.fakturaKartOrdrelinje[self.fakturaFaktaOrdrelinje.count() - 1] = vare
-        self.fakturaOrdrelinje[vare] = self.fakturaFaktaAntall.value()
-        self.oppdaterFakturaSum()
-
     def leggVareTilOrdre(self):
         
-        boxId = str(int(time())) # id=epoch
-        box = QHBoxLayout(self.fakturaFaktaVarelinjer, 5, "fakturaFaktaLinje-"+boxId) # 
-        box._id = boxId
-        
-        #Fjern = QPushButton(self.fakturaFaktaLinjerRom,"fakturaFaktaVareFjern")
-        ##Fjern.setGeometry(QRect(30,160,41,20))
-        #Fjern.boxId = boxId
-        #Fjern.setMinimumSize(QSize(41,21))
-        #Fjern.setText('Fjern')
-        #Fjern.show()
-        ##self.connect(self.Fjern, SIGNAL("clicked()"), self.)
-        ##box.addWidget(Fjern)#, 0, QLabel.AlignLeft)
-
-        Antall = QSpinBox(self.fakturaFaktaLinjerRom, "Antall-"+boxId)
-        #Antall.setGeometry(QRect(470,160,90,21))
+        sisterad = self.fakturaFaktaVareliste.numRows()
+        Antall = QSpinBox(self.fakturaFaktaVareliste, "Antall-%s" % sisterad)
         Antall.setMaxValue(100000)
         Antall.setValue(0)
-        Antall.setMinimumSize(QSize(90,21))
         Antall.show()
         QObject.connect(Antall, SIGNAL("valueChanged(int)"), self.oppdaterFakturaSum)
-        #self.connect(self.Antall, SIGNAL("clicked()"), self.)
         
-        Pris = QSpinBox(self.fakturaFaktaLinjerRom, "Pris-"+boxId)
-        #Pris.setGeometry(QRect(578,160,91,21))
+        Pris = QSpinBox(self.fakturaFaktaVareliste, "Pris-%s" % sisterad)
         Pris.setButtonSymbols(QSpinBox.UpDownArrows)
         Pris.setMaxValue(999999999)
-        Pris.setMinimumSize(QSize(90,21))
         Pris.show()
         QObject.connect(Pris, SIGNAL("valueChanged(int)"), self.oppdaterFakturaSum)
         
-        Mva = QSpinBox(self.fakturaFaktaLinjerRom, "Mva-"+boxId)
-        #Pris.setGeometry(QRect(578,160,91,21))
+        Mva = QSpinBox(self.fakturaFaktaVareliste, "Mva-%s" % sisterad)
         Mva.setButtonSymbols(QSpinBox.UpDownArrows)
         Mva.setValue(25)
-        Mva.setMinimumSize(QSize(60,21))
         Mva.show()
         QObject.connect(Mva, SIGNAL("valueChanged(int)"), self.oppdaterFakturaSum)
         
-        Vare = QComboBox(1, self.fakturaFaktaLinjerRom, "Vare-"+boxId)
-        #Vare.setGeometry(QRect(80,160,380,21))
-        Vare.setEditable(0)
-        Vare.setDuplicatesEnabled(0)
-        Vare.setMinimumSize(QSize(380,21))
-        Vare.varer = self.faktura.hentVarer()
-        for v in Vare.varer:
-            Vare.insertItem(unicode(v.navn))
-        Vare.show()
-        QObject.connect(Vare, SIGNAL("activated(int)"), self.fakturaVarelisteSynk)
+        varer = QStringList()
+        map(varer.append, [unicode(v.navn) for v in self.faktura.hentVarer()])
         
-        box.addWidget(Vare)#, 10)
-        box.addWidget(Antall)#, 5)
-        box.addWidget(Pris)#, 5)
-        box.addWidget(Mva)#, 5)
-
-        self.fakturaFaktaVarelinjer.addChildLayout(box)#, 5) #Qt::AlignTop
-        self.fakturaOrdrelinjerListe.append(box)
-        print "added %s" % box
+        Vare = QComboTableItem(self.fakturaFaktaVareliste, varer, False)
+        self.fakturaFaktaVareliste.setNumRows(sisterad+1)
+        self.fakturaFaktaVareliste.setItem(sisterad, 0, Vare)
+        self.fakturaFaktaVareliste.setCellWidget(sisterad, 1, Antall)
+        self.fakturaFaktaVareliste.setCellWidget(sisterad, 2, Pris)
+        self.fakturaFaktaVareliste.setCellWidget(sisterad, 3, Mva)
     
-    def fakturaVarelisteSynk(self, valgtId):
-        print self.sender().name()
-        sender = self.sender()
-        t = self.finnOrdreTransaksjoner()
-        rad = sender.name().split('-')[1]
-        print t[rad]
-        t[rad]['Pris'].setValue(sender.varer[valgtId].pris)
-        t[rad]['Mva'].setValue(sender.varer[valgtId].mva)
-        t[rad]['Antall'].setSuffix(" "+sender.varer[valgtId].enhet)
+    def fakturaVarelisteSynk(self, rad, kol):
+        debug("rad: %s" % rad)
+        debug("kol: %s" % kol)
+        sender = self.fakturaFaktaVareliste.cellWidget(rad, kol)
+        debug(sender)
+        if kol == 0: # endret på varen -> oppdater metadata
+            vare = self.fakturaVarelisteCache[sender.currentItem()]
+            self.fakturaFaktaVareliste.cellWidget(rad, 1).setSuffix(' '+vare.enhet)
+            self.fakturaFaktaVareliste.cellWidget(rad, 2).setValue(vare.pris)
+            self.fakturaFaktaVareliste.cellWidget(rad, 3).setValue(vare.mva)
+        else:
+            # endret på antall, mva eller pris -> oppdater sum
+            p = mva = 0.0
+            for i in range(self.fakturaFaktaVareliste.numRows()):
+                _antall = self.fakturaFaktaVareliste.cellWidget(i, 1).value()
+                _pris   = self.fakturaFaktaVareliste.cellWidget(i, 2).value() 
+                _mva    = self.fakturaFaktaVareliste.cellWidget(i, 3).value()
+                p += _pris * _antall 
+                mva += _pris * _antall * _mva / 100 #vare['Pris'] * vare['Antall'] * vare['Mva'] / 100
+            self.fakturaFaktaSum.setText("<u>%.2fkr (+%.2fkr mva)</u>" % (p, mva))
 
-    def fjernVareFraOrdre(self, boxId=None):
-        #valgt = self.fakturaFaktaOrdrelinje.currentItem()
-        #if valgt == -1: 
-            #self.alert(u"Du må velge en vare før du kan fjerne den")
-        #elif valgt == 1 and \
-            #self.fakturaOrdrelinjeDummytekst == self.fakturaFaktaOrdrelinje.item(valgt).text():
-            # dummyteksten er markert
-            #return
-        #vare = self.fakturaKartOrdrelinje[valgt]
-        #debug("Fjerner vare fra ordre: %s" % vare)
-        #del(self.fakturaOrdrelinje[vare])
-        #self.fakturaFaktaOrdrelinje.removeItem(valgt)
-        self.oppdaterFakturaSum()
-
-    def finnOrdreTransaksjoner(self):
-        transaksjoner = {}
-        for widget in self.fakturaFaktaLinjerRom.children():
-            try:
-                kol, nr = widget.name().split("-")
-            except ValueError: continue
-            if not transaksjoner.has_key(nr): transaksjoner[nr] = {}
-            transaksjoner[nr][kol] = widget
-        return transaksjoner
-                
     def oppdaterFakturaSum(self):
-        transaksjoner = self.finnOrdreTransaksjoner()
-        p = mva = 0.0
-        for vare in transaksjoner.itervalues():
-            print vare
-            vpris = vare['Pris'].value()
-            vantall = vare['Antall'].value()
-            vmva = vare['Mva'].value()
-            p += vpris * vantall 
-            mva += vpris * vantall * vmva / 100 #vare['Pris'] * vare['Antall'] * vare['Mva'] / 100
-        self.fakturaFaktaSum.setText("<u>%.2fkr (+%.2fkr mva)</u>" % (p, mva))
+        k = ['Beskrivelse', 'Antall', 'Pris', 'Mva']
+        sender = self.sender()
+        _kol, rad = sender.name().split('-')
+        self.fakturaVarelisteSynk(int(rad), k.index(_kol))
 
     def fakturaVareOppdater(self, idx):
         # oppdaterer data avhengig av hvilken vare som er valgt i legg-inn-faktura-skjemaet

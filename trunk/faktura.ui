@@ -675,44 +675,6 @@
                         <bool>true</bool>
                     </property>
                 </widget>
-                <widget class="Line">
-                    <property name="name">
-                        <cstring>line6</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>80</x>
-                            <y>140</y>
-                            <width>600</width>
-                            <height>20</height>
-                        </rect>
-                    </property>
-                    <property name="frameShape">
-                        <enum>HLine</enum>
-                    </property>
-                    <property name="frameShadow">
-                        <enum>Sunken</enum>
-                    </property>
-                    <property name="orientation">
-                        <enum>Horizontal</enum>
-                    </property>
-                </widget>
-                <widget class="QLabel">
-                    <property name="name">
-                        <cstring>textLabel1_4</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>80</x>
-                            <y>130</y>
-                            <width>72</width>
-                            <height>14</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Beskrivelse:</string>
-                    </property>
-                </widget>
                 <widget class="QLabel">
                     <property name="name">
                         <cstring>textLabel1_11</cstring>
@@ -805,32 +767,6 @@
                 </widget>
                 <widget class="QLabel">
                     <property name="name">
-                        <cstring>textLabel5_2</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>20</x>
-                            <y>130</y>
-                            <width>40</width>
-                            <height>31</height>
-                        </rect>
-                    </property>
-                    <property name="font">
-                        <font>
-                        </font>
-                    </property>
-                    <property name="focusPolicy">
-                        <enum>NoFocus</enum>
-                    </property>
-                    <property name="text">
-                        <string>Varer</string>
-                    </property>
-                    <property name="buddy" stdset="0">
-                        <cstring>fakturaFaktaOrdrelinje</cstring>
-                    </property>
-                </widget>
-                <widget class="QLabel">
-                    <property name="name">
                         <cstring>fakturaFaktaSum</cstring>
                     </property>
                     <property name="geometry">
@@ -873,28 +809,6 @@
                         <string>Lager den nye fakturaen</string>
                     </property>
                 </widget>
-                <widget class="Line">
-                    <property name="name">
-                        <cstring>line7</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>80</x>
-                            <y>360</y>
-                            <width>601</width>
-                            <height>20</height>
-                        </rect>
-                    </property>
-                    <property name="frameShape">
-                        <enum>HLine</enum>
-                    </property>
-                    <property name="frameShadow">
-                        <enum>Sunken</enum>
-                    </property>
-                    <property name="orientation">
-                        <enum>Horizontal</enum>
-                    </property>
-                </widget>
                 <widget class="QLabel">
                     <property name="name">
                         <cstring>fakturaFaktaVarePris</cstring>
@@ -917,29 +831,6 @@
                         <set>WordBreak|AlignTop|AlignLeft</set>
                     </property>
                 </widget>
-                <widget class="QLabel">
-                    <property name="name">
-                        <cstring>textLabel7_6</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>400</x>
-                            <y>120</y>
-                            <width>40</width>
-                            <height>21</height>
-                        </rect>
-                    </property>
-                    <property name="font">
-                        <font>
-                        </font>
-                    </property>
-                    <property name="text">
-                        <string>&amp;Antall</string>
-                    </property>
-                    <property name="buddy" stdset="0">
-                        <cstring>fakturaFaktaAntall</cstring>
-                    </property>
-                </widget>
                 <widget class="QPushButton">
                     <property name="name">
                         <cstring>fakturaFaktaVareLeggtil</cstring>
@@ -947,7 +838,7 @@
                     <property name="geometry">
                         <rect>
                             <x>10</x>
-                            <y>340</y>
+                            <y>360</y>
                             <width>114</width>
                             <height>23</height>
                         </rect>
@@ -962,58 +853,111 @@
                         <string>Legger til den valgte varen fra listen over</string>
                     </property>
                 </widget>
-                <widget class="QFrame">
+                <spacer>
                     <property name="name">
-                        <cstring>fakturaFaktaLinjerRom</cstring>
+                        <cstring>spacer2</cstring>
+                    </property>
+                    <property name="orientation">
+                        <enum>Horizontal</enum>
+                    </property>
+                    <property name="sizeType">
+                        <enum>Expanding</enum>
+                    </property>
+                    <property name="sizeHint">
+                        <size>
+                            <width>131</width>
+                            <height>20</height>
+                        </size>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>178</x>
+                            <y>391</y>
+                            <width>131</width>
+                            <height>20</height>
+                        </rect>
+                    </property>
+                </spacer>
+                <spacer>
+                    <property name="name">
+                        <cstring>spacer1</cstring>
+                    </property>
+                    <property name="orientation">
+                        <enum>Horizontal</enum>
+                    </property>
+                    <property name="sizeType">
+                        <enum>Expanding</enum>
+                    </property>
+                    <property name="sizeHint">
+                        <size>
+                            <width>531</width>
+                            <height>20</height>
+                        </size>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>130</x>
+                            <y>360</y>
+                            <width>531</width>
+                            <height>20</height>
+                        </rect>
+                    </property>
+                </spacer>
+                <widget class="QTable">
+                    <column>
+                        <property name="text">
+                            <string>Varebeskrivelse</string>
+                        </property>
+                        <property name="pixmap">
+                            <pixmap></pixmap>
+                        </property>
+                    </column>
+                    <column>
+                        <property name="text">
+                            <string>Antall</string>
+                        </property>
+                        <property name="pixmap">
+                            <pixmap></pixmap>
+                        </property>
+                    </column>
+                    <column>
+                        <property name="text">
+                            <string>Pris</string>
+                        </property>
+                        <property name="pixmap">
+                            <pixmap></pixmap>
+                        </property>
+                    </column>
+                    <column>
+                        <property name="text">
+                            <string>Mva</string>
+                        </property>
+                        <property name="pixmap">
+                            <pixmap></pixmap>
+                        </property>
+                    </column>
+                    <property name="name">
+                        <cstring>fakturaFaktaVareliste</cstring>
                     </property>
                     <property name="geometry">
                         <rect>
                             <x>8</x>
-                            <y>151</y>
-                            <width>681</width>
-                            <height>180</height>
+                            <y>121</y>
+                            <width>670</width>
+                            <height>230</height>
                         </rect>
                     </property>
-                    <property name="frameShape">
-                        <enum>StyledPanel</enum>
+                    <property name="resizePolicy">
+                        <enum>AutoOneFit</enum>
                     </property>
-                    <property name="frameShadow">
-                        <enum>Raised</enum>
-                    </property>
-                    <property name="lineWidth">
+                    <property name="numRows">
                         <number>0</number>
                     </property>
-                </widget>
-                <widget class="QLabel">
-                    <property name="name">
-                        <cstring>textLabel1_4_2</cstring>
+                    <property name="numCols">
+                        <number>4</number>
                     </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>507</x>
-                            <y>124</y>
-                            <width>26</width>
-                            <height>14</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Pris:</string>
-                    </property>
-                </widget>
-                <widget class="QLabel">
-                    <property name="name">
-                        <cstring>textLabel1_4_2_2</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>597</x>
-                            <y>125</y>
-                            <width>26</width>
-                            <height>14</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Mva:</string>
+                    <property name="selectionMode">
+                        <enum>SingleRow</enum>
                     </property>
                 </widget>
             </widget>
