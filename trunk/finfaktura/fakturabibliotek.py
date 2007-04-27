@@ -80,6 +80,22 @@ class FakturaBibliotek:
     def hentVare(self, Id):
         return fakturaVare(self.db, Id)
 
+    def finnVareEllerLagNy(self, navn, pris, mva, enhet):
+        sql = "SELECT ID FROM %s" % fakturaVare._tabellnavn
+        sql += " WHERE navn==? AND pris==? AND mva==?"
+        print sql, navn, pris, mva
+        self.c.execute(sql, (navn, pris, mva,))
+        try:
+            return fakturaVare(self.db, self.c.fetchone()[0])
+        except IndexError:
+            # varen finnes ikke, lag ny og returner
+            vare = self.nyVare()
+            vare.navn = navn
+            vare.pris = pris
+            vare.mva = mva
+            vare.enhet = enhet
+            return vare
+
     def nyOrdre(self, _kunde = None, _Id = None):
         return fakturaOrdre(self.db, kunde=_kunde, Id=_Id, firma = self.__firmainfo)
 
