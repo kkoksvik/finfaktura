@@ -384,7 +384,7 @@ class fakturaKunde(fakturaKomponent):
     def finnOrdrer(self):
         u'Finner alle gyldige ordrer tilhørende denne kunden'
         #Finn alle id-ene først
-        self.c.execute('SELECT ID FROM %s WHERE kundeID=? AND kansellert=0 ORDER BY ordredato ASC' % fakturaOrdre._tabellnavn, (self._id,)
+        self.c.execute('SELECT ID FROM %s WHERE kundeID=? AND kansellert=0 ORDER BY ordredato ASC' % fakturaOrdre._tabellnavn, (self._id,))
         return [fakturaOrdre(self.db, kunde=self, Id=i[0]) for i in self.c.fetchall()]
         
 
