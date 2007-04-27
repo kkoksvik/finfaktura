@@ -249,7 +249,6 @@ class FakturaBibliotek:
 class fakturaKomponent:
     _egenskaper = {}
     _tabellnavn = ""
-    _IDnavn     = "ID"
     _sqlExists  = True 
     _egenskaperBlob = []
 
@@ -306,8 +305,10 @@ class fakturaKomponent:
         if self._id is None:
             return False
         #self.c.execute("SELECT * FROM %s WHERE %s=%s" % (self._tabellnavn, self._IDnavn, self._id))
-        self.c.execute("SELECT * FROM %s WHERE ?=?" % self._tabellnavn, (self._IDnavn, self._id))
+        debug("SELECT * FROM %s WHERE ID=?" % self._tabellnavn, (self._id,))
+        self.c.execute("SELECT * FROM %s WHERE ID=?" % self._tabellnavn, (self._id,))
         r = self.c.fetchone()
+        debug(r)
         if r is None: raise DBTomFeil(u'Det finnes ingen %s med ID %s' % (self._tabellnavn, self._id))
         for z in self._egenskaper.keys():
             try:verdi = r[self._egenskaperListe.index(z)]
@@ -324,26 +325,26 @@ class fakturaKomponent:
             self._egenskaper[z] = verdi
 
     def oppdaterEgenskap(self, egenskap, verdi):
-        if not egenskap in self._egenskaperBlob and type(verdi) in (types.UnicodeType,):
-            verdi = verdi.encode('utf8')
+        #if not egenskap in self._egenskaperBlob and type(verdi) in (types.UnicodeType,):
+            #verdi = verdi.encode('utf8')
         try:
             import qt 
             if type(verdi) == qt.QString: verdi = unicode(verdi)
         except ImportError: pass
         #self.c.execute("UPDATE %s SET %s=%%s WHERE %s=%s" % (self._tabellnavn, egenskap, self._IDnavn, self._id), verdi)
-        _sql = "UPDATE %s SET ?=? WHERE ?=?" % self._tabellnavn, (egenskap, verdi, self._IDnavn, self._id)
-        debug(_sql)
+        _sql = "UPDATE %s SET %s=? WHERE ID=?" % (self._tabellnavn, egenskap)
+        debug(_sql, (verdi, self._id))
         #print _sql, type(verdi)
-        self.c.execute(_sql)
+        self.c.execute(_sql, (verdi, self._id))
         self.db.commit()
-        self.hentEgenskaper()
+        #self.hentEgenskaper()
 
     def nyId(self):
 #       debug("nyId: -> %s <- %s" % (self._tabellnavn, self._IDnavn))
-        self.c.execute("INSERT INTO %s (?) VALUES (NULL)" % self._tabellnavn, (self._IDnavn,))
+        self.c.execute("INSERT INTO %s (ID) VALUES (NULL)" % self._tabellnavn)
         self.db.commit()
         #return self.db.insert_id()
-        return self.db.lastrowid
+        return self.c.lastrowid
 
 class fakturaKunde(fakturaKomponent):
     _tabellnavn = "Kunde"
@@ -464,7 +465,7 @@ class fakturaOrdre(fakturaKomponent):
           (self._tabellnavn, self.kunde._id, time(), time()+3600*24*forfall,))
         self.db.commit()
         #return self.db.insert_id()
-        return self.db.lastrowid
+        return self.c.lastrowid
 
     def leggTilVare(self, vare, kvantum, pris, mva):
         vare = fakturaOrdrelinje(self.db, self, vare, kvantum, pris, mva)
@@ -536,10 +537,11 @@ class fakturaOrdrelinje(fakturaKomponent):
         self.vare = vare
         if Id is None:
             #db.cursor().execute("INSERT INTO %s (ID, ordrehodeID, vareID, kvantum, enhetspris, mva) VALUES (NULL, %s, %s, %s, %s, %s)" % (self._tabellnavn, self.ordre._id, self.vare._id, kvantum, enhetspris, mva))
-            db.cursor().execute("INSERT INTO %s (ID, ordrehodeID, vareID, kvantum, enhetspris, mva) VALUES (NULL, ?, ?, ?, ?, ?)" % self._tabellnavn, (self.ordre._id, self.vare._id, kvantum, enhetspris, mva))
+            c = db.cursor()
+            c.execute("INSERT INTO %s (ID, ordrehodeID, vareID, kvantum, enhetspris, mva) VALUES (NULL, ?, ?, ?, ?, ?)" % self._tabellnavn, (self.ordre._id, self.vare._id, kvantum, enhetspris, mva))
             db.commit()
             #Id = db.insert_id()
-            Id = db.lastrowid
+            Id = c.lastrowid
         fakturaKomponent.__init__(self, db, Id)
         if Id is not None:
             self.vare = fakturaVare(db, self.vareID)
@@ -704,10 +706,11 @@ class fakturaSikkerhetskopi(fakturaKomponent):
         if ordre is not None:
             self.ordre = ordre
             #db.cursor().execute("INSERT INTO %s (ID, ordreID, dato) VALUES (NULL, %s, %s)" % (self._tabellnavn, self.ordre._id, self.dato))
-            db.cursor().execute("INSERT INTO %s (ID, ordreID, dato) VALUES (NULL, ?, ?)" % self._tabellnavn, (self.ordre._id, self.dato))
+            c = db.cursor()
+            c.execute("INSERT INTO %s (ID, ordreID, dato) VALUES (NULL, ?, ?)" % self._tabellnavn, (self.ordre._id, self.dato))
             db.commit()
             #Id = db.insert_id()
-            Id = db.lastrowid
+            Id = c.lastrowid
             fakturaKomponent.__init__(self, db, Id)
             from f60 import f60
             spdf = f60(filnavn=None)
@@ -739,7 +742,7 @@ class fakturaSikkerhetskopi(fakturaKomponent):
         if self._id is None:
             return False
         #sql = "SELECT ID, ordreID, dato, CAST(data as blob) FROM %s WHERE %s=%s" % (self._tabellnavn, self._IDnavn, self._id)
-        sql = "SELECT ID, ordreID, dato, CAST(data as blob) FROM %s WHERE ?=?" % self._tabellnavn, (self._IDnavn, self._id)
+        sql = "SELECT ID, ordreID, dato, CAST(data as blob) FROM %s WHERE ID=?" % self._tabellnavn, (self._id,)
         self.c.execute(sql)
         r = self.c.fetchone()
         self._egenskaper['ordreID'] = r[1]
@@ -799,26 +802,19 @@ class pdfType:
         if protocol is sqlite.PrepareProtocol:
             return sqlite.Binary(self.data)
 
-def debug(s):
-    if not PRODUKSJONSVERSJON: print "[faktura]: %s" % s
+def debug(*s):
+    if not PRODUKSJONSVERSJON: print "[faktura]:", s
 
 def lagDatabase(database, sqlfile=None):
     logg = open("faktura.sqlite.lag.log", "a+")
-    db = sqlite.connect(database)#, encoding="utf-8")#, command_logfile=logg)
+    db = sqlite.connect(database, isolation_level=None)
     return byggDatabase(db, sqlfile)
 
 def byggDatabase(db, sqlfile=None):
     if not sqlfile:
         if not PRODUKSJONSVERSJON: sqlfile = "faktura.sql"
         else: sqlfile = "/usr/share/finfaktura/data/faktura.sql"
-    #sjekk versjon
-    if sqlite.version_info[0] == 1:
-        # pysqlite 1 kan lese en hel fil gjennom .execute
-        db.cursor().execute(file(sqlfile).read())
-    elif sqlite.version_info[0] >= 2:
-        # pysqlite2s .execute kan ikke lese mer enn én kommando av gangen, 
-        # men man kan bruke den ikke-standard metoden .executescript
-        db.cursor().executescript(file(sqlfile).read())
+    db.cursor().executescript(file(sqlfile).read())
     db.commit()
     return db
 
@@ -853,7 +849,8 @@ def kobleTilDatabase(dbnavn=None, loggfil=None):
     enc = "utf-8"
     try:
         #db = sqlite.connect(db=dbnavn, encoding=enc, command_logfile=loggfil)
-        db = sqlite.connect(database=dbnavn)#, encoding=enc)#, command_logfile=loggfil)
+        db = sqlite.connect(database=dbnavn, isolation_level=None)
+        debug("Koblet til databasen", dbnavn)
     except sqlite.DatabaseError, (E):
         debug("Vi bruker sqlite %s" % sqlite.apilevel)
         dbver = sjekkDatabaseVersjon(dbnavn)
