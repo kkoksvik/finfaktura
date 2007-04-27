@@ -12,8 +12,6 @@
 import types, os, sys, os.path
 from string import join
 from time import time, strftime, localtime
-#import sqlite
-#from sqlite import DatabaseError
 try:
     import sqlite3 as sqlite # python2.5 har sqlite3 innebygget
 except ImportError:
@@ -279,10 +277,6 @@ class fakturaKomponent:
     def __setattr__(self, egenskap, verdi):
         #debug("__setattr__: %s  " % (egenskap))
         #debug("__setattr__: %s = %s " % (egenskap, verdi))
-        #try:
-            #import qt 
-            #if type(verdi) == qt.QString: verdi = unicode(verdi)
-        #except ImportError: pass
         if type(verdi) == types.BooleanType: verdi = int(verdi) # lagrer bool som int: 0 | 1
         if self._egenskaper.has_key(egenskap):
             self.oppdaterEgenskap(egenskap, verdi)
@@ -293,7 +287,8 @@ class fakturaKomponent:
             self.c.execute("SELECT * FROM %s LIMIT 1" % self._tabellnavn)
         except sqlite.OperationalError:
             #pysqlite2 klager på blobs
-            pass
+            #pass
+            raise
         self._egenskaperListe = map(lambda z: z[0], self.c.description)
         r = {}
         for z in self._egenskaperListe:
@@ -304,7 +299,6 @@ class fakturaKomponent:
     def hentEgenskaper(self):
         if self._id is None:
             return False
-        #self.c.execute("SELECT * FROM %s WHERE %s=%s" % (self._tabellnavn, self._IDnavn, self._id))
         debug("SELECT * FROM %s WHERE ID=?" % self._tabellnavn, (self._id,))
         self.c.execute("SELECT * FROM %s WHERE ID=?" % self._tabellnavn, (self._id,))
         r = self.c.fetchone()
@@ -325,25 +319,19 @@ class fakturaKomponent:
             self._egenskaper[z] = verdi
 
     def oppdaterEgenskap(self, egenskap, verdi):
-        #if not egenskap in self._egenskaperBlob and type(verdi) in (types.UnicodeType,):
-            #verdi = verdi.encode('utf8')
         try:
             import qt 
             if type(verdi) == qt.QString: verdi = unicode(verdi)
         except ImportError: pass
-        #self.c.execute("UPDATE %s SET %s=%%s WHERE %s=%s" % (self._tabellnavn, egenskap, self._IDnavn, self._id), verdi)
         _sql = "UPDATE %s SET %s=? WHERE ID=?" % (self._tabellnavn, egenskap)
         debug(_sql, (verdi, self._id))
-        #print _sql, type(verdi)
         self.c.execute(_sql, (verdi, self._id))
         self.db.commit()
-        #self.hentEgenskaper()
 
     def nyId(self):
 #       debug("nyId: -> %s <- %s" % (self._tabellnavn, self._IDnavn))
         self.c.execute("INSERT INTO %s (ID) VALUES (NULL)" % self._tabellnavn)
         self.db.commit()
-        #return self.db.insert_id()
         return self.c.lastrowid
 
 class fakturaKunde(fakturaKomponent):
@@ -457,14 +445,9 @@ class fakturaOrdre(fakturaKomponent):
 
     def nyId(self):
         forfall = self.firma.forfall
-        #self.c.execute("INSERT INTO %s (ID, kundeID, ordredato, forfall) VALUES (NULL, %s, %s, %s)" %  \
-          #(self._tabellnavn, self.kunde._id, time(), time()+3600*24*forfall))
-        #debug("INSERT INTO ? (ID, kundeID, ordredato, forfall) VALUES (NULL, ?, ?, ?)" ,
-          #(self._tabellnavn, self.kunde._id, time(), time()+3600*24*forfall,))
         self.c.execute("INSERT INTO ? (ID, kundeID, ordredato, forfall) VALUES (NULL, ?, ?, ?)" ,
           (self._tabellnavn, self.kunde._id, time(), time()+3600*24*forfall,))
         self.db.commit()
-        #return self.db.insert_id()
         return self.c.lastrowid
 
     def leggTilVare(self, vare, kvantum, pris, mva):
@@ -524,7 +507,6 @@ class fakturaOrdre(fakturaKomponent):
         return not self.betalt and time() > self.forfall
 
     def hentSikkerhetskopi(self):
-        #self.c.execute("SELECT ID FROM %s WHERE ordreID = %i" % (fakturaSikkerhetskopi._tabellnavn, self._id))
         self.c.execute("SELECT ID FROM %s WHERE ordreID=?" % fakturaSikkerhetskopi._tabellnavn, (self._id,))
         return fakturaSikkerhetskopi(self.db, Id = self.c.fetchone()[0])
 
@@ -536,11 +518,9 @@ class fakturaOrdrelinje(fakturaKomponent):
         self.ordre = ordre
         self.vare = vare
         if Id is None:
-            #db.cursor().execute("INSERT INTO %s (ID, ordrehodeID, vareID, kvantum, enhetspris, mva) VALUES (NULL, %s, %s, %s, %s, %s)" % (self._tabellnavn, self.ordre._id, self.vare._id, kvantum, enhetspris, mva))
             c = db.cursor()
             c.execute("INSERT INTO %s (ID, ordrehodeID, vareID, kvantum, enhetspris, mva) VALUES (NULL, ?, ?, ?, ?, ?)" % self._tabellnavn, (self.ordre._id, self.vare._id, kvantum, enhetspris, mva))
             db.commit()
-            #Id = db.insert_id()
             Id = c.lastrowid
         fakturaKomponent.__init__(self, db, Id)
         if Id is not None:
@@ -567,7 +547,6 @@ class fakturaFirmainfo(fakturaKomponent):
         self._egenskaperBlob = ['logo',]
         try:
             fakturaKomponent.__init__(self, db, Id=self._id)
-        #if not self._egenskaper:
         except DBTomFeil:
             self.lagFirma()
             fakturaKomponent.__init__(self, db, Id=self._id)
@@ -603,12 +582,9 @@ class fakturaFirmainfo(fakturaKomponent):
         nyFirmanavn = "Fryktelig fint firma"
         nyMva       = 25 #prosent
         nyForfall   = 21 #dager
-        #self.c.execute("INSERT INTO %s (ID, firmanavn, mva, forfall) VALUES (%s, '%s', %s, %s)" % (self._tabellnavn, self._id, nyFirmanavn, nyMva, nyForfall))
         self.c.execute("INSERT INTO %s (ID, firmanavn, mva, forfall) VALUES (?,?,?,?)" % self._tabellnavn, (self._id, nyFirmanavn, nyMva, nyForfall))
         
         self.db.commit()
-        ###self._egenskaper = self.hentEgenskaperListe()
-        #self.hentEgenskaper()
 
     def postadresse(self):
         return "%(firmanavn)s \n"\
@@ -665,7 +641,6 @@ class fakturaOppsett(fakturaKomponent):
                 sql = "INSERT INTO %s (ID, databaseversjon, fakturakatalog) VALUES (:id, :ver, :kat)" % self._tabellnavn
                 
             c.execute(sql,  {'tab':self._tabellnavn, 'id': self._id, 'ver': DATABASEVERSJON, 'kat':os.getenv('HOME') })
-            #c.execute("INSERT INTO %(tab)s (ID, databaseversjon, fakturakatalog) VALUES (%(id)s, %(ver)f, %(kat)s)",  {'tab':self._tabellnavn, 'id': self._id, 'ver': DATABASEVERSJON, 'kat':os.getenv('HOME') })
             db.commit()
             fakturaKomponent.__init__(self, db, Id=self._id)
         except sqlite.DatabaseError:
@@ -705,11 +680,9 @@ class fakturaSikkerhetskopi(fakturaKomponent):
         self.dato  = int(time())
         if ordre is not None:
             self.ordre = ordre
-            #db.cursor().execute("INSERT INTO %s (ID, ordreID, dato) VALUES (NULL, %s, %s)" % (self._tabellnavn, self.ordre._id, self.dato))
             c = db.cursor()
             c.execute("INSERT INTO %s (ID, ordreID, dato) VALUES (NULL, ?, ?)" % self._tabellnavn, (self.ordre._id, self.dato))
             db.commit()
-            #Id = db.insert_id()
             Id = c.lastrowid
             fakturaKomponent.__init__(self, db, Id)
             from f60 import f60
@@ -741,7 +714,6 @@ class fakturaSikkerhetskopi(fakturaKomponent):
     def hentEgenskaper(self):
         if self._id is None:
             return False
-        #sql = "SELECT ID, ordreID, dato, CAST(data as blob) FROM %s WHERE %s=%s" % (self._tabellnavn, self._IDnavn, self._id)
         sql = "SELECT ID, ordreID, dato, CAST(data as blob) FROM %s WHERE ID=?" % self._tabellnavn, (self._id,)
         self.c.execute(sql)
         r = self.c.fetchone()
@@ -792,7 +764,6 @@ class pdfType:
         'Returnerer streng som kan puttes rett inn i sqlite. Kalles internt av pysqlite'
         if not self.data: return "''"
         import sqlite
-        #return "'%s'" % sqlite.encode(self.data)
         return str(sqlite.Binary(self.data))
     
     def __str__(self):
@@ -848,7 +819,6 @@ def kobleTilDatabase(dbnavn=None, loggfil=None):
         dbnavn = finnDatabasenavn()
     enc = "utf-8"
     try:
-        #db = sqlite.connect(db=dbnavn, encoding=enc, command_logfile=loggfil)
         db = sqlite.connect(database=dbnavn, isolation_level=None)
         debug("Koblet til databasen", dbnavn)
     except sqlite.DatabaseError, (E):
