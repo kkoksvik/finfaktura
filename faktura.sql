@@ -7,15 +7,6 @@
 -- # $Id$
 -- ###########################################################################
 --
---1) ========= Lag databasene ===========================
---   CREATE DATABASE faktura;
---2) ========= Legg til brukere =========================
---3) ========= Legg brukerene til i databasen ===========
---4) ========= Committ endringer ========================
---   FLUSH PRIVILEGES;
---5) ========= Opprett tabellene ========================
---   USE faktura;
-
     -- Versjon 0.1
     CREATE TABLE Firma (ID INTEGER PRIMARY KEY,
     	firmanavn UNICODE NOT NULL,
@@ -121,7 +112,5 @@
         smtppassord UNICODE,
         sendmailsti UNICODE);
 
-    	
---6) =============== Oppdater tabellene ==================
---7) ========= Sett inn default-verdier ==================
-    UPDATE Oppsett SET databaseversjon=2.8 WHERE ID=1;
+    DELETE FROM Oppsett;
+    INSERT INTO Oppsett (ID, databaseversjon, fakturakatalog) VALUES (1, 2.8, '~');
