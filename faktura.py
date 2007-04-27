@@ -115,6 +115,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         self.connect(self.fakturaLagKvittering, SIGNAL("clicked()"), self.lagFakturaKvittering)
         self.connect(self.fakturaBetalt, SIGNAL("clicked()"), self.betalFaktura)
         self.connect(self.fakturaVisKansellerte, SIGNAL("toggled(bool)"), self.visFaktura)
+        self.connect(self.fakturaVisGamle, SIGNAL("toggled(bool)"), self.visFaktura)
         self.fakturaFaktaKryss.mousePressEvent = self.lukkFakta
         self.connect(self.fakturaSendepostSend, SIGNAL("clicked()"), self.sendEpostfaktura)
         self.connect(self.fakturaSendepostAvbryt, SIGNAL("clicked()"), self.skjulSendepostBoks)
@@ -299,6 +300,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
 
     def visFaktura(self):
         visKansellerte = self.fakturaVisKansellerte.isChecked()
+        visGamle = self.fakturaVisGamle.isChecked()
         self.fakturaDetaljerTekst.setText('')
         self.fakturaFakta.hide()
         self.fakturaSendepostBoks.hide()
@@ -307,6 +309,9 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         nu = time()
         for ordre in self.faktura.hentOrdrer():
             if not visKansellerte and ordre.kansellert: continue
+            if not visGamle and ordre.betalt and ordre.ordredato < nu-60*60*24*7*4*6: continue # eldre enn seks mnd og betalt
+            #debug(ordre.ID)
+            #debug(ordre.ordredato < )
             if ordre.betalt: bet = strftime("%Y-%m-%d %H:%M", localtime(ordre.betalt))
             else: bet = "Nei"
             l = QListViewItem(self.fakturaFakturaliste,
@@ -328,6 +333,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         # to kart som gjenspeiler innholdet i ordrelinjer og varer
         self.fakturaKartOrdrelinje = {}
         self.fakturaKartVarer = {}
+        
 
     def nyFakturaFraKunde(self):
         try:
@@ -433,32 +439,48 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         Pris.show()
         QObject.connect(Pris, SIGNAL("valueChanged(int)"), self.oppdaterFakturaSum)
         
+        mvaListe = QStringList()
+        map(mvaListe.append, ['0','12','25'])
+        
+        #Mva = QComboTableItem(self.fakturaFaktaVareliste, mvaListe, False)
         Mva = QSpinBox(self.fakturaFaktaVareliste, "Mva-%s" % sisterad)
+        #Mva = QComboBox(self.fakturaFaktaVareliste, "Mva-%s" % sisterad)
+        #Mva.insertStringList(mvaListe)
+        #Mva.setEditable(False)
         Mva.setButtonSymbols(QSpinBox.UpDownArrows)
         Mva.setValue(25)
         Mva.show()
         QObject.connect(Mva, SIGNAL("valueChanged(int)"), self.oppdaterFakturaSum)
+        #QObject.connect(Mva, SIGNAL("highlighted(int)"), self.oppdaterFakturaSum)
         
         varer = QStringList()
         map(varer.append, [unicode(v.navn) for v in self.faktura.hentVarer()])
         
-        Vare = QComboTableItem(self.fakturaFaktaVareliste, varer, False)
+        Vare = QComboTableItem(self.fakturaFaktaVareliste, varer, True)
         self.fakturaFaktaVareliste.setNumRows(sisterad+1)
         self.fakturaFaktaVareliste.setItem(sisterad, 0, Vare)
         self.fakturaFaktaVareliste.setCellWidget(sisterad, 1, Antall)
         self.fakturaFaktaVareliste.setCellWidget(sisterad, 2, Pris)
         self.fakturaFaktaVareliste.setCellWidget(sisterad, 3, Mva)
+        return self.fakturaVarelisteSynk(sisterad, 0)
     
     def fakturaVarelisteSynk(self, rad, kol):
         debug("rad: %s" % rad)
         debug("kol: %s" % kol)
         sender = self.fakturaFaktaVareliste.cellWidget(rad, kol)
-        debug(sender)
         if kol == 0: # endret på varen -> oppdater metadata
-            vare = self.fakturaVarelisteCache[sender.currentItem()]
+            try:
+                vare = self.fakturaVarelisteCache[sender.currentItem()]
+            except IndexError: #
+                debug(sender)
+                debug(sender.currentItem())
+                
+            except AttributeError: # hvorfor er dette ikke 0?
+                vare = self.fakturaVarelisteCache[0] # UGH! HACK
             self.fakturaFaktaVareliste.cellWidget(rad, 1).setSuffix(' '+vare.enhet)
             self.fakturaFaktaVareliste.cellWidget(rad, 2).setValue(vare.pris)
             self.fakturaFaktaVareliste.cellWidget(rad, 3).setValue(vare.mva)
+            #self.fakturaFaktaVareliste.cellWidget(rad, 3).setCurrentText(str(vare.mva))
         else:
             # endret på antall, mva eller pris -> oppdater sum
             p = mva = 0.0
@@ -467,7 +489,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
                 _pris   = self.fakturaFaktaVareliste.cellWidget(i, 2).value() 
                 _mva    = self.fakturaFaktaVareliste.cellWidget(i, 3).value()
                 p += _pris * _antall 
-                mva += _pris * _antall * _mva / 100 #vare['Pris'] * vare['Antall'] * vare['Mva'] / 100
+                mva += _pris * _antall * _mva / 100 
             self.fakturaFaktaSum.setText("<u>%.2fkr (+%.2fkr mva)</u>" % (p, mva))
 
     def oppdaterFakturaSum(self):
@@ -475,18 +497,6 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         sender = self.sender()
         _kol, rad = sender.name().split('-')
         self.fakturaVarelisteSynk(int(rad), k.index(_kol))
-
-    def fakturaVareOppdater(self, idx):
-        # oppdaterer data avhengig av hvilken vare som er valgt i legg-inn-faktura-skjemaet
-        try:
-            vare = self.fakturaKartVarer[idx]
-            self.fakturaFaktaAntall.setValue(1)
-            self.fakturaFaktaAntall.setSuffix(" %s" % vare.enhet)
-            self.fakturaFaktaPris.setValue(vare.pris)
-            #self.fakturaFaktaVareDetaljer.setText("<i>"+vare.detaljer+"</i>")
-            self.fakturaFaktaVarePris.setText("<b>%.2f kr</b> (+ %i%% mva: %.2f kr)" % (vare.pris, vare.mva, vare.pris * vare.mva / 100))
-        except KeyError:
-            pass
 
     def visFakturadetaljer(self, linje):
         s = "<p><b>%s</b><p>" % unicode(linje.ordre.tekst)
