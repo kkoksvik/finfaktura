@@ -310,8 +310,6 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         for ordre in self.faktura.hentOrdrer():
             if not visKansellerte and ordre.kansellert: continue
             if not visGamle and ordre.betalt and ordre.ordredato < nu-60*60*24*7*4*6: continue # eldre enn seks mnd og betalt
-            #debug(ordre.ID)
-            #debug(ordre.ordredato < )
             if ordre.betalt: bet = strftime("%Y-%m-%d %H:%M", localtime(ordre.betalt))
             else: bet = "Nei"
             l = QListViewItem(self.fakturaFakturaliste,
@@ -330,10 +328,6 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
                 l.setPixmap(0, self.slettetLogo)
             i(l)
         self.fakturaBetaltDato.setDate(QDate.currentDate())
-        # to kart som gjenspeiler innholdet i ordrelinjer og varer
-        self.fakturaKartOrdrelinje = {}
-        self.fakturaKartVarer = {}
-        
 
     def nyFakturaFraKunde(self):
         try:
@@ -392,10 +386,36 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         kunde = self.faktura.hentKunde(kre.group(1))
         f = self.faktura.nyOrdre(kunde)
         f.tekst = self.fakturaFaktaTekst.text()
-        #for vare in self.fakturaOrdrelinje.keys():
-            #antall = self.fakturaOrdrelinje[vare]
-            ##debug("fant vare i fakturaen: %s * %s " % (antall, vare))
-            #f.leggTilVare(vare, antall, vare.pris, vare.mva)
+        #finn varene som er i fakturaen
+        varer = {}
+        for i in range(self.fakturaFaktaVareliste.numRows()): # gå gjennom alle rader
+            v = {'id': None, 'ant': 0, 'pris': 0.0, 'mva': 0}
+            _tekst  = unicode(self.fakturaFaktaVareliste.cellWidget(i, 0).currentText())
+            v['ant'] = self.fakturaFaktaVareliste.cellWidget(i, 1).value()
+            _enhet = self.fakturaFaktaVareliste.cellWidget(i, 1).getSuffix()
+            v['pris'] = self.fakturaFaktaVareliste.cellWidget(i, 2).value() 
+            v['mva'] = self.fakturaFaktaVareliste.cellWidget(i, 3).value()
+            # sjekk at alt er riktig
+            if not v['ant'] > 0:
+                self.alert(u'Antallet %s kan ikke være null (i rad %s) ' % (_tekst, i+1))
+                return False
+            if not v['pris'] > 0:
+                self.alert(u'Prisen kan ikke være null (i rad %s) ' % (i+1))
+                return False
+            # hvilken vare er dette?
+            vare = self.faktura.finnVareEllerLagNy(_tekst, v['pris'], v['mva'], _enhet)
+            debug("fant vare i fakturaen: %s * %s" % (_antall, unicode(vare)))
+            # er dette en duplikatoppføring?
+            if varer.has_key(vare.ID) and varer[v['id']]['mva'] == v['mva'] \
+                and varer[v['id']]['pris'] == v['pris']:
+                # den samme varen, med samme pris og mva, er lagt inn tidligere
+                if self.JaNei(u'Du har lagt inn %s mer enn én gang. Vil du slå sammen oppføringene?' % _tekst):
+                    varer[v['id']]['ant'] += v['ant']
+            #legg varen til den interne listen (for duplikatokontroll) 
+            varer[v['id']] = v
+            #legg varen til fakturaen
+            f.leggTilVare(vare, v['ant'], v['pris'], v['mva'])
+        
         debug("legger inn faktura: %s " % unicode(f))
         debug("Lager sikkerhetskopi")
         self.faktura.lagSikkerhetskopi(f)
