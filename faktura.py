@@ -20,6 +20,7 @@ from finfaktura.myndighetene import myndighetene
 from finfaktura.epost import BRUK_GMAIL
 import finfaktura.okonomi as fakturaOkonomi
 import finfaktura.sikkerhetskopi as sikkerhetskopi
+import finfaktura.historikk as historikk
 
 def cli_faktura():
     from finfaktura.cli import CLIListe, CLIInput
@@ -99,6 +100,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             self.fakturaTab.removePage(self.fakturaTab.page(5))
         else:
             self.setCaption("FRYKTELIG FIN FADESE (utviklerversjon)")
+            self.patchDebugModus() # vis live debug-konsoll
 
         self.connect(self.fakturaTab, SIGNAL("currentChanged(QWidget*)"), self.skiftTab)
 
@@ -272,6 +274,27 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         elif i is 7: self.visSikkerhetskopi()
         self.gammelTab = i
 
+################## DEBUG ########################
+
+    def patchDebugModus(self):
+        # lag et konsoll til live inspeksjon 
+        
+        self.pythoncode = QTextEdit(self.centralWidget(),"pythoncode")
+        self.pythoncode.setGeometry(QRect(310,770,410,70))
+
+        self.pythoncodeRun = QPushButton(self.centralWidget(),"pythoncodeRun")
+        self.pythoncodeRun.setGeometry(QRect(740,797,141,41))
+        self.pythoncodeRun.setText(u'K&jør')
+
+        self.connect(self.pythoncodeRun, SIGNAL("clicked()"), self.runDebugCode)
+
+
+    def runDebugCode(self):
+        # kjør debug-kode
+        code = unicode(self.pythoncode.text())
+        run = eval(code) # oooh!
+        debug(run)
+
 ################## FAKTURA ########################
 
     fakturaVarelisteCache = []
@@ -385,26 +408,26 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         kre = re.search(re.compile(r'kunde\ #\s?(\d+)'), unicode(kundetekst))
         kunde = self.faktura.hentKunde(kre.group(1))
         f = self.faktura.nyOrdre(kunde)
-        f.tekst = self.fakturaFaktaTekst.text()
+        f.tekst = unicode(self.fakturaFaktaTekst.text()) 
         #finn varene som er i fakturaen
         varer = {}
         for i in range(self.fakturaFaktaVareliste.numRows()): # gå gjennom alle rader
             v = {'id': None, 'ant': 0, 'pris': 0.0, 'mva': 0}
             _tekst  = unicode(self.fakturaFaktaVareliste.cellWidget(i, 0).currentText())
             v['ant'] = self.fakturaFaktaVareliste.cellWidget(i, 1).value()
-            _enhet = self.fakturaFaktaVareliste.cellWidget(i, 1).getSuffix()
-            v['pris'] = self.fakturaFaktaVareliste.cellWidget(i, 2).value() 
+            _enhet = self.fakturaFaktaVareliste.cellWidget(i, 1).suffix()
+            v['pris'] = float(self.fakturaFaktaVareliste.cellWidget(i, 2).value())
             v['mva'] = self.fakturaFaktaVareliste.cellWidget(i, 3).value()
             # sjekk at alt er riktig
             if not v['ant'] > 0:
                 self.alert(u'Antallet %s kan ikke være null (i rad %s) ' % (_tekst, i+1))
                 return False
-            if not v['pris'] > 0:
+            if not v['pris'] > 0.0:
                 self.alert(u'Prisen kan ikke være null (i rad %s) ' % (i+1))
                 return False
             # hvilken vare er dette?
             vare = self.faktura.finnVareEllerLagNy(_tekst, v['pris'], v['mva'], _enhet)
-            debug("fant vare i fakturaen: %s * %s" % (_antall, unicode(vare)))
+            debug("fant vare i fakturaen:", unicode(v), unicode(vare))
             # er dette en duplikatoppføring?
             if varer.has_key(vare.ID) and varer[v['id']]['mva'] == v['mva'] \
                 and varer[v['id']]['pris'] == v['pris']:
@@ -485,8 +508,6 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         return self.fakturaVarelisteSynk(sisterad, 0)
     
     def fakturaVarelisteSynk(self, rad, kol):
-        debug("rad: %s" % rad)
-        debug("kol: %s" % kol)
         sender = self.fakturaFaktaVareliste.cellWidget(rad, kol)
         if kol == 0: # endret på varen -> oppdater metadata
             try:
@@ -496,9 +517,12 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
                 debug(sender.currentItem())
                 
             except AttributeError: # hvorfor er dette ikke 0?
-                vare = self.fakturaVarelisteCache[0] # UGH! HACK
+                try:
+                    vare = self.fakturaVarelisteCache[0] # UGH! HACK
+                except IndexError: #ingen varer lagt inn
+                    return # UGH UGH UGH
             self.fakturaFaktaVareliste.cellWidget(rad, 1).setSuffix(' '+vare.enhet)
-            self.fakturaFaktaVareliste.cellWidget(rad, 2).setValue(vare.pris)
+            self.fakturaFaktaVareliste.cellWidget(rad, 2).setValue(int(vare.pris))
             self.fakturaFaktaVareliste.cellWidget(rad, 3).setValue(vare.mva)
             #self.fakturaFaktaVareliste.cellWidget(rad, 3).setCurrentText(str(vare.mva))
         else:
@@ -506,7 +530,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             p = mva = 0.0
             for i in range(self.fakturaFaktaVareliste.numRows()):
                 _antall = self.fakturaFaktaVareliste.cellWidget(i, 1).value()
-                _pris   = self.fakturaFaktaVareliste.cellWidget(i, 2).value() 
+                _pris   = float(self.fakturaFaktaVareliste.cellWidget(i, 2).value())
                 _mva    = self.fakturaFaktaVareliste.cellWidget(i, 3).value()
                 p += _pris * _antall 
                 mva += _pris * _antall * _mva / 100 
@@ -643,15 +667,20 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             self.alert(u"Du kan ikke kansellere denne ordren, den er betalt.")
         elif self.JaNei(u"Vil du virkelig kansellere ordre nr %s?" % ordre.ID):
             ordre.settKansellert()
+            historikk.kansellert(ordre, True, 'brukerklikk')
             self.visFaktura()
 
     def avkansellerFaktura(self):
         ordre = self.fakturaFakturaliste.selectedItem().ordre
         ordre.settKansellert(False)
+        historikk.avKansellert(ordre, True, 'brukerklikk')
         self.visFaktura()
 
-    def purrFaktura(self):pass
-    def inkassoFaktura(self):pass
+    def purrFaktura(self):
+        historikk.purret(ordre, True, 'brukerklikk')
+        
+    def inkassoFaktura(self):
+        historikk.sendTilInkasso(ordre, True, 'brukerklikk')
     
     def skjulSendepostBoks(self):
         self.fakturaSendepostBoks.hide()
@@ -667,7 +696,6 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         
     def sendEpostfaktura(self):
         o = self.fakturaSendepostBoks.ordre
-        print repr(o.kunde.epost)
         try:
             debug('sender epostfaktura: ordre # %i, til: %s' % (o._id, o.kunde.epost))
             trans = ['auto', 'gmail', 'smtp', 'sendmail']
@@ -681,8 +709,10 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
 
         except:
             f = sys.exc_info()[1]
+            historikk.epostSendt(o, False, f)
             self.alert(u'Feil ved sending av faktura. Prøv å sende med en annen epostmetode.\n\nDetaljer:\n%s' % f)
         else:
+            historikk.epostSendt(o, True, trans[self.faktura.epostoppsett.transport])
             self.fakturaSendepostBoks.hide()
             self.obs('Fakturaen er sendt')
     
@@ -921,10 +951,10 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         for vare in self.faktura.hentVarer(inkluderSlettede=visFjernede):
             l = QListViewItem(self.varerVareliste,
                               "%03d" % vare.ID,
-                              vare.navn,
-                              vare.detaljer,
+                              unicode(vare.navn),
+                              unicode(vare.detaljer),
                               "%.2f" % vare.pris,
-                              vare.enhet
+                              unicode(vare.enhet)
                              )
             l.vare = vare
             if vare.slettet: 
@@ -940,12 +970,16 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         self.varerInfoEnhet.clear()
         self.varerInfoEnhet.insertStrList(enheter)
         if vare is not None:
-            self.varerInfoNavn.setText(vare.navn)
-            self.varerInfoDetaljer.setText(vare.detaljer)
-            self.varerInfoEnhet.setCurrentText(vare.enhet)
+            self.varerInfoNavn.setText(unicode(vare.navn))
+            self.varerInfoDetaljer.setText(unicode(vare.detaljer))
+            self.varerInfoEnhet.setCurrentText(unicode(vare.enhet))
             self.varerInfoPris.setValue(int(vare.pris))
-            self.varerInfoPris.setSuffix(" kr per %s" % vare.enhet)
+            if vare.enhet: sfx = unicode(" kr per %s" % vare.enhet)
+            else: sfx = " kr"
+                
+            self.varerInfoPris.setSuffix(sfx)
             self.varerInfoMva.setValue(int(vare.mva))
+            self.varerInfoLegginn.setText('&Oppdater')
         else:
             self.varerInfoNavn.setText("")
             self.varerInfoDetaljer.setText("")
@@ -953,6 +987,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             self.varerInfoPris.setValue(0)
             self.varerInfoPris.setSuffix("")
             self.varerInfoMva.setValue(int(self.firma.mva))
+            self.varerInfoLegginn.setText('&Lag ny vare')
         self.varerInfo.show()
         self.varerInfoNavn.setFocus()
 
@@ -980,7 +1015,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         v.navn = self.varerInfoNavn.text()
         v.detaljer = self.varerInfoDetaljer.text()
         v.enhet = self.varerInfoEnhet.currentText()
-        v.pris = self.varerInfoPris.value()
+        v.pris = float(self.varerInfoPris.value())
         v.mva = self.varerInfoMva.value()
         self.varerInfo.hide()
         self.visVarer()
