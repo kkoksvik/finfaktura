@@ -97,8 +97,8 @@ class FakturaBibliotek:
             vare.enhet = enhet
             return vare
 
-    def nyOrdre(self, _kunde = None, _Id = None):
-        return fakturaOrdre(self.db, kunde=_kunde, Id=_Id, firma = self.__firmainfo)
+    def nyOrdre(self, _kunde = None, _Id = None, ordredato = None):
+        return fakturaOrdre(self.db, kunde=_kunde, Id=_Id, firma = self.__firmainfo, dato=ordredato)
 
     def hentOrdrer(self):
         self.c.execute("SELECT ID FROM %s" % fakturaOrdre._tabellnavn)
@@ -423,8 +423,10 @@ class fakturaOrdre(fakturaKomponent):
     _tabellnavn = "Ordrehode"
     linje      = []
 
-    def __init__(self, db, kunde = None, Id = None, firma = None):
+    def __init__(self, db, kunde = None, Id = None, firma = None, dato = None):
         self.linje = []
+        if dato is not None:
+            self.ordredato = dato
         self.kunde = kunde
         self.firma = firma
         fakturaKomponent.__init__(self, db, Id)
@@ -443,7 +445,7 @@ class fakturaOrdre(fakturaKomponent):
 
     def nyId(self):
         forfall = self.firma.forfall
-        self.c.execute("INSERT INTO %s (ID, kundeID, ordredato, forfall) VALUES (NULL, ?, ?, ?)" % self._tabellnavn, (self.kunde._id, time(), time()+3600*24*forfall,))
+        self.c.execute("INSERT INTO %s (ID, kundeID, ordredato, forfall) VALUES (NULL, ?, ?, ?)" % self._tabellnavn, (self.kunde._id, self.ordredato, self.ordredato+3600*24*forfall,))
         self.db.commit()
         return self.c.lastrowid
 
@@ -652,7 +654,6 @@ class fakturaOppsett(fakturaKomponent):
     
     def nyId(self):
         pass
-
     
     def migrerDatabase(self, nydb, sqlFil):
         from oppgradering import oppgradering
