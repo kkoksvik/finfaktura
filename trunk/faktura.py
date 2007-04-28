@@ -650,11 +650,12 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             self.obs("Denne fakturaen ble kansellert den %s, og kan ikke betales." % strftime("%Y-%m-%d", localtime(ordre.kansellert)))
             return False
         d = self.fakturaBetaltDato.date()
-        dato = mktime((d.year(),d.month(),d.day(),23,59,0,0,0,0)) # på slutten av dagen (23:59) for å kunne betale fakturaer laget tidligere samme dag
+        dato = mktime((d.year(),d.month(),d.day(),23,59,0,0,0,1)) # på slutten av dagen (23:59) for å kunne betale fakturaer laget tidligere samme dag
         if dato < ordre.ordredato:
             self.obs(u'Betalingsdato kan ikke være tidligere enn ordredato')
             return False
-        if dato > mktime(localtime()):
+        ikveld = localtime()[0:3]+(23,59,0,0,0,1)
+        if dato > mktime(ikveld):
             self.obs(u'Betalingsdato kan ikke være i fremtiden')
             return False
         ordre.betal(dato)
@@ -676,9 +677,11 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         self.visFaktura()
 
     def purrFaktura(self):
+        ordre = self.fakturaFakturaliste.selectedItem().ordre
         historikk.purret(ordre, True, 'brukerklikk')
         
     def inkassoFaktura(self):
+        ordre = self.fakturaFakturaliste.selectedItem().ordre
         historikk.sendTilInkasso(ordre, True, 'brukerklikk')
     
     def skjulSendepostBoks(self):
