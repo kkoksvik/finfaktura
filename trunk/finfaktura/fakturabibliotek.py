@@ -16,8 +16,6 @@ try:
     import sqlite3 as sqlite # python2.5 har sqlite3 innebygget
 except ImportError:
     from pysqlite2 import dbapi2 as sqlite # prøv bruker/system-installert modul
-    
-
 
 
 PRODUKSJONSVERSJON=False # Sett denne til True for å skjule funksjonalitet som ikke er ferdigstilt
@@ -85,12 +83,12 @@ class FakturaBibliotek:
 
     def finnVareEllerLagNy(self, navn, pris, mva, enhet):
         sql = "SELECT ID FROM %s" % fakturaVare._tabellnavn
-        sql += " WHERE navn==? AND pris==? AND mva==?"
+        sql += " WHERE navn=? AND pris=? AND mva=?"
         print sql, navn, pris, mva
         self.c.execute(sql, (navn, pris, mva,))
         try:
             return fakturaVare(self.db, self.c.fetchone()[0])
-        except IndexError:
+        except TypeError:
             # varen finnes ikke, lag ny og returner
             vare = self.nyVare()
             vare.navn = navn
@@ -198,7 +196,6 @@ class FakturaBibliotek:
     def testEpost(self, transport='auto'):
         import epost
         # finn riktig transport (gmail/smtp/sendmail)
-        debug(epost.transportmetoder)
         if not transport in epost.transportmetoder: #ugyldig transport oppgitt
             transport = 'auto' 
         if transport == 'auto':
@@ -278,9 +275,10 @@ class fakturaKomponent:
         #debug("__setattr__: %s  " % (egenskap))
         #debug("__setattr__: %s = %s " % (egenskap, verdi))
         if type(verdi) == types.BooleanType: verdi = int(verdi) # lagrer bool som int: 0 | 1
-        if self._egenskaper.has_key(egenskap):
-            self.oppdaterEgenskap(egenskap, verdi)
-        else: self.__dict__[egenskap] = verdi
+        if self._egenskaper.has_key(egenskap): # denne egenskapen skal lagres i databasen
+            self.oppdaterEgenskap(egenskap, verdi) # oppdater databasen
+        #else: self.__dict__[egenskap] = verdi
+        self.__dict__[egenskap] = verdi # oppdater lokalt for objektet
 
     def hentEgenskaperListe(self):
         try:
@@ -299,10 +297,9 @@ class fakturaKomponent:
     def hentEgenskaper(self):
         if self._id is None:
             return False
-        debug("SELECT * FROM %s WHERE ID=?" % self._tabellnavn, (self._id,))
+        #debug("SELECT * FROM %s WHERE ID=?" % self._tabellnavn, (self._id,))
         self.c.execute("SELECT * FROM %s WHERE ID=?" % self._tabellnavn, (self._id,))
         r = self.c.fetchone()
-        debug(r)
         if r is None: raise DBTomFeil(u'Det finnes ingen %s med ID %s' % (self._tabellnavn, self._id))
         for z in self._egenskaper.keys():
             try:verdi = r[self._egenskaperListe.index(z)]
@@ -324,9 +321,10 @@ class fakturaKomponent:
             if type(verdi) == qt.QString: verdi = unicode(verdi)
         except ImportError: pass
         _sql = "UPDATE %s SET %s=? WHERE ID=?" % (self._tabellnavn, egenskap)
-        debug(_sql, (verdi, self._id))
+        #debug(_sql, (verdi, self._id))
         self.c.execute(_sql, (verdi, self._id))
         self.db.commit()
+        
 
     def nyId(self):
 #       debug("nyId: -> %s <- %s" % (self._tabellnavn, self._IDnavn))
@@ -445,8 +443,7 @@ class fakturaOrdre(fakturaKomponent):
 
     def nyId(self):
         forfall = self.firma.forfall
-        self.c.execute("INSERT INTO ? (ID, kundeID, ordredato, forfall) VALUES (NULL, ?, ?, ?)" ,
-          (self._tabellnavn, self.kunde._id, time(), time()+3600*24*forfall,))
+        self.c.execute("INSERT INTO %s (ID, kundeID, ordredato, forfall) VALUES (NULL, ?, ?, ?)" % self._tabellnavn, (self.kunde._id, time(), time()+3600*24*forfall,))
         self.db.commit()
         return self.c.lastrowid
 
@@ -456,7 +453,7 @@ class fakturaOrdre(fakturaKomponent):
 
     def finnVarer(self):
         self.linje = []
-        self.c.execute("SELECT ID FROM %s WHERE ordrehodeID=%s" % (fakturaOrdrelinje._tabellnavn, self._id))
+        self.c.execute("SELECT ID FROM %s WHERE ordrehodeID=?" % fakturaOrdrelinje._tabellnavn, (self._id,))
         for linjeID in map(lambda x:x[0], self.c.fetchall()):
             o = fakturaOrdrelinje(self.db, self, Id=linjeID)
             self.linje.append(o)
@@ -635,12 +632,9 @@ class fakturaOppsett(fakturaKomponent):
         except DBTomFeil:
             # finner ikke oppsett. Ny, tom database
             import os
-            if sqlite.paramstyle == 'pyformat':
-                sql = "INSERT INTO %(tab)s (ID, databaseversjon, fakturakatalog) VALUES (%(id)s, %(ver)f, %(kat)s)"
-            elif sqlite.paramstyle == 'qmark':
-                sql = "INSERT INTO %s (ID, databaseversjon, fakturakatalog) VALUES (:id, :ver, :kat)" % self._tabellnavn
+            sql = "INSERT INTO %s (ID, databaseversjon, fakturakatalog) VALUES (?,?,?)" % self._tabellnavn
                 
-            c.execute(sql,  {'tab':self._tabellnavn, 'id': self._id, 'ver': DATABASEVERSJON, 'kat':os.getenv('HOME') })
+            c.execute(sql, (self._id, DATABASEVERSJON, os.getenv('HOME'),))
             db.commit()
             fakturaKomponent.__init__(self, db, Id=self._id)
         except sqlite.DatabaseError:
@@ -714,8 +708,8 @@ class fakturaSikkerhetskopi(fakturaKomponent):
     def hentEgenskaper(self):
         if self._id is None:
             return False
-        sql = "SELECT ID, ordreID, dato, CAST(data as blob) FROM %s WHERE ID=?" % self._tabellnavn, (self._id,)
-        self.c.execute(sql)
+        sql = "SELECT ID, ordreID, dato, CAST(data as blob) FROM %s WHERE ID=?" % self._tabellnavn
+        self.c.execute(sql, (self._id,))
         r = self.c.fetchone()
         self._egenskaper['ordreID'] = r[1]
         self._egenskaper['dato']    = r[2]
@@ -760,11 +754,11 @@ class pdfType:
     def __init__(self, data):
         self.data = data
     
-    def _quote(self): 
-        'Returnerer streng som kan puttes rett inn i sqlite. Kalles internt av pysqlite'
-        if not self.data: return "''"
-        import sqlite
-        return str(sqlite.Binary(self.data))
+    #def _quote(self): 
+        #'Returnerer streng som kan puttes rett inn i sqlite. Kalles internt av pysqlite'
+        #if not self.data: return "''"
+        #import sqlite
+        #return str(sqlite.Binary(self.data))
     
     def __str__(self):
         return str(self.data)
@@ -777,27 +771,36 @@ def debug(*s):
     if not PRODUKSJONSVERSJON: print "[faktura]:", s
 
 def lagDatabase(database, sqlfile=None):
-    logg = open("faktura.sqlite.lag.log", "a+")
-    db = sqlite.connect(database, isolation_level=None)
-    return byggDatabase(db, sqlfile)
+    try:
+        db = sqlite.connect(database, isolation_level=None)
+        return byggDatabase(db, sqlfile)
+    except sqlite.DatabaseError:
+        raise
+        # hmm, kanskje gammel database?
+        dbver = sjekkDatabaseVersjon(database)
+        if dbver != sqlite.sqlite_version_info[0]:
+            e = "Databasen din (versjon %s) kan ikke leses av pysqlite, som leser versjon %s" % (dbver, sqlite.sqlite_version_info[0])
+            print "FEIL!",e
+            raise DBVersjonFeil(e)
+
 
 def byggDatabase(db, sqlfile=None):
     if not sqlfile:
         if not PRODUKSJONSVERSJON: sqlfile = "faktura.sql"
         else: sqlfile = "/usr/share/finfaktura/data/faktura.sql"
-    db.cursor().executescript(file(sqlfile).read())
+    db.executescript(file(sqlfile).read())
     db.commit()
     return db
 
 def finnDatabasenavn(databasenavn=DATABASENAVN):
     db = os.getenv('FAKTURADB')
-    if db is not None and os.path.exists(db):
+    if db is not None and (not PRODUKSJONSVERSJON or os.path.exists(db)):
         return db # returnerer miljøvariabelen $FAKTURADB
     fdir = os.getenv('FAKTURADIR')
     if not fdir:
         #sjekk for utviklermodus
         if not PRODUKSJONSVERSJON:
-            return databasenavn # returner DATABASENAVN ('faktura.py'?) i samme katalog
+            return databasenavn # returner DATABASENAVN ('faktura.db'?) i samme katalog
         #sjekk for windows
         if sys.platform.startswith('win'):
             pdir = os.getenv('USERPROFILE')
@@ -827,7 +830,6 @@ def kobleTilDatabase(dbnavn=None, loggfil=None):
         debug("Databasen er sqlite %s" % dbver)
         if sqlite.apilevel != dbver:
             raise DBVersjonFeil("Databasen er versjon %s, men biblioteket er versjon %s" % (dbver, sqlite.apilevel))
-        
     return db
 
 def sjekkDatabaseVersjon(dbnavn):
