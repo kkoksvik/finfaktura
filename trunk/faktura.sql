@@ -111,6 +111,26 @@
         smtpbruker UNICODE,
         smtppassord UNICODE,
         sendmailsti UNICODE);
+    
+    -- Versjon 2.9
+    DELETE FROM Handling;
+    INSERT INTO Handling (ID, navn) VALUES (NULL, 'opprettet');
+    INSERT INTO Handling (ID, navn) VALUES (NULL, 'forfalt');
+    INSERT INTO Handling (ID, navn) VALUES (NULL, 'markertForfalt');
+    INSERT INTO Handling (ID, navn) VALUES (NULL, 'purret'    );
+    INSERT INTO Handling (ID, navn) VALUES (NULL, 'betalt'    );
+    INSERT INTO Handling (ID, navn) VALUES (NULL, 'kansellert');
+    INSERT INTO Handling (ID, navn) VALUES (NULL, 'avKansellert');
+    INSERT INTO Handling (ID, navn) VALUES (NULL, 'sendtTilInkasso');
+    INSERT INTO Handling (ID, navn) VALUES (NULL, 'utskrift');
+    INSERT INTO Handling (ID, navn) VALUES (NULL, 'epostSendt');
+    INSERT INTO Handling (ID, navn) VALUES (NULL, 'epostSendtSmtp');
+    INSERT INTO Handling (ID, navn) VALUES (NULL, 'epostSendtGmail');
+    INSERT INTO Handling (ID, navn) VALUES (NULL, 'epostSendtSendmail');
+    INSERT INTO Handling (ID, navn) VALUES (NULL, 'pdfEpost');
+    INSERT INTO Handling (ID, navn) VALUES (NULL, 'pdfPapir');
+    INSERT INTO Handling (ID, navn) VALUES (NULL, 'pdfSikkerhetskopi');
 
+-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
     DELETE FROM Oppsett;
-    INSERT INTO Oppsett (ID, databaseversjon, fakturakatalog) VALUES (1, 2.8, '~');
+    INSERT INTO Oppsett (ID, databaseversjon, fakturakatalog) VALUES (1, 2.9, '~');
