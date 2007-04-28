@@ -15,7 +15,18 @@ import types, sys, time
 
 class fakturaHandling(fakturabibliotek.fakturaKomponent):
     _tabellnavn = "Handling"
-    
+    def __init__(self, db, Id = None, navn = None):
+        self.db = db
+        self.navn = navn
+        if Id is None:
+            Id = self.nyId()
+        self._id = Id
+        
+    def nyId(self):
+        self.c.execute("INSERT INTO %s (ID, navn) VALUES (NULL, ?)" % self._tabellnavn, (self.navn,))
+        self.db.commit()
+        return self.c.lastrowid
+                
 class historiker:
     
     def __init__(self, db):
@@ -29,14 +40,8 @@ class historiker:
         self.c.execute("""INSERT INTO Historikk
                      (ordreID, dato, handlingID, suksess, forklaring)
                      VALUES
-                     (%s, %s, %s, %s, %s)""", dict(handling) )
+                     (?,?,?,?,?)""", dict(handling) )
         self.db.commit()
-        
-def finnHandling(self, navn):
-    assert type(navn) in (types.StringType, types.UnicodeType)
-    self.c.execute('SELECT ID FROM Handling WHERE navn=%s', navn)
-    i = self.c.fetchone()
-    return fakturaHandling(self.db, i)
         
 class historiskHandling:
     handlingID = 0
@@ -45,66 +50,79 @@ class historiskHandling:
     navn = None
     forklaring = ''
     ordreID = 0
+    db = None
         
     def handling(self):
         return fakturaHandling(self.db, self.handlingID)
     
     def settHandling(self, handling):
         assert isinstance(handling, fakturaHandling)
+        print handling
         self.handlingID = handling.ID
         return True
     
+    def finnHandling(self, navn):
+        assert type(navn) in types.StringTypes
+        print 'SELECT ID FROM Handling WHERE navn=?', (navn,)
+        self.c.execute('SELECT ID FROM Handling WHERE navn=?', (navn,))
+        return fakturaHandling(self.db, self.c.fetchone()[0], navn)
+        
     def __init__(self, ordre, suksess, forklaring=None):
-        assert isinstance(ordre, fakturabibliotek.fakturaOrdrehode)
+        assert isinstance(ordre, fakturabibliotek.fakturaOrdre)
+        self.db = ordre.db
+        self.c  = self.db.cursor()
         self.ordreID = ordre.ID
         self.dato = time.mktime(time.localtime())
         self.suksess = suksess
-        self.forklaring = None
+        self.forklaring = forklaring
         if self.navn is not None:
-            self.settHandling(finnHandling(self.navn))
+            self.settHandling(self.finnHandling(self.navn))
         
-def opprettet(historiskHandling):
+class opprettet(historiskHandling):
     navn = 'opprettet'
         
-def forfalt(historiskHandling):
+class forfalt(historiskHandling):
     navn = 'forfalt'
     
-def markertForfalt(historiskHandling):
+class markertForfalt(historiskHandling):
     navn = 'markertForfalt'
     
-def purret(historiskHandling):
+class purret(historiskHandling):
     navn = 'purret'    
     
-def betalt(historiskHandling):
+class betalt(historiskHandling):
     navn = 'betalt'    
     
-def kansellert(historiskHandling):
+class kansellert(historiskHandling):
     navn = 'kansellert'
     
-def avKansellert(historiskHandling):
+class avKansellert(historiskHandling):
     navn = 'avKansellert'
 
-def utskrift(historiskHandling):
+class sendtTilInkasso(historiskHandling):
+    navn = 'sendtTilInkasso'
+
+class utskrift(historiskHandling):
     navn = 'utskrift'
 
-def epostSendt(historiskHandling):
+class epostSendt(historiskHandling):
     navn = 'epostSendt'
 
-def epostSendtSmtp(historiskHandling):
+class epostSendtSmtp(historiskHandling):
     navn = 'epostSendtSmtp'
 
-def epostSendtGmail(historiskHandling):
+class epostSendtGmail(historiskHandling):
     navn = 'epostSendtGmail'
 
-def epostSendtSendmail(historiskHandling):
+class epostSendtSendmail(historiskHandling):
     navn = 'epostSendtSendmail'
 
-def pdfEpost(historiskHandling):
+class pdfEpost(historiskHandling):
     navn = 'pdfEpost'
 
-def pdfPapir(historiskHandling):
+class pdfPapir(historiskHandling):
     navn = 'pdfPapir'
 
-def pdfSikkerhetskopi(historiskHandling):
+class pdfSikkerhetskopi(historiskHandling):
     navn = 'pdfSikkerhetskopi'
 
