@@ -395,19 +395,18 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
 
     def leggTilFaktura(self):
         #legg inn faktura i registeret 
-        
         #er all nødvendig info samlet inn?
-        
         if not self.fakturaFaktaTekst.text() and \
             not self.JaNei(u"Vil du virkelig legge inn fakturaen uten fakturatekst?"):
             self.fakturaFaktaTekst.setFocus()
             return False
-        
         #all nødvendig info er der, legg inn fakturaen
         kundetekst = self.fakturaFaktaMottaker.currentText()
         kre = re.search(re.compile(r'kunde\ #\s?(\d+)'), unicode(kundetekst))
         kunde = self.faktura.hentKunde(kre.group(1))
-        f = self.faktura.nyOrdre(kunde)
+        d = self.fakturaFaktaDato.date()
+        dato = mktime((d.year(),d.month(),d.day(),11,59,0,0,0,0)) # på midten av dagen (11:59) for å kunne betale fakturaen senere laget samme dag
+        f = self.faktura.nyOrdre(kunde, ordredato=dato)
         f.tekst = unicode(self.fakturaFaktaTekst.text()) 
         #finn varene som er i fakturaen
         varer = {}
@@ -651,7 +650,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             self.obs("Denne fakturaen ble kansellert den %s, og kan ikke betales." % strftime("%Y-%m-%d", localtime(ordre.kansellert)))
             return False
         d = self.fakturaBetaltDato.date()
-        dato = mktime((d.year(),d.month(),d.day(),0,0,0,0,0,0))
+        dato = mktime((d.year(),d.month(),d.day(),23,59,0,0,0,0)) # på slutten av dagen (23:59) for å kunne betale fakturaer laget tidligere samme dag
         if dato < ordre.ordredato:
             self.obs(u'Betalingsdato kan ikke være tidligere enn ordredato')
             return False
