@@ -13,6 +13,8 @@ import fakturabibliotek
 #import sqlite
 import types, sys, time
 
+debug = fakturabibliotek.debug
+
 class fakturaHandling(fakturabibliotek.fakturaKomponent):
     _tabellnavn = "Handling"
     def __init__(self, db, Id = None, navn = None):
@@ -57,16 +59,19 @@ class historiskHandling:
     
     def settHandling(self, handling):
         assert isinstance(handling, fakturaHandling)
-        print handling
-        self.handlingID = handling.ID
+        self.handlingID = handling._id
         return True
     
     def finnHandling(self, navn):
         assert type(navn) in types.StringTypes
-        print 'SELECT ID FROM Handling WHERE navn=?', (navn,)
         self.c.execute('SELECT ID FROM Handling WHERE navn=?', (navn,))
         return fakturaHandling(self.db, self.c.fetchone()[0], navn)
-        
+    
+    def registrerHandling(self):
+        #skriver til databasen
+        self.c.execute("INSERT INTO Historikk (ordreID, dato, handlingID, suksess, forklaring) VALUES (?,?,?,?,?)", (self.ordreID, self.dato, self.handlingID, self.suksess & 1, self.forklaring))
+        self.db.commit()
+    
     def __init__(self, ordre, suksess, forklaring=None):
         assert isinstance(ordre, fakturabibliotek.fakturaOrdre)
         self.db = ordre.db
@@ -77,6 +82,7 @@ class historiskHandling:
         self.forklaring = forklaring
         if self.navn is not None:
             self.settHandling(self.finnHandling(self.navn))
+        self.registrerHandling()
         
 class opprettet(historiskHandling):
     navn = 'opprettet'
