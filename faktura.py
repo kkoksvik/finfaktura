@@ -243,8 +243,6 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             self.faktura = FakturaBibliotek(self.db)
             self.firma   = self.faktura.firmainfo()
             self.obs(u"Databasen er nå oppdatert til nyeste versjon.\nDu bør se over dataene dine og forsikre deg om at alt er i orden.")
-                
-                
         try:
             self.faktura.sjekkSikkerhetskopier(lagNyAutomatisk=True)
         except SikkerhetskopiFeil, e:
@@ -408,7 +406,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         dato = mktime((d.year(),d.month(),d.day(),11,59,0,0,0,0)) # på midten av dagen (11:59) for å kunne betale fakturaen senere laget samme dag
         f = self.faktura.nyOrdre(kunde, ordredato=dato)
         f.tekst = unicode(self.fakturaFaktaTekst.text()) 
-        #finn varene som er i fakturaen
+            #finn varene som er i fakturaen
         varer = {}
         for i in range(self.fakturaFaktaVareliste.numRows()): # gå gjennom alle rader
             v = {'id': None, 'ant': 0, 'pris': 0.0, 'mva': 0}
@@ -622,19 +620,26 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         try:
             pdf.fyll()
         except FirmainfoFeil,(E):
+            historikk.pdfEpost(ordre, False, "firmainfofeil: %s" % E)
             self.alert(u"Du må fylle ut firmainfo først:\n%s" % E)
             self.fakturaTab.setCurrentPage(3)
         except KundeFeil,(E):
             self.alert(u"Kan ikke lage PDF!\nÅrsak: %s" % E)
+            historikk.pdfEpost(ordre, False, "kundefeil: %s" % E)
         else:
             res = pdf.settSammen()
             if not res: 
+                historikk.pdfEpost(ordre, False, "ukjent grunn")
                 self.alert("Kunne ikke lage PDF! ('%s')" % pdf.filnavn)
             else: 
                 if Type == "epost":
+                    historikk.pdfEpost(ordre, True, "interaktivt")
                     self.visEpostfaktura(ordre, pdf.filnavn)
                 elif Type == "papir":
-                    if self.JaNei(u"Blanketten er laget. Vil du skrive den ut nå?"): pdf.skrivUt()
+                    historikk.pdfPapir(ordre, True, "interaktivt")
+                    if self.JaNei(u"Blanketten er laget. Vil du skrive den ut nå?"): 
+                        suksess = pdf.skrivUt()
+                        historikk.utskrift(ordre, suksess, "interaktivt")
                     else: self.obs(u"Blanketten er lagret med filnavn: %s" % pdf.filnavn)
 
     def betalFaktura(self):
@@ -659,6 +664,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             self.obs(u'Betalingsdato kan ikke være i fremtiden')
             return False
         ordre.betal(dato)
+        historikk.betalt(ordre, True, 'brukerklikk')
         self.visFaktura()
 
     def kansellerFaktura(self):
@@ -714,7 +720,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             historikk.epostSendt(o, False, f)
             self.alert(u'Feil ved sending av faktura. Prøv å sende med en annen epostmetode.\n\nDetaljer:\n%s' % f)
         else:
-            historikk.epostSendt(o, True, trans[self.faktura.epostoppsett.transport])
+            historikk.epostSendt(o, True, "Tid: %s, transport: %s" % (time(), trans[self.faktura.epostoppsett.transport]))
             self.fakturaSendepostBoks.hide()
             self.obs('Fakturaen er sendt')
     
@@ -1301,15 +1307,21 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             debug("%s %s %s %s" % (bmnd, smnd, beg, slutt))
             ordreliste.begrensDato(beg, slutt)
         if self.okonomiAvgrensningerKunde.isChecked():
-            krex = re.search(re.compile(r'kunde\ #\s?(\d+)'), ### TODO: Det er alt for sårbart å bruke regex her... Gjøre dette som andre steder.
+            krex = re.search(re.compile(r'kunde\ #\s?(\d+)'),
                 unicode(self.okonomiAvgrensningerKundeliste.currentText()))
             try:
+                debug("Begrenser til kunde:", krex.group(1))
                 ordreliste.begrensKunde(self.faktura.hentKunde(int(krex.group(1))))
             except IndexError:
                 raise
         if self.okonomiAvgrensningerVare.isChecked():
-            #ordreliste.begrensVare()
-            debug("Begrenser til vare:")
+            vrex = re.search(re.compile(r'^\(#(\d+)\)'),
+                unicode(self.okonomiAvgrensningerVareliste.currentText()))
+            try:
+                debug("Begrenser til vare:", vrex.group(1))
+                ordreliste.begrensVare(self.faktura.hentVare(int(vrex.group(1))))
+            except IndexError:
+                raise
         ordreliste = ordreliste.hentOrdrer()
         s = "<b>Fakturaer funnet:</b><br><ul>"
         for ordre in ordreliste:
@@ -1364,7 +1376,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         self.okonomiAvgrensningerVareliste.clear()
         i = self.okonomiAvgrensningerVareliste.insertItem
         for v in self.faktura.hentVarer(inkluderSlettede=True):
-            i(unicode(v))
+            i(unicode("(#%i) %s") % (v.ID, v))
             
     def okonomiSkrivUtFakturaer(self):
         self.alert("funker ikke ennu")
