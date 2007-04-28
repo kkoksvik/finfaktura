@@ -682,7 +682,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         
     def inkassoFaktura(self):
         ordre = self.fakturaFakturaliste.selectedItem().ordre
-        historikk.sendTilInkasso(ordre, True, 'brukerklikk')
+        historikk.sendtTilInkasso(ordre, True, 'brukerklikk')
     
     def skjulSendepostBoks(self):
         self.fakturaSendepostBoks.hide()
