@@ -167,6 +167,7 @@ class oppgrader:
             ex = OppgraderingsFeil("Oppgradering feilet:\n%s" % value)
             ex.info = repr(sql)
             ex.logg = self.lesLogg()
+            print ex.logg
             raise ex
         else:
             self.nydb.commit()
@@ -269,6 +270,11 @@ class oppgrader:
             self.oppgrader()
             return True
         except:
+            exctype, value = sys.exc_info()[:2]
+            sys.stdout.write('Oppradering feilet: %s: %s\n' % (exctype, value))
+            #self.logg.write('SQL-kode som feilet: \n\n=====\n%s\n======\n' % repr(sql))
+            #self.logg.write('Data:\n')
+            #pprint(egenskaper, stream=self.logg)
             self.rullTilbake(dbSti, dbBackup) # rull tilbake til gammel database
             raise
         
