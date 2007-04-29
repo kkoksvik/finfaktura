@@ -94,10 +94,9 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         #skjul ikke-ferdige tabs dersom vi er i produksjon
         # TODO: gjøre dem klare for produksjon
         if PRODUKSJONSVERSJON:
-            #self.fakturaTab.removePage(self.fakturaTab.page(4))
-            self.fakturaTab.removePage(self.fakturaTab.page(5))
-            self.fakturaTab.removePage(self.fakturaTab.page(5))
-            self.fakturaTab.removePage(self.fakturaTab.page(5))
+            #self.fakturaTab.removePage(self.fakturaTab.page(5))
+            self.fakturaTab.removePage(self.fakturaTab.page(6))
+            self.fakturaTab.removePage(self.fakturaTab.page(6))
         else:
             self.setCaption("FRYKTELIG FIN FADESE (utviklerversjon)")
             self.patchDebugModus() # vis live debug-konsoll
