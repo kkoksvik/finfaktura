@@ -5,10 +5,10 @@
 
 Programmet lager kompakte pdf-fakturaer. De kan lages for sending gjennom epost eller for utskrift på standard skjema F60.
 
-http://finfaktura.googlecode.com/svn/trunk/doc/faktura-0.96-epostfaktura.jpg
+http://finfaktura.googlecode.com/svn/screenshots/efaktura-0.96.jpg
 
 == Programmet ==
 
 === Fakturaliste med detaljer ===
 
-http://finfaktura.googlecode.com/svn/trunk/doc/faktura-0.96-fakturadetaljer.png
+http://finfaktura.googlecode.com/svn/screenshots/fakturadetaljer-1.0.png
