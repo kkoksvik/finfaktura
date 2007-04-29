@@ -17,6 +17,7 @@ try:
 except ImportError:
     from pysqlite2 import dbapi2 as sqlite # prøv bruker/system-installert modul
 
+#import historikk
 
 PRODUKSJONSVERSJON=False # Sett denne til True for å skjule funksjonalitet som ikke er ferdigstilt
 DATABASEVERSJON=2.8
@@ -114,7 +115,9 @@ class FakturaBibliotek:
         return [str(x[0]) for x in self.c.fetchall() if x[0]]
 
     def lagSikkerhetskopi(self, ordre):
-        return fakturaSikkerhetskopi(self.db, ordre)
+        s = fakturaSikkerhetskopi(self.db, ordre)
+        #historikk.pdfSikkerhetskopi(ordre, True, "lagSikkerhetskopi)")
+        return s
 
     def hentSikkerhetskopier(self):
         self.c.execute("SELECT ID FROM %s" % fakturaSikkerhetskopi._tabellnavn)
@@ -134,7 +137,9 @@ class FakturaBibliotek:
                     s.data = False
                 try:
                     self.lagSikkerhetskopi(o)
+                    #historikk.pdfSikkerhetskopi(o, True, "sjekksikkerhetskopier(lagNyAutomatisk=True)")
                 except FakturaFeil, e:
+                    #historikk.pdfSikkerhetskopi(o, False, "sjekksikkerhetskopier: %s" % e)
                     raise SikkerhetskopiFeil(u'Kunne ikke lage sikkerhetskopi for ordre #%s! Årsak:\n%s' % (z[0], e))
             else:
                 ordrer.append(o)
@@ -183,7 +188,7 @@ class FakturaBibliotek:
         if transport == 'gmail':
             m.auth(set.gmailbruker, set.gmailpassord)
         elif transport == 'smtp':
-            m.tls = set.smtptls > 0
+            m.tls(set.smtptls and True)
             m.settServer(set.smtpserver, set.smtpport)
             if set.smtpbruker: m.auth(set.smtpbruker, set.smtppassord)
         elif transport == 'sendmail':
@@ -219,7 +224,7 @@ class FakturaBibliotek:
         if transport == 'gmail':
             m.auth(set.gmailbruker, set.gmailpassord)
         elif transport == 'smtp':
-            m.tls = set.smtptls and True
+            m.tls(set.smtptls and True)
             m.settServer(set.smtpserver, set.smtpport)
             if set.smtpbruker: m.auth(set.smtpbruker, set.smtppassord)
         elif transport == 'sendmail':
@@ -266,8 +271,6 @@ class fakturaKomponent:
             raise AttributeError(u"%s har ikke egenskapen %s" % (self.__class__, egenskap))
         if egenskap in self._egenskaperAldriCache:
             self.hentEgenskaper()
-        #if type(self._egenskaper[egenskap]) in (types.StringType,):
-            #return unicode(self._egenskaper[egenskap], 'utf8')
         #debug("__getattr__:2: %s" % type(self._egenskaper[egenskap]))
         return self._egenskaper[egenskap]
 
@@ -277,7 +280,6 @@ class fakturaKomponent:
         if type(verdi) == types.BooleanType: verdi = int(verdi) # lagrer bool som int: 0 | 1
         if self._egenskaper.has_key(egenskap): # denne egenskapen skal lagres i databasen
             self.oppdaterEgenskap(egenskap, verdi) # oppdater databasen
-        #else: self.__dict__[egenskap] = verdi
         self.__dict__[egenskap] = verdi # oppdater lokalt for objektet
 
     def hentEgenskaperListe(self):

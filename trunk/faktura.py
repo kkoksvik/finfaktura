@@ -143,6 +143,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         self.connect(self.dittfirmaLagre, SIGNAL("clicked()"), self.oppdaterFirma)
         self.connect(self.dittfirmaFakturakatalogSok, SIGNAL("clicked()"), self.endreFakturakatalog)
 
+        self.connect(self.epostSmtpAuth, SIGNAL("toggled(bool)"), self.epostVisAuth)
         self.connect(self.epostLagre, SIGNAL("clicked()"), self.oppdaterEpost)
         self.connect(self.epostLosning, SIGNAL("clicked(int)"), self.roterAktivSeksjon)
         self.connect(self.epostLosningTest, SIGNAL("clicked()"), self.testEpost)
@@ -717,8 +718,9 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
 
         except:
             f = sys.exc_info()[1]
-            historikk.epostSendt(o, False, f)
             self.alert(u'Feil ved sending av faktura. Prøv å sende med en annen epostmetode.\n\nDetaljer:\n%s' % f)
+            #historikk.epostSendt(o, 0, f)
+            raise
         else:
             historikk.epostSendt(o, True, "Tid: %s, transport: %s" % (time(), trans[self.faktura.epostoppsett.transport]))
             self.fakturaSendepostBoks.hide()
@@ -1059,28 +1061,24 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
 ############## FIRMAINFO ###################
 
     def visFirma(self):
-        self.dittfirmaFirmanavn.setText(self.firma.firmanavn)
-        try:
-            self.dittfirmaOrganisasjonsnummer.setText(self.firma.organisasjonsnummer)
-            self.dittfirmaKontaktperson.setText(self.firma.kontaktperson)
-            self.dittfirmaEpost.setText(self.firma.epost)
-            self.dittfirmaAdresse.setText(self.firma.adresse)
-            if self.firma.postnummer:
-                self.dittfirmaPostnummer.setText("%04i" % self.firma.postnummer)
-            self.dittfirmaPoststed.setText(self.firma.poststed)
-            self.dittfirmaTelefon.setText(str(self.firma.telefon))
-            self.dittfirmaTelefaks.setText(str(self.firma.telefaks))
-            self.dittfirmaMobil.setText(str(self.firma.mobil))
-            self.dittfirmaKontonummer.setText(str(self.firma.kontonummer))
-            self.dittfirmaVilkar.setText(self.firma.vilkar)
-            self.dittfirmaMva.setValue(int(self.firma.mva))
-            self.dittfirmaForfall.setValue(int(self.firma.forfall))
-    
-            self.dittfirmaFakturakatalog.setText(self.faktura.oppsett.fakturakatalog)
-        except TypeError:
-            # finnes ennå ikke
-            pass
-        
+        self.dittfirmaFirmanavn.setText(unicode(self.firma.firmanavn))
+        self.dittfirmaOrganisasjonsnummer.setText(unicode(self.firma.organisasjonsnummer))
+        self.dittfirmaKontaktperson.setText(unicode(self.firma.kontaktperson))
+        self.dittfirmaEpost.setText(unicode(self.firma.epost))
+        self.dittfirmaAdresse.setText(unicode(self.firma.adresse))
+        try: p = "%04i" % self.firma.postnummer
+        except TypeError: p = "0000"
+        self.dittfirmaPostnummer.setText(p)
+        self.dittfirmaPoststed.setText(unicode(self.firma.poststed))
+        self.dittfirmaTelefon.setText(unicode(self.firma.telefon))
+        self.dittfirmaTelefaks.setText(unicode(self.firma.telefaks))
+        self.dittfirmaMobil.setText(unicode(self.firma.mobil))
+        self.dittfirmaKontonummer.setText(unicode(self.firma.kontonummer))
+        self.dittfirmaVilkar.setText(unicode(self.firma.vilkar))
+        self.dittfirmaMva.setValue(int(self.firma.mva))
+        self.dittfirmaForfall.setValue(int(self.firma.forfall))
+
+        self.dittfirmaFakturakatalog.setText(self.faktura.oppsett.fakturakatalog)
         self.visLogo()
         self.firmaSjekk()
         
@@ -1112,30 +1110,30 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             self.dittfirmaForfall             :  self.firma.forfall,    
             self.dittfirmaFakturakatalog       :  self.faktura.oppsett.fakturakatalog
             }
-        if isinstance(fraObj, QSpinBox): fun = fraObj.value
-        elif isinstance(fraObj, QComboBox): fun = fraObj.currentText
-        elif isinstance(fraObj, (QLineEdit,QTextEdit,)): fun = fraObj.text
+        if isinstance(fraObj, QSpinBox): fun = int(fraObj.value)
+        elif isinstance(fraObj, QComboBox): fun = unicode(fraObj.currentText)
+        elif isinstance(fraObj, (QLineEdit,QTextEdit,)): fun = unicode(fraObj.text)
         
         debug(u'oppdatere %s til %s' % (fraObj, kart[fraObj]))
         kart[fraObj] = fun() # finner riktig lagringssted og kjører riktig funksjon
 
     def oppdaterFirma(self):
-        self.firma.firmanavn  = self.dittfirmaFirmanavn.text()
-        self.firma.organisasjonsnummer = self.dittfirmaOrganisasjonsnummer.text()
-        self.firma.kontaktperson = self.dittfirmaKontaktperson.text()
-        self.firma.epost      = self.dittfirmaEpost.text()
-        self.firma.adresse    = self.dittfirmaAdresse.text()
-        self.firma.postnummer = self.dittfirmaPostnummer.text()
-        self.firma.poststed   = self.dittfirmaPoststed.text()
-        self.firma.telefon    = self.dittfirmaTelefon.text()
-        self.firma.mobil      = self.dittfirmaMobil.text()
-        self.firma.telefaks   = self.dittfirmaTelefaks.text()
-        self.firma.kontonummer = self.dittfirmaKontonummer.text()
-        self.firma.vilkar     = self.dittfirmaVilkar.text()
-        self.firma.mva        = self.dittfirmaMva.value()
-        self.firma.forfall    = self.dittfirmaForfall.value()
+        self.firma.firmanavn  = unicode(self.dittfirmaFirmanavn.text())
+        self.firma.organisasjonsnummer = unicode(self.dittfirmaOrganisasjonsnummer.text())
+        self.firma.kontaktperson = unicode(self.dittfirmaKontaktperson.text())
+        self.firma.epost      = unicode(self.dittfirmaEpost.text())
+        self.firma.adresse    = unicode(self.dittfirmaAdresse.text())
+        self.firma.postnummer = unicode(self.dittfirmaPostnummer.text())
+        self.firma.poststed   = unicode(self.dittfirmaPoststed.text())
+        self.firma.telefon    = unicode(self.dittfirmaTelefon.text())
+        self.firma.mobil      = unicode(self.dittfirmaMobil.text())
+        self.firma.telefaks   = unicode(self.dittfirmaTelefaks.text())
+        self.firma.kontonummer = unicode(self.dittfirmaKontonummer.text())
+        self.firma.vilkar     = unicode(self.dittfirmaVilkar.text())
+        self.firma.mva        = int(self.dittfirmaMva.value())
+        self.firma.forfall    = unicode(self.dittfirmaForfall.value())
     
-        self.faktura.oppsett.fakturakatalog = self.dittfirmaFakturakatalog.text()
+        self.faktura.oppsett.fakturakatalog = unicode(self.dittfirmaFakturakatalog.text())
 
         mangler = self.sjekkFirmaMangler()
         if mangler:
@@ -1230,13 +1228,18 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         self.roterAktivSeksjon(self.faktura.epostoppsett.transport)
         if BRUK_GMAIL:
             self.epostGmailUbrukelig.hide()
-            self.epostGmailEpost.setText(self.faktura.epostoppsett.gmailbruker)
-            self.epostGmailPassord.setText(self.faktura.epostoppsett.gmailpassord)
-            #self.epostGmailHuskEpost.setChecked(True)
+            if self.faktura.epostoppsett.gmailbruker:
+                self.epostGmailEpost.setText(self.faktura.epostoppsett.gmailbruker)
+                self.epostGmailPassord.setText(self.faktura.epostoppsett.gmailpassord)
+                self.epostGmailHuskEpost.setChecked(True)
         self.epostSmtpServer.setText(self.faktura.epostoppsett.smtpserver)
         self.epostSmtpPort.setValue(self.faktura.epostoppsett.smtpport)
-        self.epostSmtpBrukernavn.setText(self.faktura.epostoppsett.smtpbruker)
-        self.epostSmtpPassord.setText(self.faktura.epostoppsett.smtppassord)
+        self.epostSmtpTLS.setChecked(self.faktura.epostoppsett.smtptls)
+        self.epostSmtpAuth.setChecked(self.faktura.epostoppsett.smtpauth)
+        if self.faktura.epostoppsett.smtpbruker: # husk brukernavn og passord for smtp
+            self.epostSmtpHuskEpost.setChecked(True)
+            self.epostSmtpBrukernavn.setText(self.faktura.epostoppsett.smtpbruker)
+            self.epostSmtpPassord.setText(self.faktura.epostoppsett.smtppassord)
         self.epostSendmailSti.setText(self.faktura.epostoppsett.sendmailsti)
 
     def oppdaterEpost(self):
@@ -1244,14 +1247,25 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         self.faktura.epostoppsett.transport = self.epostLosning.selectedId()
         if not self.epostSendkopi.isChecked():
             self.epostKopiadresse.setText('')
-        self.faktura.epostoppsett.bcc = self.epostKopiadresse.text()
-        self.faktura.epostoppsett.gmailbruker = self.epostGmailEpost.text()
-        self.faktura.epostoppsett.gmailpassord = self.epostGmailPassord.text()
-        self.faktura.epostoppsett.smtpserver = self.epostSmtpServer.text()
+        self.faktura.epostoppsett.bcc = unicode(self.epostKopiadresse.text())
+        if self.epostGmailHuskEpost.isChecked():
+            self.faktura.epostoppsett.gmailbruker = unicode(self.epostGmailEpost.text())
+            self.faktura.epostoppsett.gmailpassord = unicode(self.epostGmailPassord.text())
+        else:
+            self.faktura.epostoppsett.gmailbruker = ''
+            self.faktura.epostoppsett.gmailpassord = ''
+
+        self.faktura.epostoppsett.smtpserver = unicode(self.epostSmtpServer.text())
         self.faktura.epostoppsett.smtpport = self.epostSmtpPort.value()
-        self.faktura.epostoppsett.smtpbruker = self.epostSmtpBrukernavn.text()
-        self.faktura.epostoppsett.smtppassord = self.epostSmtpPassord.text()
-        self.faktura.epostoppsett.sendmailsti= self.epostSendmailSti.text()
+        self.faktura.epostoppsett.smtptls = self.epostSmtpTLS.isChecked()
+        self.faktura.epostoppsett.smtpauth = self.epostSmtpAuth.isChecked()
+        if self.epostSmtpHuskEpost.isChecked():
+            self.faktura.epostoppsett.smtpbruker = unicode(self.epostSmtpBrukernavn.text())
+            self.faktura.epostoppsett.smtppassord = unicode(self.epostSmtpPassord.text())
+        else:
+            self.faktura.epostoppsett.smtpbruker = ''
+            self.faktura.epostoppsett.smtppassord = ''
+        self.faktura.epostoppsett.sendmailsti = unicode(self.epostSendmailSti.text())
 
     def roterAktivSeksjon(self, aktivId=None):
         return
@@ -1282,7 +1296,9 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             except:pass
             self.oppdaterEpost() # må lagre for å bruke den aktive løsningen
 
-        
+    def epostVisAuth(self, vis):
+        self.epostSmtpBrukernavn.setEnabled(vis)
+        self.epostSmtpPassord.setEnabled(vis)
 
 ############## ØKONOMI ###################
 
