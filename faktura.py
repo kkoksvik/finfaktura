@@ -496,10 +496,15 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         
         varer = QStringList()
         map(varer.append, [unicode(v.navn) for v in self.faktura.hentVarer()])
+        #Vare = QComboTableItem(self.fakturaFaktaVareliste, varer, True)
+        Vare = QComboBox(1, self.fakturaFaktaVareliste, "Beskrivelse-%s" % sisterad)
+        Vare.insertStringList(varer)
+        Vare.setEditable(True)
+        Vare.show()
         
-        Vare = QComboTableItem(self.fakturaFaktaVareliste, varer, True)
         self.fakturaFaktaVareliste.setNumRows(sisterad+1)
-        self.fakturaFaktaVareliste.setItem(sisterad, 0, Vare)
+#        self.fakturaFaktaVareliste.setItem(sisterad, 0, Vare)
+        self.fakturaFaktaVareliste.setCellWidget(sisterad, 0, Vare)
         self.fakturaFaktaVareliste.setCellWidget(sisterad, 1, Antall)
         self.fakturaFaktaVareliste.setCellWidget(sisterad, 2, Pris)
         self.fakturaFaktaVareliste.setCellWidget(sisterad, 3, Mva)
