@@ -3075,6 +3075,25 @@ betalingsvilkår</string>
                     <string>Detaljert regnskap</string>
                 </property>
             </widget>
+            <widget class="QPushButton">
+                <property name="name">
+                    <cstring>okonomiFakturaerSkrivut</cstring>
+                </property>
+                <property name="geometry">
+                    <rect>
+                        <x>864</x>
+                        <y>699</y>
+                        <width>74</width>
+                        <height>23</height>
+                    </rect>
+                </property>
+                <property name="text">
+                    <string>Skriv &amp;ut</string>
+                </property>
+                <property name="accel">
+                    <string>Alt+U</string>
+                </property>
+            </widget>
             <widget class="QGroupBox">
                 <property name="name">
                     <cstring>groupBox9_2</cstring>
@@ -3090,32 +3109,6 @@ betalingsvilkår</string>
                 <property name="title">
                     <string>Regnskap</string>
                 </property>
-                <widget class="QComboBox">
-                    <property name="name">
-                        <cstring>okonomiAvgrensningerKundeliste</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>440</x>
-                            <y>62</y>
-                            <width>440</width>
-                            <height>21</height>
-                        </rect>
-                    </property>
-                </widget>
-                <widget class="QComboBox">
-                    <property name="name">
-                        <cstring>okonomiAvgrensningerVareliste</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>440</x>
-                            <y>93</y>
-                            <width>440</width>
-                            <height>21</height>
-                        </rect>
-                    </property>
-                </widget>
                 <widget class="QComboBox">
                     <property name="name">
                         <cstring>okonomiAvgrensningerDatoManed</cstring>
@@ -3152,28 +3145,6 @@ betalingsvilkår</string>
                     </property>
                     <property name="duplicatesEnabled">
                         <bool>false</bool>
-                    </property>
-                </widget>
-                <widget class="QSpinBox">
-                    <property name="name">
-                        <cstring>okonomiAvgrensningerDatoAr</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>440</x>
-                            <y>30</y>
-                            <width>80</width>
-                            <height>21</height>
-                        </rect>
-                    </property>
-                    <property name="maxValue">
-                        <number>3000</number>
-                    </property>
-                    <property name="minValue">
-                        <number>1900</number>
-                    </property>
-                    <property name="value">
-                        <number>2006</number>
                     </property>
                 </widget>
                 <widget class="QCheckBox">
@@ -3224,143 +3195,6 @@ betalingsvilkår</string>
                         <string>Vare:</string>
                     </property>
                 </widget>
-                <widget class="QLabel">
-                    <property name="name">
-                        <cstring>myndigheteneRegistrertTekst_2_4_3</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>14</x>
-                            <y>46</y>
-                            <width>100</width>
-                            <height>18</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Totalt m/mva:</string>
-                    </property>
-                </widget>
-                <widget class="QLabel">
-                    <property name="name">
-                        <cstring>myndigheteneRegistrertTekst_2_4</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>13</x>
-                            <y>25</y>
-                            <width>100</width>
-                            <height>18</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Totalt u/mva:</string>
-                    </property>
-                </widget>
-                <widget class="QLabel">
-                    <property name="name">
-                        <cstring>textLabel1_9_2</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>14</x>
-                            <y>89</y>
-                            <width>100</width>
-                            <height>16</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Antall fakturaer:</string>
-                    </property>
-                </widget>
-                <widget class="QLabel">
-                    <property name="name">
-                        <cstring>okonomiRegnskapTotalUMva</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>121</x>
-                            <y>25</y>
-                            <width>210</width>
-                            <height>20</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>textLabel1</string>
-                    </property>
-                    <property name="textFormat">
-                        <enum>RichText</enum>
-                    </property>
-                </widget>
-                <widget class="QLabel">
-                    <property name="name">
-                        <cstring>okonomiRegnskapTotalMMva</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>122</x>
-                            <y>46</y>
-                            <width>210</width>
-                            <height>20</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>textLabel1</string>
-                    </property>
-                    <property name="textFormat">
-                        <enum>RichText</enum>
-                    </property>
-                </widget>
-                <widget class="QLabel">
-                    <property name="name">
-                        <cstring>textLabel1_9</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>14</x>
-                            <y>69</y>
-                            <width>100</width>
-                            <height>16</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>MVA:</string>
-                    </property>
-                </widget>
-                <widget class="QLabel">
-                    <property name="name">
-                        <cstring>okonomiRegnskapAntallFakturaer</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>122</x>
-                            <y>89</y>
-                            <width>210</width>
-                            <height>20</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>textLabel1</string>
-                    </property>
-                </widget>
-                <widget class="QLabel">
-                    <property name="name">
-                        <cstring>okonomiRegnskapMoms</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>122</x>
-                            <y>69</y>
-                            <width>210</width>
-                            <height>20</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>textLabel1</string>
-                    </property>
-                    <property name="textFormat">
-                        <enum>RichText</enum>
-                    </property>
-                </widget>
                 <widget class="QPushButton">
                     <property name="name">
                         <cstring>okonomiRegnskapRegnut</cstring>
@@ -3375,6 +3209,63 @@ betalingsvilkår</string>
                     </property>
                     <property name="text">
                         <string>Regn ut</string>
+                    </property>
+                </widget>
+                <widget class="QSpinBox">
+                    <property name="name">
+                        <cstring>okonomiAvgrensningerDatoAr</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>false</bool>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>440</x>
+                            <y>30</y>
+                            <width>80</width>
+                            <height>21</height>
+                        </rect>
+                    </property>
+                    <property name="maxValue">
+                        <number>3000</number>
+                    </property>
+                    <property name="minValue">
+                        <number>1900</number>
+                    </property>
+                    <property name="value">
+                        <number>2006</number>
+                    </property>
+                </widget>
+                <widget class="QComboBox">
+                    <property name="name">
+                        <cstring>okonomiAvgrensningerKundeliste</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>false</bool>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>440</x>
+                            <y>62</y>
+                            <width>440</width>
+                            <height>21</height>
+                        </rect>
+                    </property>
+                </widget>
+                <widget class="QComboBox">
+                    <property name="name">
+                        <cstring>okonomiAvgrensningerVareliste</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>false</bool>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>440</x>
+                            <y>93</y>
+                            <width>440</width>
+                            <height>21</height>
+                        </rect>
                     </property>
                 </widget>
                 <widget class="Line">
@@ -3399,25 +3290,143 @@ betalingsvilkår</string>
                         <enum>Vertical</enum>
                     </property>
                 </widget>
-            </widget>
-            <widget class="QPushButton">
-                <property name="name">
-                    <cstring>okonomiFakturaerSkrivut</cstring>
-                </property>
-                <property name="geometry">
-                    <rect>
-                        <x>864</x>
-                        <y>699</y>
-                        <width>74</width>
-                        <height>23</height>
-                    </rect>
-                </property>
-                <property name="text">
-                    <string>Skriv &amp;ut</string>
-                </property>
-                <property name="accel">
-                    <string>Alt+U</string>
-                </property>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>myndigheteneRegistrertTekst_2_4</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>14</x>
+                            <y>25</y>
+                            <width>100</width>
+                            <height>18</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>Totalt u/mva:</string>
+                    </property>
+                </widget>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>myndigheteneRegistrertTekst_2_4_3</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>14</x>
+                            <y>46</y>
+                            <width>100</width>
+                            <height>18</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>Totalt m/mva:</string>
+                    </property>
+                </widget>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>okonomiRegnskapTotalUMva</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>121</x>
+                            <y>25</y>
+                            <width>170</width>
+                            <height>18</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>ikke regnet ut</string>
+                    </property>
+                    <property name="textFormat">
+                        <enum>RichText</enum>
+                    </property>
+                </widget>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>okonomiRegnskapTotalMMva</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>121</x>
+                            <y>46</y>
+                            <width>170</width>
+                            <height>18</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>ikke regnet ut</string>
+                    </property>
+                    <property name="textFormat">
+                        <enum>RichText</enum>
+                    </property>
+                </widget>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>okonomiRegnskapMoms</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>121</x>
+                            <y>69</y>
+                            <width>170</width>
+                            <height>18</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>ikke regnet ut</string>
+                    </property>
+                    <property name="textFormat">
+                        <enum>RichText</enum>
+                    </property>
+                </widget>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>textLabel1_9</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>14</x>
+                            <y>69</y>
+                            <width>100</width>
+                            <height>18</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>MVA:</string>
+                    </property>
+                </widget>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>textLabel1_9_2</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>14</x>
+                            <y>89</y>
+                            <width>100</width>
+                            <height>18</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>Antall fakturaer:</string>
+                    </property>
+                </widget>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>okonomiRegnskapAntallFakturaer</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>121</x>
+                            <y>89</y>
+                            <width>160</width>
+                            <height>18</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>ikke regnet ut</string>
+                    </property>
+                </widget>
             </widget>
         </widget>
         <widget class="QWidget">
