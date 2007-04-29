@@ -21,11 +21,11 @@ if __name__ == "__main__":
     if sys.argv[1] in ("hjelp", '-h', '-help', '--help'):
         from os import execl
         execl("/bin/grep", "grep", "in test:", sys.argv[0])
-    import sqlite
+    from pysqlite2 import dbapi2 as sqlite
     from pprint import pprint
     logg = open("faktura.sqlite.log", "a+")
     #enc = ("utf-8", "replace")
-    cx = sqlite.connect(finnDatabasenavn(), encoding='utf-8', command_logfile=logg)
+    cx = sqlite.connect(finnDatabasenavn())#, encoding='utf-8', command_logfile=logg)
     if "kunde" in test:
         kunde = fakturaKunde(cx)
         kunde.navn = u"Havard Dahle"
@@ -98,7 +98,7 @@ if __name__ == "__main__":
                 continue
             fil = "/tmp/sikk.%s.%s.pdf" % (kopi.dato, kopi.ordreID)
             f = file(fil, "w")
-            f.write(str(kopi.data))
+            f.write(kopi.data)
             f.close()
             print "sikkerhetskopi#%i av faktura # %s dumpet til %s" % (kopi._id, kopi.ordreID, fil)
     if "epost" in test:
