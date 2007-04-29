@@ -1,3 +1,11 @@
+finfaktura (1.0) stable; urgency=low
+
+  * Ny og bedre dialog for å legge inn ny faktura
+  * Forbedret epost-funksjonalitet: kan bruke smtp.gmail.com:587
+  * Rapporter for oversikt over fordringer
+
+ -- Håvard Dahle <havard@dahle.no>  Sun, 29 Apr 2007 19:47:15 +0200
+
 finfaktura (0.96.2) 1; urgency=low
 
   * Datofeltet for betaling av fakturaer oppfører seg nå slik man forventer
