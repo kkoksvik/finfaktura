@@ -27,7 +27,7 @@ echo 'Dette oppgraderer databasen fra pre-1.0 (sqlite2) til 1.0 (sqlite3)';
 echo "Den eksisterende databasen $GMLDB skal oppdateres";
 sjekk_reqs cp mv rm grep cat date sqlite sqlite3 python
 
-echo Trykk en tast for å sette i gang
+read -n 1 -p "Trykk en tast for å sette i gang... "
 
 ######################################
 test -f "$GMLDB" || feil "$GMLDB eksisterer ikke!";
@@ -73,9 +73,10 @@ PYTHON1
 
 test $? -eq 0 || feil "Noe gikk galt med python-skriptet! Stopper før det skjer noe mer."
 
-echo "Sjekker den nye databasen"
+echo -n "Sjekker den nye databasen... "
 l=$(sqlite3 "$NYDB" "SELECT ID,ordreID,dato,length(data) FROM Sikkerhetskopi" | wc -l);
+echo "fant $l sikkerhetskopier"
 
 test $l -gt 0 || feil "Noe gikk galt med python-skriptet! Stopper før det skjer noe mer."
 
-mv "${GMLDB}" "${GMLDB}-`date +%s`~" && mv "$NYDB" "$GMLDB" && echo "Finfint. Den oppgraderte databasen er flyttet til $GMLDB "
+mv "${GMLDB}" "${GMLDB}-`date +%s`~" && mv "$NYDB" "$GMLDB" && echo "Finfint. Den oppgraderte databasen er flyttet til $GMLDB, og backup er laget "
