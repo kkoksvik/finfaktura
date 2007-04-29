@@ -1,3 +1,9 @@
+finfaktura (1.0-2) stable; urgency=low
+
+  * Pakkeproblemer: Legger til script for oppgradering
+
+ -- Håvard Dahle <havard@dahle.no>  Sun, 29 Apr 2007 20:28:24 +0200
+
 finfaktura (1.0) stable; urgency=low
 
   * Ny og bedre dialog for å legge inn ny faktura

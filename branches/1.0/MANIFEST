@@ -14,3 +14,4 @@ finfaktura/okonomi.py
 finfaktura/sikkerhetskopi.py
 finfaktura/test.py
 README
+scripts/oppgrader-databasen-til-1.0.sh
