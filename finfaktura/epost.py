@@ -35,8 +35,12 @@ class epost:
       
     charset='iso-8859-15' # epostens tegnsett
     kopi = None
+    brukernavn = None
+    passord = None
+    testmelding = True
     
     def faktura(self, ordre, pdfFilnavn, tekst=None, fra=None, testmelding=False):
+        assert type(pdfFilnavn) in types.StringTypes
         self.ordre = ordre
         self.pdfFilnavn = pdfFilnavn
         if fra is None: fra = ordre.firma.epost
@@ -53,8 +57,9 @@ class epost:
         m = MIMEMultipart()
         m['Subject'] = Header(self.tittel, self.charset)
         n = self.ordre.firma.firmanavn.replace(';', ' ').replace(',',' ')
-        m['From'] = '"%s" <%s>' % (Header(n, self.charset), self.fra) #Header(self.fra, self.charset).encode())
-        m['To'] = '"%s" <%s>' % (Header(self.ordre.kunde.navn, self.charset), self.til)#Header(self.til, self.charset).encode())
+        m['From'] = '"%s" <%s>' % (Header(n, self.charset), self.fra)
+        #m['To'] = '"%s" <%s>' % (Header(self.ordre.kunde.navn, self.charset), self.til)
+        m['To'] = self.til #'"%s" <%s>' % (Header(self.ordre.kunde.navn, self.charset), self.til)
         m.preamble = 'You will not see this in a MIME-aware mail reader.\n'
         # To guarantee the message ends with a newline
         m.epilogue = ''
@@ -74,27 +79,30 @@ class epost:
         Encoders.encode_base64(b) #base64 encode subpart
         return m
     
+    def auth(self, brukernavn, passord):
+        assert type(brukernavn) in types.StringTypes
+        assert type(passord) in types.StringTypes
+        self._auth = True
+        self.brukernavn = brukernavn
+        self.passord = passord
+    
     def send(self): pass
     
     def test(self): pass
     
     def kutt(self, s, l=30):
-        assert(type(s) in (types.StringType, types.UnicodeType))
+        assert(type(s) in types.StringTypes)
         if len(s) < l: return s
         return s[0:l] + "..."
     
     def settKopi(self, s):
         # setter BCC-kopi til s
-        assert(type(s) in (types.UnicodeType, types.StringType))
+        assert(type(s) in types.StringTypes)
         # sjekk at s er en gyldig epostadresse
         # XXX TOODO
         self.kopi = s
     
 class gmail(epost):
-    def auth(self, brukernavn, passord):
-        self.brukernavn = brukernavn
-        self.passord = passord
-        
     def send(self):
         gmail = libgmail.GmailAccount(self.brukernavn, self.passord)
         print "Logger inn i Gmail med brukernavn %s" % self.brukernavn
@@ -126,34 +134,49 @@ class smtp(epost):
     _auth = False
     
     def settServer(self, smtpserver, port=25):
-        self.smtpserver=smtpserver
-        self.smtpport=port
+        assert type(smtpserver) in types.StringTypes
+        assert type(port) == types.IntType
+        self.smtpserver=unicode(smtpserver)
+        self.smtpport=int(port)
     
-    def auth(self, brukernavn, passord):
-        self._auth = True
-        self.brukernavn = brukernavn
-        self.passord = passord
+    def tls(self, bool):
+        assert type(bool) == types.BooleanType
+        self._tls = bool
     
     def test(self):
         s = smtplib.SMTP()
+        if self.testmelding: #debug
+            s.set_debuglevel(1)
         s.connect(self.smtpserver, self.smtpport)
-        if self._tls: s.starttls()
-        if self._auth: s.login(self.brukernavn, self.passord)
+        s.ehlo()
+        if self._tls: 
+            s.starttls()
+            s.ehlo()
+        if self._auth: 
+            s.login(self.brukernavn, self.passord)
         s.close()
         return True
     
     def send(self):
         s = smtplib.SMTP()
+        if self.testmelding: #debug
+            s.set_debuglevel(1)
         try:
             s.connect(self.smtpserver, self.smtpport)
-            if self._tls: s.starttls()
-            if self._auth: s.login(self.brukernavn, self.passord)
+            s.ehlo()
+            if self._tls: 
+                s.starttls()
+                s.ehlo()
+            if self._auth: 
+                s.login(self.brukernavn, self.passord)
         except socket.error,E:
             raise SendeFeil(E)
         except:
             raise
         mottakere = [self.til,]
         if self.kopi: mottakere.append(self.kopi) # sender kopi til oss selv (BCC)
+        print "mottaker:",mottakere
+        print "fra:", self.fra, type(self.fra)
         res = s.sendmail(self.fra, mottakere, self.mimemelding().as_string())
         s.close()
         if len(res) > 0:
@@ -175,19 +198,16 @@ class sendmail(epost):
     _auth=False
     
     def settSti(self, sti):
+        assert type(sti) in types.StringTypes
         self.bin = sti
     
     def test(self):
         import os.path as p
         real = p.realpath(self.bin)
+        print real
         if not (p.exists(real) and p.isfile(real)): # er dette tilstrekkelig?
             raise SendeFeil(u'%s er ikke en gyldig sendmail-kommando' % self.bin)
         return True
-    
-    def auth(self, brukernavn, passord):
-        self._auth = True
-        self.brukernavn = brukernavn
-        self.passord = passord
     
     def send(self):
         # ssmtp opsjoner: 
@@ -202,6 +222,7 @@ class sendmail(epost):
         # XXX TODO: Hvordan gjøre auth uavhengig av sendmail-implementasjon?
         kmd = "%s %s" % (self.bin, self.til)
         if self.kopi: kmd += " %s" % self.kopi # kopi til oss selv (BCC)
+        print kmd
         inn, ut = os.popen4(kmd)
         try:
             inn.write(self.mimemelding().as_string())

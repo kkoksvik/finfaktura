@@ -8,8 +8,8 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>977</width>
-            <height>814</height>
+            <width>978</width>
+            <height>887</height>
         </rect>
     </property>
     <property name="font">
@@ -368,6 +368,91 @@
                     <string>Lager en ny faktura</string>
                 </property>
             </widget>
+            <widget class="QGroupBox">
+                <property name="name">
+                    <cstring>groupBox6</cstring>
+                </property>
+                <property name="geometry">
+                    <rect>
+                        <x>750</x>
+                        <y>80</y>
+                        <width>200</width>
+                        <height>340</height>
+                    </rect>
+                </property>
+                <property name="title">
+                    <string>Detaljer</string>
+                </property>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>fakturaDetaljerTekst</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>11</x>
+                            <y>21</y>
+                            <width>178</width>
+                            <height>310</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string></string>
+                    </property>
+                    <property name="textFormat">
+                        <enum>RichText</enum>
+                    </property>
+                    <property name="alignment">
+                        <set>WordBreak|AlignTop|AlignLeft</set>
+                    </property>
+                </widget>
+            </widget>
+            <widget class="QCheckBox">
+                <property name="name">
+                    <cstring>fakturaVisKansellerte</cstring>
+                </property>
+                <property name="geometry">
+                    <rect>
+                        <x>750</x>
+                        <y>60</y>
+                        <width>180</width>
+                        <height>20</height>
+                    </rect>
+                </property>
+                <property name="text">
+                    <string>vis kan&amp;sellerte</string>
+                </property>
+                <property name="accel">
+                    <string>Alt+S</string>
+                </property>
+                <property name="toolTip" stdset="0">
+                    <string>Angir om kansellerte fakturaer skal vises</string>
+                </property>
+            </widget>
+            <widget class="QCheckBox">
+                <property name="name">
+                    <cstring>fakturaVisGamle</cstring>
+                </property>
+                <property name="geometry">
+                    <rect>
+                        <x>751</x>
+                        <y>38</y>
+                        <width>180</width>
+                        <height>20</height>
+                    </rect>
+                </property>
+                <property name="text">
+                    <string>vis &amp;gamle</string>
+                </property>
+                <property name="accel">
+                    <string>Alt+G</string>
+                </property>
+                <property name="checked">
+                    <bool>false</bool>
+                </property>
+                <property name="toolTip" stdset="0">
+                    <string>Skjul fakturaer som er eldre enn et halvt år og betalt</string>
+                </property>
+            </widget>
             <widget class="QListView">
                 <column>
                     <property name="text">
@@ -520,66 +605,6 @@
             </widget>
             <widget class="QGroupBox">
                 <property name="name">
-                    <cstring>groupBox6</cstring>
-                </property>
-                <property name="geometry">
-                    <rect>
-                        <x>750</x>
-                        <y>80</y>
-                        <width>200</width>
-                        <height>340</height>
-                    </rect>
-                </property>
-                <property name="title">
-                    <string>Detaljer</string>
-                </property>
-                <widget class="QLabel">
-                    <property name="name">
-                        <cstring>fakturaDetaljerTekst</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>11</x>
-                            <y>21</y>
-                            <width>178</width>
-                            <height>310</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string></string>
-                    </property>
-                    <property name="textFormat">
-                        <enum>RichText</enum>
-                    </property>
-                    <property name="alignment">
-                        <set>WordBreak|AlignTop|AlignLeft</set>
-                    </property>
-                </widget>
-            </widget>
-            <widget class="QCheckBox">
-                <property name="name">
-                    <cstring>fakturaVisKansellerte</cstring>
-                </property>
-                <property name="geometry">
-                    <rect>
-                        <x>750</x>
-                        <y>60</y>
-                        <width>180</width>
-                        <height>20</height>
-                    </rect>
-                </property>
-                <property name="text">
-                    <string>vis kan&amp;sellerte</string>
-                </property>
-                <property name="accel">
-                    <string>Alt+S</string>
-                </property>
-                <property name="toolTip" stdset="0">
-                    <string>Angir om kansellerte fakturaer skal vises</string>
-                </property>
-            </widget>
-            <widget class="QGroupBox">
-                <property name="name">
                     <cstring>fakturaFakta</cstring>
                 </property>
                 <property name="geometry">
@@ -709,19 +734,6 @@
                     </property>
                     <property name="text">
                         <string>Sum:</string>
-                    </property>
-                </widget>
-                <widget class="QDateEdit">
-                    <property name="name">
-                        <cstring>fakturaFaktaDato</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>82</x>
-                            <y>387</y>
-                            <width>90</width>
-                            <height>21</height>
-                        </rect>
                     </property>
                 </widget>
                 <widget class="QPushButton">
@@ -881,59 +893,25 @@
                         <string>Fakturaens verdi hittil</string>
                     </property>
                 </widget>
-                <widget class="QTextEdit">
-                    <property name="name">
-                        <cstring>fakturaFaktaTekst</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>70</x>
-                            <y>50</y>
-                            <width>610</width>
-                            <height>60</height>
-                        </rect>
-                    </property>
-                    <property name="tabChangesFocus">
-                        <bool>true</bool>
-                    </property>
-                    <property name="toolTip" stdset="0">
-                        <string>Fakturatekst</string>
-                    </property>
-                    <property name="whatsThis" stdset="0">
-                        <string>Beskrivelse av hva fakturaen handler om. Det kan være typen oppdrag utført eller oppdragets tema.</string>
-                    </property>
-                </widget>
                 <widget class="QTable">
                     <column>
                         <property name="text">
                             <string>Varebeskrivelse</string>
-                        </property>
-                        <property name="pixmap">
-                            <pixmap></pixmap>
                         </property>
                     </column>
                     <column>
                         <property name="text">
                             <string>Antall</string>
                         </property>
-                        <property name="pixmap">
-                            <pixmap></pixmap>
-                        </property>
                     </column>
                     <column>
                         <property name="text">
                             <string>Pris</string>
                         </property>
-                        <property name="pixmap">
-                            <pixmap></pixmap>
-                        </property>
                     </column>
                     <column>
                         <property name="text">
                             <string>Mva</string>
-                        </property>
-                        <property name="pixmap">
-                            <pixmap></pixmap>
                         </property>
                     </column>
                     <property name="name">
@@ -958,6 +936,41 @@
                     </property>
                     <property name="selectionMode">
                         <enum>SingleRow</enum>
+                    </property>
+                </widget>
+                <widget class="QTextEdit">
+                    <property name="name">
+                        <cstring>fakturaFaktaTekst</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>70</x>
+                            <y>50</y>
+                            <width>610</width>
+                            <height>60</height>
+                        </rect>
+                    </property>
+                    <property name="tabChangesFocus">
+                        <bool>true</bool>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>Fakturatekst</string>
+                    </property>
+                    <property name="whatsThis" stdset="0">
+                        <string>Beskrivelse av hva fakturaen handler om. Det kan være typen oppdrag utført eller oppdragets tema.</string>
+                    </property>
+                </widget>
+                <widget class="QDateEdit">
+                    <property name="name">
+                        <cstring>fakturaFaktaDato</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>82</x>
+                            <y>387</y>
+                            <width>90</width>
+                            <height>21</height>
+                        </rect>
                     </property>
                 </widget>
             </widget>
@@ -2453,194 +2466,6 @@ betalingsvilkår</string>
             </widget>
             <widget class="QGroupBox">
                 <property name="name">
-                    <cstring>epostSeksjonSmtp</cstring>
-                </property>
-                <property name="enabled">
-                    <bool>true</bool>
-                </property>
-                <property name="geometry">
-                    <rect>
-                        <x>20</x>
-                        <y>440</y>
-                        <width>670</width>
-                        <height>140</height>
-                    </rect>
-                </property>
-                <property name="title">
-                    <string>SMTP</string>
-                </property>
-                <widget class="QLabel">
-                    <property name="name">
-                        <cstring>textLabel1_12</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>20</x>
-                            <y>30</y>
-                            <width>213</width>
-                            <height>14</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Send gjennom server (SMTP server):</string>
-                    </property>
-                </widget>
-                <widget class="QLabel">
-                    <property name="name">
-                        <cstring>textLabel3_4_2</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>119</x>
-                            <y>114</y>
-                            <width>131</width>
-                            <height>21</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Passord:</string>
-                    </property>
-                </widget>
-                <widget class="QLabel">
-                    <property name="name">
-                        <cstring>textLabel4_4</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>566</x>
-                            <y>28</y>
-                            <width>29</width>
-                            <height>14</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Port:</string>
-                    </property>
-                </widget>
-                <widget class="QLineEdit">
-                    <property name="name">
-                        <cstring>epostSmtpServer</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>248</x>
-                            <y>24</y>
-                            <width>300</width>
-                            <height>21</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>localhost</string>
-                    </property>
-                </widget>
-                <widget class="QSpinBox">
-                    <property name="name">
-                        <cstring>epostSmtpPort</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>608</x>
-                            <y>24</y>
-                            <width>50</width>
-                            <height>21</height>
-                        </rect>
-                    </property>
-                    <property name="buttonSymbols">
-                        <enum>UpDownArrows</enum>
-                    </property>
-                    <property name="value">
-                        <number>25</number>
-                    </property>
-                </widget>
-                <widget class="QCheckBox">
-                    <property name="name">
-                        <cstring>epostSmtpAuth</cstring>
-                    </property>
-                    <property name="enabled">
-                        <bool>false</bool>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>118</x>
-                            <y>71</y>
-                            <width>214</width>
-                            <height>19</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Serveren krever at jeg logger inn</string>
-                    </property>
-                </widget>
-                <widget class="QCheckBox">
-                    <property name="name">
-                        <cstring>epostSmtpTLS</cstring>
-                    </property>
-                    <property name="enabled">
-                        <bool>false</bool>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>118</x>
-                            <y>54</y>
-                            <width>281</width>
-                            <height>19</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Serveren støtter krypterte overføringer (TLS)</string>
-                    </property>
-                </widget>
-                <widget class="QLabel">
-                    <property name="name">
-                        <cstring>textLabel3_4</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>118</x>
-                            <y>91</y>
-                            <width>131</width>
-                            <height>21</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Brukernavn:</string>
-                    </property>
-                </widget>
-                <widget class="QLineEdit">
-                    <property name="name">
-                        <cstring>epostSmtpBrukernavn</cstring>
-                    </property>
-                    <property name="enabled">
-                        <bool>false</bool>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>198</x>
-                            <y>91</y>
-                            <width>261</width>
-                            <height>21</height>
-                        </rect>
-                    </property>
-                </widget>
-                <widget class="QLineEdit">
-                    <property name="name">
-                        <cstring>epostSmtpPassord</cstring>
-                    </property>
-                    <property name="enabled">
-                        <bool>false</bool>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>198</x>
-                            <y>114</y>
-                            <width>261</width>
-                            <height>21</height>
-                        </rect>
-                    </property>
-                </widget>
-            </widget>
-            <widget class="QGroupBox">
-                <property name="name">
                     <cstring>epostSeksjonSendmail</cstring>
                 </property>
                 <property name="enabled">
@@ -2756,6 +2581,19 @@ betalingsvilkår</string>
                         <enum>Password</enum>
                     </property>
                 </widget>
+                <widget class="QLineEdit">
+                    <property name="name">
+                        <cstring>epostGmailEpost</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>191</x>
+                            <y>34</y>
+                            <width>280</width>
+                            <height>21</height>
+                        </rect>
+                    </property>
+                </widget>
                 <widget class="QCheckBox">
                     <property name="name">
                         <cstring>epostGmailHuskEpost</cstring>
@@ -2770,19 +2608,6 @@ betalingsvilkår</string>
                     </property>
                     <property name="text">
                         <string>Husk</string>
-                    </property>
-                </widget>
-                <widget class="QLineEdit">
-                    <property name="name">
-                        <cstring>epostGmailEpost</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>191</x>
-                            <y>34</y>
-                            <width>280</width>
-                            <height>21</height>
-                        </rect>
                     </property>
                 </widget>
                 <widget class="QLabel">
@@ -2947,6 +2772,219 @@ betalingsvilkår</string>
                     </property>
                     <property name="buttonGroupId">
                         <number>3</number>
+                    </property>
+                </widget>
+            </widget>
+            <widget class="QGroupBox">
+                <property name="name">
+                    <cstring>epostSeksjonSmtp</cstring>
+                </property>
+                <property name="enabled">
+                    <bool>true</bool>
+                </property>
+                <property name="geometry">
+                    <rect>
+                        <x>20</x>
+                        <y>440</y>
+                        <width>670</width>
+                        <height>140</height>
+                    </rect>
+                </property>
+                <property name="title">
+                    <string>SMTP</string>
+                </property>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>textLabel1_12</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>20</x>
+                            <y>30</y>
+                            <width>213</width>
+                            <height>14</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>Send gjennom server (SMTP server):</string>
+                    </property>
+                </widget>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>textLabel3_4_2</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>119</x>
+                            <y>114</y>
+                            <width>131</width>
+                            <height>21</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>Passord:</string>
+                    </property>
+                </widget>
+                <widget class="QLineEdit">
+                    <property name="name">
+                        <cstring>epostSmtpServer</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>248</x>
+                            <y>24</y>
+                            <width>300</width>
+                            <height>21</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>localhost</string>
+                    </property>
+                </widget>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>textLabel3_4</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>118</x>
+                            <y>91</y>
+                            <width>131</width>
+                            <height>21</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>Brukernavn:</string>
+                    </property>
+                </widget>
+                <widget class="QCheckBox">
+                    <property name="name">
+                        <cstring>epostSmtpTLS</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>true</bool>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>118</x>
+                            <y>54</y>
+                            <width>281</width>
+                            <height>19</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>Serveren støtter krypterte overføringer (TLS)</string>
+                    </property>
+                </widget>
+                <widget class="QLineEdit">
+                    <property name="name">
+                        <cstring>epostSmtpBrukernavn</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>false</bool>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>198</x>
+                            <y>91</y>
+                            <width>261</width>
+                            <height>21</height>
+                        </rect>
+                    </property>
+                </widget>
+                <widget class="QCheckBox">
+                    <property name="name">
+                        <cstring>epostSmtpAuth</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>true</bool>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>118</x>
+                            <y>71</y>
+                            <width>214</width>
+                            <height>19</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>Serveren krever at jeg logger inn</string>
+                    </property>
+                </widget>
+                <widget class="QCheckBox">
+                    <property name="name">
+                        <cstring>epostSmtpHuskEpost</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>470</x>
+                            <y>90</y>
+                            <width>53</width>
+                            <height>19</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>Husk</string>
+                    </property>
+                </widget>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>textLabel4_4</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>554</x>
+                            <y>28</y>
+                            <width>29</width>
+                            <height>14</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>Port:</string>
+                    </property>
+                </widget>
+                <widget class="QSpinBox">
+                    <property name="name">
+                        <cstring>epostSmtpPort</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>588</x>
+                            <y>24</y>
+                            <width>70</width>
+                            <height>21</height>
+                        </rect>
+                    </property>
+                    <property name="buttonSymbols">
+                        <enum>UpDownArrows</enum>
+                    </property>
+                    <property name="maxValue">
+                        <number>999999</number>
+                    </property>
+                    <property name="minValue">
+                        <number>1</number>
+                    </property>
+                    <property name="value">
+                        <number>25</number>
+                    </property>
+                </widget>
+                <widget class="QLineEdit">
+                    <property name="name">
+                        <cstring>epostSmtpPassord</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>false</bool>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>198</x>
+                            <y>114</y>
+                            <width>261</width>
+                            <height>21</height>
+                        </rect>
+                    </property>
+                    <property name="echoMode">
+                        <enum>Password</enum>
                     </property>
                 </widget>
             </widget>
@@ -4187,31 +4225,6 @@ betalingsvilkår</string>
                 </widget>
             </widget>
         </widget>
-    </widget>
-    <widget class="QCheckBox">
-        <property name="name">
-            <cstring>fakturaVisGamle</cstring>
-        </property>
-        <property name="geometry">
-            <rect>
-                <x>763</x>
-                <y>77</y>
-                <width>180</width>
-                <height>20</height>
-            </rect>
-        </property>
-        <property name="text">
-            <string>vis &amp;gamle</string>
-        </property>
-        <property name="accel">
-            <string>Alt+G</string>
-        </property>
-        <property name="checked">
-            <bool>false</bool>
-        </property>
-        <property name="toolTip" stdset="0">
-            <string>Skjul fakturaer som er eldre enn et halvt år og betalt</string>
-        </property>
     </widget>
 </widget>
 <menubar>
