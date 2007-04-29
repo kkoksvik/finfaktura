@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'faktura.ui'
 #
-# Created: Sun Apr 29 02:44:43 2007
+# Created: Sun Apr 29 03:08:59 2007
 #      by: The PyQt User Interface Compiler (pyuic) 3.17
 #
 # WARNING! All changes made in this file will be lost!
@@ -2717,20 +2717,6 @@ class faktura(QMainWindow):
 
         self.setCentralWidget(QWidget(self,"qt_central_widget"))
 
-        self.buttonGroup1_2_2 = QButtonGroup(self.centralWidget(),"buttonGroup1_2_2")
-        self.buttonGroup1_2_2.setGeometry(QRect(20,470,921,220))
-
-        self.myndigheteneRegistrertTekst_2_3 = QLabel(self.buttonGroup1_2_2,"myndigheteneRegistrertTekst_2_3")
-        self.myndigheteneRegistrertTekst_2_3.setGeometry(QRect(12,18,761,40))
-        self.myndigheteneRegistrertTekst_2_3.setTextFormat(QLabel.RichText)
-
-        self.myndigheteneRegistrertTekst_2_4_2 = QLabel(self.centralWidget(),"myndigheteneRegistrertTekst_2_4_2")
-        self.myndigheteneRegistrertTekst_2_4_2.setGeometry(QRect(45,106,100,18))
-        self.myndigheteneRegistrertTekst_2_4_2.setTextFormat(QLabel.RichText)
-
-        self.okonomiRegnskapTotalMva = QLabel(self.centralWidget(),"okonomiRegnskapTotalMva")
-        self.okonomiRegnskapTotalMva.setGeometry(QRect(153,106,790,20))
-
         self.fakturaTab = QTabWidget(self.centralWidget(),"fakturaTab")
         self.fakturaTab.setEnabled(1)
         self.fakturaTab.setGeometry(QRect(10,10,960,760))
@@ -3435,11 +3421,6 @@ class faktura(QMainWindow):
         self.groupBox9_2 = QGroupBox(self.TabPage_4,"groupBox9_2")
         self.groupBox9_2.setGeometry(QRect(18,21,921,160))
 
-        self.okonomiAvgrensningerDatoManed = QComboBox(0,self.groupBox9_2,"okonomiAvgrensningerDatoManed")
-        self.okonomiAvgrensningerDatoManed.setEnabled(0)
-        self.okonomiAvgrensningerDatoManed.setGeometry(QRect(530,30,110,21))
-        self.okonomiAvgrensningerDatoManed.setDuplicatesEnabled(0)
-
         self.okonomiAvgrensningerDatoPeriode = QComboBox(0,self.groupBox9_2,"okonomiAvgrensningerDatoPeriode")
         self.okonomiAvgrensningerDatoPeriode.setEnabled(0)
         self.okonomiAvgrensningerDatoPeriode.setGeometry(QRect(650,30,231,21))
@@ -3488,10 +3469,6 @@ class faktura(QMainWindow):
         self.okonomiRegnskapTotalUMva.setGeometry(QRect(121,25,170,18))
         self.okonomiRegnskapTotalUMva.setTextFormat(QLabel.RichText)
 
-        self.okonomiRegnskapTotalMMva = QLabel(self.groupBox9_2,"okonomiRegnskapTotalMMva")
-        self.okonomiRegnskapTotalMMva.setGeometry(QRect(121,46,170,18))
-        self.okonomiRegnskapTotalMMva.setTextFormat(QLabel.RichText)
-
         self.okonomiRegnskapMoms = QLabel(self.groupBox9_2,"okonomiRegnskapMoms")
         self.okonomiRegnskapMoms.setGeometry(QRect(121,69,170,18))
         self.okonomiRegnskapMoms.setTextFormat(QLabel.RichText)
@@ -3504,6 +3481,15 @@ class faktura(QMainWindow):
 
         self.okonomiRegnskapAntallFakturaer = QLabel(self.groupBox9_2,"okonomiRegnskapAntallFakturaer")
         self.okonomiRegnskapAntallFakturaer.setGeometry(QRect(121,89,160,18))
+
+        self.okonomiAvgrensningerDatoManed = QComboBox(0,self.groupBox9_2,"okonomiAvgrensningerDatoManed")
+        self.okonomiAvgrensningerDatoManed.setEnabled(0)
+        self.okonomiAvgrensningerDatoManed.setGeometry(QRect(530,30,110,21))
+        self.okonomiAvgrensningerDatoManed.setDuplicatesEnabled(0)
+
+        self.okonomiRegnskapTotalMMva = QLabel(self.groupBox9_2,"okonomiRegnskapTotalMMva")
+        self.okonomiRegnskapTotalMMva.setGeometry(QRect(121,46,170,18))
+        self.okonomiRegnskapTotalMMva.setTextFormat(QLabel.RichText)
         self.fakturaTab.insertTab(self.TabPage_4,QString.fromLatin1(""))
 
         self.TabPage_5 = QWidget(self.fakturaTab,"TabPage_5")
@@ -3706,7 +3692,7 @@ class faktura(QMainWindow):
 
         self.languageChange()
 
-        self.resize(QSize(978,887).expandedTo(self.minimumSizeHint()))
+        self.resize(QSize(977,817).expandedTo(self.minimumSizeHint()))
         self.clearWState(Qt.WState_Polished)
 
         self.connect(self.fileNewAction,SIGNAL("activated()"),self.fileNew)
@@ -3789,10 +3775,6 @@ class faktura(QMainWindow):
 
     def languageChange(self):
         self.setCaption(self.__tr("Fryktelig fin faktura"))
-        self.buttonGroup1_2_2.setTitle(self.__tr("Oppgaver"))
-        self.myndigheteneRegistrertTekst_2_3.setText(self.__tr("textLabel2"))
-        self.myndigheteneRegistrertTekst_2_4_2.setText(self.__tr("Totalt m/mva:"))
-        self.okonomiRegnskapTotalMva.setText(self.__tr("textLabel1"))
         self.groupBox8_2.setTitle(self.__tr("Handlinger"))
         self.textLabel3_2.setText(self.__tr("Fakturaen er betalt:"))
         self.textLabel4_2.setText(self.__tr("Du trenger en kvittering:"))
@@ -3972,11 +3954,11 @@ class faktura(QMainWindow):
         self.myndigheteneRegistrertTekst_2_4.setText(self.__tr("Totalt u/mva:"))
         self.myndigheteneRegistrertTekst_2_4_3.setText(self.__tr("Totalt m/mva:"))
         self.okonomiRegnskapTotalUMva.setText(self.__tr("ikke regnet ut"))
-        self.okonomiRegnskapTotalMMva.setText(self.__tr("ikke regnet ut"))
         self.okonomiRegnskapMoms.setText(self.__tr("ikke regnet ut"))
         self.textLabel1_9.setText(self.__tr("MVA:"))
         self.textLabel1_9_2.setText(self.__tr("Antall fakturaer:"))
         self.okonomiRegnskapAntallFakturaer.setText(self.__tr("ikke regnet ut"))
+        self.okonomiRegnskapTotalMMva.setText(self.__tr("ikke regnet ut"))
         self.fakturaTab.changeTab(self.TabPage_4,self.__trUtf8("\x26\xc3\x98\x6b\x6f\x6e\x6f\x6d\x69"))
         self.groupBox9.setTitle(self.__tr("Skjemaplikter"))
         self.myndigheteneSkjemaHent.setText(self.__trUtf8("\x48\x65\x6e\x74\x20\x70\xc3\xa5\x20\x6e\x79\x74\x74"))
