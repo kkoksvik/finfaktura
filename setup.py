@@ -13,7 +13,7 @@
 from distutils.core import setup
 #from setuptools import setup
 
-import sys, os.path
+import sys, os.path, glob
 
 import finfaktura # for versjonsnummer
 
@@ -26,6 +26,7 @@ setup(name="fryktelig-fin-faktura",
       packages=['finfaktura',],
       data_files=[#('share/finfaktura/pixmaps', ['pixmaps/error.png', 'pixmaps/warning.png']),
             ('share/finfaktura/data', ['faktura.ui', 'faktura.sql']),
+            ('share/finfaktura/scripts', glob.glob('scripts/*')),
            ],
       #package_data={'finfaktura': ['pixmaps/*.png'] },
       scripts=["faktura.py"],
