@@ -3,6 +3,9 @@
 #
 # $Id$
 
+GMLDB=${FAKTURADB:-~/.finfaktura/faktura.db}
+NYDB=${GMLDB}-ny
+
 function feil
 {
     echo -n "FEIL! ";
@@ -14,30 +17,34 @@ function sjekk_reqs
 {
     for bin in $*
     do
-        which $bin > /dev/null || feil "$bin mangler!";
+        which $bin > /dev/null || feil "$bin mangler! Kanskje du må installere den?";
     done
     return 0
 }
 
 echo 'FINFAKTURA OPPGRADERINGSVERKTØY';
 echo 'Dette oppgraderer databasen fra pre-1.0 (sqlite2) til 1.0 (sqlite3)';
-
-sjekk_reqs rm grep sqlite sqlite3 python
+echo "Den eksisterende databasen $GMLDB skal oppdateres";
+sjekk_reqs cp mv rm grep cat date mktemp sqlite sqlite3 python
 
 echo Trykk en tast for å sette i gang
 
-NYDB=faktura.dbNY
-GMLDB=faktura.testdb
+######################################
 KAT=$(mktemp -d /tmp/sikkerhetskopi.XXXXXXX);
 
-rm -r "$NYDB" && sqlite "$GMLDB" .dump | grep -v "INSERT INTO Sikkerhetskopi" | sqlite3 "$NYDB"
+test -f "$GMLDB" || feil "$GMLDB eksisterer ikke!";
 
-# export IFS='|'
-# sqlite faktura.testdb "SELECT * FROM Sikkerhetskopi" | 
-# ( while read id ordre dato blob; do echo $id $dato; echo $blob > /tmp/id-$id-ordre-$ordre-dato-$dato.pdf; done )  
+tidsstempel=$(date +%s);
+
+cp "${GMLDB}" "${GMLDB}-${tidsstempel}~" || feil "Kunne ikke lage backup av $GMLDB";
+
+DBBACKUP="${GMLDB}-${tidsstempel}~";
+
+rm -f "$NYDB" && sqlite "$GMLDB" .dump | grep -v "INSERT INTO Sikkerhetskopi" | sqlite3 "$NYDB"
 
 cat<<PYTHON1|/usr/bin/env python
 # -*-*- encoding: utf-8 -*-*-*
+import sys
 import sqlite
 
 try: import sqlite3
@@ -55,18 +62,24 @@ c1.execute("SELECT ID FROM Sikkerhetskopi")
 for _i in c1.fetchall():
     i = _i[0]
     c1.execute("SELECT ID,ordreID,dato,data FROM Sikkerhetskopi WHERE ID=%s" % i)
-    liste.append(c1.fetchone())
+    r = c1.fetchone()
+    liste.append(tuple(r[0:3]) + tuple((sqlite3.Binary(r[3]),)))
 db1.close()
 
 c2.executemany("INSERT INTO Sikkerhetskopi (ID, ordreID, dato, data) VALUES (?,?,?,?)", liste)
 db2.commit()
 print "Oppdatert"
+db2.close()
 
 PYTHON1
 
+test $? -eq 0 || feil "Noe gikk galt med python-skriptet! Stopper før det skjer noe mer."
+
 echo "Sjekker den nye databasen"
-sqlite3 "$NYDB" "SELECT ID,ordreID,dato,length(data) FROM Sikkerhetskopi"
+l=$(sqlite3 "$NYDB" "SELECT ID,ordreID,dato,length(data) FROM Sikkerhetskopi" | wc -l);
 
+test $l -gt 0 || feil "Noe gikk galt med python-skriptet! Stopper før det skjer noe mer."
 
-echo "Finfint. Den oppgraderte databasen heter $NYDB. Du må selv flytte "
-echo "den til ~/.finfaktura eller den katalogen hvor du har fakturadatabasen din"
+mv "${GMLDB}" "${GMLDB}-`date +%s`~" && mv "$NYDB" "$GMLDB"
+
+echo "Finfint. Den oppgraderte databasen er flyttet til $GMLDB "
