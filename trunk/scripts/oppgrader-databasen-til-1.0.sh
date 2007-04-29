@@ -25,13 +25,11 @@ function sjekk_reqs
 echo 'FINFAKTURA OPPGRADERINGSVERKTØY';
 echo 'Dette oppgraderer databasen fra pre-1.0 (sqlite2) til 1.0 (sqlite3)';
 echo "Den eksisterende databasen $GMLDB skal oppdateres";
-sjekk_reqs cp mv rm grep cat date mktemp sqlite sqlite3 python
+sjekk_reqs cp mv rm grep cat date sqlite sqlite3 python
 
 echo Trykk en tast for å sette i gang
 
 ######################################
-KAT=$(mktemp -d /tmp/sikkerhetskopi.XXXXXXX);
-
 test -f "$GMLDB" || feil "$GMLDB eksisterer ikke!";
 
 tidsstempel=$(date +%s);
