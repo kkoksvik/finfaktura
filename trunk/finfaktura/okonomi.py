@@ -40,6 +40,9 @@ class ordreHenter:
     def begrensAntall(self, antall):
         self.antall = antall
     
+    def visKansellerte(self, vis):
+        if not vis: self.begrens.append(" kansellert = 0 ")
+    
     def hentOrdrer(self):
         #self.c.execute("SELECT ID FROM %s" % fakturaOrdre._tabellnavn)
         self.c.execute(self._sql())

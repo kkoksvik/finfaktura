@@ -1314,8 +1314,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         debug("regner regnskap")
         inn = mva = 0.0
         b = u = 0
-        #for ordre in self.faktura.hentOrdrer():
-        ordreliste = fakturaOkonomi.ordreHenter(self.db)
+        ordrehenter = fakturaOkonomi.ordreHenter(self.db)
         if self.okonomiAvgrensningerDato.isChecked():
             aar = self.okonomiAvgrensningerDatoAr.value()
             bmnd = self.okonomiAvgrensningerDatoManed.currentItem()
@@ -1327,13 +1326,13 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             beg = mktime((aar,bmnd,1,0,0,0,0,0,0))
             slutt = mktime((aar,smnd,31,0,0,0,0,0,0))
             debug("%s %s %s %s" % (bmnd, smnd, beg, slutt))
-            ordreliste.begrensDato(beg, slutt)
+            ordrehenter.begrensDato(beg, slutt)
         if self.okonomiAvgrensningerKunde.isChecked():
             krex = re.search(re.compile(r'kunde\ #\s?(\d+)'),
                 unicode(self.okonomiAvgrensningerKundeliste.currentText()))
             try:
                 debug("Begrenser til kunde:", krex.group(1))
-                ordreliste.begrensKunde(self.faktura.hentKunde(int(krex.group(1))))
+                ordrehenter.begrensKunde(self.faktura.hentKunde(int(krex.group(1))))
             except IndexError:
                 raise
         if self.okonomiAvgrensningerVare.isChecked():
@@ -1341,10 +1340,11 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
                 unicode(self.okonomiAvgrensningerVareliste.currentText()))
             try:
                 debug("Begrenser til vare:", vrex.group(1))
-                ordreliste.begrensVare(self.faktura.hentVare(int(vrex.group(1))))
+                ordrehenter.begrensVare(self.faktura.hentVare(int(vrex.group(1))))
             except IndexError:
                 raise
-        ordreliste = ordreliste.hentOrdrer()
+        ordrehenter.visKansellerte(self.okonomiAvgrensningerVisKansellerte.isChecked())
+        ordreliste = ordrehenter.hentOrdrer()
         s = "<b>Fakturaer funnet:</b><br><ul>"
         for ordre in ordreliste:
             s += "<li>"
@@ -1354,7 +1354,14 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
                 s += " <font color=green>Betalt:</font> "
             else:
                 s += " <font color=red>Ubetalt:</font> "
-            s += unicode(ordre)
+            #s += unicode(ordre)
+            s += "ordre <i># %04i</i>, utformet til %s den %s\n" % (ordre._id, ordre.kunde.navn, strftime("%Y-%m-%d %H:%M", localtime(ordre.ordredato)))
+            if ordre.linje:
+                s += "<ol>"
+                for vare in ordre.linje:
+                    s += "<li> #%i: %s </li>" % (vare._id, unicode(vare))
+                s += "</ol>\n"
+            s += "</li>\n"
             if ordre.kansellert: 
                 continue
             if ordre.betalt: 
