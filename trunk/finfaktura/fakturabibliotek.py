@@ -9,7 +9,7 @@
 # $Id$
 ###########################################################################
 
-import types, os, sys, os.path
+import types, os, sys, os.path, shutil
 from string import join
 from time import time, strftime, localtime
 try:
@@ -851,3 +851,8 @@ def sjekkDatabaseVersjon(dbnavn):
     elif 'SQLite format 3' in magic: return 3
     else: return False 
     
+def sikkerhetskopierFil(filnavn):
+    #lager sikkerhetskopi av filnavn -> filnavn~
+    assert os.path.exists(filnavn)
+    bkpfil = "%s-%s~" % (filnavn, int(time()))
+    return shutil.copyfile(filnavn, bkpfil)

@@ -100,7 +100,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         else:
             self.setCaption("FRYKTELIG FIN FADESE (utviklerversjon)")
             self.patchDebugModus() # vis live debug-konsoll
-
+        
         self.connect(self.fakturaTab, SIGNAL("currentChanged(QWidget*)"), self.skiftTab)
 
         self.connect(self.fakturaNy, SIGNAL("clicked()"), self.nyFaktura)
@@ -250,15 +250,16 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             self.alert(e.args[0])
         self.faktura.produksjonsversjon = PRODUKSJONSVERSJON
 
-    def __del__(self):
+    def avslutt(self):
+        debug("__del__")
+        debug("sikkerhetskopierer databasen", finnDatabasenavn())
+        sikkerhetskopierFil(finnDatabasenavn())
+        self.db.commit()
+        self.c.close()
         self.db.close()
 
     def databaseTilkobler(self):
-        if not PRODUKSJONSVERSJON:
-            logg=open('faktura-qtgui.log', 'a+')
-        else:
-            logg=None
-        self.db = kobleTilDatabase(loggfil=logg)
+        self.db = kobleTilDatabase()
         self.c = self.db.cursor()
 
     def skiftTab(self, w):
@@ -1497,5 +1498,6 @@ if __name__ == "__main__":
         QObject.connect(a,SIGNAL('lastWindowClosed()'),a,SLOT('quit()'))
         f = Faktura()
         a.setMainWidget(f)
+        QObject.connect(a,SIGNAL('lastWindowClosed()'),f.avslutt)
         f.show()
         a.exec_loop()
