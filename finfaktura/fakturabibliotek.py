@@ -20,7 +20,7 @@ except ImportError:
 #import historikk
 
 PRODUKSJONSVERSJON=False # Sett denne til True for å skjule funksjonalitet som ikke er ferdigstilt
-DATABASEVERSJON=2.8
+DATABASEVERSJON=2.9
 DATABASENAVN="faktura.db"
 #DATABASECONVERTERS={"pdf":pdfdataToType}
 
