@@ -148,6 +148,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         self.connect(self.epostLosning, SIGNAL("clicked(int)"), self.roterAktivSeksjon)
         self.connect(self.epostLosningTest, SIGNAL("clicked()"), self.testEpost)
 
+        self.connect(self.okonomiAvgrensningerDatoManed, SIGNAL("highlighted(int)"), self.okonomiFyllDatoPeriode)
         self.connect(self.okonomiAvgrensningerDato, SIGNAL("toggled(bool)"), self.okonomiFyllDato)
         self.connect(self.okonomiAvgrensningerKunde, SIGNAL("toggled(bool)"), self.okonomiFyllKunder)
         self.connect(self.okonomiAvgrensningerVare, SIGNAL("toggled(bool)"), self.okonomiFyllVarer)
@@ -1302,7 +1303,8 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
 
 ############## ØKONOMI ###################
 
-    def visOkonomi(self): pass
+    def visOkonomi(self):
+        self.okonomiAvgrensningerDatoAr.setValue(localtime()[0])
     
     def okonomiRegnRegnskap(self):
         debug("regner regnskap")
@@ -1369,17 +1371,21 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
     def okonomiFyllDato(self, ibruk):
         self.okonomiAvgrensningerDatoAr.setEnabled(ibruk)
         self.okonomiAvgrensningerDatoManed.setEnabled(ibruk)
-        self.okonomiAvgrensningerDatoPeriode.setEnabled(ibruk)
-        #self.okonomiAvgrensningerDatoAr.setValue(2000)
+        if not ibruk:
+            self.okonomiAvgrensningerDatoPeriode.setEnabled(ibruk) # alltid disable denne
         self.okonomiAvgrensningerDatoManed.clear()
         self.okonomiAvgrensningerDatoPeriode.clear()
         mnd = [u'Hele året', 'Januar', 'Februar', 'Mars', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Desember']
         in1 = self.okonomiAvgrensningerDatoManed.insertItem
         in2 = self.okonomiAvgrensningerDatoPeriode.insertItem
         for z in mnd: in1(z)
-        in2(u'Velg periode:')
+        #in2(u'Velg periode:')
         for i in range(1,12): in2(u'Og %i måneder fram' % i)
         
+    def okonomiFyllDatoPeriode(self, manedId):
+        #bare tilgjengelig dersom det ikke er valgt 'Hele året'
+        self.okonomiAvgrensningerDatoPeriode.setEnabled(manedId > 0)
+
     def okonomiFyllKunder(self, ibruk):
         self.okonomiAvgrensningerKundeliste.setEnabled(ibruk)
         self.okonomiAvgrensningerKundeliste.clear()
@@ -1396,6 +1402,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             
     def okonomiSkrivUtFakturaer(self):
         self.alert("funker ikke ennu")
+        #bruke reportlab
 
 ############## MYNDIGHETER ###################
 
