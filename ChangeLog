@@ -1,6 +1,352 @@
-2006-12-24 01:06  havard.dahle
+2007-04-29 17:50  havard.dahle
 
-	* .: Lager grein for 0.95-release
+	* .: Kopierer 1.0 til egen gren
+
+2007-04-29 17:50  havard.dahle
+
+	* trunk/debian/changelog: Gjør 1.0 klar til utgivelse
+
+2007-04-29 17:45  havard.dahle
+
+	* trunk/finfaktura/__init__.py: bumper til 1.0!!
+
+2007-04-29 17:41  havard.dahle
+
+	* trunk/finfaktura/oppgradering.py: spytter ut info ved trøbbel
+
+2007-04-29 17:35  havard.dahle
+
+	* trunk/scripts/oppgrader-databasen-til-1.0.sh: småplukk
+
+2007-04-29 17:25  havard.dahle
+
+	* trunk/scripts/oppgrader-databasen-til-1.0.sh: flytter på
+	  statement
+
+2007-04-29 17:24  havard.dahle
+
+	* trunk/finfaktura/test.py: sqlite3
+
+2007-04-29 17:23  havard.dahle
+
+	* trunk/scripts/oppgrader-databasen-til-1.0.sh: behøver ikke mktemp
+	  likevel
+
+2007-04-29 17:21  havard.dahle
+
+	* trunk/scripts/oppgrader-databasen-til-1.0.sh: svn:properties
+
+2007-04-29 17:21  havard.dahle
+
+	* trunk/scripts/oppgrader-databasen-til-1.0.sh: lagrer pdf-data
+	  riktig nå, og mer essensiell feilsjekking undervegs
+
+2007-04-29 14:54  havard.dahle
+
+	* trunk/scripts/oppgrader-databasen-til-1.0.sh: logikken fungerer
+
+2007-04-29 12:34  havard.dahle
+
+	* trunk/scripts, trunk/scripts/oppgrader-databasen-til-1.0.sh:
+	  skript for å oppgradere fra sqlite2 -> 3
+
+2007-04-29 02:05  havard.dahle
+
+	* trunk/faktura.py, trunk/finfaktura/fakturabibliotek.py:
+	  sikkerhetskopierer databasen ved hver avslutning
+
+2007-04-29 01:45  havard.dahle
+
+	* trunk/faktura.py, trunk/faktura.ui,
+	  trunk/finfaktura/faktura_ui.py, trunk/finfaktura/okonomi.py:
+	  penere og mer oversiktlig rapport (filtrerer bort kansellerte
+	  fakturaer)
+
+2007-04-29 01:21  havard.dahle
+
+	* trunk/faktura.py: fikser varelisten i ny-faktura-vinduet
+
+2007-04-29 01:09  havard.dahle
+
+	* trunk/faktura.ui, trunk/finfaktura/faktura_ui.py: fjerner gammelt
+	  skrot
+
+2007-04-29 01:07  havard.dahle
+
+	* trunk/faktura.py: gjør 'økonomi' synlig
+
+2007-04-29 00:55  havard.dahle
+
+	* trunk/faktura.py, trunk/faktura.ui,
+	  trunk/finfaktura/faktura_ui.py: flikking på 'økonomi'
+
+2007-04-29 00:37  havard.dahle
+
+	* trunk/faktura.py, trunk/faktura.ui, trunk/finfaktura/epost.py,
+	  trunk/finfaktura/faktura_ui.py,
+	  trunk/finfaktura/fakturabibliotek.py: rydder opp og fikser epost
+	  (tls og auth) og korrekt firmainfovisning
+
+2007-04-28 12:15  havard.dahle
+
+	* trunk/finfaktura/okonomi.py: kan avgrense på varer også nå
+
+2007-04-28 12:14  havard.dahle
+
+	* trunk/faktura.py: mer logging, og arbeid på rapporten
+
+2007-04-28 11:31  havard.dahle
+
+	* trunk/faktura.py: typo
+
+2007-04-28 11:30  havard.dahle
+
+	* trunk/debian/control: nå bruker vi pysqlite2, ikke den gamle
+	  sqlite
+
+2007-04-28 11:30  havard.dahle
+
+	* trunk/faktura.py: nå kan man faktisk markere som betalt igjen...
+
+2007-04-28 11:19  havard.dahle
+
+	* trunk/faktura.py, trunk/finfaktura/fakturabibliotek.py: nå brukes
+	  faktisk ordredatoen ;)
+
+2007-04-28 10:28  havard.dahle
+
+	* trunk/finfaktura/historikk.py: skriver faktisk til databasen nå
+	  ;)
+
+2007-04-28 10:22  havard.dahle
+
+	* trunk/finfaktura/fakturabibliotek.py: mer sqlite3-opprydding, og
+	  fikser fæl bugg hvor egenskaper på fakturaKomponent ikke ble
+	  oppdatert
+
+2007-04-28 10:20  havard.dahle
+
+	* trunk/faktura.py: lager debug-konsoll, og begynner på å markere
+	  historikk for alt som skjer med fakturaen
+
+2007-04-28 00:21  havard.dahle
+
+	* trunk/faktura.sql: 2.9: legger til alle kjente historiske
+	  handlinger for intern loggføring
+
+2007-04-28 00:20  havard.dahle
+
+	* trunk/finfaktura/historikk.py: desperate forsøk på åfå det til å
+	  henge sammen
+
+2007-04-27 23:15  havard.dahle
+
+	* trunk/faktura.sql: bedre måte å fylle default-data på. fjerner
+	  kommentarer som kræsjet sqlite3
+
+2007-04-27 21:36  havard.dahle
+
+	* trunk/finfaktura/fakturabibliotek.py: fjerner død kode
+
+2007-04-27 21:30  havard.dahle
+
+	* trunk/finfaktura/fakturabibliotek.py: mer sqlite3-triks
+
+2007-04-27 17:19  havard.dahle
+
+	* trunk/finfaktura/fakturabibliotek.py: ooops typo
+
+2007-04-27 17:18  havard.dahle
+
+	* trunk/finfaktura/fakturabibliotek.py: konvertert til sqlite3-bruk
+
+2007-04-27 16:46  havard.dahle
+
+	* trunk/finfaktura/fakturabibliotek.py: ny funksjon:
+	  faktura.finnVareEllerLagNy
+
+2007-04-27 16:45  havard.dahle
+
+	* trunk/faktura.py: fyller inn faktura fra det nye vinduet
+
+2007-04-27 15:55  havard.dahle
+
+	* trunk/faktura.py, trunk/faktura.ui: endelig ny og fin
+	  ny-faktura-vindu med qtable
+
+2007-04-25 23:28  havard.dahle
+
+	* trunk/faktura.py, trunk/faktura.ui: nytt utseende på
+	  ny-faktura-vinduet: qtable holder alle fakturaene
+
+2007-04-25 21:17  havard.dahle
+
+	* trunk/faktura.ui: nytt ny-faktura-vindu
+
+2007-04-25 21:12  havard.dahle
+
+	* trunk/faktura.py: * nytt ny-faktura-vindu
+	  * sqlite3-påførte endringer (logo)
+
+2007-04-25 21:11  havard.dahle
+
+	* trunk/finfaktura/fakturabibliotek.py: endringer for sqlite3
+
+2007-01-23 23:13  havard.dahle
+
+	* trunk/finfaktura/oppgradering.py: Kan bruke både sqlite og
+	  pysqlite2
+
+2007-01-23 23:08  havard.dahle
+
+	* trunk/faktura.py, trunk/faktura.testdb,
+	  trunk/finfaktura/faktura_ui.py,
+	  trunk/finfaktura/fakturabibliotek.py,
+	  trunk/finfaktura/oppgradering.py: Ruller tilbake når noe går
+	  galt. Bruker shutil-modulen for filbehandling. Kan bruke
+	  pysqlite2
+
+2007-01-16 00:58  havard.dahle
+
+	* trunk/faktura.testdb: pynter litt på hva den viser
+
+2007-01-16 00:37  havard.dahle
+
+	* trunk/doc/faktura-0.1-fakuraliste.png,
+	  trunk/doc/faktura-0.1-kundeliste.png,
+	  trunk/doc/faktura-0.1-oppsett.png,
+	  trunk/doc/faktura-0.7-fakturaliste.png,
+	  trunk/doc/faktura-0.7-kundeliste.png,
+	  trunk/doc/faktura-0.7-nyfaktura.png,
+	  trunk/doc/faktura-0.7-nyvare.png,
+	  trunk/doc/faktura-0.7-vareliste.png: fjerner gamle skjermdumper
+
+2007-01-16 00:36  havard.dahle
+
+	* trunk/doc/faktura-0.1-fakuraliste.png,
+	  trunk/doc/faktura-0.1-kundeliste.png,
+	  trunk/doc/faktura-0.1-oppsett.png,
+	  trunk/doc/faktura-0.7-fakturaliste.png,
+	  trunk/doc/faktura-0.7-kundeliste.png,
+	  trunk/doc/faktura-0.7-nyfaktura.png,
+	  trunk/doc/faktura-0.7-nyvare.png,
+	  trunk/doc/faktura-0.7-vareliste.png,
+	  trunk/doc/faktura-0.96-epostfaktura.jpg,
+	  trunk/doc/faktura-0.96-fakturadetaljer.png: oppdaterer
+	  skjermdumper
+
+2007-01-16 00:35  havard.dahle
+
+	* trunk/doc/REGLER: Lage RPM og laste opp til googlecode med skript
+
+2007-01-15 23:50  havard.dahle
+
+	* trunk/debian/changelog, trunk/finfaktura/__init__.py: Gjør 0.96.2
+	  klar til utgivelse
+
+2007-01-15 23:47  havard.dahle
+
+	* trunk/doc/REGLER: mer kopivennlighet
+
+2007-01-15 23:42  havard.dahle
+
+	* trunk/faktura.ui: default rekkefølge på feltene i
+	  betalt-datokontrollen
+
+2007-01-15 23:41  havard.dahle
+
+	* trunk/faktura.py: Fikser bug/brukbarhetstema: datokontrollen for
+	  betalt-dato var helt mongo. Nå kan man bruke den som forventet
+
+2007-01-15 23:40  havard.dahle
+
+	* trunk/doc/REGLER: Kopieringsvennlig tekst
+
+2007-01-07 11:06  havard.dahle
+
+	* trunk/debian/menu, trunk/debian/rules: Forsøker å fikse
+	  meny-oppføring (ikon mangler)
+
+2007-01-04 23:49  havard.dahle
+
+	* trunk/debian/control: fikser syntaksfeil
+
+2007-01-04 23:49  havard.dahle
+
+	* trunk/debian/changelog: fikser syntaksfeil
+
+2007-01-04 23:25  havard.dahle
+
+	* trunk/debian/changelog, trunk/finfaktura/__init__.py: Gjør 0.96
+	  klar til utgivelse
+
+2007-01-04 23:22  havard.dahle
+
+	* trunk/doc/REGLER: må committe nytt versjonsnummer og
+	  debian/changelog til svn
+
+2007-01-04 23:19  havard.dahle
+
+	* trunk/doc/REGLER: debian/changelog må oppdateres før branching,
+	  og koden pushes til code.google.com, ikke lurtgjort.no
+
+2007-01-04 23:10  havard.dahle
+
+	* trunk/faktura.ui, trunk/finfaktura/faktura_ui.py: Litt mer plass
+	  på tekstboks som var for liten og ble skjult
+
+2007-01-03 00:20  havard.dahle
+
+	* trunk/faktura.py, trunk/finfaktura/epost.py,
+	  trunk/finfaktura/f60.py, trunk/finfaktura/fakturabibliotek.py:
+	  småtweaks
+
+2007-01-03 00:19  havard.dahle
+
+	* trunk/faktura.testdb: mer testdata
+
+2007-01-03 00:09  havard.dahle
+
+	* trunk/finfaktura/f60.py: Seriøs oppgradering. Sjekker og legger
+	  inn KID. Legger inn standard betalingsvilkår korrekt. Regner
+	  mvagrunnlag (men viser det ikke ennå). Noen kommentarer
+
+2007-01-02 20:40  havard.dahle
+
+	* trunk/finfaktura/f60.py: Bedre tekst på
+	  MVA/Netto/Totalt-kolonnene
+
+2006-12-25 01:58  havard.dahle
+
+	* trunk/finfaktura/f60.py: følger opp #119: typo
+
+2006-12-25 01:55  havard.dahle
+
+	* trunk/finfaktura/f60.py: skriver også ut pris uten mva og mva. nå
+	  vises bruttopris, mva og pris m/mva, slik norsk regnskapslov
+	  krever. Takk til Frode Døving for tips
+
+2006-12-25 01:54  havard.dahle
+
+	* trunk/doc/REGLER: Småoppdateringer ifm release
+
+2006-12-24 02:06  havard.dahle
+
+	* trunk/finfaktura/fakturabibliotek.py: fikser grov bug hvor stien
+	  til sqlfila ikke blir funnet i produksjonsversjonen
+
+2006-12-24 01:56  havard.dahle
+
+	* trunk/debian/rules, trunk/doc/REGLER: småting for release
+
+2006-12-24 01:38  havard.dahle
+
+	* trunk/ChangeLog, trunk/debian/changelog: legger til changelogs
+	  fra 0.95-utgaven
+
+2006-12-24 01:24  havard.dahle
+
+	* trunk/doc/REGLER: huskeregler for utvikling av finfaktura
 
 2006-12-24 01:04  havard.dahle
 
