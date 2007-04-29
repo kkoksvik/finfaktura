@@ -78,6 +78,4 @@ l=$(sqlite3 "$NYDB" "SELECT ID,ordreID,dato,length(data) FROM Sikkerhetskopi" | 
 
 test $l -gt 0 || feil "Noe gikk galt med python-skriptet! Stopper før det skjer noe mer."
 
-mv "${GMLDB}" "${GMLDB}-`date +%s`~" && mv "$NYDB" "$GMLDB"
-
-echo "Finfint. Den oppgraderte databasen er flyttet til $GMLDB "
+mv "${GMLDB}" "${GMLDB}-`date +%s`~" && mv "$NYDB" "$GMLDB" && echo "Finfint. Den oppgraderte databasen er flyttet til $GMLDB "
