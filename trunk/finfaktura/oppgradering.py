@@ -83,8 +83,12 @@ ENDRINGER ="""
 
 
 import fakturabibliotek 
-#import sqlite
-from pysqlite2 import dbapi2 as sqlite
+
+try:
+    import sqlite3 as sqlite # python2.5 har sqlite3 innebygget
+except ImportError:
+    from pysqlite2 import dbapi2 as sqlite # prøv bruker/system-installert modul
+
 import os, time, types, sys, shutil
 from string import join
 from pprint import pprint
@@ -153,9 +157,8 @@ class oppgrader:
             
         k = objekt
         
-        if sqlite.paramstyle == 'qmark': param = '?' # tilpass sqlite-versjonen
-        elif sqlite.paramstyle == 'pyformat': param = '%s'
-        sql = "INSERT INTO %s (%s) VALUES (%s)" % (k._tabellnavn, join(egenskaper.keys(), ","), join([param for z in egenskaper.values()], ","))
+        sql = "INSERT INTO %s (%s) VALUES (%s)" % (k._tabellnavn, join(egenskaper.keys(), ","), 
+            join(['?' for z in egenskaper.values()], ","))
         try:
             self.nydbc.execute(sql, egenskaper.values())
         except:
@@ -280,11 +283,10 @@ class oppgrader:
         
     def rullTilbake(self, dbSti, dbBackup=None):
         "ruller tilbake til backup. dbBackup kan være stien til en gammel database, eller None for siste (basert på filnavn)"
-        try:
-            self.gmldb.close()
-            self.nydb.close()
-        except:
-            raise
+        try: self.gmldb.close()
+        except: pass
+        try: self.nydb.close()
+        except: pass
         if dbBackup is None:
             dbBackup = self.gammelDatabaseSti
         if not dbBackup:
@@ -299,16 +301,9 @@ class oppgrader:
         return r
 
 if __name__ == '__main__':
-    import sqlite
-    loggNy = open("faktura.nydb.log", "wb")
-    loggGml = open("faktura.gmldb.log", "wb")
-    logg = open('faktura.oppgradering.log', 'wb+')
-    enc = "utf-8"
-    #ny = sqlite.connect(db="faktura.nydb", encoding=enc, command_logfile=loggNy)
-    ny = fakturabibliotek.kobleTilDatabase(dbnavn="faktura.nydb", loggfil=loggNy)
+    ny = fakturabibliotek.kobleTilDatabase(dbnavn="faktura.nydb")
     print "Ny database koblet til"
-    #gml = sqlite.connect(db="faktura.gmldb", encoding=enc, command_logfile=loggGml)
-    gml = fakturabibliotek.kobleTilDatabase(dbnavn="faktura.gmldb", loggfil=loggGml)
+    gml = fakturabibliotek.kobleTilDatabase(dbnavn="faktura.gmldb")
     print "Gammel database koblet til"
     opp = oppgrader(logg)
     opp.lastNyDatabase(ny)
