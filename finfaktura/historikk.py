@@ -83,7 +83,7 @@ class betalt(historiskHandling):
     navn = 'betalt'    
     
 class avbetalt(historiskHandling):
-    navn = 'avbetalt'    
+    navn = 'avBetalt'    
     
 class kansellert(historiskHandling):
     navn = 'kansellert'

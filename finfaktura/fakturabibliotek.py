@@ -24,7 +24,7 @@ from ekstra import debug
 from fakturafeil import *
 
 PRODUKSJONSVERSJON=False # Sett denne til True for å skjule funksjonalitet som ikke er ferdigstilt
-DATABASEVERSJON=2.9
+DATABASEVERSJON=2.10
 DATABASENAVN="faktura.db"
 #DATABASECONVERTERS={"pdf":pdfdataToType}
 
