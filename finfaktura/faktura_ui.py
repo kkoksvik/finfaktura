@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'faktura.ui'
 #
-# Created: Sun Apr 29 03:33:43 2007
+# Created: Thu May 3 00:49:58 2007
 #      by: The PyQt User Interface Compiler (pyuic) 3.17
 #
 # WARNING! All changes made in this file will be lost!
@@ -2724,51 +2724,6 @@ class faktura(QMainWindow):
 
         self.tab = QWidget(self.fakturaTab,"tab")
 
-        self.groupBox8_2 = QGroupBox(self.tab,"groupBox8_2")
-        self.groupBox8_2.setGeometry(QRect(750,420,200,300))
-
-        self.textLabel3_2 = QLabel(self.groupBox8_2,"textLabel3_2")
-        self.textLabel3_2.setGeometry(QRect(8,179,114,14))
-
-        self.line1 = QFrame(self.groupBox8_2,"line1")
-        self.line1.setGeometry(QRect(10,150,170,20))
-        self.line1.setFrameShape(QFrame.HLine)
-        self.line1.setFrameShadow(QFrame.Sunken)
-        self.line1.setFrameShape(QFrame.HLine)
-
-        self.textLabel4_2 = QLabel(self.groupBox8_2,"textLabel4_2")
-        self.textLabel4_2.setGeometry(QRect(10,100,141,14))
-
-        self.fakturaBetalt = QPushButton(self.groupBox8_2,"fakturaBetalt")
-        self.fakturaBetalt.setGeometry(QRect(115,200,64,23))
-
-        self.fakturaLagKvittering = QPushButton(self.groupBox8_2,"fakturaLagKvittering")
-        self.fakturaLagKvittering.setGeometry(QRect(105,120,74,23))
-
-        self.textLabel2_2 = QLabel(self.groupBox8_2,"textLabel2_2")
-        self.textLabel2_2.setGeometry(QRect(10,30,145,14))
-
-        self.line1_2 = QFrame(self.groupBox8_2,"line1_2")
-        self.line1_2.setGeometry(QRect(10,80,170,20))
-        self.line1_2.setFrameShape(QFrame.HLine)
-        self.line1_2.setFrameShadow(QFrame.Sunken)
-        self.line1_2.setFrameShape(QFrame.HLine)
-
-        self.fakturaLagPapir = QPushButton(self.groupBox8_2,"fakturaLagPapir")
-        self.fakturaLagPapir.setGeometry(QRect(120,50,60,23))
-
-        self.fakturaLagEpost = QPushButton(self.groupBox8_2,"fakturaLagEpost")
-        self.fakturaLagEpost.setGeometry(QRect(48,50,60,23))
-        self.fakturaLagEpost.setAutoMask(0)
-
-        self.fakturaBetaltDato = QDateEdit(self.groupBox8_2,"fakturaBetaltDato")
-        self.fakturaBetaltDato.setGeometry(QRect(9,200,100,21))
-        self.fakturaBetaltDato.setDate(QDate(2007,1,1))
-        self.fakturaBetaltDato.setAutoAdvance(1)
-
-        self.fakturaNy = QPushButton(self.tab,"fakturaNy")
-        self.fakturaNy.setGeometry(QRect(10,10,89,23))
-
         self.groupBox6 = QGroupBox(self.tab,"groupBox6")
         self.groupBox6.setGeometry(QRect(750,80,200,340))
 
@@ -2797,6 +2752,9 @@ class faktura(QMainWindow):
         self.fakturaFakturaliste.setRootIsDecorated(0)
         self.fakturaFakturaliste.setResizeMode(QListView.AllColumns)
 
+        self.fakturaNy = QPushButton(self.tab,"fakturaNy")
+        self.fakturaNy.setGeometry(QRect(10,10,89,23))
+
         self.fakturaSendepostBoks = QGroupBox(self.tab,"fakturaSendepostBoks")
         self.fakturaSendepostBoks.setGeometry(QRect(230,10,420,280))
         self.fakturaSendepostBoks.setColumnLayout(0,Qt.Vertical)
@@ -2823,6 +2781,48 @@ class faktura(QMainWindow):
         self.fakturaSendepostTittel.setTextFormat(QLabel.RichText)
 
         fakturaSendepostBoksLayout.addMultiCellWidget(self.fakturaSendepostTittel,0,0,0,1)
+
+        self.groupBox8_2 = QGroupBox(self.tab,"groupBox8_2")
+        self.groupBox8_2.setGeometry(QRect(750,420,200,300))
+
+        self.textLabel3_2 = QLabel(self.groupBox8_2,"textLabel3_2")
+        self.textLabel3_2.setGeometry(QRect(8,179,114,14))
+
+        self.line1 = QFrame(self.groupBox8_2,"line1")
+        self.line1.setGeometry(QRect(10,150,170,20))
+        self.line1.setFrameShape(QFrame.HLine)
+        self.line1.setFrameShadow(QFrame.Sunken)
+        self.line1.setFrameShape(QFrame.HLine)
+
+        self.textLabel4_2 = QLabel(self.groupBox8_2,"textLabel4_2")
+        self.textLabel4_2.setGeometry(QRect(10,100,141,14))
+
+        self.textLabel2_2 = QLabel(self.groupBox8_2,"textLabel2_2")
+        self.textLabel2_2.setGeometry(QRect(10,30,145,14))
+
+        self.line1_2 = QFrame(self.groupBox8_2,"line1_2")
+        self.line1_2.setGeometry(QRect(10,80,170,20))
+        self.line1_2.setFrameShape(QFrame.HLine)
+        self.line1_2.setFrameShadow(QFrame.Sunken)
+        self.line1_2.setFrameShape(QFrame.HLine)
+
+        self.fakturaBetalt = QPushButton(self.groupBox8_2,"fakturaBetalt")
+        self.fakturaBetalt.setGeometry(QRect(115,200,64,23))
+
+        self.fakturaLagKvittering = QPushButton(self.groupBox8_2,"fakturaLagKvittering")
+        self.fakturaLagKvittering.setGeometry(QRect(105,120,74,23))
+
+        self.fakturaLagEpost = QPushButton(self.groupBox8_2,"fakturaLagEpost")
+        self.fakturaLagEpost.setGeometry(QRect(48,50,60,23))
+        self.fakturaLagEpost.setAutoMask(0)
+
+        self.fakturaLagPapir = QPushButton(self.groupBox8_2,"fakturaLagPapir")
+        self.fakturaLagPapir.setGeometry(QRect(120,50,60,23))
+
+        self.fakturaBetaltDato = QDateEdit(self.groupBox8_2,"fakturaBetaltDato")
+        self.fakturaBetaltDato.setGeometry(QRect(9,200,100,21))
+        self.fakturaBetaltDato.setDate(QDate(2007,1,1))
+        self.fakturaBetaltDato.setAutoAdvance(1)
 
         self.fakturaFakta = QGroupBox(self.tab,"fakturaFakta")
         self.fakturaFakta.setGeometry(QRect(180,310,700,420))
@@ -2853,16 +2853,10 @@ class faktura(QMainWindow):
         textLabel1_8_font = QFont(self.textLabel1_8.font())
         self.textLabel1_8.setFont(textLabel1_8_font)
 
-        self.fakturaFaktaLegginn = QPushButton(self.fakturaFakta,"fakturaFaktaLegginn")
-        self.fakturaFaktaLegginn.setGeometry(QRect(600,387,95,23))
-
         self.fakturaFaktaVarePris = QLabel(self.fakturaFakta,"fakturaFaktaVarePris")
         self.fakturaFaktaVarePris.setGeometry(QRect(470,340,211,20))
         self.fakturaFaktaVarePris.setTextFormat(QLabel.RichText)
         self.fakturaFaktaVarePris.setAlignment(QLabel.WordBreak | QLabel.AlignTop | QLabel.AlignLeft)
-
-        self.fakturaFaktaVareLeggtil = QPushButton(self.fakturaFakta,"fakturaFaktaVareLeggtil")
-        self.fakturaFaktaVareLeggtil.setGeometry(QRect(10,360,114,23))
 
         self.fakturaFaktaMottaker = QComboBox(0,self.fakturaFakta,"fakturaFaktaMottaker")
         self.fakturaFaktaMottaker.setGeometry(QRect(85,19,600,21))
@@ -2871,6 +2865,19 @@ class faktura(QMainWindow):
         self.fakturaFaktaSum = QLabel(self.fakturaFakta,"fakturaFaktaSum")
         self.fakturaFaktaSum.setGeometry(QRect(390,390,200,21))
         self.fakturaFaktaSum.setAlignment(QLabel.AlignVCenter | QLabel.AlignRight)
+
+        self.fakturaFaktaTekst = QTextEdit(self.fakturaFakta,"fakturaFaktaTekst")
+        self.fakturaFaktaTekst.setGeometry(QRect(70,50,610,60))
+        self.fakturaFaktaTekst.setTabChangesFocus(1)
+
+        self.fakturaFaktaDato = QDateEdit(self.fakturaFakta,"fakturaFaktaDato")
+        self.fakturaFaktaDato.setGeometry(QRect(82,387,90,21))
+
+        self.fakturaFaktaVareLeggtil = QPushButton(self.fakturaFakta,"fakturaFaktaVareLeggtil")
+        self.fakturaFaktaVareLeggtil.setGeometry(QRect(10,360,114,23))
+
+        self.fakturaFaktaLegginn = QPushButton(self.fakturaFakta,"fakturaFaktaLegginn")
+        self.fakturaFaktaLegginn.setGeometry(QRect(600,387,95,23))
 
         self.fakturaFaktaVareliste = QTable(self.fakturaFakta,"fakturaFaktaVareliste")
         self.fakturaFaktaVareliste.setNumCols(self.fakturaFaktaVareliste.numCols() + 1)
@@ -2886,13 +2893,6 @@ class faktura(QMainWindow):
         self.fakturaFaktaVareliste.setNumRows(0)
         self.fakturaFaktaVareliste.setNumCols(4)
         self.fakturaFaktaVareliste.setSelectionMode(QTable.SingleRow)
-
-        self.fakturaFaktaTekst = QTextEdit(self.fakturaFakta,"fakturaFaktaTekst")
-        self.fakturaFaktaTekst.setGeometry(QRect(70,50,610,60))
-        self.fakturaFaktaTekst.setTabChangesFocus(1)
-
-        self.fakturaFaktaDato = QDateEdit(self.fakturaFakta,"fakturaFaktaDato")
-        self.fakturaFaktaDato.setGeometry(QRect(82,387,90,21))
         self.fakturaTab.insertTab(self.tab,QString.fromLatin1(""))
 
         self.tab_2 = QWidget(self.fakturaTab,"tab_2")
@@ -2929,7 +2929,7 @@ class faktura(QMainWindow):
         self.kundeVisFjernede.setGeometry(QRect(740,40,210,21))
 
         self.kundeInfo = QGroupBox(self.tab_2,"kundeInfo")
-        self.kundeInfo.setGeometry(QRect(190,420,570,294))
+        self.kundeInfo.setGeometry(QRect(210,440,570,294))
         self.kundeInfo.setColumnLayout(0,Qt.Vertical)
         self.kundeInfo.layout().setSpacing(6)
         self.kundeInfo.layout().setMargin(11)
@@ -3777,25 +3777,6 @@ class faktura(QMainWindow):
 
     def languageChange(self):
         self.setCaption(self.__tr("Fryktelig fin faktura"))
-        self.groupBox8_2.setTitle(self.__tr("Handlinger"))
-        self.textLabel3_2.setText(self.__tr("Fakturaen er betalt:"))
-        self.textLabel4_2.setText(self.__tr("Du trenger en kvittering:"))
-        self.fakturaBetalt.setText(self.__tr("Betalt"))
-        self.fakturaBetalt.setAccel(QKeySequence(QString.null))
-        QToolTip.add(self.fakturaBetalt,self.__trUtf8("\x4d\x61\x72\x6b\x65\x72\x65\x72\x20\x66\x61\x6b\x74\x75\x72\x61\x65\x6e\x20\x73\x6f\x6d\x20\x62\x65\x74\x61\x6c\x74\x20\x28\x70\xc3\xa5\x20\x61\x6e\x67\x69\x74\x74\x20\x64\x61\x74\x6f\x29"))
-        self.fakturaLagKvittering.setText(self.__tr("Skriv &ut"))
-        self.fakturaLagKvittering.setAccel(QKeySequence(self.__tr("Alt+U")))
-        QToolTip.add(self.fakturaLagKvittering,self.__trUtf8("\x53\x6b\x72\x69\x76\x65\x72\x20\x75\x74\x20\x65\x6e\x20\x6b\x76\x69\x74\x74\x65\x72\x69\x6e\x67\x20\x70\xc3\xa5\x20\x73\x6b\x72\x69\x76\x65\x72\x65\x6e"))
-        self.textLabel2_2.setText(self.__tr("Du skal sende fakturaen:"))
-        self.fakturaLagPapir.setText(self.__tr("Papir"))
-        self.fakturaLagPapir.setAccel(QKeySequence(QString.null))
-        QToolTip.add(self.fakturaLagPapir,self.__tr("Lager en faktura av angitt type"))
-        self.fakturaLagEpost.setText(self.__tr("Ep&ost"))
-        self.fakturaLagEpost.setAccel(QKeySequence(self.__tr("Alt+O")))
-        QToolTip.add(self.fakturaLagEpost,self.__tr("Lager en faktura av angitt type"))
-        self.fakturaNy.setText(self.__tr("&Ny faktura"))
-        self.fakturaNy.setAccel(QKeySequence(self.__tr("Alt+N")))
-        QToolTip.add(self.fakturaNy,self.__tr("Lager en ny faktura"))
         self.groupBox6.setTitle(self.__tr("Detaljer"))
         self.fakturaDetaljerTekst.setText(QString.null)
         self.fakturaVisKansellerte.setText(self.__tr("vis kan&sellerte"))
@@ -3803,38 +3784,63 @@ class faktura(QMainWindow):
         QToolTip.add(self.fakturaVisKansellerte,self.__tr("Angir om kansellerte fakturaer skal vises"))
         self.fakturaVisGamle.setText(self.__tr("vis &gamle"))
         self.fakturaVisGamle.setAccel(QKeySequence(self.__tr("Alt+G")))
-        QToolTip.add(self.fakturaVisGamle,self.__trUtf8("\x53\x6b\x6a\x75\x6c\x20\x66\x61\x6b\x74\x75\x72\x61\x65\x72\x20\x73\x6f\x6d\x20\x65\x72\x20\x65\x6c\x64\x72\x65\x20\x65\x6e\x6e\x20\x65\x74\x20\x68\x61\x6c\x76\x74\x20\xc3\xa5\x72\x20\x6f\x67\x20\x62\x65\x74\x61\x6c\x74"))
+        QToolTip.add(self.fakturaVisGamle,self.__trUtf8("\x53\x6b\x6a\x75\x6c\x20\x66\x61\x6b\x74\x75\x72\x61\x65\x72\x20\x73\x6f\x6d\x20\x65\x72\x20\x65\x6c\x64\x72\x65\x20\x65\x6e\x6e\x20\x73\x65\x6b\x73\x20\x6d\xc3\xa5\x6e\x65\x64\x65\x72\x20\x6f\x67\x20\x61\x6c\x6c\x65\x72\x65\x64\x65\x20\x62\x65\x74\x61\x6c\x74"))
         self.fakturaFakturaliste.header().setLabel(0,self.__tr("#"))
         self.fakturaFakturaliste.header().setLabel(1,self.__tr("Tekst"))
         self.fakturaFakturaliste.header().setLabel(2,self.__tr("Mottaker"))
         self.fakturaFakturaliste.header().setLabel(3,self.__trUtf8("\x42\x65\x6c\xc3\xb8\x70"))
         self.fakturaFakturaliste.header().setLabel(4,self.__tr("Forfall"))
         self.fakturaFakturaliste.header().setLabel(5,self.__tr("Betalt"))
+        self.fakturaNy.setText(self.__tr("&Ny faktura"))
+        self.fakturaNy.setAccel(QKeySequence(self.__tr("Alt+N")))
+        QToolTip.add(self.fakturaNy,self.__tr("Viser skjema hvor du kan legge inn en ny faktura"))
         self.fakturaSendepostBoks.setTitle(self.__tr("Send epost"))
+        QToolTip.add(self.fakturaSendepostTekst,self.__tr("Valgfri tekst som vil bli vist i kundens epostprogram (fakturaen sendes som vedlegg)"))
         self.fakturaSendepostAvbryt.setText(self.__tr("Avbryt"))
+        QToolTip.add(self.fakturaSendepostAvbryt,self.__tr("Avbryter sendingen av efaktura"))
         self.fakturaSendepostSend.setText(self.__tr("Send"))
+        QToolTip.add(self.fakturaSendepostSend,self.__tr("Sender efakturaen som PDF-fil til adressen over"))
         self.fakturaSendepostTittel.setText(self.__tr("Sender epost til"))
+        self.groupBox8_2.setTitle(self.__tr("Handlinger"))
+        self.textLabel3_2.setText(self.__tr("Fakturaen er betalt:"))
+        self.textLabel4_2.setText(self.__tr("Du trenger en kvittering:"))
+        self.textLabel2_2.setText(self.__tr("Du skal sende fakturaen:"))
+        self.fakturaBetalt.setText(self.__tr("Betalt"))
+        self.fakturaBetalt.setAccel(QKeySequence(QString.null))
+        QToolTip.add(self.fakturaBetalt,self.__trUtf8("\x4d\x61\x72\x6b\x65\x72\x65\x72\x20\x66\x61\x6b\x74\x75\x72\x61\x65\x6e\x20\x73\x6f\x6d\x20\x62\x65\x74\x61\x6c\x74\x20\x28\x70\xc3\xa5\x20\x61\x6e\x67\x69\x74\x74\x20\x64\x61\x74\x6f\x29"))
+        self.fakturaLagKvittering.setText(self.__tr("Skriv &ut"))
+        self.fakturaLagKvittering.setAccel(QKeySequence(self.__tr("Alt+U")))
+        QToolTip.add(self.fakturaLagKvittering,self.__trUtf8("\x53\x6b\x72\x69\x76\x65\x72\x20\x75\x74\x20\x65\x6e\x20\x6b\x76\x69\x74\x74\x65\x72\x69\x6e\x67\x20\x70\xc3\xa5\x20\x73\x6b\x72\x69\x76\x65\x72\x65\x6e"))
+        self.fakturaLagEpost.setText(self.__tr("Ep&ost"))
+        self.fakturaLagEpost.setAccel(QKeySequence(self.__tr("Alt+O")))
+        QToolTip.add(self.fakturaLagEpost,self.__tr("Lager en efaktura for sending per epost"))
+        self.fakturaLagPapir.setText(self.__tr("Papir"))
+        self.fakturaLagPapir.setAccel(QKeySequence(QString.null))
+        QToolTip.add(self.fakturaLagPapir,self.__trUtf8("\x4c\x61\x67\x65\x72\x20\x65\x6e\x20\x70\x61\x70\x69\x72\x66\x61\x6b\x74\x75\x72\x61\x20\x66\x6f\x72\x20\x75\x74\x73\x6b\x72\x69\x66\x74\x20\x70\xc3\xa5\x20\x73\x6b\x6a\x65\x6d\x61\x20\x46\x36\x30\x20\x28\x67\x75\x6c\x20\x66\x61\x6b\x74\x75\x72\x61\x29"))
+        QToolTip.add(self.fakturaBetaltDato,self.__tr("Betalingsdato"))
         self.fakturaFakta.setTitle(self.__tr("Fakturafakta"))
         self.textLabel8.setText(self.__tr("&Tekst"))
         self.textLabel5.setText(self.__tr("&Mottaker"))
         self.textLabel1_11.setText(self.__tr("Fakturadato:"))
         self.textLabel1_8.setText(self.__tr("Sum:"))
-        self.fakturaFaktaLegginn.setText(self.__tr("&Lag faktura"))
-        self.fakturaFaktaLegginn.setAccel(QKeySequence(self.__tr("Alt+L")))
-        QToolTip.add(self.fakturaFaktaLegginn,self.__tr("Lager den nye fakturaen"))
         self.fakturaFaktaVarePris.setText(QString.null)
-        self.fakturaFaktaVareLeggtil.setText(self.__tr("Le&gg til ny vare"))
-        self.fakturaFaktaVareLeggtil.setAccel(QKeySequence(self.__tr("Alt+G")))
-        QToolTip.add(self.fakturaFaktaVareLeggtil,self.__tr("Legger til den valgte varen fra listen over"))
         QToolTip.add(self.fakturaFaktaMottaker,self.__tr("Fakturaens mottaker (kunden)"))
         self.fakturaFaktaSum.setText(self.__tr("0 kr"))
         QToolTip.add(self.fakturaFaktaSum,self.__tr("Fakturaens verdi hittil"))
+        QToolTip.add(self.fakturaFaktaTekst,self.__tr("Fakturatekst"))
+        QWhatsThis.add(self.fakturaFaktaTekst,self.__trUtf8("\x42\x65\x73\x6b\x72\x69\x76\x65\x6c\x73\x65\x20\x61\x76\x20\x68\x76\x61\x20\x66\x61\x6b\x74\x75\x72\x61\x65\x6e\x20\x68\x61\x6e\x64\x6c\x65\x72\x20\x6f\x6d\x2e\x20\x44\x65\x74\x20\x6b\x61\x6e\x20\x76\xc3\xa6\x72\x65\x20\x74\x79\x70\x65\x6e\x20\x6f\x70\x70\x64\x72\x61\x67\x20\x75\x74\x66\xc3\xb8\x72\x74\x20\x65\x6c\x6c\x65\x72\x20\x6f\x70\x70\x64\x72\x61\x67\x65\x74\x73\x20\x74\x65\x6d\x61\x2e"))
+        QToolTip.add(self.fakturaFaktaDato,self.__tr("Dato for fakturering"))
+        self.fakturaFaktaVareLeggtil.setText(self.__tr("Le&gg til ny vare"))
+        self.fakturaFaktaVareLeggtil.setAccel(QKeySequence(self.__tr("Alt+G")))
+        QToolTip.add(self.fakturaFaktaVareLeggtil,self.__tr("Legger til en ny rad i varelisten"))
+        self.fakturaFaktaLegginn.setText(self.__tr("&Lag faktura"))
+        self.fakturaFaktaLegginn.setAccel(QKeySequence(self.__tr("Alt+L")))
+        QToolTip.add(self.fakturaFaktaLegginn,self.__tr("Oppretter en ny faktura med innholdet som er gitt her"))
         self.fakturaFaktaVareliste.horizontalHeader().setLabel(0,self.__tr("Varebeskrivelse"))
         self.fakturaFaktaVareliste.horizontalHeader().setLabel(1,self.__tr("Antall"))
         self.fakturaFaktaVareliste.horizontalHeader().setLabel(2,self.__tr("Pris"))
         self.fakturaFaktaVareliste.horizontalHeader().setLabel(3,self.__tr("Mva"))
-        QToolTip.add(self.fakturaFaktaTekst,self.__tr("Fakturatekst"))
-        QWhatsThis.add(self.fakturaFaktaTekst,self.__trUtf8("\x42\x65\x73\x6b\x72\x69\x76\x65\x6c\x73\x65\x20\x61\x76\x20\x68\x76\x61\x20\x66\x61\x6b\x74\x75\x72\x61\x65\x6e\x20\x68\x61\x6e\x64\x6c\x65\x72\x20\x6f\x6d\x2e\x20\x44\x65\x74\x20\x6b\x61\x6e\x20\x76\xc3\xa6\x72\x65\x20\x74\x79\x70\x65\x6e\x20\x6f\x70\x70\x64\x72\x61\x67\x20\x75\x74\x66\xc3\xb8\x72\x74\x20\x65\x6c\x6c\x65\x72\x20\x6f\x70\x70\x64\x72\x61\x67\x65\x74\x73\x20\x74\x65\x6d\x61\x2e"))
+        QToolTip.add(self.fakturaFaktaVareliste,self.__tr("Legg inn hver vare som skal med i fakturaen"))
         self.fakturaTab.changeTab(self.tab,self.__tr("&Faktura"))
         self.kundeNy.setText(self.__tr("&Ny kunde"))
         self.kundeNy.setAccel(QKeySequence(self.__tr("Alt+N")))
