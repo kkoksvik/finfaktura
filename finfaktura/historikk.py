@@ -99,6 +99,9 @@ class purret(historiskHandling):
 class betalt(historiskHandling):
     navn = 'betalt'    
     
+class avbetalt(historiskHandling):
+    navn = 'avbetalt'    
+    
 class kansellert(historiskHandling):
     navn = 'kansellert'
     

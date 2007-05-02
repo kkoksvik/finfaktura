@@ -495,6 +495,9 @@ class fakturaOrdre(fakturaKomponent):
             dato = time()
         self.betalt = dato
 
+    def fjernBetalt(self):
+        self.betalt = None
+
     def lagFilnavn(self, katalog, fakturatype):
         n = "%s/faktura-%06d-%s-%s-%s.pdf" % (os.path.expanduser(katalog),
                                               self.ID,
