@@ -9,8 +9,12 @@
 # $Id$
 ###########################################################################
 
-import sqlite3 as sqlite
-import types, time
+try:
+    import sqlite3 as sqlite # python2.5 har sqlite3 innebygget
+except ImportError:
+    from pysqlite2 import dbapi2 as sqlite # prøv bruker/system-installert modul
+import types, time, os.path
+from string import join
 
 from ekstra import debug
 from fakturafeil import *
@@ -207,7 +211,7 @@ class fakturaOrdre(fakturaKomponent):
             self.kunde  = fakturaKunde(db, self.kundeID)
 
     def __str__(self):
-        s = "ordre # %04i, utformet til %s den %s" % (self._id, self.kunde.navn, strftime("%Y-%m-%d %H:%M", localtime(self.ordredato)))
+        s = "ordre # %04i, utformet til %s den %s" % (self._id, self.kunde.navn, time.strftime("%Y-%m-%d %H:%M", time.localtime(self.ordredato)))
         if self.linje:
             s += "\n"
             for ordre in self.linje:
@@ -272,7 +276,7 @@ class fakturaOrdre(fakturaKomponent):
                                               self.ID,
                                               fakturatype,
                                               self.kunde.navn.replace(" ", "_"),
-                                              strftime("%Y-%m-%d"))
+                                              time.strftime("%Y-%m-%d"))
         return n
 
     def forfalt(self):
@@ -523,4 +527,22 @@ class fakturaEpost(fakturaKomponent):
         
     def nyId(self):
         pass
+
+class pdfType:
+    'Egen type for å holde pdf (f.eks. sikkerhetskopi)'
+    def __init__(self, data):
+        self.data = data
+    
+    #def _quote(self): 
+        #'Returnerer streng som kan puttes rett inn i sqlite. Kalles internt av pysqlite'
+        #if not self.data: return "''"
+        #import sqlite
+        #return str(sqlite.Binary(self.data))
+    
+    def __str__(self):
+        return str(self.data)
+
+    def __conform__(self, protocol):
+        if protocol is sqlite.PrepareProtocol:
+            return sqlite.Binary(self.data)
 
