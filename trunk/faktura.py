@@ -412,15 +412,15 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         dato = mktime((d.year(),d.month(),d.day(),11,59,0,0,0,0)) # på midten av dagen (11:59) for å kunne betale fakturaen senere laget samme dag
         f = self.faktura.nyOrdre(kunde, ordredato=dato)
         f.tekst = unicode(self.fakturaFaktaTekst.text()) 
-            #finn varene som er i fakturaen
+        #finn varene som er i fakturaen
         varer = {}
         for i in range(self.fakturaFaktaVareliste.numRows()): # gå gjennom alle rader
             v = {'id': None, 'ant': 0, 'pris': 0.0, 'mva': 0}
-            _tekst  = unicode(self.fakturaFaktaVareliste.cellWidget(i, 0).currentText())
+            _tekst  = unicode(self.fakturaFaktaVareliste.cellWidget(i, 0).currentText()).strip()
             v['ant'] = self.fakturaFaktaVareliste.cellWidget(i, 1).value()
-            _enhet = self.fakturaFaktaVareliste.cellWidget(i, 1).suffix()
+            _enhet = unicode(self.fakturaFaktaVareliste.cellWidget(i, 1).suffix()).strip()
             v['pris'] = float(self.fakturaFaktaVareliste.cellWidget(i, 2).value())
-            v['mva'] = self.fakturaFaktaVareliste.cellWidget(i, 3).value()
+            v['mva'] = int(self.fakturaFaktaVareliste.cellWidget(i, 3).value())
             # sjekk at alt er riktig
             if not v['ant'] > 0:
                 self.alert(u'Antallet %s kan ikke være null (i rad %s) ' % (_tekst, i+1))
@@ -483,6 +483,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         Pris.setButtonSymbols(QSpinBox.UpDownArrows)
         Pris.setMaxValue(999999999)
         Pris.show()
+        QToolTip.add(Pris, u'Varens pris (uten MVA)')
         QObject.connect(Pris, SIGNAL("valueChanged(int)"), self.oppdaterFakturaSum)
         
         mvaListe = QStringList()
@@ -497,6 +498,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         Mva.setValue(25)
         Mva.show()
         QObject.connect(Mva, SIGNAL("valueChanged(int)"), self.oppdaterFakturaSum)
+        QToolTip.add(Mva, u'MVA-sats som skal beregnes på varen')
         #QObject.connect(Mva, SIGNAL("highlighted(int)"), self.oppdaterFakturaSum)
         
         varer = QStringList()
@@ -505,7 +507,11 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         Vare = QComboBox(1, self.fakturaFaktaVareliste, "Beskrivelse-%s" % sisterad)
         Vare.insertStringList(varer)
         Vare.setEditable(True)
+        Vare.setAutoCompletion(True)
         Vare.show()
+        QToolTip.add(Vare, u'Velg vare; eller skriv inn nytt varenavn og trykk enter for å legge til en ny vare')
+        QObject.connect(Vare, SIGNAL("activated(int)"), self.oppdaterFakturaSum)
+        
         
         self.fakturaFaktaVareliste.setNumRows(sisterad+1)
 #        self.fakturaFaktaVareliste.setItem(sisterad, 0, Vare)
@@ -516,14 +522,20 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         return self.fakturaVarelisteSynk(sisterad, 0)
     
     def fakturaVarelisteSynk(self, rad, kol):
+        debug("synk:", rad, kol)
         sender = self.fakturaFaktaVareliste.cellWidget(rad, kol)
         if kol == 0: # endret på varen -> oppdater metadata
             try:
                 vare = self.fakturaVarelisteCache[sender.currentItem()]
             except IndexError: #
-                debug(sender)
-                debug(sender.currentItem())
-                
+                if sender.currentItem() >= len(self.fakturaVarelisteCache):
+                    # ny vare, tøm andre felt
+                    debug("ny vare opprettet", unicode(sender.currentText()))
+                    self.fakturaFaktaVareliste.cellWidget(rad, 1).setSuffix('')
+                    self.fakturaFaktaVareliste.cellWidget(rad, 2).setValue(0)
+                    self.fakturaFaktaVareliste.cellWidget(rad, 3).setValue(self.firma.mva)
+                    return 
+                else: raise # ukjent problem
             except AttributeError: # hvorfor er dette ikke 0?
                 try:
                     vare = self.fakturaVarelisteCache[0] # UGH! HACK
