@@ -742,51 +742,6 @@
                         <string>Beskrivelse av hva fakturaen handler om. Det kan være typen oppdrag utført eller oppdragets tema.</string>
                     </property>
                 </widget>
-                <widget class="QTable">
-                    <column>
-                        <property name="text">
-                            <string>Varebeskrivelse</string>
-                        </property>
-                    </column>
-                    <column>
-                        <property name="text">
-                            <string>Antall</string>
-                        </property>
-                    </column>
-                    <column>
-                        <property name="text">
-                            <string>Pris</string>
-                        </property>
-                    </column>
-                    <column>
-                        <property name="text">
-                            <string>Mva</string>
-                        </property>
-                    </column>
-                    <property name="name">
-                        <cstring>fakturaFaktaVareliste</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>8</x>
-                            <y>121</y>
-                            <width>680</width>
-                            <height>230</height>
-                        </rect>
-                    </property>
-                    <property name="resizePolicy">
-                        <enum>Default</enum>
-                    </property>
-                    <property name="numRows">
-                        <number>0</number>
-                    </property>
-                    <property name="numCols">
-                        <number>4</number>
-                    </property>
-                    <property name="selectionMode">
-                        <enum>SingleRow</enum>
-                    </property>
-                </widget>
                 <widget class="QDateEdit">
                     <property name="name">
                         <cstring>fakturaFaktaDato</cstring>
@@ -845,6 +800,54 @@
                     </property>
                     <property name="toolTip" stdset="0">
                         <string>Oppretter en ny faktura med innholdet som er gitt her</string>
+                    </property>
+                </widget>
+                <widget class="QTable">
+                    <column>
+                        <property name="text">
+                            <string>Varebeskrivelse</string>
+                        </property>
+                    </column>
+                    <column>
+                        <property name="text">
+                            <string>Antall</string>
+                        </property>
+                    </column>
+                    <column>
+                        <property name="text">
+                            <string>Pris</string>
+                        </property>
+                    </column>
+                    <column>
+                        <property name="text">
+                            <string>Mva</string>
+                        </property>
+                    </column>
+                    <property name="name">
+                        <cstring>fakturaFaktaVareliste</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>8</x>
+                            <y>121</y>
+                            <width>680</width>
+                            <height>230</height>
+                        </rect>
+                    </property>
+                    <property name="resizePolicy">
+                        <enum>Default</enum>
+                    </property>
+                    <property name="numRows">
+                        <number>0</number>
+                    </property>
+                    <property name="numCols">
+                        <number>4</number>
+                    </property>
+                    <property name="selectionMode">
+                        <enum>SingleRow</enum>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>Legg inn hver vare som skal med i fakturaen</string>
                     </property>
                 </widget>
             </widget>
