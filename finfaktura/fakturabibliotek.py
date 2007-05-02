@@ -24,7 +24,7 @@ from ekstra import debug
 from fakturafeil import *
 
 PRODUKSJONSVERSJON=False # Sett denne til True for å skjule funksjonalitet som ikke er ferdigstilt
-DATABASEVERSJON=2.10
+DATABASEVERSJON=3.0
 DATABASENAVN="faktura.db"
 #DATABASECONVERTERS={"pdf":pdfdataToType}
 
@@ -259,6 +259,8 @@ def byggDatabase(db, sqlfile=None):
         if not PRODUKSJONSVERSJON: sqlfile = "faktura.sql"
         else: sqlfile = "/usr/share/finfaktura/data/faktura.sql"
     db.executescript(file(sqlfile).read())
+    db.cursor().execute("INSERT INTO Oppsett (ID, databaseversjon, fakturakatalog) VALUES (1, ?, ?)", 
+        (DATABASEVERSJON, '~'))
     db.commit()
     return db
 
