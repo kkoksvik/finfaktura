@@ -50,234 +50,6 @@
             </attribute>
             <widget class="QGroupBox">
                 <property name="name">
-                    <cstring>groupBox8_2</cstring>
-                </property>
-                <property name="geometry">
-                    <rect>
-                        <x>750</x>
-                        <y>420</y>
-                        <width>200</width>
-                        <height>300</height>
-                    </rect>
-                </property>
-                <property name="title">
-                    <string>Handlinger</string>
-                </property>
-                <widget class="QLabel">
-                    <property name="name">
-                        <cstring>textLabel3_2</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>8</x>
-                            <y>179</y>
-                            <width>114</width>
-                            <height>14</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Fakturaen er betalt:</string>
-                    </property>
-                    <property name="buddy" stdset="0">
-                        <cstring>fakturaBetaltDato</cstring>
-                    </property>
-                </widget>
-                <widget class="Line">
-                    <property name="name">
-                        <cstring>line1</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>10</x>
-                            <y>150</y>
-                            <width>170</width>
-                            <height>20</height>
-                        </rect>
-                    </property>
-                    <property name="frameShape">
-                        <enum>HLine</enum>
-                    </property>
-                    <property name="frameShadow">
-                        <enum>Sunken</enum>
-                    </property>
-                    <property name="orientation">
-                        <enum>Horizontal</enum>
-                    </property>
-                </widget>
-                <widget class="QLabel">
-                    <property name="name">
-                        <cstring>textLabel4_2</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>10</x>
-                            <y>100</y>
-                            <width>141</width>
-                            <height>14</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Du trenger en kvittering:</string>
-                    </property>
-                </widget>
-                <widget class="QLabel">
-                    <property name="name">
-                        <cstring>textLabel2_2</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>10</x>
-                            <y>30</y>
-                            <width>145</width>
-                            <height>14</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Du skal sende fakturaen:</string>
-                    </property>
-                    <property name="buddy" stdset="0">
-                        <cstring>fakturaBlankettType</cstring>
-                    </property>
-                </widget>
-                <widget class="Line">
-                    <property name="name">
-                        <cstring>line1_2</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>10</x>
-                            <y>80</y>
-                            <width>170</width>
-                            <height>20</height>
-                        </rect>
-                    </property>
-                    <property name="frameShape">
-                        <enum>HLine</enum>
-                    </property>
-                    <property name="frameShadow">
-                        <enum>Sunken</enum>
-                    </property>
-                    <property name="orientation">
-                        <enum>Horizontal</enum>
-                    </property>
-                </widget>
-                <widget class="QPushButton">
-                    <property name="name">
-                        <cstring>fakturaLagEpost</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>48</x>
-                            <y>50</y>
-                            <width>60</width>
-                            <height>23</height>
-                        </rect>
-                    </property>
-                    <property name="autoMask">
-                        <bool>false</bool>
-                    </property>
-                    <property name="text">
-                        <string>Ep&amp;ost</string>
-                    </property>
-                    <property name="accel">
-                        <string>Alt+O</string>
-                    </property>
-                    <property name="toolTip" stdset="0">
-                        <string>Lager en faktura av angitt type</string>
-                    </property>
-                </widget>
-                <widget class="QDateEdit">
-                    <property name="name">
-                        <cstring>fakturaBetaltDato</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>9</x>
-                            <y>200</y>
-                            <width>100</width>
-                            <height>21</height>
-                        </rect>
-                    </property>
-                    <property name="date">
-                        <date>
-                            <year>2007</year>
-                            <month>1</month>
-                            <day>1</day>
-                        </date>
-                    </property>
-                    <property name="autoAdvance">
-                        <bool>true</bool>
-                    </property>
-                </widget>
-                <widget class="QPushButton">
-                    <property name="name">
-                        <cstring>fakturaBetalt</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>115</x>
-                            <y>200</y>
-                            <width>64</width>
-                            <height>23</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Betalt</string>
-                    </property>
-                    <property name="accel">
-                        <string></string>
-                    </property>
-                    <property name="toolTip" stdset="0">
-                        <string>Markerer fakturaen som betalt (på angitt dato)</string>
-                    </property>
-                </widget>
-                <widget class="QPushButton">
-                    <property name="name">
-                        <cstring>fakturaLagKvittering</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>105</x>
-                            <y>120</y>
-                            <width>74</width>
-                            <height>23</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Skriv &amp;ut</string>
-                    </property>
-                    <property name="accel">
-                        <string>Alt+U</string>
-                    </property>
-                    <property name="toolTip" stdset="0">
-                        <string>Skriver ut en kvittering på skriveren</string>
-                    </property>
-                </widget>
-                <widget class="QPushButton">
-                    <property name="name">
-                        <cstring>fakturaLagPapir</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>120</x>
-                            <y>50</y>
-                            <width>60</width>
-                            <height>23</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Papir</string>
-                    </property>
-                    <property name="accel">
-                        <string></string>
-                    </property>
-                    <property name="toolTip" stdset="0">
-                        <string>Lager en faktura av angitt type</string>
-                    </property>
-                </widget>
-            </widget>
-            <widget class="QGroupBox">
-                <property name="name">
                     <cstring>groupBox6</cstring>
                 </property>
                 <property name="geometry">
@@ -473,6 +245,305 @@
                 <property name="toolTip" stdset="0">
                     <string>Viser skjema hvor du kan legge inn en ny faktura</string>
                 </property>
+            </widget>
+            <widget class="QGroupBox">
+                <property name="name">
+                    <cstring>fakturaSendepostBoks</cstring>
+                </property>
+                <property name="geometry">
+                    <rect>
+                        <x>230</x>
+                        <y>10</y>
+                        <width>420</width>
+                        <height>280</height>
+                    </rect>
+                </property>
+                <property name="title">
+                    <string>Send epost</string>
+                </property>
+                <grid>
+                    <property name="name">
+                        <cstring>unnamed</cstring>
+                    </property>
+                    <widget class="QTextEdit" row="1" column="0" rowspan="1" colspan="2">
+                        <property name="name">
+                            <cstring>fakturaSendepostTekst</cstring>
+                        </property>
+                        <property name="textFormat">
+                            <enum>PlainText</enum>
+                        </property>
+                        <property name="toolTip" stdset="0">
+                            <string>Valgfri tekst som vil bli vist i kundens epostprogram (fakturaen sendes som vedlegg)</string>
+                        </property>
+                    </widget>
+                    <widget class="QPushButton" row="2" column="0">
+                        <property name="name">
+                            <cstring>fakturaSendepostAvbryt</cstring>
+                        </property>
+                        <property name="text">
+                            <string>Avbryt</string>
+                        </property>
+                        <property name="toolTip" stdset="0">
+                            <string>Avbryter sendingen av efaktura</string>
+                        </property>
+                    </widget>
+                    <widget class="QPushButton" row="2" column="1">
+                        <property name="name">
+                            <cstring>fakturaSendepostSend</cstring>
+                        </property>
+                        <property name="text">
+                            <string>Send</string>
+                        </property>
+                        <property name="default">
+                            <bool>true</bool>
+                        </property>
+                        <property name="toolTip" stdset="0">
+                            <string>Sender efakturaen som PDF-fil til adressen over</string>
+                        </property>
+                    </widget>
+                    <widget class="QLabel" row="0" column="0" rowspan="1" colspan="2">
+                        <property name="name">
+                            <cstring>fakturaSendepostTittel</cstring>
+                        </property>
+                        <property name="text">
+                            <string>Sender epost til</string>
+                        </property>
+                        <property name="textFormat">
+                            <enum>RichText</enum>
+                        </property>
+                    </widget>
+                </grid>
+            </widget>
+            <widget class="QGroupBox">
+                <property name="name">
+                    <cstring>groupBox8_2</cstring>
+                </property>
+                <property name="geometry">
+                    <rect>
+                        <x>750</x>
+                        <y>420</y>
+                        <width>200</width>
+                        <height>300</height>
+                    </rect>
+                </property>
+                <property name="title">
+                    <string>Handlinger</string>
+                </property>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>textLabel3_2</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>8</x>
+                            <y>179</y>
+                            <width>114</width>
+                            <height>14</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>Fakturaen er betalt:</string>
+                    </property>
+                    <property name="buddy" stdset="0">
+                        <cstring>fakturaBetaltDato</cstring>
+                    </property>
+                </widget>
+                <widget class="Line">
+                    <property name="name">
+                        <cstring>line1</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>10</x>
+                            <y>150</y>
+                            <width>170</width>
+                            <height>20</height>
+                        </rect>
+                    </property>
+                    <property name="frameShape">
+                        <enum>HLine</enum>
+                    </property>
+                    <property name="frameShadow">
+                        <enum>Sunken</enum>
+                    </property>
+                    <property name="orientation">
+                        <enum>Horizontal</enum>
+                    </property>
+                </widget>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>textLabel4_2</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>10</x>
+                            <y>100</y>
+                            <width>141</width>
+                            <height>14</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>Du trenger en kvittering:</string>
+                    </property>
+                </widget>
+                <widget class="QLabel">
+                    <property name="name">
+                        <cstring>textLabel2_2</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>10</x>
+                            <y>30</y>
+                            <width>145</width>
+                            <height>14</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>Du skal sende fakturaen:</string>
+                    </property>
+                    <property name="buddy" stdset="0">
+                        <cstring>fakturaBlankettType</cstring>
+                    </property>
+                </widget>
+                <widget class="Line">
+                    <property name="name">
+                        <cstring>line1_2</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>10</x>
+                            <y>80</y>
+                            <width>170</width>
+                            <height>20</height>
+                        </rect>
+                    </property>
+                    <property name="frameShape">
+                        <enum>HLine</enum>
+                    </property>
+                    <property name="frameShadow">
+                        <enum>Sunken</enum>
+                    </property>
+                    <property name="orientation">
+                        <enum>Horizontal</enum>
+                    </property>
+                </widget>
+                <widget class="QPushButton">
+                    <property name="name">
+                        <cstring>fakturaBetalt</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>115</x>
+                            <y>200</y>
+                            <width>64</width>
+                            <height>23</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>Betalt</string>
+                    </property>
+                    <property name="accel">
+                        <string></string>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>Markerer fakturaen som betalt (på angitt dato)</string>
+                    </property>
+                </widget>
+                <widget class="QPushButton">
+                    <property name="name">
+                        <cstring>fakturaLagKvittering</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>105</x>
+                            <y>120</y>
+                            <width>74</width>
+                            <height>23</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>Skriv &amp;ut</string>
+                    </property>
+                    <property name="accel">
+                        <string>Alt+U</string>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>Skriver ut en kvittering på skriveren</string>
+                    </property>
+                </widget>
+                <widget class="QPushButton">
+                    <property name="name">
+                        <cstring>fakturaLagEpost</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>48</x>
+                            <y>50</y>
+                            <width>60</width>
+                            <height>23</height>
+                        </rect>
+                    </property>
+                    <property name="autoMask">
+                        <bool>false</bool>
+                    </property>
+                    <property name="text">
+                        <string>Ep&amp;ost</string>
+                    </property>
+                    <property name="accel">
+                        <string>Alt+O</string>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>Lager en efaktura for sending per epost</string>
+                    </property>
+                </widget>
+                <widget class="QPushButton">
+                    <property name="name">
+                        <cstring>fakturaLagPapir</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>120</x>
+                            <y>50</y>
+                            <width>60</width>
+                            <height>23</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>Papir</string>
+                    </property>
+                    <property name="accel">
+                        <string></string>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>Lager en papirfaktura for utskrift på skjema F60 (gul faktura)</string>
+                    </property>
+                </widget>
+                <widget class="QDateEdit">
+                    <property name="name">
+                        <cstring>fakturaBetaltDato</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>9</x>
+                            <y>200</y>
+                            <width>100</width>
+                            <height>21</height>
+                        </rect>
+                    </property>
+                    <property name="date">
+                        <date>
+                            <year>2007</year>
+                            <month>1</month>
+                            <day>1</day>
+                        </date>
+                    </property>
+                    <property name="autoAdvance">
+                        <bool>true</bool>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>Betalingsdato</string>
+                    </property>
+                </widget>
             </widget>
             <widget class="QGroupBox">
                 <property name="name">
@@ -850,74 +921,6 @@
                         <string>Legg inn hver vare som skal med i fakturaen</string>
                     </property>
                 </widget>
-            </widget>
-            <widget class="QGroupBox">
-                <property name="name">
-                    <cstring>fakturaSendepostBoks</cstring>
-                </property>
-                <property name="geometry">
-                    <rect>
-                        <x>230</x>
-                        <y>10</y>
-                        <width>420</width>
-                        <height>280</height>
-                    </rect>
-                </property>
-                <property name="title">
-                    <string>Send epost</string>
-                </property>
-                <grid>
-                    <property name="name">
-                        <cstring>unnamed</cstring>
-                    </property>
-                    <widget class="QTextEdit" row="1" column="0" rowspan="1" colspan="2">
-                        <property name="name">
-                            <cstring>fakturaSendepostTekst</cstring>
-                        </property>
-                        <property name="textFormat">
-                            <enum>PlainText</enum>
-                        </property>
-                        <property name="toolTip" stdset="0">
-                            <string>Valgfri tekst som vil bli vist i kundens epostprogram (fakturaen sendes som vedlegg)</string>
-                        </property>
-                    </widget>
-                    <widget class="QPushButton" row="2" column="0">
-                        <property name="name">
-                            <cstring>fakturaSendepostAvbryt</cstring>
-                        </property>
-                        <property name="text">
-                            <string>Avbryt</string>
-                        </property>
-                        <property name="toolTip" stdset="0">
-                            <string>Avbryter sendingen av efaktura</string>
-                        </property>
-                    </widget>
-                    <widget class="QPushButton" row="2" column="1">
-                        <property name="name">
-                            <cstring>fakturaSendepostSend</cstring>
-                        </property>
-                        <property name="text">
-                            <string>Send</string>
-                        </property>
-                        <property name="default">
-                            <bool>true</bool>
-                        </property>
-                        <property name="toolTip" stdset="0">
-                            <string>Sender efakturaen som PDF-fil til adressen over</string>
-                        </property>
-                    </widget>
-                    <widget class="QLabel" row="0" column="0" rowspan="1" colspan="2">
-                        <property name="name">
-                            <cstring>fakturaSendepostTittel</cstring>
-                        </property>
-                        <property name="text">
-                            <string>Sender epost til</string>
-                        </property>
-                        <property name="textFormat">
-                            <enum>RichText</enum>
-                        </property>
-                    </widget>
-                </grid>
             </widget>
         </widget>
         <widget class="QWidget">
