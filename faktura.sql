@@ -130,9 +130,6 @@
     INSERT INTO Handling (ID, navn) VALUES (NULL, 'pdfEpost');
     INSERT INTO Handling (ID, navn) VALUES (NULL, 'pdfPapir');
     INSERT INTO Handling (ID, navn) VALUES (NULL, 'pdfSikkerhetskopi');
-    -- Versjon 2.10
+    -- Versjon 3.0
     INSERT INTO Handling (ID, navn) VALUES (NULL, 'avBetalt');
 
--- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
-    DELETE FROM Oppsett;
-    INSERT INTO Oppsett (ID, databaseversjon, fakturakatalog) VALUES (1, 2.10, '~');
