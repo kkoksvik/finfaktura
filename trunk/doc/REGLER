@@ -1,12 +1,12 @@
 ## Hvordan utvikle finfaktura
 ## $Id$
-## Håvard Dahle <havard@dahle.no> (C) 2006
+## Håvard Dahle <havard@dahle.no> (C) 2006-2007
 
 
 ### Lage ny release ###
 
 1. Dytte på versjonsnummeret i finfaktura/__init__.py => $VERSJON
-    export VERSJON=$(./faktura.py -v);
+    export VERSJON=$(./faktura.py -v); echo $VERSJON;
 
 2. Oppgradere debian changelog
     dch --newversion $VERSJON
