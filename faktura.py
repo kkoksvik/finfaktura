@@ -586,6 +586,8 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             s += "<font color=red>Kansellert: %s</font><br>" % strftime("%Y-%m-%d", localtime(linje.ordre.kansellert))
         if linje.ordre.betalt:
             s += "<font color=darkgreen>Betalt: %s</font><br>" % strftime("%Y-%m-%d", localtime(linje.ordre.betalt))
+        for logglinje in ():#ordre.hentHistorikk():
+            s += "<i>%s:</i> %i<br>" % (strftime("%Y-%m-%d", localtime(logglinje.dato)), logglinje.info)
         self.fakturaDetaljerTekst.setText(s)
         # oppdater datofeltet. minste dato er ordredato. største dato er i dag
         minst, maks = localtime(linje.ordre.ordredato), localtime()
@@ -1091,40 +1093,8 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
 
 ############## FIRMAINFO ###################
 
-    def visFirma(self):
-        self.dittfirmaFirmanavn.setText(unicode(self.firma.firmanavn))
-        self.dittfirmaOrganisasjonsnummer.setText(unicode(self.firma.organisasjonsnummer))
-        self.dittfirmaKontaktperson.setText(unicode(self.firma.kontaktperson))
-        self.dittfirmaEpost.setText(unicode(self.firma.epost))
-        self.dittfirmaAdresse.setText(unicode(self.firma.adresse))
-        try: p = "%04i" % self.firma.postnummer
-        except TypeError: p = "0000"
-        self.dittfirmaPostnummer.setText(p)
-        self.dittfirmaPoststed.setText(unicode(self.firma.poststed))
-        self.dittfirmaTelefon.setText(unicode(self.firma.telefon))
-        self.dittfirmaTelefaks.setText(unicode(self.firma.telefaks))
-        self.dittfirmaMobil.setText(unicode(self.firma.mobil))
-        self.dittfirmaKontonummer.setText(unicode(self.firma.kontonummer))
-        self.dittfirmaVilkar.setText(unicode(self.firma.vilkar))
-        self.dittfirmaMva.setValue(int(self.firma.mva))
-        self.dittfirmaForfall.setValue(int(self.firma.forfall))
-
-        self.dittfirmaFakturakatalog.setText(self.faktura.oppsett.fakturakatalog)
-        self.visLogo()
-        self.firmaSjekk()
-        
-    def visLogo(self):
-        if not self.firma.logo: 
-            self.dittfirmaFinnFjernLogo.setText('Finn logo')
-            self.dittfirmaLogoPixmap.setPixmap(QPixmap())
-        else:
-            logo = QPixmap()
-            logo.loadFromData(self.firma.logo)
-            self.dittfirmaLogoPixmap.setPixmap(logo)
-            self.dittfirmaFinnFjernLogo.setText('Fjern logo')
-
-    def oppdaterFirmainfo(self, fraObj):
-        kart = {
+    def firmaWidgetKart(self):
+        return {
             self.dittfirmaFirmanavn            :  self.firma.firmanavn,
             self.dittfirmaOrganisasjonsnummer  :  self.firma.organisasjonsnummer,
             self.dittfirmaKontaktperson        :  self.firma.kontaktperson,
@@ -1141,6 +1111,35 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             self.dittfirmaForfall             :  self.firma.forfall,    
             self.dittfirmaFakturakatalog       :  self.faktura.oppsett.fakturakatalog
             }
+
+    def visFirma(self):
+        format = { self.dittfirmaPostnummer: "%04i", }
+        for til, fra in self.firmaWidgetKart().iteritems():
+            #debug("fra", fra, type(fra))
+            #debug("til", til, type(til))
+            if hasattr(til, 'setText'):
+                if not fra: continue
+                if til in format: s = format[til] % fra
+                else: s = unicode(fra)
+                til.setText(s)
+            elif hasattr(til, 'setValue'):
+                if not fra: continue
+                til.setValue(int(fra))
+        self.visLogo()
+        self.firmaSjekk()
+
+    def visLogo(self):
+        if not self.firma.logo: 
+            self.dittfirmaFinnFjernLogo.setText('Finn logo')
+            self.dittfirmaLogoPixmap.setPixmap(QPixmap())
+        else:
+            logo = QPixmap()
+            logo.loadFromData(self.firma.logo)
+            self.dittfirmaLogoPixmap.setPixmap(logo)
+            self.dittfirmaFinnFjernLogo.setText('Fjern logo')
+
+    def oppdaterFirmainfo(self, fraObj):
+        kart = firmaWidgetKart()
         if isinstance(fraObj, QSpinBox): fun = int(fraObj.value)
         elif isinstance(fraObj, QComboBox): fun = unicode(fraObj.currentText)
         elif isinstance(fraObj, (QLineEdit,QTextEdit,)): fun = unicode(fraObj.text)
