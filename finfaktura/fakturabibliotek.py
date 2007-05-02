@@ -18,8 +18,10 @@ except ImportError:
     from pysqlite2 import dbapi2 as sqlite # prøv bruker/system-installert modul
 
 import historikk
-from fakturakomponenter import fakturaOppsett, fakturaEpost, fakturaFirmainfo, fakturaOrdre, fakturaVare, fakturaKunde
+from fakturakomponenter import fakturaOppsett, fakturaEpost, fakturaFirmainfo, \
+        fakturaOrdre, fakturaVare, fakturaKunde, fakturaSikkerhetskopi
 from ekstra import debug
+from fakturafeil import *
 
 PRODUKSJONSVERSJON=False # Sett denne til True for å skjule funksjonalitet som ikke er ferdigstilt
 DATABASEVERSJON=2.9
@@ -238,24 +240,6 @@ class FakturaBibliotek:
                 return None
         
         
-class pdfType:
-    'Egen type for å holde pdf (f.eks. sikkerhetskopi)'
-    def __init__(self, data):
-        self.data = data
-    
-    #def _quote(self): 
-        #'Returnerer streng som kan puttes rett inn i sqlite. Kalles internt av pysqlite'
-        #if not self.data: return "''"
-        #import sqlite
-        #return str(sqlite.Binary(self.data))
-    
-    def __str__(self):
-        return str(self.data)
-
-    def __conform__(self, protocol):
-        if protocol is sqlite.PrepareProtocol:
-            return sqlite.Binary(self.data)
-
 def lagDatabase(database, sqlfile=None):
     try:
         db = sqlite.connect(database, isolation_level=None)
