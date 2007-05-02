@@ -310,15 +310,18 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         tittel = QLabel("<b>Rediger faktura</b>", self)
         tittel.setAlignment(Qt.AlignCenter)
         meny.insertItem(tittel)
-        if not ordre.kansellert:
-#     meny.insertItem("Dupliser", self.dupliserFaktura)
+        if not ordre.betalt:
             meny.insertItem("Er betalt", self.betalFaktura)
-            meny.insertItem("Send purring", self.purrFaktura)
-            meny.insertItem("Send til inkasso", self.inkassoFaktura)
+            #meny.insertItem("Send purring", self.purrFaktura)
+            #meny.insertItem("Send til inkasso", self.inkassoFaktura)
+        else:
+            meny.insertItem("Ikke betalt", self.avbetalFaktura)
+        if not ordre.kansellert:
             meny.insertItem(u"Kansellér", self.kansellerFaktura)
-            meny.insertItem("Vis kvittering", self.visFakturaKvittering)
         else:
             meny.insertItem("Ikke kansellert", self.avkansellerFaktura)
+        meny.insertItem("Vis kvittering", self.visFakturaKvittering)
+        #meny.insertItem("Dupliser", self.dupliserFaktura)
         meny.exec_loop(QCursor.pos())
 
     def visFaktura(self):
@@ -673,6 +676,15 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         ordre.betal(dato)
         historikk.betalt(ordre, True, 'brukerklikk')
         self.visFaktura()
+
+    def avbetalFaktura(self):
+        ordre = self.fakturaFakturaliste.selectedItem().ordre
+        #if ordre.kansellert:
+            #self.alert(u"Du kan ikke fjerne betaldenne ordren, den er betalt.")
+        if self.JaNei(u"Vil du virkelig fjerne betalt-status på ordre nr %s?" % ordre.ID):
+            ordre.fjernBetalt()
+            historikk.avbetalt(ordre, True, 'brukerklikk')
+            self.visFaktura()
 
     def kansellerFaktura(self):
         ordre = self.fakturaFakturaliste.selectedItem().ordre
@@ -1229,7 +1241,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
     def visEpost(self): 
         if self.faktura.epostoppsett.bcc:
             self.epostSendkopi.setChecked(True)
-        self.epostKopiadresse.setText(self.faktura.epostoppsett.bcc)
+            self.epostKopiadresse.setText(self.faktura.epostoppsett.bcc)
         self.epostLosning.setButton(self.faktura.epostoppsett.transport)
         self.roterAktivSeksjon(self.faktura.epostoppsett.transport)
         if BRUK_GMAIL:
@@ -1290,8 +1302,10 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             transport = self.faktura.testEpost(trans[self.epostLosning.selectedId()])
         except Exception,ex:
             s = u'Epostoppsettet fungerer ikke. Oppgitt feilmelding:\n %s \n\nKontroller at de oppgitte innstillingene \ner korrekte' % ex.message
-            if ex.transport != 'auto':
-                ex.transportmetoder.remove(ex.transport) # fjerner feilet metode fra tilgjengelig-liste
+            raise
+            trans = getattr(ex, 'transport')
+            if trans != 'auto':
+                ex.transportmetoder.remove(trans) # fjerner feilet metode fra tilgjengelig-liste
                 s += u', eller prøv en annen metode.\nTilgjengelige metoder:\n%s' % ', '.join(ex.transportmetoder)
             self.alert(s)
         else:
