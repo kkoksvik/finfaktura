@@ -117,8 +117,8 @@
     INSERT INTO Handling (ID, navn) VALUES (NULL, 'opprettet');
     INSERT INTO Handling (ID, navn) VALUES (NULL, 'forfalt');
     INSERT INTO Handling (ID, navn) VALUES (NULL, 'markertForfalt');
-    INSERT INTO Handling (ID, navn) VALUES (NULL, 'purret'    );
-    INSERT INTO Handling (ID, navn) VALUES (NULL, 'betalt'    );
+    INSERT INTO Handling (ID, navn) VALUES (NULL, 'purret');
+    INSERT INTO Handling (ID, navn) VALUES (NULL, 'betalt');
     INSERT INTO Handling (ID, navn) VALUES (NULL, 'kansellert');
     INSERT INTO Handling (ID, navn) VALUES (NULL, 'avKansellert');
     INSERT INTO Handling (ID, navn) VALUES (NULL, 'sendtTilInkasso');
@@ -130,7 +130,9 @@
     INSERT INTO Handling (ID, navn) VALUES (NULL, 'pdfEpost');
     INSERT INTO Handling (ID, navn) VALUES (NULL, 'pdfPapir');
     INSERT INTO Handling (ID, navn) VALUES (NULL, 'pdfSikkerhetskopi');
+    -- Versjon 2.10
+    INSERT INTO Handling (ID, navn) VALUES (NULL, 'avBetalt');
 
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
     DELETE FROM Oppsett;
-    INSERT INTO Oppsett (ID, databaseversjon, fakturakatalog) VALUES (1, 2.9, '~');
+    INSERT INTO Oppsett (ID, databaseversjon, fakturakatalog) VALUES (1, 2.10, '~');
