@@ -86,16 +86,16 @@ class FakturaBibliotek:
         sql = "SELECT ID FROM %s" % fakturaVare._tabellnavn
         sql += " WHERE navn=? AND pris=? AND mva=?"
         print sql, navn, pris, mva
-        self.c.execute(sql, (navn, pris, mva,))
+        self.c.execute(sql, (navn.strip(), pris, mva,))
         try:
             return fakturaVare(self.db, self.c.fetchone()[0])
         except TypeError:
             # varen finnes ikke, lag ny og returner
             vare = self.nyVare()
-            vare.navn = navn
+            vare.navn = navn.strip()
             vare.pris = pris
             vare.mva = mva
-            vare.enhet = enhet
+            vare.enhet = enhet.strip()
             return vare
 
     def nyOrdre(self, _kunde = None, _Id = None, ordredato = None):
