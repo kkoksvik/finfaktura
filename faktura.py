@@ -21,6 +21,7 @@ from finfaktura.epost import BRUK_GMAIL
 import finfaktura.okonomi as fakturaOkonomi
 import finfaktura.sikkerhetskopi as sikkerhetskopi
 import finfaktura.historikk as historikk
+from finfaktura.fakturafeil import *
 
 def cli_faktura():
     from finfaktura.cli import CLIListe, CLIInput

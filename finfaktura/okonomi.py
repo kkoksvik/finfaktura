@@ -10,7 +10,7 @@
 # $Id$
 ###########################################################################
 
-from fakturabibliotek import fakturaOrdre
+from fakturakomponenter import fakturaOrdre
 from string import join
 
 class ordreHenter:
