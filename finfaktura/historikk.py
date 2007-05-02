@@ -10,7 +10,6 @@
 ###########################################################################
 
 import fakturabibliotek 
-#import sqlite
 import types, sys, time
 
 debug = fakturabibliotek.debug
@@ -29,22 +28,6 @@ class fakturaHandling(fakturabibliotek.fakturaKomponent):
         self.db.commit()
         return self.c.lastrowid
                 
-class historiker:
-    
-    def __init__(self, db):
-        print type(db)
-        assert isinstance(db, SQLType)
-        self.db = db
-        self.c  = db.cursor()
-    
-    def logg(self, handling):
-        assert isinstance(handling, historiskHandling)
-        self.c.execute("""INSERT INTO Historikk
-                     (ordreID, dato, handlingID, suksess, forklaring)
-                     VALUES
-                     (?,?,?,?,?)""", dict(handling) )
-        self.db.commit()
-        
 class historiskHandling:
     handlingID = 0
     dato = 0
