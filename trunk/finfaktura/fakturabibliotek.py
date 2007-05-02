@@ -188,7 +188,7 @@ class FakturaBibliotek:
         if transport == 'gmail':
             m.auth(set.gmailbruker, set.gmailpassord)
         elif transport == 'smtp':
-            m.tls(set.smtptls and True)
+            m.tls(bool(set.smtptls))
             m.settServer(set.smtpserver, set.smtpport)
             if set.smtpbruker: m.auth(set.smtpbruker, set.smtppassord)
         elif transport == 'sendmail':
@@ -224,7 +224,7 @@ class FakturaBibliotek:
         if transport == 'gmail':
             m.auth(set.gmailbruker, set.gmailpassord)
         elif transport == 'smtp':
-            m.tls(set.smtptls and True)
+            m.tls(bool(set.smtptls))
             m.settServer(set.smtpserver, set.smtpport)
             if set.smtpbruker: m.auth(set.smtpbruker, set.smtppassord)
         elif transport == 'sendmail':
