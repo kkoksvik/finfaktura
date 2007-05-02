@@ -6,7 +6,7 @@
 #
 #    Lisens: GPL2
 #
-# $Id: fakturabibliotek.py 206 2007-05-02 19:27:39Z havard.dahle $
+# $Id$
 ###########################################################################
 
 class FakturaFeil(Exception): pass
