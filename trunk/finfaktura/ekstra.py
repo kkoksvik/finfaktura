@@ -9,6 +9,7 @@
 # $Id$
 ###########################################################################
 
+PRODUKSJONSVERSJON=False
 
 from qt import *
 from cStringIO import StringIO
@@ -184,4 +185,7 @@ slettetLogo_data = \
     "\xd1\x7a\xb9\x5b\xa4\x74\x19\x9c\x4b\x07\xae\x32" \
     "\x99\x0c\xff\x00\x52\xc5\x38\x72\x53\x7f\x4a\xf3" \
     "\x00\x00\x00\x00\x49\x45\x4e\x44\xae\x42\x60\x82"
+
+def debug(*s):
+    if not PRODUKSJONSVERSJON: print "[faktura]:", s
 

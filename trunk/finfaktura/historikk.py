@@ -9,12 +9,12 @@
 # $Id$
 ###########################################################################
 
-import fakturabibliotek 
+import fakturakomponenter
 import types, sys, time
 
-debug = fakturabibliotek.debug
+from ekstra import debug
 
-class fakturaHandling(fakturabibliotek.fakturaKomponent):
+class fakturaHandling(fakturakomponenter.fakturaKomponent):#(fakturabibliotek.fakturaKomponent):
     _tabellnavn = "Handling"
     def __init__(self, db, Id = None, navn = None):
         self.db = db
@@ -56,7 +56,7 @@ class historiskHandling:
         self.db.commit()
     
     def __init__(self, ordre, suksess, forklaring=None):
-        assert isinstance(ordre, fakturabibliotek.fakturaOrdre)
+        assert isinstance(ordre, fakturakomponenter.fakturaOrdre)#fakturabibliotek.fakturaOrdre)
         self.db = ordre.db
         self.c  = self.db.cursor()
         self.ordreID = ordre.ID
