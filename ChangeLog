@@ -1,3 +1,118 @@
+2007-05-03 00:33  havard.dahle
+
+	* branches/1.1/finfaktura/ekstra.py,
+	  branches/1.1/finfaktura/faktura_ui.py,
+	  branches/1.1/finfaktura/fakturabibliotek.py,
+	  branches/1.1/finfaktura/oppgradering.py: pakker og klargjør 1.1
+	  til produksjon
+
+2007-05-03 00:13  havard.dahle
+
+	* branches/1.1: Kopierer 1.1 til egen gren
+
+2007-05-03 00:09  havard.dahle
+
+	* debian/changelog, finfaktura/__init__.py: Gjør 1.1 klar til
+	  utgivelse
+
+2007-05-03 00:05  havard.dahle
+
+	* doc/REGLER: fjerner linnjenummer
+
+2007-05-02 23:59  havard.dahle
+
+	* doc/REGLER: keywords + smått
+
+2007-05-02 23:57  havard.dahle
+
+	* testdata.db: oppdatert testdata
+
+2007-05-02 23:57  havard.dahle
+
+	* faktura.py: forenkler kode
+
+2007-05-02 23:29  havard.dahle
+
+	* finfaktura/fakturabibliotek.py: bumper databaseversjon og legger
+	  den inn i nye databaser
+
+2007-05-02 23:28  havard.dahle
+
+	* faktura.sql: fjerner fjern logikk
+
+2007-05-02 23:25  havard.dahle
+
+	* finfaktura/oppgradering.py: sqlite3-fiks og kodeblooper
+
+2007-05-02 23:02  havard.dahle
+
+	* faktura.sql, finfaktura/fakturabibliotek.py,
+	  finfaktura/historikk.py: databaselayout 2.10: legger til
+	  handlingen "avBetalt" :P
+
+2007-05-02 22:54  havard.dahle
+
+	* faktura.py: fikser dum bug som forhindret nye varer fra å bli
+	  lagt inn
+
+2007-05-02 22:54  havard.dahle
+
+	* finfaktura/fakturabibliotek.py: fikser avhengigheter og flytter
+	  pdftype, som ikke hører til her
+
+2007-05-02 22:51  havard.dahle
+
+	* finfaktura/fakturakomponenter.py: fikser avhengigheter og flytter
+	  pdftype, som hører med her
+
+2007-05-02 22:50  havard.dahle
+
+	* faktura.ui, finfaktura/faktura_ui.py: enda mer hjelpetekst
+
+2007-05-02 22:42  havard.dahle
+
+	* faktura.ui: mer hjelpetekst
+
+2007-05-02 22:42  havard.dahle
+
+	* faktura.ui: mange hjelpetekster
+
+2007-05-02 21:21  havard.dahle
+
+	* finfaktura/fakturafeil.py, finfaktura/fakturakomponenter.py:
+	  svn:keywords
+
+2007-05-02 21:20  havard.dahle
+
+	* faktura.py, finfaktura/__init__.py, finfaktura/ekstra.py,
+	  finfaktura/fakturabibliotek.py, finfaktura/fakturafeil.py,
+	  finfaktura/fakturakomponenter.py, finfaktura/historikk.py,
+	  finfaktura/okonomi.py: restrukturerer kode til nye moduler
+
+2007-05-02 20:50  havard.dahle
+
+	* finfaktura/historikk.py: fjerner død kode
+
+2007-05-02 19:27  havard.dahle
+
+	* finfaktura/fakturabibliotek.py: fjerner hvitrom rundt varenavn og
+	  -enhet når den legges til fra ny-faktura-vinduet
+
+2007-05-02 17:09  havard.dahle
+
+	* finfaktura/fakturabibliotek.py: fikser bug hvor 'test
+	  epostoppsett' ikke funket pga type(0) ikke er bool
+
+2007-05-02 17:03  havard.dahle
+
+	* faktura.py, finfaktura/fakturabibliotek.py,
+	  finfaktura/historikk.py: kan fjerne betalt-status + bug ved
+	  epost-bcc-setting
+
+2007-04-30 22:17  havard.dahle
+
+	* ChangeLog: ChangeLog oppdatert med svn2cl
+
 2007-04-29 19:56  havard.dahle
 
 	* screenshots/fakturadetaljer-0.96.png,
