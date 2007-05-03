@@ -9,7 +9,7 @@
 # $Id$
 ###########################################################################
 
-PRODUKSJONSVERSJON=False
+PRODUKSJONSVERSJON=True
 
 from qt import *
 from cStringIO import StringIO
