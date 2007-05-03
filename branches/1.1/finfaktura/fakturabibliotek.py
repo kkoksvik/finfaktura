@@ -23,7 +23,7 @@ from fakturakomponenter import fakturaOppsett, fakturaEpost, fakturaFirmainfo, \
 from ekstra import debug
 from fakturafeil import *
 
-PRODUKSJONSVERSJON=False # Sett denne til True for å skjule funksjonalitet som ikke er ferdigstilt
+PRODUKSJONSVERSJON=True # Sett denne til True for å skjule funksjonalitet som ikke er ferdigstilt
 DATABASEVERSJON=3.0
 DATABASENAVN="faktura.db"
 #DATABASECONVERTERS={"pdf":pdfdataToType}
