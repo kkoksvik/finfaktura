@@ -5,47 +5,47 @@
 
 ### Lage ny release ###
 
-1. Dytte på versjonsnummeret i finfaktura/__init__.py => $VERSJON
+* Dytte på versjonsnummeret i finfaktura/__init__.py => $VERSJON
     export VERSJON=$(./faktura.py -v); echo $VERSJON;
 
-2. Oppgradere debian changelog
+* Oppgradere debian changelog
     dch --newversion $VERSJON
     -> skrive inn hva som har skjedd siden $VERSJON-1
 
-3. Commite endringer til svn
+* Laste ned svn-logg
+    svn2cl.sh # finnes på http://ch.tudelft.nl/~arthur/svn2cl/downloads.html
+
+* Commite endringer til svn
     svn commit finfaktura/__init__.py debian/changelog -m "Gjør $VERSJON klar til utgivelse"
 
-4. Kopiere til ny grein:
+* Kopiere til ny grein:
     svn copy https://finfaktura.googlecode.com/svn/trunk https://finfaktura.googlecode.com/svn/branches/$VERSJON -m "Kopierer $VERSJON til egen gren"
     
-5. Sjekke ut den nye greina, og begynne å jobbe på den
+* Sjekke ut den nye greina, og begynne å jobbe på den
     cd /tmp
     svn co https://finfaktura.googlecode.com/svn/branches/$VERSJON
     cd $VERSJON
     
-6. Endre på PRODUKSJONSVERDI-variabelen (til True) i finfaktura/fakturabibliotek.py
+* Endre på PRODUKSJONSVERDI-variabelen (til True) i finfaktura/fakturabibliotek.py
 
-7. Prøvestarte programmet og se at alt ser greit ut
+* Prøvestarte programmet og se at alt ser greit ut
     FAKTURADB=faktura.testdb ./faktura.py
-    
-8. Laste ned svn-logg
-    svn2cl.sh # finnes på http://ch.tudelft.nl/~arthur/svn2cl/downloads.html
-    
-9. Lage .deb
+
+* Lage .deb
     fakeroot debian/rules binary
 
-10. Committe endringer til svn dersom #10 gikk smertefritt
+* Committe endringer til svn dersom .deb gikk smertefritt
     svn commit -m "pakker og klargjør $VERSJON til produksjon"
 
-11. Tagge versjonen dersom #10 gikk smertefritt
+* Tagge versjonen dersom .deb gikk smertefritt
     svn copy https://finfaktura.googlecode.com/svn/branches/$VERSJON https://finfaktura.googlecode.com/svn/tags/versjon-$VERSJON -m "Tagger ferdigstilt $VERSJON for ettertiden"
 
-12. Lage skjermdump
+* Lage skjermdump
     doc/skjermdump.sh
     -> navngi etter .deb-dir: finfaktura-$DEBVERSJON.deb-dir
     
     
-13. Kopier til http://code.google.com/p/finfaktura/downloads/entry
+* Kopier til http://code.google.com/p/finfaktura/downloads/entry
     #http://support.googlecode.com/svn/trunk/scripts/googlecode-upload.py
     
     cd /tmp
@@ -61,5 +61,5 @@
     
     -> skjermdump
     
-14- Hurra!
+* Hurra!
 
