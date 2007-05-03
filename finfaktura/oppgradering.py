@@ -227,6 +227,7 @@ class oppgrader:
         
     def oppgrader(self):
         nyversjon = self.nybib.versjon() #sparer på versjonsnummeret
+        print "nyversjon:",nyversjon
         self._oppgrader(self.gmlbib.firmainfo())
         self._oppgrader(self.gmlbib.oppsett)
         try:
