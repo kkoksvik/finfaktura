@@ -1260,17 +1260,25 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             self.epostGmailUbrukelig.hide()
             if self.faktura.epostoppsett.gmailbruker:
                 self.epostGmailEpost.setText(self.faktura.epostoppsett.gmailbruker)
-                self.epostGmailPassord.setText(self.faktura.epostoppsett.gmailpassord)
+                if self.faktura.epostoppsett.gmailpassord:
+                    self.epostGmailPassord.setText(self.faktura.epostoppsett.gmailpassord)
                 self.epostGmailHuskEpost.setChecked(True)
-        self.epostSmtpServer.setText(self.faktura.epostoppsett.smtpserver)
-        self.epostSmtpPort.setValue(self.faktura.epostoppsett.smtpport)
+        if self.faktura.epostoppsett.smtpserver:
+            self.epostSmtpServer.setText(self.faktura.epostoppsett.smtpserver)
+        if self.faktura.epostoppsett.smtpport:
+            self.epostSmtpPort.setValue(self.faktura.epostoppsett.smtpport)
         self.epostSmtpTLS.setChecked(self.faktura.epostoppsett.smtptls)
         self.epostSmtpAuth.setChecked(self.faktura.epostoppsett.smtpauth)
         if self.faktura.epostoppsett.smtpbruker: # husk brukernavn og passord for smtp
             self.epostSmtpHuskEpost.setChecked(True)
-            self.epostSmtpBrukernavn.setText(self.faktura.epostoppsett.smtpbruker)
-            self.epostSmtpPassord.setText(self.faktura.epostoppsett.smtppassord)
-        self.epostSendmailSti.setText(self.faktura.epostoppsett.sendmailsti)
+            if self.faktura.epostoppsett.smtpbruker:
+                self.epostSmtpBrukernavn.setText(self.faktura.epostoppsett.smtpbruker)
+            if self.faktura.epostoppsett.smtppassord:
+                self.epostSmtpPassord.setText(self.faktura.epostoppsett.smtppassord)
+        if self.faktura.epostoppsett.sendmailsti:
+            self.epostSendmailSti.setText(self.faktura.epostoppsett.sendmailsti)
+        else:
+            self.epostSendmailSti.setText('~')
 
     def oppdaterEpost(self):
         debug("lagrer epost")

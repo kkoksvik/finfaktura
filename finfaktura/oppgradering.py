@@ -171,6 +171,7 @@ class oppgrader:
             ex.info = repr(sql)
             ex.logg = self.lesLogg()
             print ex.logg
+            #print self.nydbc.execute("SELECT * FROM %s"  % k._tabellnavn).fetchall()
             raise ex
         else:
             self.nydb.commit()
@@ -230,6 +231,8 @@ class oppgrader:
         print "nyversjon:",nyversjon
         self._oppgrader(self.gmlbib.firmainfo())
         self._oppgrader(self.gmlbib.oppsett)
+        self.nydbc.execute("DELETE FROM Epost") ### UGH UGH
+        self._oppgrader(self.gmlbib.epostoppsett)
         try:
             for kopi in self.gmlbib.hentSikkerhetskopier():
                 self._oppgrader(kopi)
@@ -247,6 +250,19 @@ class oppgrader:
                 self._oppgrader(linje)
         #for postnr in self.gmlbib.hentPostnummer():
             #self._oppgrader(postnr)
+        #self._oppgrader(handling) blir lagt inn av faktura.sql
+        #self._oppgrader(historikk)
+        try:
+            self.gmldbc.execute("SELECT * FROM Historikk")
+            historikk = self.gmldbc.fetchall()
+            felt = len(historikk[0])
+            from string import join
+            self.nydbc.executemany("INSERT INTO Historikk VALUES (%s)" % join(('?',) * felt, ','), historikk)
+            self.nydb.commit()
+        except sqlite.DatabaseError,e:
+            if 'NO SUCH TABLE' in str(e).upper(): pass #for gammel versjon
+            else: raise
+
         
         self.nybib.oppsett.databaseversjon = nyversjon # skriver tilbake versjonsnummeret, det kan ha blitt overskrevet
         
