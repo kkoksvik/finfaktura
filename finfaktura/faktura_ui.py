@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'faktura.ui'
 #
-# Created: Thu May 3 00:49:58 2007
+# Created: Sun May 6 16:39:23 2007
 #      by: The PyQt User Interface Compiler (pyuic) 3.17
 #
 # WARNING! All changes made in this file will be lost!
@@ -3420,29 +3420,12 @@ class faktura(QMainWindow):
         self.groupBox9_2 = QGroupBox(self.TabPage_4,"groupBox9_2")
         self.groupBox9_2.setGeometry(QRect(18,21,921,160))
 
-        self.okonomiAvgrensningerDato = QCheckBox(self.groupBox9_2,"okonomiAvgrensningerDato")
-        self.okonomiAvgrensningerDato.setGeometry(QRect(340,30,55,19))
-
-        self.okonomiAvgrensningerKunde = QCheckBox(self.groupBox9_2,"okonomiAvgrensningerKunde")
-        self.okonomiAvgrensningerKunde.setGeometry(QRect(340,63,74,19))
-
-        self.okonomiRegnskapRegnut = QPushButton(self.groupBox9_2,"okonomiRegnskapRegnut")
-        self.okonomiRegnskapRegnut.setGeometry(QRect(90,120,160,21))
-
         self.okonomiAvgrensningerDatoAr = QSpinBox(self.groupBox9_2,"okonomiAvgrensningerDatoAr")
         self.okonomiAvgrensningerDatoAr.setEnabled(0)
         self.okonomiAvgrensningerDatoAr.setGeometry(QRect(440,30,80,21))
         self.okonomiAvgrensningerDatoAr.setMaxValue(3000)
         self.okonomiAvgrensningerDatoAr.setMinValue(1900)
         self.okonomiAvgrensningerDatoAr.setValue(2006)
-
-        self.okonomiAvgrensningerKundeliste = QComboBox(0,self.groupBox9_2,"okonomiAvgrensningerKundeliste")
-        self.okonomiAvgrensningerKundeliste.setEnabled(0)
-        self.okonomiAvgrensningerKundeliste.setGeometry(QRect(440,62,440,21))
-
-        self.okonomiAvgrensningerVareliste = QComboBox(0,self.groupBox9_2,"okonomiAvgrensningerVareliste")
-        self.okonomiAvgrensningerVareliste.setEnabled(0)
-        self.okonomiAvgrensningerVareliste.setGeometry(QRect(440,93,440,21))
 
         self.line4 = QFrame(self.groupBox9_2,"line4")
         self.line4.setGeometry(QRect(290,30,20,111))
@@ -3473,25 +3456,52 @@ class faktura(QMainWindow):
         self.okonomiRegnskapAntallFakturaer = QLabel(self.groupBox9_2,"okonomiRegnskapAntallFakturaer")
         self.okonomiRegnskapAntallFakturaer.setGeometry(QRect(121,89,160,18))
 
-        self.okonomiAvgrensningerDatoManed = QComboBox(0,self.groupBox9_2,"okonomiAvgrensningerDatoManed")
-        self.okonomiAvgrensningerDatoManed.setEnabled(0)
-        self.okonomiAvgrensningerDatoManed.setGeometry(QRect(530,30,110,21))
-        self.okonomiAvgrensningerDatoManed.setDuplicatesEnabled(0)
-
         self.okonomiRegnskapTotalMMva = QLabel(self.groupBox9_2,"okonomiRegnskapTotalMMva")
         self.okonomiRegnskapTotalMMva.setGeometry(QRect(121,46,170,18))
         self.okonomiRegnskapTotalMMva.setTextFormat(QLabel.RichText)
-
-        self.okonomiAvgrensningerVare = QCheckBox(self.groupBox9_2,"okonomiAvgrensningerVare")
-        self.okonomiAvgrensningerVare.setGeometry(QRect(340,93,55,19))
-
-        self.okonomiAvgrensningerVisKansellerte = QCheckBox(self.groupBox9_2,"okonomiAvgrensningerVisKansellerte")
-        self.okonomiAvgrensningerVisKansellerte.setGeometry(QRect(782,126,106,19))
 
         self.okonomiAvgrensningerDatoPeriode = QComboBox(0,self.groupBox9_2,"okonomiAvgrensningerDatoPeriode")
         self.okonomiAvgrensningerDatoPeriode.setEnabled(0)
         self.okonomiAvgrensningerDatoPeriode.setGeometry(QRect(649,30,231,21))
         self.okonomiAvgrensningerDatoPeriode.setDuplicatesEnabled(0)
+
+        self.okonomiAvgrensningerDato = QCheckBox(self.groupBox9_2,"okonomiAvgrensningerDato")
+        self.okonomiAvgrensningerDato.setGeometry(QRect(360,30,55,19))
+
+        self.okonomiAvgrensningerKundeliste = QComboBox(0,self.groupBox9_2,"okonomiAvgrensningerKundeliste")
+        self.okonomiAvgrensningerKundeliste.setEnabled(0)
+        self.okonomiAvgrensningerKundeliste.setGeometry(QRect(440,54,440,21))
+
+        self.okonomiAvgrensningerDatoManed = QComboBox(0,self.groupBox9_2,"okonomiAvgrensningerDatoManed")
+        self.okonomiAvgrensningerDatoManed.setEnabled(0)
+        self.okonomiAvgrensningerDatoManed.setGeometry(QRect(530,30,110,21))
+        self.okonomiAvgrensningerDatoManed.setDuplicatesEnabled(0)
+
+        self.okonomiAvgrensningerVare = QCheckBox(self.groupBox9_2,"okonomiAvgrensningerVare")
+        self.okonomiAvgrensningerVare.setGeometry(QRect(360,78,55,19))
+
+        self.okonomiAvgrensningerVareliste = QComboBox(0,self.groupBox9_2,"okonomiAvgrensningerVareliste")
+        self.okonomiAvgrensningerVareliste.setEnabled(0)
+        self.okonomiAvgrensningerVareliste.setGeometry(QRect(440,78,440,21))
+
+        self.okonomiAvgrensningerSkjulUbetalte = QCheckBox(self.groupBox9_2,"okonomiAvgrensningerSkjulUbetalte")
+        self.okonomiAvgrensningerSkjulUbetalte.setGeometry(QRect(678,123,99,19))
+
+        self.okonomiAvgrensningerVisKansellerte = QCheckBox(self.groupBox9_2,"okonomiAvgrensningerVisKansellerte")
+        self.okonomiAvgrensningerVisKansellerte.setGeometry(QRect(780,123,106,19))
+
+        self.okonomiRegnskapRegnut = QPushButton(self.groupBox9_2,"okonomiRegnskapRegnut")
+        self.okonomiRegnskapRegnut.setGeometry(QRect(90,120,160,21))
+
+        self.okonomiSorter = QCheckBox(self.groupBox9_2,"okonomiSorter")
+        self.okonomiSorter.setGeometry(QRect(360,123,55,19))
+
+        self.okonomiAvgrensningerKunde = QCheckBox(self.groupBox9_2,"okonomiAvgrensningerKunde")
+        self.okonomiAvgrensningerKunde.setGeometry(QRect(360,55,74,19))
+
+        self.okonomiSorterListe = QComboBox(0,self.groupBox9_2,"okonomiSorterListe")
+        self.okonomiSorterListe.setEnabled(0)
+        self.okonomiSorterListe.setGeometry(QRect(440,122,180,21))
         self.fakturaTab.insertTab(self.TabPage_4,QString.fromLatin1(""))
 
         self.TabPage_5 = QWidget(self.fakturaTab,"TabPage_5")
@@ -3955,9 +3965,6 @@ class faktura(QMainWindow):
         self.okonomiFakturaerSkrivut.setAccel(QKeySequence(self.__tr("Alt+U")))
         QToolTip.add(self.okonomiDetaljregnskap,self.__tr("Detaljert regnskap"))
         self.groupBox9_2.setTitle(self.__tr("Regnskap"))
-        self.okonomiAvgrensningerDato.setText(self.__tr("Dato:"))
-        self.okonomiAvgrensningerKunde.setText(self.__tr("Mottaker:"))
-        self.okonomiRegnskapRegnut.setText(self.__tr("Regn ut"))
         self.myndigheteneRegistrertTekst_2_4.setText(self.__tr("Totalt u/mva:"))
         self.myndigheteneRegistrertTekst_2_4_3.setText(self.__tr("Totalt m/mva:"))
         self.okonomiRegnskapTotalUMva.setText(self.__tr("ikke regnet ut"))
@@ -3966,8 +3973,18 @@ class faktura(QMainWindow):
         self.textLabel1_9_2.setText(self.__tr("Antall fakturaer:"))
         self.okonomiRegnskapAntallFakturaer.setText(self.__tr("ikke regnet ut"))
         self.okonomiRegnskapTotalMMva.setText(self.__tr("ikke regnet ut"))
+        self.okonomiAvgrensningerDato.setText(self.__tr("Dato:"))
         self.okonomiAvgrensningerVare.setText(self.__tr("Vare:"))
+        self.okonomiAvgrensningerSkjulUbetalte.setText(self.__tr("skjul ubetalte"))
         self.okonomiAvgrensningerVisKansellerte.setText(self.__tr("vis kansellerte"))
+        self.okonomiRegnskapRegnut.setText(self.__tr("&Regn ut"))
+        self.okonomiRegnskapRegnut.setAccel(QKeySequence(self.__tr("Alt+R")))
+        self.okonomiSorter.setText(self.__tr("Sorter:"))
+        self.okonomiAvgrensningerKunde.setText(self.__tr("Kunde:"))
+        self.okonomiSorterListe.clear()
+        self.okonomiSorterListe.insertItem(self.__tr("Dato"))
+        self.okonomiSorterListe.insertItem(self.__tr("Kunde"))
+        self.okonomiSorterListe.insertItem(self.__tr("Vare"))
         self.fakturaTab.changeTab(self.TabPage_4,self.__trUtf8("\x26\xc3\x98\x6b\x6f\x6e\x6f\x6d\x69"))
         self.groupBox9.setTitle(self.__tr("Skjemaplikter"))
         self.myndigheteneSkjemaHent.setText(self.__trUtf8("\x48\x65\x6e\x74\x20\x70\xc3\xa5\x20\x6e\x79\x74\x74"))
