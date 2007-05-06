@@ -133,3 +133,5 @@
     -- Versjon 3.0
     INSERT INTO Handling (ID, navn) VALUES (NULL, 'avBetalt');
 
+-- NB NB NB NB NB NB NB NB NB !!!!
+-- HUSK Å OPPDATERE oppgradering._oppgrader og legg til den nye tabellen du har lagt til!
