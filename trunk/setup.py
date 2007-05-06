@@ -17,7 +17,7 @@ import sys, os.path, glob
 
 import finfaktura # for versjonsnummer
 
-setup(name="fryktelig-fin-faktura",
+setup(name="finfaktura",
       version=finfaktura.__version__,
       description="Fryktelig Fin Faktura - fakturaprogram for norske næringsdrivende",
       author="Håvard Dahle",
