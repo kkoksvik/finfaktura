@@ -183,6 +183,22 @@ class oppgrader:
                 d[z] = unicode(d[z], fra)
         return d
     
+    def _flytt(self, tabell):
+        "flytter alle oppføringer i <tabell> fra gammel til ny database (ingen oppgradering skjer)"
+        assert type(tabell) in types.StringTypes
+        try:
+            self.gmldbc.execute("SELECT * FROM %s" % tabell)
+            rader = self.gmldbc.fetchall()
+            self.nydbc.executemany("INSERT INTO %s VALUES (%s)" % (tabell, join(('?',) * len(rader[0]), ',')), rader)
+            self.nydb.commit()
+        except sqlite.DatabaseError,e:
+            if 'NO SUCH TABLE' in str(e).upper(): pass #for gammel versjon
+            else: raise
+        except IndexError:
+            # <tabell> har ingen rader
+            print "OOPS! <%s> har ingen rader!" % tabell
+            pass
+
     def endringsmegler(self, tabell):
         gmlver = self.gmlbib.versjon()
         nyver  = self.nybib.versjon()
@@ -229,6 +245,8 @@ class oppgrader:
         nyversjon = self.nybib.versjon() #sparer på versjonsnummeret
         self._oppgrader(self.gmlbib.firmainfo())
         self._oppgrader(self.gmlbib.oppsett)
+        self.nydbc.execute("DELETE FROM Epost") ### UGH UGH -- Faktura.__init__() lager en tom Epostoppsett() i den nye databasen, som må fjernes før den gamle oppsettet konverters
+        self._oppgrader(self.gmlbib.epostoppsett)
         try:
             for kopi in self.gmlbib.hentSikkerhetskopier():
                 self._oppgrader(kopi)
@@ -246,6 +264,9 @@ class oppgrader:
                 self._oppgrader(linje)
         #for postnr in self.gmlbib.hentPostnummer():
             #self._oppgrader(postnr)
+        
+        #self._oppgrader(handling) # handlingsnavn blir lagt inn av faktura.sql
+        self._flytt(historikk)
         
         self.nybib.oppsett.databaseversjon = nyversjon # skriver tilbake versjonsnummeret, det kan ha blitt overskrevet
         
