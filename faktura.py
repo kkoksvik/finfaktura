@@ -21,6 +21,7 @@ from finfaktura.epost import BRUK_GMAIL
 import finfaktura.okonomi as fakturaOkonomi
 import finfaktura.sikkerhetskopi as sikkerhetskopi
 import finfaktura.historikk as historikk
+import finfaktura.rapport
 from finfaktura.fakturafeil import *
 
 def cli_faktura():
@@ -1250,7 +1251,37 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             
 ############## Epost ###################
 
-    def visEpost(self): 
+    def visEpost(self):
+        if self.faktura.epostoppsett.bcc:
+            self.epostSendkopi.setChecked(True)
+            self.epostKopiadresse.setText(self.faktura.epostoppsett.bcc)
+        self.epostLosning.setButton(self.faktura.epostoppsett.transport)
+        self.roterAktivSeksjon(self.faktura.epostoppsett.transport)
+        if BRUK_GMAIL:
+            self.epostGmailUbrukelig.hide()
+            if self.faktura.epostoppsett.gmailbruker:
+                self.epostGmailEpost.setText(self.faktura.epostoppsett.gmailbruker)
+                if self.faktura.epostoppsett.gmailpassord:
+                    self.epostGmailPassord.setText(self.faktura.epostoppsett.gmailpassord)
+                self.epostGmailHuskEpost.setChecked(True)
+        if self.faktura.epostoppsett.smtpserver:
+            self.epostSmtpServer.setText(self.faktura.epostoppsett.smtpserver)
+        if self.faktura.epostoppsett.smtpport:
+            self.epostSmtpPort.setValue(self.faktura.epostoppsett.smtpport)
+        self.epostSmtpTLS.setChecked(self.faktura.epostoppsett.smtptls)
+        self.epostSmtpAuth.setChecked(self.faktura.epostoppsett.smtpauth)
+        if self.faktura.epostoppsett.smtpbruker: # husk brukernavn og passord for smtp
+            self.epostSmtpHuskEpost.setChecked(True)
+            if self.faktura.epostoppsett.smtpbruker:
+                self.epostSmtpBrukernavn.setText(self.faktura.epostoppsett.smtpbruker)
+            if self.faktura.epostoppsett.smtppassord:
+                self.epostSmtpPassord.setText(self.faktura.epostoppsett.smtppassord)
+        if self.faktura.epostoppsett.sendmailsti:
+            self.epostSendmailSti.setText(self.faktura.epostoppsett.sendmailsti)
+        else:
+            self.epostSendmailSti.setText('~')
+    
+    def visEpostGML(self): 
         if self.faktura.epostoppsett.bcc:
             self.epostSendkopi.setChecked(True)
             self.epostKopiadresse.setText(self.faktura.epostoppsett.bcc)
@@ -1271,6 +1302,8 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             self.epostSmtpBrukernavn.setText(self.faktura.epostoppsett.smtpbruker)
             self.epostSmtpPassord.setText(self.faktura.epostoppsett.smtppassord)
         self.epostSendmailSti.setText(self.faktura.epostoppsett.sendmailsti)
+
+
 
     def oppdaterEpost(self):
         debug("lagrer epost")
@@ -1337,11 +1370,13 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
     def visOkonomi(self):
         self.okonomiAvgrensningerDatoAr.setValue(localtime()[0])
     
-    def okonomiRegnRegnskap(self):
-        debug("regner regnskap")
-        inn = mva = 0.0
-        b = u = 0
+    def hentAktuelleOrdrer(self):
         ordrehenter = fakturaOkonomi.ordreHenter(self.db)
+        begrensninger = {'dato':(None,None),
+                         'kunde':None,
+                         'vare':None,
+                         'sortering':None,
+                         'viskansellerte':False}
         if self.okonomiAvgrensningerDato.isChecked():
             aar = self.okonomiAvgrensningerDatoAr.value()
             bmnd = self.okonomiAvgrensningerDatoManed.currentItem()
@@ -1354,24 +1389,35 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             slutt = mktime((aar,smnd,31,0,0,0,0,0,0))
             debug("%s %s %s %s" % (bmnd, smnd, beg, slutt))
             ordrehenter.begrensDato(beg, slutt)
+            begrensninger['dato'] = (beg,slutt)
         if self.okonomiAvgrensningerKunde.isChecked():
             krex = re.search(re.compile(r'kunde\ #\s?(\d+)'),
                 unicode(self.okonomiAvgrensningerKundeliste.currentText()))
             try:
-                debug("Begrenser til kunde:", krex.group(1))
-                ordrehenter.begrensKunde(self.faktura.hentKunde(int(krex.group(1))))
+                kunde = self.faktura.hentKunde(int(krex.group(1)))
+                ordrehenter.begrensKunde(kunde)
+                begrensninger['kunde'] = kunde
             except IndexError:
                 raise
         if self.okonomiAvgrensningerVare.isChecked():
             vrex = re.search(re.compile(r'^\(#(\d+)\)'),
                 unicode(self.okonomiAvgrensningerVareliste.currentText()))
             try:
-                debug("Begrenser til vare:", vrex.group(1))
-                ordrehenter.begrensVare(self.faktura.hentVare(int(vrex.group(1))))
+                vare = self.faktura.hentVare(int(vrex.group(1)))
+                ordrehenter.begrensVare(vare)
+                begrensninger['vare'] = vare
             except IndexError:
                 raise
-        ordrehenter.visKansellerte(self.okonomiAvgrensningerVisKansellerte.isChecked())
+        begrensninger['viskansellerte'] = self.okonomiAvgrensningerVisKansellerte.isChecked()
+        ordrehenter.visKansellerte(begrensninger['viskansellerte'])
         ordreliste = ordrehenter.hentOrdrer()
+        return ordreliste, begrensninger
+    
+    def okonomiRegnRegnskap(self):
+        debug("regner regnskap")
+        ordreliste = self.hentAktuelleOrdrer()[0]
+        inn = mva = 0.0
+        b = u = 0
         s = "<b>Fakturaer funnet:</b><br><ul>"
         for ordre in ordreliste:
             s += "<li>"
@@ -1382,7 +1428,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             else:
                 s += " <font color=red>Ubetalt:</font> "
             #s += unicode(ordre)
-            s += "ordre <i># %04i</i>, utformet til %s den %s\n" % (ordre._id, ordre.kunde.navn, strftime("%Y-%m-%d %H:%M", localtime(ordre.ordredato)))
+            s += "ordre <i># %04i</i>, utformet til %s den %s\n" % (ordre._id, ordre.kunde.navn, strftime("%Y-%m-%d", localtime(ordre.ordredato)))
             if ordre.linje:
                 s += "<ol>"
                 for vare in ordre.linje:
@@ -1439,8 +1485,14 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             i(unicode("(#%i) %s") % (v.ID, v))
             
     def okonomiSkrivUtFakturaer(self):
-        self.alert("funker ikke ennu")
-        #bruke reportlab
+        #self.alert("funker ikke ennu")
+        if not finfaktura.rapport.REPORTLAB:
+            self.alert("Kunne ikke laste reportlab-modulen. Ingen pdf tilgjengelig!")
+            return False
+        ordrer, beskrivelse = self.hentAktuelleOrdrer()
+        rapport = finfaktura.rapport.rapport('/tmp/hei.pdf', beskrivelse)
+        rapport.lastOrdreliste(ordrer)
+        rapport.vis()
 
 ############## MYNDIGHETER ###################
 
