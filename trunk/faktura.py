@@ -83,6 +83,8 @@ except ImportError:
     cli_faktura()
     sys.exit()
 
+# Konstanter
+
 class Faktura (faktura): ## leser gui fra faktura_ui.py
     db = None
     denne_kunde = None
@@ -153,6 +155,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         self.connect(self.okonomiAvgrensningerDato, SIGNAL("toggled(bool)"), self.okonomiFyllDato)
         self.connect(self.okonomiAvgrensningerKunde, SIGNAL("toggled(bool)"), self.okonomiFyllKunder)
         self.connect(self.okonomiAvgrensningerVare, SIGNAL("toggled(bool)"), self.okonomiFyllVarer)
+        self.connect(self.okonomiSorter, SIGNAL("toggled(bool)"), self.okonomiFyllSortering)
         self.connect(self.okonomiRegnskapRegnut, SIGNAL("clicked()"), self.okonomiRegnRegnskap)
         self.connect(self.okonomiFakturaerSkrivut, SIGNAL("clicked()"), self.okonomiSkrivUtFakturaer)
 
@@ -1410,6 +1413,14 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
                 raise
         begrensninger['viskansellerte'] = self.okonomiAvgrensningerVisKansellerte.isChecked()
         ordrehenter.visKansellerte(begrensninger['viskansellerte'])
+
+        ordrehenter.visUbetalte(not self.okonomiAvgrensningerSkjulUbetalte.isChecked())
+        
+        if self.okonomiSorter.isChecked():
+            sorter = [ 'dato', 'kunde', 'vare' ]
+            ordrehenter.sorterEtter(sorter[self.okonomiSorterListe.currentItem()])
+            begrensninger['sortering'] = sorter[self.okonomiSorterListe.currentItem()]
+        
         ordreliste = ordrehenter.hentOrdrer()
         return ordreliste, begrensninger
     
@@ -1463,7 +1474,6 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         in1 = self.okonomiAvgrensningerDatoManed.insertItem
         in2 = self.okonomiAvgrensningerDatoPeriode.insertItem
         for z in mnd: in1(z)
-        #in2(u'Velg periode:')
         for i in range(1,12): in2(u'Og %i måneder fram' % i)
         
     def okonomiFyllDatoPeriode(self, manedId):
@@ -1483,7 +1493,10 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         i = self.okonomiAvgrensningerVareliste.insertItem
         for v in self.faktura.hentVarer(inkluderSlettede=True):
             i(unicode("(#%i) %s") % (v.ID, v))
-            
+                
+    def okonomiFyllSortering(self, ibruk):
+        self.okonomiSorterListe.setEnabled(ibruk)
+
     def okonomiSkrivUtFakturaer(self):
         #self.alert("funker ikke ennu")
         if not finfaktura.rapport.REPORTLAB:

@@ -3054,54 +3054,6 @@ betalingsvilkår</string>
                 <property name="title">
                     <string>Regnskap</string>
                 </property>
-                <widget class="QCheckBox">
-                    <property name="name">
-                        <cstring>okonomiAvgrensningerDato</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>340</x>
-                            <y>30</y>
-                            <width>55</width>
-                            <height>19</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Dato:</string>
-                    </property>
-                </widget>
-                <widget class="QCheckBox">
-                    <property name="name">
-                        <cstring>okonomiAvgrensningerKunde</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>340</x>
-                            <y>63</y>
-                            <width>74</width>
-                            <height>19</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Mottaker:</string>
-                    </property>
-                </widget>
-                <widget class="QPushButton">
-                    <property name="name">
-                        <cstring>okonomiRegnskapRegnut</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>90</x>
-                            <y>120</y>
-                            <width>160</width>
-                            <height>21</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Regn ut</string>
-                    </property>
-                </widget>
                 <widget class="QSpinBox">
                     <property name="name">
                         <cstring>okonomiAvgrensningerDatoAr</cstring>
@@ -3125,38 +3077,6 @@ betalingsvilkår</string>
                     </property>
                     <property name="value">
                         <number>2006</number>
-                    </property>
-                </widget>
-                <widget class="QComboBox">
-                    <property name="name">
-                        <cstring>okonomiAvgrensningerKundeliste</cstring>
-                    </property>
-                    <property name="enabled">
-                        <bool>false</bool>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>440</x>
-                            <y>62</y>
-                            <width>440</width>
-                            <height>21</height>
-                        </rect>
-                    </property>
-                </widget>
-                <widget class="QComboBox">
-                    <property name="name">
-                        <cstring>okonomiAvgrensningerVareliste</cstring>
-                    </property>
-                    <property name="enabled">
-                        <bool>false</bool>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>440</x>
-                            <y>93</y>
-                            <width>440</width>
-                            <height>21</height>
-                        </rect>
                     </property>
                 </widget>
                 <widget class="Line">
@@ -3299,25 +3219,6 @@ betalingsvilkår</string>
                         <string>ikke regnet ut</string>
                     </property>
                 </widget>
-                <widget class="QComboBox">
-                    <property name="name">
-                        <cstring>okonomiAvgrensningerDatoManed</cstring>
-                    </property>
-                    <property name="enabled">
-                        <bool>false</bool>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>530</x>
-                            <y>30</y>
-                            <width>110</width>
-                            <height>21</height>
-                        </rect>
-                    </property>
-                    <property name="duplicatesEnabled">
-                        <bool>false</bool>
-                    </property>
-                </widget>
                 <widget class="QLabel">
                     <property name="name">
                         <cstring>okonomiRegnskapTotalMMva</cstring>
@@ -3337,38 +3238,6 @@ betalingsvilkår</string>
                         <enum>RichText</enum>
                     </property>
                 </widget>
-                <widget class="QCheckBox">
-                    <property name="name">
-                        <cstring>okonomiAvgrensningerVare</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>340</x>
-                            <y>93</y>
-                            <width>55</width>
-                            <height>19</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>Vare:</string>
-                    </property>
-                </widget>
-                <widget class="QCheckBox">
-                    <property name="name">
-                        <cstring>okonomiAvgrensningerVisKansellerte</cstring>
-                    </property>
-                    <property name="geometry">
-                        <rect>
-                            <x>782</x>
-                            <y>126</y>
-                            <width>106</width>
-                            <height>19</height>
-                        </rect>
-                    </property>
-                    <property name="text">
-                        <string>vis kansellerte</string>
-                    </property>
-                </widget>
                 <widget class="QComboBox">
                     <property name="name">
                         <cstring>okonomiAvgrensningerDatoPeriode</cstring>
@@ -3386,6 +3255,203 @@ betalingsvilkår</string>
                     </property>
                     <property name="duplicatesEnabled">
                         <bool>false</bool>
+                    </property>
+                </widget>
+                <widget class="QCheckBox">
+                    <property name="name">
+                        <cstring>okonomiAvgrensningerDato</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>360</x>
+                            <y>30</y>
+                            <width>55</width>
+                            <height>19</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>Dato:</string>
+                    </property>
+                </widget>
+                <widget class="QComboBox">
+                    <property name="name">
+                        <cstring>okonomiAvgrensningerKundeliste</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>false</bool>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>440</x>
+                            <y>54</y>
+                            <width>440</width>
+                            <height>21</height>
+                        </rect>
+                    </property>
+                </widget>
+                <widget class="QComboBox">
+                    <property name="name">
+                        <cstring>okonomiAvgrensningerDatoManed</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>false</bool>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>530</x>
+                            <y>30</y>
+                            <width>110</width>
+                            <height>21</height>
+                        </rect>
+                    </property>
+                    <property name="duplicatesEnabled">
+                        <bool>false</bool>
+                    </property>
+                </widget>
+                <widget class="QCheckBox">
+                    <property name="name">
+                        <cstring>okonomiAvgrensningerVare</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>360</x>
+                            <y>78</y>
+                            <width>55</width>
+                            <height>19</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>Vare:</string>
+                    </property>
+                </widget>
+                <widget class="QComboBox">
+                    <property name="name">
+                        <cstring>okonomiAvgrensningerVareliste</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>false</bool>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>440</x>
+                            <y>78</y>
+                            <width>440</width>
+                            <height>21</height>
+                        </rect>
+                    </property>
+                </widget>
+                <widget class="QCheckBox">
+                    <property name="name">
+                        <cstring>okonomiAvgrensningerSkjulUbetalte</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>678</x>
+                            <y>123</y>
+                            <width>99</width>
+                            <height>19</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>skjul ubetalte</string>
+                    </property>
+                </widget>
+                <widget class="QCheckBox">
+                    <property name="name">
+                        <cstring>okonomiAvgrensningerVisKansellerte</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>780</x>
+                            <y>123</y>
+                            <width>106</width>
+                            <height>19</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>vis kansellerte</string>
+                    </property>
+                </widget>
+                <widget class="QPushButton">
+                    <property name="name">
+                        <cstring>okonomiRegnskapRegnut</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>90</x>
+                            <y>120</y>
+                            <width>160</width>
+                            <height>21</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>&amp;Regn ut</string>
+                    </property>
+                    <property name="accel">
+                        <string>Alt+R</string>
+                    </property>
+                </widget>
+                <widget class="QCheckBox">
+                    <property name="name">
+                        <cstring>okonomiSorter</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>360</x>
+                            <y>123</y>
+                            <width>55</width>
+                            <height>19</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>Sorter:</string>
+                    </property>
+                </widget>
+                <widget class="QCheckBox">
+                    <property name="name">
+                        <cstring>okonomiAvgrensningerKunde</cstring>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>360</x>
+                            <y>55</y>
+                            <width>74</width>
+                            <height>19</height>
+                        </rect>
+                    </property>
+                    <property name="text">
+                        <string>Kunde:</string>
+                    </property>
+                </widget>
+                <widget class="QComboBox">
+                    <item>
+                        <property name="text">
+                            <string>Dato</string>
+                        </property>
+                    </item>
+                    <item>
+                        <property name="text">
+                            <string>Kunde</string>
+                        </property>
+                    </item>
+                    <item>
+                        <property name="text">
+                            <string>Vare</string>
+                        </property>
+                    </item>
+                    <property name="name">
+                        <cstring>okonomiSorterListe</cstring>
+                    </property>
+                    <property name="enabled">
+                        <bool>false</bool>
+                    </property>
+                    <property name="geometry">
+                        <rect>
+                            <x>440</x>
+                            <y>122</y>
+                            <width>180</width>
+                            <height>21</height>
+                        </rect>
                     </property>
                 </widget>
             </widget>
