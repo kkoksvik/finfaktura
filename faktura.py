@@ -1379,6 +1379,8 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
                          'kunde':None,
                          'vare':None,
                          'sortering':None,
+                         'firma':None,
+                         'visubetalte':False,
                          'viskansellerte':False}
         if self.okonomiAvgrensningerDato.isChecked():
             aar = self.okonomiAvgrensningerDatoAr.value()
@@ -1413,7 +1415,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
                 raise
         begrensninger['viskansellerte'] = self.okonomiAvgrensningerVisKansellerte.isChecked()
         ordrehenter.visKansellerte(begrensninger['viskansellerte'])
-
+        begrensninger['visubetalte'] = not self.okonomiAvgrensningerSkjulUbetalte.isChecked()
         ordrehenter.visUbetalte(not self.okonomiAvgrensningerSkjulUbetalte.isChecked())
         
         if self.okonomiSorter.isChecked():
@@ -1498,11 +1500,11 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         self.okonomiSorterListe.setEnabled(ibruk)
 
     def okonomiSkrivUtFakturaer(self):
-        #self.alert("funker ikke ennu")
         if not finfaktura.rapport.REPORTLAB:
             self.alert("Kunne ikke laste reportlab-modulen. Ingen pdf tilgjengelig!")
             return False
         ordrer, beskrivelse = self.hentAktuelleOrdrer()
+        beskrivelse['firma'] = self.firma
         rapport = finfaktura.rapport.rapport('/tmp/hei.pdf', beskrivelse)
         rapport.lastOrdreliste(ordrer)
         rapport.vis()
