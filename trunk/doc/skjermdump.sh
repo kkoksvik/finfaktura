@@ -87,6 +87,14 @@ bilde firmainfo d "$BILDEKATALOG";
 
 bilde epost e "$BILDEKATALOG";
 
+# KeyPress event, serial 28, synthetic NO, window 0x3200001,
+#     root 0x4d, subw 0x0, time 124276596, (817,68), root:(818,883),
+#     state 0x0, keycode 47 (keysym 0xf8, oslash), same_screen YES,
+#     XLookupString gives 2 bytes: (c3 b8) "ø"
+#     XmbLookupString gives 2 bytes: (c3 b8) "ø"
+#     XFilterEvent returns: False
+
+bilde rapport ø "$BILDEKATALOG";
 
 bilde sikkerhetskopier s "$BILDEKATALOG";
 

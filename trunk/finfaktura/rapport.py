@@ -33,13 +33,28 @@ class rapport:
         self.normal = self.stiler['BodyText']
         self.liste  = self.stiler['Bullet']
         self.overskrift = self.stiler['Heading3']
+        self.seksjonover = self.stiler['Heading2']
+        print dir(self.seksjonover)
         self.tittel = self.stiler['Heading1']
         self.flow = []
         self.flow.append(Paragraph(u'Økonomisk rapport fra <i>Fryktelig Fin Faktura</i>', self.tittel))
-        #self.flow.append(Paragraph(u'Rapport over '+self.rapportnavn, self.normal))
+        self.flow.append(Paragraph(u'Rapport fra '+self.info['firma'].firmanavn, self.normal))
+        det = u'Viser fakturaer '
+        if self.info['visubetalte']: det += u'(også ubetalte) '
+        else: det += u'(ikke ubetalte) '
+        if self.info['dato'] != (None, None):
+            _fra, _til = self.info['dato']
+            if _fra is not None: det += "fra %s" % time.strftime("%Y-%m", time.localtime(_fra))
+            if _til is not None: det += "til %s" % time.strftime("%Y-%m", time.localtime(_til))
+        if self.info['kunde'] is not None:
+            det += u'sendt til %s' % self.info['kunde'].navn
+        self.flow.append(Paragraph(det, self.normal))
+        self.okonomi = {'inn':0.0, 'mva':0.0, 'b':0, 'u':0}
+        self.seksjon = ''
         #canvas.setAuthor("the ReportLab Team")
         #canvas.setTitle("ReportLab PDF Generation User Guide")
         #canvas.setSubject("How to Generate PDF files using the ReportLab modules")
+        print self.info
 
     def lag(self):
         dok = SimpleDocTemplate(self.filnavn,pagesize = A4)
@@ -55,14 +70,25 @@ class rapport:
     
     def leggTilOrdre(self, ordre):
         self.oppdatert = False
-        #self.flow.append(Paragraph("%s: %s" % (time.strftime("%Y-%m-%d", time.localtime(ordre.ordredato)), ordre.tekst), self.head))
         status = ""
+        if self.info['sortering'] is not None:
+            if self.info['sortering'] == 'dato':
+                _seksjon = time.strftime("%Y-%m", time.localtime(ordre.ordredato))
+            elif self.info['sortering'] == 'kunde':
+                _seksjon = ordre.kunde.navn
+            if self.seksjon != _seksjon:
+                self.flow.append(Paragraph(_seksjon, self.seksjonover))
+                self.seksjon = _seksjon
         if ordre.kansellert:
             status = "<font color=red><b>kansellert</b></font>"
         elif ordre.betalt:
             status = "<font color=green>betalt</font>"
+            self.okonomi['inn'] += ordre.finnPris()
+            self.okonomi['mva'] += ordre.finnMva()
+            self.okonomi['b'] += 1
         else:
             status = "<font color=red>ubetalt</font>"
+            self.okonomi['u'] += 1
         self.flow.append(Paragraph("ordre <i># %04i</i> (%s), utformet til %s den %s\n" % (ordre._id, status, ordre.kunde.navn, time.strftime("%Y-%m-%d", time.localtime(ordre.ordredato))), self.overskrift))
         if ordre.linje:
             for vare in ordre.linje:
