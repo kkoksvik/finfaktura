@@ -25,7 +25,7 @@ except ImportError:
 class rapport:
     u'Lager økonomisk rapport på pdf'
     oppdatert = False
-    
+
     def __init__(self, filnavn=None, rapportinfo={}):
         self.filnavn = filnavn
         self.info = rapportinfo
@@ -60,14 +60,14 @@ class rapport:
         dok = SimpleDocTemplate(self.filnavn,pagesize = A4)
         dok.build(self.flow)
         self.oppdatert = True
-        
+
     def vis(self):
         if not self.oppdatert: self.lag()
-        os.system('kpdf %s' % self.filnavn)
-        
+        os.system('okular %s' % self.filnavn)
+
     def lastOrdreliste(self, ordreliste):
         for o in ordreliste: self.leggTilOrdre(o)
-    
+
     def leggTilOrdre(self, ordre):
         self.oppdatert = False
         status = ""
