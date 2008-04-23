@@ -17,7 +17,7 @@
 #   =nyttFeltNavn  :   feltet ble gitt nytt navn ved denne versjonen
 #
 #   det samme gjelder for tabellnavn, med følgende spesialtilfelle:
-#     dersom feltnavnet er None, blir det oversett (dette er bare fornuftig 
+#     dersom feltnavnet er None, blir det oversett (dette er bare fornuftig
 #     om tabellen har blitt fjernet eller gitt nytt navn
 
 ENDRINGER ="""
@@ -82,7 +82,7 @@ ENDRINGER ="""
 """
 
 
-import fakturabibliotek 
+import fakturabibliotek
 
 try:
     import sqlite3 as sqlite # python2.5 har sqlite3 innebygget
@@ -92,24 +92,24 @@ except ImportError:
 import os, time, types, sys, shutil
 from string import join
 from pprint import pprint
-    
-class OppgraderingsFeil(Exception): 
+
+class OppgraderingsFeil(Exception):
     info = ""
     logg = ""
 
 class oppgrader:
     "For oppgradering mellom databaseversjoner"
     endringskart = {}
-    
+
     gammelDatabaseSti = "" # sti til den gamle databasen, i tilfelle det går galt. se .rullTilbake()
-    
+
     def __init__(self, logg=None):
         if logg is None:
             from StringIO import StringIO
             logg = StringIO()
         self.logg = logg
         self.lastEndringer(ENDRINGER)
-    
+
     def lastNyDatabase(self, database):
         self.nydb = database
         self.nydbc = database.cursor()
@@ -121,13 +121,13 @@ class oppgrader:
             self.nybib = fakturabibliotek.FakturaBibliotek(self.nydb, sjekkVersjon=False)
         #except DBGammelFeil:
         self.logg.write("Ny database laget (versjon %s)\n" % self.nybib.versjon())
-    
+
     def lastGammelDatabase(self, database):
         self.gmldb = database
         self.gmldbc = database.cursor()
         self.gmlbib = fakturabibliotek.FakturaBibliotek(database, sjekkVersjon=False)
         self.logg.write("Gammel database lastet (versjon %s)\n" % self.gmlbib.versjon())
-        
+
     def _oppgrader(self, objekt):
         self.logg.write("oppgraderer %s #%s fra versjon %s til versjon %s\n" % (objekt._tabellnavn, objekt._id, self.gmlbib.versjon(), self.nybib.versjon()))
         # først laster vi alle egenskapene til objektet inn i en ny dict
@@ -154,10 +154,10 @@ class oppgrader:
                     self.logg.write("endrer navn på felt %s til %s\n" % (felt, endringer[felt]))
                     egenskaper[endringer[felt]] = egenskaper[felt]
                     egenskaper.pop(felt)
-            
+
         k = objekt
-        
-        sql = "INSERT INTO %s (%s) VALUES (%s)" % (k._tabellnavn, join(egenskaper.keys(), ","), 
+
+        sql = "INSERT INTO %s (%s) VALUES (%s)" % (k._tabellnavn, join(egenskaper.keys(), ","),
             join(['?' for z in egenskaper.values()], ","))
         try:
             self.nydbc.execute(sql, egenskaper.values())
@@ -174,7 +174,7 @@ class oppgrader:
             raise ex
         else:
             self.nydb.commit()
-    
+
     def _unicode(self, d):
         if self.gmlbib.versjon() < 2.2: fra = 'latin1'
         else: fra = 'utf8'
@@ -182,7 +182,7 @@ class oppgrader:
             if type(d[z]) in (types.StringType,):
                 d[z] = unicode(d[z], fra)
         return d
-    
+
     def _flytt(self, tabell):
         "flytter alle oppføringer i <tabell> fra gammel til ny database (ingen oppgradering skjer)"
         assert type(tabell) in types.StringTypes
@@ -202,7 +202,7 @@ class oppgrader:
     def endringsmegler(self, tabell):
         gmlver = self.gmlbib.versjon()
         nyver  = self.nybib.versjon()
-        # finner de aktuelle endringene mellom versjonene: 
+        # finner de aktuelle endringene mellom versjonene:
         deltaer = [kartver for kartver in self.endringskart.keys() if kartver > gmlver and kartver <= nyver]
         if not deltaer: return # ingen endringer skal gjøres
         deltaer.sort()
@@ -211,7 +211,7 @@ class oppgrader:
             if not endringer.has_key(tabell): continue
             tabellendringer = endringer[tabell]
             yield tabellendringer
-        
+
     def lastEndringer(self, endringer):
         for linje in endringer.split("\n"):
             if len(linje.strip()) == 0: continue #tom linje
@@ -220,7 +220,7 @@ class oppgrader:
             self.endre(float(ver),tabell,felt)
         self.logg.write('ENDRINGSKART:\n================\n')
         pprint(self.endringskart, stream=self.logg)
-    
+
     def endre(self,ver,tabell,felt):
         k = self.endringskart
         if not k.has_key(ver): k[ver] = {}
@@ -236,11 +236,11 @@ class oppgrader:
         elif felt.find("=") != -1: #navnebytte
             f,n = felt.split("=")
             t[f] = n
-        else: 
+        else:
             if not felt == "None":
                 raise OppgraderingsFeil("Ugyldig felt: %s" % felt)
-        
-        
+
+
     def oppgrader(self):
         nyversjon = self.nybib.versjon() #sparer på versjonsnummeret
         self._oppgrader(self.gmlbib.firmainfo())
@@ -264,25 +264,25 @@ class oppgrader:
                 self._oppgrader(linje)
         #for postnr in self.gmlbib.hentPostnummer():
             #self._oppgrader(postnr)
-        
+
         #self._oppgrader(handling) # handlingsnavn blir lagt inn av faktura.sql
-        self._flytt(historikk)
-        
+        self._flytt('historikk')
+
         self.nybib.oppsett.databaseversjon = nyversjon # skriver tilbake versjonsnummeret, det kan ha blitt overskrevet
-        
+
         # databaseintegritet:
         print "kontrollerer den nye databasen"
         self.nybib.sjekkSikkerhetskopier(lagNyAutomatisk=True)
         self.logg.write('Ny database kontrollert')
 
     def oppgraderSamme(self, dbSti):
-        #flytt gammel database 
+        #flytt gammel database
         katalog, database = os.path.split(dbSti)
         dbBackupNavn = "%s-%s~" % (database, int(time.time()))
         dbBackup = os.path.join(katalog, dbBackupNavn)
         self.gammelDatabaseSti = dbBackup
         #os.rename(dbSti, dbBackup)
-        
+
         #kjør oppgradering
         try:
             shutil.move(dbSti, dbBackup)
@@ -301,7 +301,7 @@ class oppgrader:
             #pprint(egenskaper, stream=self.logg)
             self.rullTilbake(dbSti, dbBackup) # rull tilbake til gammel database
             raise
-        
+
     def rullTilbake(self, dbSti, dbBackup=None):
         "ruller tilbake til backup. dbBackup kan være stien til en gammel database, eller None for siste (basert på filnavn)"
         try: self.gmldb.close()
@@ -314,7 +314,7 @@ class oppgrader:
             raise "trbl"
         shutil.copy(dbBackup, dbSti) #skriver over dbSti med backup
         return True
-        
+
     def lesLogg(self):
         self.logg.seek(0)
         r = self.logg.read()
