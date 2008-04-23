@@ -14,7 +14,7 @@ __doc__ = """Fryktelig fin faktura: skriv ut fakturaene dine"""
 import sys, os.path, dircache, mimetypes, re
 from string import join
 from time import time, strftime, localtime, mktime
-from finfaktura.fakturabibliotek import * 
+from finfaktura.fakturabibliotek import *
 from finfaktura.f60 import f60, f60Eksisterer
 from finfaktura.myndighetene import myndighetene
 from finfaktura.epost import BRUK_GMAIL
@@ -23,6 +23,7 @@ import finfaktura.sikkerhetskopi as sikkerhetskopi
 import finfaktura.historikk as historikk
 import finfaktura.rapport
 from finfaktura.fakturafeil import *
+from finfaktura.sendepost_ui import sendEpost
 
 def cli_faktura():
     from finfaktura.cli import CLIListe, CLIInput
@@ -58,7 +59,7 @@ def cli_faktura():
     bib.lagSikkerhetskopi(ordre)
 
     fakturanavn = ordre.lagFilnavn(bib.oppsett.fakturakatalog, fakturatype="epost")
-    
+
     try:
         pdf = bib.lagPDF(ordre, "epost", fakturanavn)
     except FakturaFeil,(E):
@@ -98,13 +99,12 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         #skjul ikke-ferdige tabs dersom vi er i produksjon
         # TODO: gjøre dem klare for produksjon
         if PRODUKSJONSVERSJON:
-            #self.fakturaTab.removePage(self.fakturaTab.page(5))
-            self.fakturaTab.removePage(self.fakturaTab.page(6))
-            self.fakturaTab.removePage(self.fakturaTab.page(6))
+            self.fakturaTab.removePage(self.fakturaTab.page(6)) # sikkerhetskopi
+            self.fakturaTab.removePage(self.fakturaTab.page(6)) # myndighetene
         else:
             self.setCaption("FRYKTELIG FIN FADESE (utviklerversjon)")
             self.patchDebugModus() # vis live debug-konsoll
-        
+
         self.connect(self.fakturaTab, SIGNAL("currentChanged(QWidget*)"), self.skiftTab)
 
         self.connect(self.fakturaNy, SIGNAL("clicked()"), self.nyFaktura)
@@ -122,8 +122,6 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         self.connect(self.fakturaVisKansellerte, SIGNAL("toggled(bool)"), self.visFaktura)
         self.connect(self.fakturaVisGamle, SIGNAL("toggled(bool)"), self.visFaktura)
         self.fakturaFaktaKryss.mousePressEvent = self.lukkFakta
-        self.connect(self.fakturaSendepostSend, SIGNAL("clicked()"), self.sendEpostfaktura)
-        self.connect(self.fakturaSendepostAvbryt, SIGNAL("clicked()"), self.skjulSendepostBoks)
 
         self.connect(self.kundeNy, SIGNAL("clicked()"), self.lastKunde)
         self.connect(self.kundeKundeliste, SIGNAL("doubleClicked(QListViewItem*, const QPoint&, int)"), self.redigerKunde)
@@ -141,7 +139,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         self.connect(self.varerVareliste, SIGNAL("selectionChanged(QListViewItem*)"), self.visVaredetaljer)
         self.connect(self.varerVisFjernede, SIGNAL("toggled(bool)"), self.visVarer)
         self.varerInfoKryss.mousePressEvent = self.lukkVarerinfo
-        
+
         self.connect(self.dittfirmaFinnFjernLogo, SIGNAL("clicked()"), self.finnFjernLogo)
         self.connect(self.dittfirmaLagre, SIGNAL("clicked()"), self.oppdaterFirma)
         self.connect(self.dittfirmaFakturakatalogSok, SIGNAL("clicked()"), self.endreFakturakatalog)
@@ -160,12 +158,12 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         self.connect(self.okonomiFakturaerSkrivut, SIGNAL("clicked()"), self.okonomiSkrivUtFakturaer)
 
         self.connect(self.sikkerhetskopiGmailLastopp, SIGNAL("clicked()"), self.sikkerhetskopiGmail)
-        
+
         self.fakturaFaktaVareliste.setColumnStretchable(0, True)
         self.fakturaFaktaVareliste.setColumnWidth(1, 70)
         self.fakturaFaktaVareliste.setColumnWidth(2, 70)
         self.fakturaFaktaVareliste.setColumnWidth(3, 70)
-        
+
         for obj in (self.dittfirmaFirmanavn,
             self.dittfirmaOrganisasjonsnummer,
             self.dittfirmaKontaktperson,
@@ -183,7 +181,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             #self.dittfirmaVilkar
             ):
             obj.focusOutEvent = self.firmaSjekk
-            
+
         self.connect(self.dittfirmaForfall, SIGNAL("valueChanged(int)"), self.firmaSjekk)
 
         self.dittfirmaKontrollKart = {
@@ -233,7 +231,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             #oppgrader databasen
             if not self.JaNei(u"Databasen må oppgraderes.\nVil du gjøre det nå?"):
                 sys.exit(99)
-                
+
             self.db.close()
             del(self.db)
             del(self.c)
@@ -259,7 +257,6 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         debug("__del__")
         debug("sikkerhetskopierer databasen", finnDatabasenavn())
         sikkerhetskopierFil(finnDatabasenavn())
-        self.db.commit()
         self.c.close()
         self.db.close()
 
@@ -282,8 +279,8 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
 ################## DEBUG ########################
 
     def patchDebugModus(self):
-        # lag et konsoll til live inspeksjon 
-        
+        # lag et konsoll til live inspeksjon
+
         self.pythoncode = QTextEdit(self.centralWidget(),"pythoncode")
         self.pythoncode.setGeometry(QRect(310,770,410,70))
 
@@ -334,7 +331,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         visGamle = self.fakturaVisGamle.isChecked()
         self.fakturaDetaljerTekst.setText('')
         self.fakturaFakta.hide()
-        self.fakturaSendepostBoks.hide()
+        #self.fakturaSendepostBoks.hide()
         i = self.fakturaFakturaliste.insertItem
         self.fakturaFakturaliste.clear()
         nu = time()
@@ -402,7 +399,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         self.fakturaFakta.show()
 
     def leggTilFaktura(self):
-        #legg inn faktura i registeret 
+        #legg inn faktura i registeret
         #er all nødvendig info samlet inn?
         if not self.fakturaFaktaTekst.text() and \
             not self.JaNei(u"Vil du virkelig legge inn fakturaen uten fakturatekst?"):
@@ -415,7 +412,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         d = self.fakturaFaktaDato.date()
         dato = mktime((d.year(),d.month(),d.day(),11,59,0,0,0,0)) # på midten av dagen (11:59) for å kunne betale fakturaen senere laget samme dag
         f = self.faktura.nyOrdre(kunde, ordredato=dato)
-        f.tekst = unicode(self.fakturaFaktaTekst.text()) 
+        f.tekst = unicode(self.fakturaFaktaTekst.text())
         #finn varene som er i fakturaen
         varer = {}
         for i in range(self.fakturaFaktaVareliste.numRows()): # gå gjennom alle rader
@@ -441,24 +438,24 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
                 # den samme varen, med samme pris og mva, er lagt inn tidligere
                 if self.JaNei(u'Du har lagt inn %s mer enn én gang. Vil du slå sammen oppføringene?' % _tekst):
                     varer[v['id']]['ant'] += v['ant']
-            #legg varen til den interne listen (for duplikatokontroll) 
+            #legg varen til den interne listen (for duplikatokontroll)
             varer[v['id']] = v
             #legg varen til fakturaen
             f.leggTilVare(vare, v['ant'], v['pris'], v['mva'])
-        
+
         debug("legger inn faktura: %s " % unicode(f))
         debug("Lager sikkerhetskopi")
         self.faktura.lagSikkerhetskopi(f)
         self.visFaktura() # oppdater listen slik at den nye fakturaen blir med
         self.fakturaFakturaliste.setSelected(self.fakturaFakturaliste.lastItem(), True) # velg den nye fakturaen
         self.fakturaFakta.hide()
-        
+
         #skal vi lage blanketter nå?
         s = u'Den nye fakturaen er laget. Vil du lage tilhørende blankett nå?'
         knapp = QMessageBox.information(self, u'Lage blankett?', s, 'Epost', 'Papir', 'Senere', 0, 2)
         if knapp == 0: self.lagFaktura(Type='epost')
         elif knapp == 1: self.lagFaktura(Type='papir')
-        
+
 #   def redigerFaktura(self, rad, koord, kolonne):
 #     self.denne_faktura = rad.ordre
 #     linje = {}
@@ -475,24 +472,24 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             i(unicode(kunde))
 
     def leggVareTilOrdre(self):
-        
+
         sisterad = self.fakturaFaktaVareliste.numRows()
         Antall = QSpinBox(self.fakturaFaktaVareliste, "Antall-%s" % sisterad)
         Antall.setMaxValue(100000)
         Antall.setValue(0)
         Antall.show()
         QObject.connect(Antall, SIGNAL("valueChanged(int)"), self.oppdaterFakturaSum)
-        
+
         Pris = QSpinBox(self.fakturaFaktaVareliste, "Pris-%s" % sisterad)
         Pris.setButtonSymbols(QSpinBox.UpDownArrows)
         Pris.setMaxValue(999999999)
         Pris.show()
         QToolTip.add(Pris, u'Varens pris (uten MVA)')
         QObject.connect(Pris, SIGNAL("valueChanged(int)"), self.oppdaterFakturaSum)
-        
+
         mvaListe = QStringList()
         map(mvaListe.append, ['0','12','25'])
-        
+
         #Mva = QComboTableItem(self.fakturaFaktaVareliste, mvaListe, False)
         Mva = QSpinBox(self.fakturaFaktaVareliste, "Mva-%s" % sisterad)
         #Mva = QComboBox(self.fakturaFaktaVareliste, "Mva-%s" % sisterad)
@@ -504,7 +501,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         QObject.connect(Mva, SIGNAL("valueChanged(int)"), self.oppdaterFakturaSum)
         QToolTip.add(Mva, u'MVA-sats som skal beregnes på varen')
         #QObject.connect(Mva, SIGNAL("highlighted(int)"), self.oppdaterFakturaSum)
-        
+
         varer = QStringList()
         map(varer.append, [unicode(v.navn) for v in self.faktura.hentVarer()])
         #Vare = QComboTableItem(self.fakturaFaktaVareliste, varer, True)
@@ -515,8 +512,8 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         Vare.show()
         QToolTip.add(Vare, u'Velg vare; eller skriv inn nytt varenavn og trykk enter for å legge til en ny vare')
         QObject.connect(Vare, SIGNAL("activated(int)"), self.oppdaterFakturaSum)
-        
-        
+
+
         self.fakturaFaktaVareliste.setNumRows(sisterad+1)
 #        self.fakturaFaktaVareliste.setItem(sisterad, 0, Vare)
         self.fakturaFaktaVareliste.setCellWidget(sisterad, 0, Vare)
@@ -524,7 +521,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         self.fakturaFaktaVareliste.setCellWidget(sisterad, 2, Pris)
         self.fakturaFaktaVareliste.setCellWidget(sisterad, 3, Mva)
         return self.fakturaVarelisteSynk(sisterad, 0)
-    
+
     def fakturaVarelisteSynk(self, rad, kol):
         debug("synk:", rad, kol)
         sender = self.fakturaFaktaVareliste.cellWidget(rad, kol)
@@ -538,7 +535,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
                     self.fakturaFaktaVareliste.cellWidget(rad, 1).setSuffix('')
                     self.fakturaFaktaVareliste.cellWidget(rad, 2).setValue(0)
                     self.fakturaFaktaVareliste.cellWidget(rad, 3).setValue(self.firma.mva)
-                    return 
+                    return
                 else: raise # ukjent problem
             except AttributeError: # hvorfor er dette ikke 0?
                 try:
@@ -556,8 +553,8 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
                 _antall = self.fakturaFaktaVareliste.cellWidget(i, 1).value()
                 _pris   = float(self.fakturaFaktaVareliste.cellWidget(i, 2).value())
                 _mva    = self.fakturaFaktaVareliste.cellWidget(i, 3).value()
-                p += _pris * _antall 
-                mva += _pris * _antall * _mva / 100 
+                p += _pris * _antall
+                mva += _pris * _antall * _mva / 100
             self.fakturaFaktaSum.setText("<u>%.2fkr (+%.2fkr mva)</u>" % (p, mva))
 
     def oppdaterFakturaSum(self):
@@ -576,7 +573,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             pris = linje.ordre.finnPris()
             moms = linje.ordre.finnMva()
             s += "<p>&nbsp;&nbsp;&nbsp;%.2f kr<br> + mva %.2f kr<br> <u>= %.2f kr</u>\n" % (pris, moms, pris+moms)
-            
+
         s += "<p><i>Historikk</i>:<br>"
         s += "Fakturert: %s<br>" % strftime("%Y-%m-%d", localtime(linje.ordre.ordredato))
         if linje.ordre.betalt > linje.ordre.forfall or \
@@ -597,7 +594,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         minst, maks = localtime(linje.ordre.ordredato), localtime()
         self.fakturaBetaltDato.setRange(QDate(minst[0]-1, minst[1], minst[2]), QDate(maks[0]+1, maks[1], maks[2])) # utvider rangen med ett år i hver retning slik at QDateEdit-kontrollen skal bli brukelig
 
-    def lagFakturaKvittering(self): 
+    def lagFakturaKvittering(self):
         try:
             ordre = self.fakturaFakturaliste.selectedItem().ordre
         except AttributeError:
@@ -617,7 +614,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
 
     def lagFakturaEpost(self): return self.lagFaktura(Type='epost')
     def lagFakturaPapir(self): return self.lagFaktura(Type='papir')
-    
+
     def lagFaktura(self, Type="epost"):
         try:
             ordre = self.fakturaFakturaliste.selectedItem().ordre
@@ -635,12 +632,12 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         except f60Eksisterer, (E):
             # HACK XXX: E er nå filnavnet
             if Type == "epost":
-                self.visEpostfaktura(ordre, unicode(E))  
+                self.visEpostfaktura(ordre, unicode(E))
             elif Type == "papir":
-                if self.JaNei(u"Blanketten er laget fra før av. Vil du skrive den ut nå?"): 
+                if self.JaNei(u"Blanketten er laget fra før av. Vil du skrive den ut nå?"):
                     self.faktura.skrivUt(unicode(E))
             return None
-        if Type == "epost": 
+        if Type == "epost":
             pdf.lagBakgrunn()
         elif Type == "kvittering":
             pdf.lagBakgrunn()
@@ -657,16 +654,16 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             historikk.pdfEpost(ordre, False, "kundefeil: %s" % E)
         else:
             res = pdf.settSammen()
-            if not res: 
+            if not res:
                 historikk.pdfEpost(ordre, False, "ukjent grunn")
                 self.alert("Kunne ikke lage PDF! ('%s')" % pdf.filnavn)
-            else: 
+            else:
                 if Type == "epost":
                     historikk.pdfEpost(ordre, True, "interaktivt")
                     self.visEpostfaktura(ordre, pdf.filnavn)
                 elif Type == "papir":
                     historikk.pdfPapir(ordre, True, "interaktivt")
-                    if self.JaNei(u"Blanketten er laget. Vil du skrive den ut nå?"): 
+                    if self.JaNei(u"Blanketten er laget. Vil du skrive den ut nå?"):
                         suksess = pdf.skrivUt()
                         historikk.utskrift(ordre, suksess, "interaktivt")
                     else: self.obs(u"Blanketten er lagret med filnavn: %s" % pdf.filnavn)
@@ -723,32 +720,38 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
     def purrFaktura(self):
         ordre = self.fakturaFakturaliste.selectedItem().ordre
         historikk.purret(ordre, True, 'brukerklikk')
-        
+
     def inkassoFaktura(self):
         ordre = self.fakturaFakturaliste.selectedItem().ordre
         historikk.sendtTilInkasso(ordre, True, 'brukerklikk')
-    
-    def skjulSendepostBoks(self):
-        self.fakturaSendepostBoks.hide()
-    
+
+    ##def skjulSendepostBoks(self):
+        #self.fakturaSendepostBoks.hide()
+
     def visEpostfaktura(self, ordre, pdfFilnavn):
         ##u'Vedlagt følger epostfaktura #%i:\n%s\n\n-- \n%s\n' % (ordre.ID, ordre.tekst,  ordre.firma)
-        self.fakturaSendepostBoks.show()
-        self.fakturaSendepostTittel.setText(u'Sender faktura til %s <b>&lt;%s</b>&gt;' % (ordre.kunde.navn, ordre.kunde.epost))
-        self.fakturaSendepostTekst.setText(u'Vedlagt følger epostfaktura #%i:\n%s\n\n-- \n%s\n%s' % (ordre.ID, ordre.tekst,  ordre.firma, ordre.firma.vilkar))
-        self.fakturaSendepostBoks.ordre = ordre
-        self.fakturaSendepostBoks.pdfFilnavn = pdfFilnavn
-        
-        
-    def sendEpostfaktura(self):
-        o = self.fakturaSendepostBoks.ordre
+        epostboks = sendEpost()
+        #self.fakturaSendepostBoks.show()
+        self.connect(epostboks.sendEpostSend, SIGNAL("clicked()"), epostboks.accept)
+        self.connect(epostboks.sendEpostAvbryt, SIGNAL("clicked()"), epostboks.reject)
+        epostboks.sendEpostTittel.setText(u'Sender faktura til %s <b>&lt;%s</b>&gt;' % (ordre.kunde.navn, ordre.kunde.epost))
+        epostboks.sendEpostTekst.setText(u'Vedlagt følger epostfaktura #%i:\n%s\n\n-- \n%s\n%s' % (ordre.ID, ordre.tekst,  ordre.firma, ordre.firma.vilkar))
+        res = epostboks.exec_loop()
+        if res == QDialog.Accepted:
+          return self.sendEpostfaktura(ordre, unicode(epostboks.sendEpostTekst.text()), pdfFilnavn)
+        else:
+          print unicode(epostboks.sendEpostTekst.text())
+          pass
+
+
+    def sendEpostfaktura(self, ordre, tekst, filnavn):
         try:
-            debug('sender epostfaktura: ordre # %i, til: %s' % (o._id, o.kunde.epost))
+            debug('sender epostfaktura: ordre # %i, til: %s' % (ordre._id, ordre.kunde.epost))
             trans = ['auto', 'gmail', 'smtp', 'sendmail']
             debug('bruker transport %s' % trans[self.faktura.epostoppsett.transport])
-            self.faktura.sendEpost(o, 
-                                   self.fakturaSendepostBoks.pdfFilnavn,
-                                   unicode(self.fakturaSendepostTekst.text()),
+            self.faktura.sendEpost(ordre,
+                                   filnavn,
+                                   tekst,
                                    trans[self.faktura.epostoppsett.transport]
                                    )
             #self.fakturaSendepostBoks.ordre.sendt = time() # XXX TODO: logg tid for sending
@@ -756,17 +759,17 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         except:
             f = sys.exc_info()[1]
             self.alert(u'Feil ved sending av faktura. Prøv å sende med en annen epostmetode.\n\nDetaljer:\n%s' % f)
-            #historikk.epostSendt(o, 0, f)
+            #historikk.epostSendt(ordre, 0, f)
             raise
         else:
-            historikk.epostSendt(o, True, "Tid: %s, transport: %s" % (time(), trans[self.faktura.epostoppsett.transport]))
-            self.fakturaSendepostBoks.hide()
+            historikk.epostSendt(ordre, True, "Tid: %s, transport: %s" % (time(), trans[self.faktura.epostoppsett.transport]))
+            #self.fakturaSendepostBoks.hide()
             self.obs('Fakturaen er sendt')
-    
+
 ################## KUNDER ###########################
 
     def lukkKundeinfo(self, *ev):self.kundeInfo.hide()
-    
+
     def kundeContextMenu(self, event):
         try:
             kunde = self.kundeKundeliste.selectedItem().kunde
@@ -799,7 +802,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
                               '%s' % kunde.telefon
                              )
             l.kunde = kunde
-            if kunde.slettet: 
+            if kunde.slettet:
                 l.setPixmap(0, self.slettetLogo)
             i(l)
 
@@ -841,7 +844,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
 
     def leggTilKunde(self):
         k = self.denne_kunde
-        
+
         # sjekk om all nødvendig info er gitt
         kravkart = {self.kundeInfoNavn: "Kundens navn",
                     self.kundeInfoKontaktperson: "Kontaktperson",
@@ -854,13 +857,13 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
                 self.alert(u'Du er nødt til å oppgi %s' % (kravkart[obj].lower()))
                 obj.setFocus()
                 return False
-                    
+
         if k is None:
             #debug("registrerer ny kunde")
             k = self.faktura.nyKunde()
         else:
             debug("oppdaterer kunde, som var " + unicode(k))
-        k.navn = self.kundeInfoNavn.text() 
+        k.navn = self.kundeInfoNavn.text()
         k.kontaktperson = self.kundeInfoKontaktperson.text()
         k.epost = self.kundeInfoEpost.text()
         k.status = self.kundeInfoStatus.currentText()
@@ -882,7 +885,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             s += "Aldri fakturert"
             self.kundeDetaljerTekst.setText(s)
             return
-            
+
         s += "Sist fakturert: %s<br>" % strftime('%Y-%m-%d', localtime(fakturaer[-1].ordredato))
         s += "Antall fakturaer: %i<br>" % len(fakturaer)
         verdi = 0.0
@@ -902,7 +905,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             if nu > f.forfall:
                 if f.betalt > f.forfall:
                     forfalt_sentbetalt += 1
-                    #print "ordre forfalt og betalt for sent:",f._id 
+                    #print "ordre forfalt og betalt for sent:",f._id
                 elif not f.betalt:
                     forfalt_ikkebetalt += 1
                     #print "ordre forfalt og ikke betalt:",f._id
@@ -910,7 +913,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
                 else:
                     #print "ordre forfalt og betalt før fristen:",f._id
                     forfalt_betalt += 1
-            else: 
+            else:
                 if not f.betalt:
                     #print "ordre ikke forfalt og ikke betalt:",f._id
                     ny_ubetalt += 1
@@ -918,7 +921,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
                 else:
                     #print "ordre ikke forfalt, men betalt:",f._id
                     ny_betalt += 1
-            
+
         s += "Samlet verdi: %i kr<br>" % verdi
         s += "Samlet innbetaling: %i kr<br>" % innbetaling
         # er kunden punktlig?
@@ -932,9 +935,9 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             punktlighet = 0
         else:
             betalt_for_fristen = float(ny_betalt + forfalt_betalt)
-            punktlighet = betalt_for_fristen / korpus 
+            punktlighet = betalt_for_fristen / korpus
         s += "Punktlighet: %i%%<br>" % int(punktlighet * 100)
-        
+
         if forfalte:
             #alle forfalte fakturaer - de som har gått utover fristen
             s += '<p><i>Forfalte fakturaer:</i><br><ul>'
@@ -944,9 +947,9 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
                 s += '<li>#%i: %s' % (ff._id, ff.tekst)
             s += '</ul>%i forfalte fakturaer<br>' % len(forfalte)
             s += '<font color=red>Verdi: %.2f</font>' % forfaltverdi
-        
+
         if ubetalte:
-            #alle ubetalte (men ikke forfalte) fakturaer 
+            #alle ubetalte (men ikke forfalte) fakturaer
             s += '<p><i>Utest&aring;ende fakturaer:</i><br><ul>'
             ubetaltverdi = 0.0
             for uf in ubetalte:
@@ -972,7 +975,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
 ################## VARER #########################
 
     def lukkVarerinfo(self, *ev):self.varerInfo.hide()
-    
+
     def vareContextMenu(self, event):
         try:
             vare = self.varerVareliste.selectedItem().vare
@@ -1004,7 +1007,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
                               unicode(vare.enhet)
                              )
             l.vare = vare
-            if vare.slettet: 
+            if vare.slettet:
                 l.setPixmap(0, self.slettetLogo)
             i(l)
 
@@ -1023,7 +1026,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             self.varerInfoPris.setValue(int(vare.pris))
             if vare.enhet: sfx = unicode(" kr per %s" % vare.enhet)
             else: sfx = " kr"
-                
+
             self.varerInfoPris.setSuffix(sfx)
             self.varerInfoMva.setValue(int(vare.mva))
             self.varerInfoLegginn.setText('&Oppdater')
@@ -1052,7 +1055,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
                 self.alert(u'Du er nødt til å oppgi %s' % (kravkart[obj].lower()))
                 obj.setFocus()
                 return False
-                    
+
         if v is None:
             #debug("registrerer ny vare")
             v = self.faktura.nyVare()
@@ -1089,7 +1092,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         if self.JaNei("Vil du virkelig slette vare nr %s (%s)?" % (vare.ID, vare.navn)):
             vare.settSlettet()
             self.visVarer()
-            
+
     def ikkeSlettVare(self):
         vare = self.varerVareliste.selectedItem().vare
         vare.settSlettet(False)
@@ -1103,16 +1106,16 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             self.dittfirmaOrganisasjonsnummer  :  self.firma.organisasjonsnummer,
             self.dittfirmaKontaktperson        :  self.firma.kontaktperson,
             self.dittfirmaEpost                :  self.firma.epost,
-            self.dittfirmaAdresse              :  self.firma.adresse, 
-            self.dittfirmaPostnummer           :  self.firma.postnummer, 
-            self.dittfirmaPoststed             :  self.firma.poststed,   
-            self.dittfirmaTelefon              :  self.firma.telefon,    
-            self.dittfirmaMobil                :  self.firma.mobil,      
-            self.dittfirmaTelefaks             :  self.firma.telefaks,   
+            self.dittfirmaAdresse              :  self.firma.adresse,
+            self.dittfirmaPostnummer           :  self.firma.postnummer,
+            self.dittfirmaPoststed             :  self.firma.poststed,
+            self.dittfirmaTelefon              :  self.firma.telefon,
+            self.dittfirmaMobil                :  self.firma.mobil,
+            self.dittfirmaTelefaks             :  self.firma.telefaks,
             self.dittfirmaKontonummer          :  self.firma.kontonummer,
-            self.dittfirmaVilkar               :  self.firma.vilkar,     
-            self.dittfirmaMva                 :  self.firma.mva,        
-            self.dittfirmaForfall             :  self.firma.forfall,    
+            self.dittfirmaVilkar               :  self.firma.vilkar,
+            self.dittfirmaMva                 :  self.firma.mva,
+            self.dittfirmaForfall             :  self.firma.forfall,
             self.dittfirmaFakturakatalog       :  self.faktura.oppsett.fakturakatalog
             }
 
@@ -1133,7 +1136,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         self.firmaSjekk()
 
     def visLogo(self):
-        if not self.firma.logo: 
+        if not self.firma.logo:
             self.dittfirmaFinnFjernLogo.setText('Finn logo')
             self.dittfirmaLogoPixmap.setPixmap(QPixmap())
         else:
@@ -1147,7 +1150,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         if isinstance(fraObj, QSpinBox): fun = int(fraObj.value)
         elif isinstance(fraObj, QComboBox): fun = unicode(fraObj.currentText)
         elif isinstance(fraObj, (QLineEdit,QTextEdit,)): fun = unicode(fraObj.text)
-        
+
         debug(u'oppdatere %s til %s' % (fraObj, kart[fraObj]))
         kart[fraObj] = fun() # finner riktig lagringssted og kjører riktig funksjon
 
@@ -1166,7 +1169,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         self.firma.vilkar     = unicode(self.dittfirmaVilkar.text())
         self.firma.mva        = int(self.dittfirmaMva.value())
         self.firma.forfall    = unicode(self.dittfirmaForfall.value())
-    
+
         self.faktura.oppsett.fakturakatalog = unicode(self.dittfirmaFakturakatalog.text())
 
         mangler = self.sjekkFirmaMangler()
@@ -1178,7 +1181,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             self.gammelTab = 3
             return False
         self.dittfirmaLagreInfo.setText('<font color=green><b>Opplysningene er lagret</b></font>')
-        
+
     def sjekkFirmaMangler(self):
         kravkart = {}
         kravkart.update(self.dittfirmaKontrollKart)
@@ -1198,7 +1201,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             if isinstance(obj, QSpinBox): test = obj.value() > 0
             elif isinstance(obj, QComboBox): test = obj.currentText()
             elif isinstance(obj, (QLineEdit,QTextEdit,)): test = obj.text()
-            if test: 
+            if test:
                 obj.setPaletteBackgroundColor(ok)
                 #self.oppdaterFirmainfo(obj) # lagrer informasjonen
             else:
@@ -1207,12 +1210,12 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
                 mangler += 1
         if not mangler:
             self.dittfirmaLagreInfo.setText('')
-            self.dittfirmaLagre.setEnabled(True) 
+            self.dittfirmaLagre.setEnabled(True)
             return True
         else:
             s += "</ol>"
             self.dittfirmaLagreInfo.setText(s)
-            self.dittfirmaLagre.setEnabled(False) 
+            self.dittfirmaLagre.setEnabled(False)
 
     def finnFjernLogo(self):
         if self.firma.logo:
@@ -1221,11 +1224,11 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         else:
             startdir = ""
             logo = QFileDialog.getOpenFileName(
-                startdir, 
+                startdir,
                 'Bildefiler (*.png *.xpm *.jpg *.jpeg *.gif *.bmp *.ppm *.pgm *.pbm)',
-                self, 
+                self,
                 "Velg logofil",
-                "Velg bildefil for firmaets logo" 
+                "Velg bildefil for firmaets logo"
                 )
             if len(unicode(logo)) > 0:
                 debug("Setter ny logo: %s" % logo)
@@ -1235,13 +1238,13 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
 
                 stream = QBuffer()
                 l.convertToImage().smoothScale(360,360, QImage.ScaleMax).save(stream, 'PNG')
-                
+
                 #import sqlite
 
                 #self.firma.logo = sqlite.encode(stream.getData())
                 self.firma.logo = buffer(stream.getData())
                 self.visLogo()
-        
+
 
     def endreFakturakatalog(self):
         nu = self.dittfirmaFakturakatalog.text()
@@ -1251,7 +1254,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             debug("Setter ny fakturakataolg: %s" % ny)
             self.faktura.oppsett.fakturakatalog = unicode(ny)
             self.dittfirmaFakturakatalog.setText(unicode(ny))
-            
+
 ############## Epost ###################
 
     def visEpost(self):
@@ -1283,8 +1286,8 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             self.epostSendmailSti.setText(self.faktura.epostoppsett.sendmailsti)
         else:
             self.epostSendmailSti.setText('~')
-    
-    def visEpostGML(self): 
+
+    def visEpostGML(self):
         if self.faktura.epostoppsett.bcc:
             self.epostSendkopi.setChecked(True)
             self.epostKopiadresse.setText(self.faktura.epostoppsett.bcc)
@@ -1372,7 +1375,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
 
     def visOkonomi(self):
         self.okonomiAvgrensningerDatoAr.setValue(localtime()[0])
-    
+
     def hentAktuelleOrdrer(self):
         ordrehenter = fakturaOkonomi.ordreHenter(self.db)
         begrensninger = {'dato':(None,None),
@@ -1385,7 +1388,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         if self.okonomiAvgrensningerDato.isChecked():
             aar = self.okonomiAvgrensningerDatoAr.value()
             bmnd = self.okonomiAvgrensningerDatoManed.currentItem()
-            if bmnd == 0: 
+            if bmnd == 0:
                 bmnd = 1
                 smnd = 12
             else:
@@ -1417,15 +1420,15 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         ordrehenter.visKansellerte(begrensninger['viskansellerte'])
         begrensninger['visubetalte'] = not self.okonomiAvgrensningerSkjulUbetalte.isChecked()
         ordrehenter.visUbetalte(not self.okonomiAvgrensningerSkjulUbetalte.isChecked())
-        
+
         if self.okonomiSorter.isChecked():
             sorter = [ 'dato', 'kunde', 'vare' ]
             ordrehenter.sorterEtter(sorter[self.okonomiSorterListe.currentItem()])
             begrensninger['sortering'] = sorter[self.okonomiSorterListe.currentItem()]
-        
+
         ordreliste = ordrehenter.hentOrdrer()
         return ordreliste, begrensninger
-    
+
     def okonomiRegnRegnskap(self):
         debug("regner regnskap")
         ordreliste = self.hentAktuelleOrdrer()[0]
@@ -1448,9 +1451,9 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
                     s += "<li> #%i: %s </li>" % (vare._id, unicode(vare))
                 s += "</ol>\n"
             s += "</li>\n"
-            if ordre.kansellert: 
+            if ordre.kansellert:
                 continue
-            if ordre.betalt: 
+            if ordre.betalt:
                 inn += ordre.finnPris()
                 mva += ordre.finnMva()
                 b += 1
@@ -1477,7 +1480,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         in2 = self.okonomiAvgrensningerDatoPeriode.insertItem
         for z in mnd: in1(z)
         for i in range(1,12): in2(u'Og %i måneder fram' % i)
-        
+
     def okonomiFyllDatoPeriode(self, manedId):
         #bare tilgjengelig dersom det ikke er valgt 'Hele året'
         self.okonomiAvgrensningerDatoPeriode.setEnabled(manedId > 0)
@@ -1495,7 +1498,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         i = self.okonomiAvgrensningerVareliste.insertItem
         for v in self.faktura.hentVarer(inkluderSlettede=True):
             i(unicode("(#%i) %s") % (v.ID, v))
-                
+
     def okonomiFyllSortering(self, ibruk):
         self.okonomiSorterListe.setEnabled(ibruk)
 
@@ -1527,7 +1530,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
 ############## SIKKERHETSKOPI ###################
 
     def visSikkerhetskopi(self):
-        
+
         if sikkerhetskopi.BRUK_GMAIL:
             self.sikkerhetskopiGmailUbrukelig.hide()
             self.sikkerhetskopiGmailLastopp.setEnabled(True)
@@ -1557,7 +1560,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         if self.sikkerhetskopiGmailHuskPassord.isChecked():
             self.faktura.epostoppsett.gmailpassord = self.sikkerhetskopiGmailPassord.text()
         return r
-        
+
 
 ############## GENERELLE METODER ###################
 
@@ -1570,7 +1573,6 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
     def JaNei(self, s):
         svar = QMessageBox.question(self, "Hm?", s, QMessageBox.Yes, QMessageBox.No | QMessageBox.Default, QMessageBox.NoButton)
         return svar == QMessageBox.Yes
-
 
 if __name__ == "__main__":
 
