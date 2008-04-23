@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'sendepost.ui'
 #
-# Created: on. april 23 12:04:54 2008
+# Created: on. april 23 12:23:37 2008
 #      by: The PyQt User Interface Compiler (pyuic) 3.17.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -30,10 +30,10 @@ class sendEpost(QDialog):
 
         layout12.addWidget(self.sendEpostSend,2,1)
 
-        self.fakturaSendepostTittel = QLabel(self,"fakturaSendepostTittel")
-        self.fakturaSendepostTittel.setTextFormat(QLabel.RichText)
+        self.sendEpostTittel = QLabel(self,"sendEpostTittel")
+        self.sendEpostTittel.setTextFormat(QLabel.RichText)
 
-        layout12.addMultiCellWidget(self.fakturaSendepostTittel,0,0,0,1)
+        layout12.addMultiCellWidget(self.sendEpostTittel,0,0,0,1)
 
         self.sendEpostTekst = QTextEdit(self,"sendEpostTekst")
         self.sendEpostTekst.setTextFormat(QTextEdit.PlainText)
@@ -56,7 +56,7 @@ class sendEpost(QDialog):
         self.setCaption(self.__tr("Send faktura per epost"))
         self.sendEpostSend.setText(self.__tr("Send"))
         QToolTip.add(self.sendEpostSend,self.__tr("Sender efakturaen som PDF-fil til adressen over"))
-        self.fakturaSendepostTittel.setText(self.__tr("Sender epost til"))
+        self.sendEpostTittel.setText(self.__tr("Sender epost til"))
         QToolTip.add(self.sendEpostTekst,self.__tr("Valgfri tekst som vil bli vist i kundens epostprogram (fakturaen sendes som vedlegg)"))
         self.sendEpostAvbryt.setText(self.__tr("Avbryt"))
         QToolTip.add(self.sendEpostAvbryt,self.__tr("Avbryter sendingen av efaktura"))
