@@ -1,6 +1,6 @@
 ## Hvordan utvikle finfaktura
 ## $Id$
-## Håvard Dahle <havard@dahle.no> (C) 2006-2007
+## Håvard Gulldahl <havard@gulldahl.no> (C) 2006-2008
 
 
 ### Lage ny release ###
@@ -20,12 +20,12 @@
 
 * Kopiere til ny grein:
     svn copy https://finfaktura.googlecode.com/svn/trunk https://finfaktura.googlecode.com/svn/branches/$VERSJON -m "Kopierer $VERSJON til egen gren"
-    
+
 * Sjekke ut den nye greina, og begynne å jobbe på den
     cd /tmp
     svn co https://finfaktura.googlecode.com/svn/branches/$VERSJON
     cd $VERSJON
-    
+
 * Endre på PRODUKSJONSVERDI-variabelen (til True) i finfaktura/fakturabibliotek.py
 
 * Prøvestarte programmet og se at alt ser greit ut
@@ -43,26 +43,26 @@
 * Lage skjermdump
     doc/skjermdump.sh
     -> navngi etter .deb-dir: finfaktura-$DEBVERSJON.deb-dir
-    
-    
+
+
 * Kopier til http://code.google.com/p/finfaktura/downloads/entry
     #http://support.googlecode.com/svn/trunk/scripts/googlecode-upload.py
-    
+
     cd /tmp
-    
-    -> .deb 
+
+    -> .deb
     googlecode-upload.py -s "Fryktelig fin faktura (debian/ubuntu), versjon $VERSJON" -p finfaktura -u havard.dahle -l "Featured,Type-Package,OpSys-Linux" finfaktura_${VERSJON}_i386.deb
-    
+
     -> .rpm
     fakeroot alien --to-rpm --scripts --keep-version finfaktura_${VERSJON}_i386.deb
-    
+
     googlecode-upload.py -s "Fryktelig fin faktura (fedora/suse), versjon $VERSJON" -p finfaktura -u havard.dahle -l "Featured,Type-Package,OpSys-Linux" finfaktura-${VERSJON}-*.rpm
-    
+
     -> source
     python setup.py sdist --format=zip
     googlecode-upload.py -s "Fryktelig fin faktura (python kildekode), versjon $VERSJON" -p finfaktura -u havard.dahle -l "Featured,Type-Package,OpSys-All" dist/finfaktura-${VERSJON}.zip
-    
+
     -> skjermdump
-    
+
 * Hurra!
 
