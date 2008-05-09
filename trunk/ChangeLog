@@ -1,13 +1,156 @@
+2007-05-08 23:30  havard.dahle
+
+	* doc/skjermdump.sh, faktura.py, finfaktura/rapport.py: Rapportene
+	  viser nå info om hva de egentlig lister opp
+
+2007-05-08 23:30  havard.dahle
+
+	* testdata.db: mer testdata
+
+2007-05-06 14:51  havard.dahle
+
+	* faktura.py, faktura.ui, finfaktura/faktura_ui.py,
+	  finfaktura/okonomi.py: Sortering av økonomiske rapporter
+
+2007-05-06 01:36  havard.dahle
+
+	* doc/REGLER: legger til mer husketriks
+
+2007-05-06 01:35  havard.dahle
+
+	* finfaktura/__init__.py, finfaktura/rapport.py: legger til
+	  pdf-rapport-modul, bruker reportlab/platypus
+
+2007-05-06 01:34  havard.dahle
+
+	* faktura.py: Bedre feilsjekk på epostinfo-siden, og begynnelsen på
+	  PDF-rapport
+
+2007-05-06 01:33  havard.dahle
+
+	* finfaktura/oppgradering.py: sørger for å også oppgradere Epost,
+	  Historikk og Handling
+
+2007-05-06 01:32  havard.dahle
+
+	* setup.py: endrer pakkenavn til finfaktura (fra
+	  fryktelig-fin-faktura)
+
+2007-05-06 01:32  havard.dahle
+
+	* faktura.sql: vennlig påminnelse om oppgradering.py
+
+2007-05-03 00:09  havard.dahle
+
+	* debian/changelog, finfaktura/__init__.py: Gjør 1.1 klar til
+	  utgivelse
+
+2007-05-03 00:05  havard.dahle
+
+	* doc/REGLER: fjerner linnjenummer
+
+2007-05-02 23:59  havard.dahle
+
+	* doc/REGLER: keywords + smått
+
+2007-05-02 23:57  havard.dahle
+
+	* testdata.db: oppdatert testdata
+
+2007-05-02 23:57  havard.dahle
+
+	* faktura.py: forenkler kode
+
+2007-05-02 23:29  havard.dahle
+
+	* finfaktura/fakturabibliotek.py: bumper databaseversjon og legger
+	  den inn i nye databaser
+
+2007-05-02 23:28  havard.dahle
+
+	* faktura.sql: fjerner fjern logikk
+
+2007-05-02 23:25  havard.dahle
+
+	* finfaktura/oppgradering.py: sqlite3-fiks og kodeblooper
+
+2007-05-02 23:02  havard.dahle
+
+	* faktura.sql, finfaktura/fakturabibliotek.py,
+	  finfaktura/historikk.py: databaselayout 2.10: legger til
+	  handlingen "avBetalt" :P
+
+2007-05-02 22:54  havard.dahle
+
+	* faktura.py: fikser dum bug som forhindret nye varer fra å bli
+	  lagt inn
+
+2007-05-02 22:54  havard.dahle
+
+	* finfaktura/fakturabibliotek.py: fikser avhengigheter og flytter
+	  pdftype, som ikke hører til her
+
+2007-05-02 22:51  havard.dahle
+
+	* finfaktura/fakturakomponenter.py: fikser avhengigheter og flytter
+	  pdftype, som hører med her
+
+2007-05-02 22:50  havard.dahle
+
+	* faktura.ui, finfaktura/faktura_ui.py: enda mer hjelpetekst
+
+2007-05-02 22:42  havard.dahle
+
+	* faktura.ui: mer hjelpetekst
+
+2007-05-02 22:42  havard.dahle
+
+	* faktura.ui: mange hjelpetekster
+
+2007-05-02 21:21  havard.dahle
+
+	* finfaktura/fakturafeil.py, finfaktura/fakturakomponenter.py:
+	  svn:keywords
+
+2007-05-02 21:20  havard.dahle
+
+	* faktura.py, finfaktura/__init__.py, finfaktura/ekstra.py,
+	  finfaktura/fakturabibliotek.py, finfaktura/fakturafeil.py,
+	  finfaktura/fakturakomponenter.py, finfaktura/historikk.py,
+	  finfaktura/okonomi.py: restrukturerer kode til nye moduler
+
+2007-05-02 20:50  havard.dahle
+
+	* finfaktura/historikk.py: fjerner død kode
+
+2007-05-02 19:27  havard.dahle
+
+	* finfaktura/fakturabibliotek.py: fjerner hvitrom rundt varenavn og
+	  -enhet når den legges til fra ny-faktura-vinduet
+
+2007-05-02 17:09  havard.dahle
+
+	* finfaktura/fakturabibliotek.py: fikser bug hvor 'test
+	  epostoppsett' ikke funket pga type(0) ikke er bool
+
+2007-05-02 17:03  havard.dahle
+
+	* faktura.py, finfaktura/fakturabibliotek.py,
+	  finfaktura/historikk.py: kan fjerne betalt-status + bug ved
+	  epost-bcc-setting
+
+2007-04-30 22:17  havard.dahle
+
+	* ChangeLog: ChangeLog oppdatert med svn2cl
+
 2007-04-29 19:56  havard.dahle
 
-	* screenshots/fakturadetaljer-0.96.png,
-	  doc/faktura-0.96-fakturadetaljer.png: flytter grafikk til egen
+	* doc/faktura-0.96-fakturadetaljer.png: flytter grafikk til egen
 	  mappe
 
 2007-04-29 19:54  havard.dahle
 
-	* screenshots/efaktura-0.96.jpg, doc/faktura-0.96-epostfaktura.jpg:
-	  flytter grafikk til egen mappe
+	* doc/faktura-0.96-epostfaktura.jpg: flytter grafikk til egen mappe
 
 2007-04-29 19:52  havard.dahle
 
@@ -815,5 +958,5 @@
 
 2006-09-16 21:09  
 
-	* branches, tags, .: Initial directory structure.
+	* .: Initial directory structure.
 
