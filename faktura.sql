@@ -77,7 +77,9 @@
     -- Versjon 2.0
     CREATE TABLE Oppsett (ID INTEGER,
         databaseversjon FLOAT NOT NULL,
-        fakturakatalog UNICODE NOT NULL);
+        fakturakatalog UNICODE NOT NULL,
+        skrivutpdf UNICODE NOT NULL DEFAULT "", -- Versjon 3.1
+        vispdf UNICODE NOT NULL DEFAULT ""); -- Versjon 3.1
     
     -- Versjon 2.1
     CREATE TABLE Sikkerhetskopi (ID INTEGER PRIMARY KEY,

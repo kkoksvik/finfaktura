@@ -54,6 +54,26 @@ class QBuffer(QIODevice):
     def getData(self):
         return self.__io.getvalue()
 
+class QFloatSpinBox(QSpinBox):
+            #QString mapValueToText( int value )
+            #{
+                #if ( value == -1 ) // special case
+                    #return QString( "Auto" );
+                #return QString( "%1.%2" ) // 0.0 to 10.0
+                    #.arg( value / 10 ).arg( value % 10 );
+            #}
+
+            #int mapTextToValue( bool *ok )
+            #{
+                #if ( text() == "Auto" ) // special case
+                    #return -1;
+                #return (int) ( 10 * text().toFloat() ); // 0 to 100
+    def mapValueToText(verdi): # oversetter fra intern verdi til teksten som vises
+        return QString("%i.%i" % (verdi / 10, verdi % 10))
+    
+    def mapTextToValue(boool):
+        return int(10 * float(self.text()))
+
 # Logoer inlines slik at vi slipper å laste dem fra fil
 # Begge er i PNG-format
 

@@ -24,7 +24,7 @@ from ekstra import debug
 from fakturafeil import *
 
 PRODUKSJONSVERSJON=False # Sett denne til True for å skjule funksjonalitet som ikke er ferdigstilt
-DATABASEVERSJON=3.0
+DATABASEVERSJON=3.1
 DATABASENAVN="faktura.db"
 #DATABASECONVERTERS={"pdf":pdfdataToType}
 
@@ -166,11 +166,11 @@ class FakturaBibliotek:
  
         return pdf
     
-    def skrivUt(self, filnavn):
+    def skrivUt(self, filnavn, program='/usr/bin/kprinter'):
         if not os.path.exists(filnavn):
             raise "Feil filnavn"
         ## XXX: TODO: Skrive ut for alle os ## QPrint() ? 
-        os.system('kprinter "%s"' % filnavn)
+        os.system('"%s" "%s"' % (program, filnavn))
         
     def sendEpost(self, ordre, pdf, tekst=None, transport='sendmail'):
         import epost
