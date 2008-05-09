@@ -81,5 +81,19 @@
         </widget>
     </grid>
 </widget>
+<connections>
+    <connection>
+        <sender>sendEpostAvbryt</sender>
+        <signal>clicked()</signal>
+        <receiver>sendEpost</receiver>
+        <slot>reject()</slot>
+    </connection>
+    <connection>
+        <sender>sendEpostSend</sender>
+        <signal>clicked()</signal>
+        <receiver>sendEpost</receiver>
+        <slot>accept()</slot>
+    </connection>
+</connections>
 <layoutdefaults spacing="6" margin="11"/>
 </UI>
