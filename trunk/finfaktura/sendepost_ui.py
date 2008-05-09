@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'sendepost.ui'
 #
-# Created: on. april 23 12:23:37 2008
+# Created: fr. mai 9 20:09:00 2008
 #      by: The PyQt User Interface Compiler (pyuic) 3.17.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -50,6 +50,9 @@ class sendEpost(QDialog):
 
         self.resize(QSize(574,477).expandedTo(self.minimumSizeHint()))
         self.clearWState(Qt.WState_Polished)
+
+        self.connect(self.sendEpostAvbryt,SIGNAL("clicked()"),self.reject)
+        self.connect(self.sendEpostSend,SIGNAL("clicked()"),self.accept)
 
 
     def languageChange(self):
