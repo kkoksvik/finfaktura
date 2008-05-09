@@ -1,0 +1,99 @@
+<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
+<class>sendEpost</class>
+<widget class="QDialog">
+    <property name="name">
+        <cstring>sendEpost</cstring>
+    </property>
+    <property name="geometry">
+        <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>574</width>
+            <height>477</height>
+        </rect>
+    </property>
+    <property name="caption">
+        <string>Send faktura per epost</string>
+    </property>
+    <property name="modal">
+        <bool>true</bool>
+    </property>
+    <grid>
+        <property name="name">
+            <cstring>unnamed</cstring>
+        </property>
+        <widget class="QLayoutWidget" row="0" column="0">
+            <property name="name">
+                <cstring>layout12</cstring>
+            </property>
+            <grid>
+                <property name="name">
+                    <cstring>unnamed</cstring>
+                </property>
+                <widget class="QPushButton" row="2" column="1">
+                    <property name="name">
+                        <cstring>sendEpostSend</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Send</string>
+                    </property>
+                    <property name="default">
+                        <bool>true</bool>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>Sender efakturaen som PDF-fil til adressen over</string>
+                    </property>
+                </widget>
+                <widget class="QLabel" row="0" column="0" rowspan="1" colspan="2">
+                    <property name="name">
+                        <cstring>sendEpostTittel</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Sender epost til</string>
+                    </property>
+                    <property name="textFormat">
+                        <enum>RichText</enum>
+                    </property>
+                </widget>
+                <widget class="QTextEdit" row="1" column="0" rowspan="1" colspan="2">
+                    <property name="name">
+                        <cstring>sendEpostTekst</cstring>
+                    </property>
+                    <property name="textFormat">
+                        <enum>PlainText</enum>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>Valgfri tekst som vil bli vist i kundens epostprogram (fakturaen sendes som vedlegg)</string>
+                    </property>
+                </widget>
+                <widget class="QPushButton" row="2" column="0">
+                    <property name="name">
+                        <cstring>sendEpostAvbryt</cstring>
+                    </property>
+                    <property name="text">
+                        <string>Avbryt</string>
+                    </property>
+                    <property name="toolTip" stdset="0">
+                        <string>Avbryter sendingen av efaktura</string>
+                    </property>
+                </widget>
+            </grid>
+        </widget>
+    </grid>
+</widget>
+<connections>
+    <connection>
+        <sender>sendEpostAvbryt</sender>
+        <signal>clicked()</signal>
+        <receiver>sendEpost</receiver>
+        <slot>reject()</slot>
+    </connection>
+    <connection>
+        <sender>sendEpostSend</sender>
+        <signal>clicked()</signal>
+        <receiver>sendEpost</receiver>
+        <slot>accept()</slot>
+    </connection>
+</connections>
+<layoutdefaults spacing="6" margin="11"/>
+</UI>
