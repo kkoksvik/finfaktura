@@ -19,6 +19,9 @@ from string import join
 from ekstra import debug
 from fakturafeil import *
 
+PDFUTSKRIFT = "/usr/bin/kprinter"
+PDFVIS = "/usr/bin/kpdf"
+
 class fakturaKomponent:
     _egenskaper = {}
     _tabellnavn = ""
@@ -502,13 +505,13 @@ class fakturaSikkerhetskopi(fakturaKomponent):
         fil.close()
         return filnavn
 
-    def skrivUt(self):
+    def skrivUt(self, program=PDFUTSKRIFT):
         import os
-        os.system('kprinter "%s"' % self.lagFil())
+        os.system('"%s" "%s"' % (program, self.lagFil()))
 
-    def vis(self):
+    def vis(self, program=PDFVIS):
         import os
-        os.system('okular %s' % self.lagFil())
+        os.system('"%s" "%s"' % (program, self.lagFil()))
 
 
 class fakturaEpost(fakturaKomponent):

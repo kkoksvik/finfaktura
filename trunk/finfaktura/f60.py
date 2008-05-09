@@ -30,6 +30,8 @@ class f60Eksisterer(Exception): pass
 class f60Feil(Exception): pass
 class f60FeilKID(Exception): pass
 
+PDFUTSKRIFT = '/usr/bin/kprinter'
+
 class f60:
     standardskrift = "Helvetica"
     standardstorrelse = 10
@@ -111,10 +113,10 @@ class f60:
         #f.close()
         return filnavn
 
-    def skrivUt(self):
+    def skrivUt(self, program=PDFUTSKRIFT):
         if not os.path.exists(self.filnavn):
             raise "Feil filnavn"
-        os.system('kprinter "%s"' % self.filnavn) ### XXX: fiks dette 
+        os.system('"%s" "%s"' % (program, self.filnavn)) ### XXX: fiks dette
 
     def sjekkKid(self, kid):
         "Sjekker en kid etter mod10/luhner-algoritmen. -> bool"

@@ -1,12 +1,14 @@
 #!/usr/bin/python -d
 # -*- coding:utf8 -*-
+# kate: indent-width 4;
 ###########################################################################
-#    Copyright (C) 2005-2006 - Håvard Dahle og Håvard Sjøvoll
-#    <havard@dahle.no>, <sjovoll@ntnu.no>
+#    Copyright (C) 2005-2008 - Håvard Gulldahl og Håvard Sjøvoll
+#    <havard@gulldahl.no>, <sjovoll@ntnu.no>
 #
 #    Lisens: GPL2
 #
 # $Id$
+#
 ###########################################################################
 
 __doc__ = """Fryktelig fin faktura: skriv ut fakturaene dine"""
@@ -15,13 +17,14 @@ import sys, os.path, dircache, mimetypes, re
 from string import join
 from time import time, strftime, localtime, mktime
 from finfaktura.fakturabibliotek import *
-from finfaktura.f60 import f60, f60Eksisterer
+import finfaktura.f60 as f60
 from finfaktura.myndighetene import myndighetene
 from finfaktura.epost import BRUK_GMAIL
 import finfaktura.okonomi as fakturaOkonomi
 import finfaktura.sikkerhetskopi as sikkerhetskopi
 import finfaktura.historikk as historikk
 import finfaktura.rapport
+import finfaktura.fakturakomponenter
 from finfaktura.fakturafeil import *
 from finfaktura.sendepost_ui import sendEpost
 
@@ -86,6 +89,9 @@ except ImportError:
 
 # Konstanter
 
+PDFVIS = "/usr/bin/kpdf" # program for å vise PDF
+PDFUTSKRIFT = "/usr/bin/kprinter" # program for å printe PDF
+
 class Faktura (faktura): ## leser gui fra faktura_ui.py
     db = None
     denne_kunde = None
@@ -99,8 +105,8 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         #skjul ikke-ferdige tabs dersom vi er i produksjon
         # TODO: gjøre dem klare for produksjon
         if PRODUKSJONSVERSJON:
-            self.fakturaTab.removePage(self.fakturaTab.page(6)) # sikkerhetskopi
-            self.fakturaTab.removePage(self.fakturaTab.page(6)) # myndighetene
+            self.fakturaTab.removePage(self.fakturaTab.page(7)) # sikkerhetskopi
+            self.fakturaTab.removePage(self.fakturaTab.page(7)) # myndighetene
         else:
             self.setCaption("FRYKTELIG FIN FADESE (utviklerversjon)")
             self.patchDebugModus() # vis live debug-konsoll
@@ -142,12 +148,17 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
 
         self.connect(self.dittfirmaFinnFjernLogo, SIGNAL("clicked()"), self.finnFjernLogo)
         self.connect(self.dittfirmaLagre, SIGNAL("clicked()"), self.oppdaterFirma)
-        self.connect(self.dittfirmaFakturakatalogSok, SIGNAL("clicked()"), self.endreFakturakatalog)
-
+        
         self.connect(self.epostSmtpAuth, SIGNAL("toggled(bool)"), self.epostVisAuth)
         self.connect(self.epostLagre, SIGNAL("clicked()"), self.oppdaterEpost)
         self.connect(self.epostLosning, SIGNAL("clicked(int)"), self.roterAktivSeksjon)
         self.connect(self.epostLosningTest, SIGNAL("clicked()"), self.testEpost)
+
+        self.connect(self.oppsettFakturakatalogSok, SIGNAL("clicked()"), self.endreFakturakatalog)
+        self.connect(self.oppsettProgrammerVisSok, SIGNAL("clicked()"), self.endreProgramVis)
+        self.connect(self.oppsettProgrammerUtskriftSok, SIGNAL("clicked()"), self.endreProgramUtskrift)
+        self.connect(self.oppsettLagre, SIGNAL("clicked()"), self.oppdaterOppsett)
+
 
         self.connect(self.okonomiAvgrensningerDatoManed, SIGNAL("highlighted(int)"), self.okonomiFyllDatoPeriode)
         self.connect(self.okonomiAvgrensningerDato, SIGNAL("toggled(bool)"), self.okonomiFyllDato)
@@ -157,7 +168,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         self.connect(self.okonomiRegnskapRegnut, SIGNAL("clicked()"), self.okonomiRegnRegnskap)
         self.connect(self.okonomiFakturaerSkrivut, SIGNAL("clicked()"), self.okonomiSkrivUtFakturaer)
 
-        self.connect(self.sikkerhetskopiGmailLastopp, SIGNAL("clicked()"), self.sikkerhetskopiGmail)
+        #self.connect(self.sikkerhetskopiGmailLastopp, SIGNAL("clicked()"), self.sikkerhetskopiGmail)
 
         self.fakturaFaktaVareliste.setColumnStretchable(0, True)
         self.fakturaFaktaVareliste.setColumnWidth(1, 70)
@@ -173,8 +184,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             self.dittfirmaTelefon,
             self.dittfirmaTelefaks,
             self.dittfirmaMobil,
-            self.dittfirmaKontonummer,
-            self.dittfirmaFakturakatalog):
+            self.dittfirmaKontonummer):
             self.connect(obj, SIGNAL("lostFocus()"), self.firmaSjekk)
 
         for obj in (self.dittfirmaAdresse,
@@ -197,7 +207,6 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             self.dittfirmaKontonummer:'Kontonummer',
             #self.dittfirmaMva:'Momssats',
             self.dittfirmaForfall:'Forfallsperiode',
-            self.dittfirmaFakturakatalog:'Lagringssted for fakturaer',
         }
 
         self.kundeKundeliste.contextMenuEvent = self.kundeContextMenu
@@ -225,7 +234,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             self.faktura = FakturaBibliotek(self.db)
             self.firma   = self.faktura.firmainfo()
             self.obs(u"Dette er første gang du starter programmet.\nFør du kan legge inn din første faktura, \ner jeg nødt til å få informasjon om firmaet ditt.")
-            self.fakturaTab.showPage(self.fakturaTab.page(3))
+            self.fakturaTab.showPage(self.fakturaTab.page(4))
             self.gammelTab = 3
         except DBGammelFeil, (E):
             #oppgrader databasen
@@ -252,6 +261,15 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         except SikkerhetskopiFeil, e:
             self.alert(e.args[0])
         self.faktura.produksjonsversjon = PRODUKSJONSVERSJON
+        if not self.faktura.oppsett.vispdf:
+            self.faktura.oppsett.vispdf = PDFVIS
+        finfaktura.rapport.PDFVIS = self.faktura.oppsett.vispdf
+        finfaktura.fakturakomponenter.PDFVIS = self.faktura.oppsett.vispdf
+
+        if not self.faktura.oppsett.skrivutpdf:
+            self.faktura.oppsett.skrivutpdf = PDFUTSKRIFT
+        finfaktura.fakturakomponenter.PDFUTSKRIFT = self.faktura.oppsett.skrivutpdf
+        f60.PDFUTSKRIFT = self.faktura.oppsett.skrivutpdf
 
     def avslutt(self):
         debug("__del__")
@@ -269,11 +287,12 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         if i is 0: self.visFaktura()
         elif i is 1: self.visKunder()
         elif i is 2: self.visVarer()
-        elif i is 3: self.visFirma()
-        elif i is 4: self.visEpost()
-        elif i is 5: self.visOkonomi()
-        elif i is 6: self.visMyndigheter()
+        elif i is 3: self.visOkonomi()
+        elif i is 4: self.visFirma()
+        elif i is 5: self.visEpost()
+        elif i is 6: self.visOppsett()
         elif i is 7: self.visSikkerhetskopi()
+        elif i is 8: self.visMyndigheter()
         self.gammelTab = i
 
 ################## DEBUG ########################
@@ -601,7 +620,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             self.alert(u'Ingen faktura er valgt')
             return False
         kvitt = ordre.hentSikkerhetskopi()
-        kvitt.skrivUt()
+        kvitt.skrivUt(program=self.faktura.oppsett.skrivutpdf)
 
     def visFakturaKvittering(self):
         try:
@@ -624,18 +643,18 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         ordre.firma = self.firma
         fakturanavn = ordre.lagFilnavn(self.faktura.oppsett.fakturakatalog, fakturatype=Type)
         try:
-            pdf = f60(fakturanavn)
+            pdf = f60.f60(fakturanavn)
             pdf.settFirmainfo(self.firma._egenskaper)
             pdf.settKundeinfo(ordre.kunde._id, ordre.kunde.postadresse())
             pdf.settFakturainfo(ordre._id, ordre.ordredato, ordre.forfall, ordre.tekst)
             pdf.settOrdrelinje(ordre.hentOrdrelinje)
-        except f60Eksisterer, (E):
+        except f60.f60Eksisterer, (E):
             # HACK XXX: E er nå filnavnet
             if Type == "epost":
                 self.visEpostfaktura(ordre, unicode(E))
             elif Type == "papir":
                 if self.JaNei(u"Blanketten er laget fra før av. Vil du skrive den ut nå?"):
-                    self.faktura.skrivUt(unicode(E))
+                    self.faktura.skrivUt(unicode(E), program=self.faktura.oppsett.skrivutpdf)
             return None
         if Type == "epost":
             pdf.lagBakgrunn()
@@ -664,7 +683,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
                 elif Type == "papir":
                     historikk.pdfPapir(ordre, True, "interaktivt")
                     if self.JaNei(u"Blanketten er laget. Vil du skrive den ut nå?"):
-                        suksess = pdf.skrivUt()
+                        suksess = pdf.skrivUt(program=self.faktura.oppsett.skrivutpdf)
                         historikk.utskrift(ordre, suksess, "interaktivt")
                     else: self.obs(u"Blanketten er lagret med filnavn: %s" % pdf.filnavn)
 
@@ -747,7 +766,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
     def sendEpostfaktura(self, ordre, tekst, filnavn):
         try:
             debug('sender epostfaktura: ordre # %i, til: %s' % (ordre._id, ordre.kunde.epost))
-            trans = ['auto', 'gmail', 'smtp', 'sendmail']
+            trans = ['auto', 'smtp', 'sendmail']
             debug('bruker transport %s' % trans[self.faktura.epostoppsett.transport])
             self.faktura.sendEpost(ordre,
                                    filnavn,
@@ -1116,7 +1135,6 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             self.dittfirmaVilkar               :  self.firma.vilkar,
             self.dittfirmaMva                 :  self.firma.mva,
             self.dittfirmaForfall             :  self.firma.forfall,
-            self.dittfirmaFakturakatalog       :  self.faktura.oppsett.fakturakatalog
             }
 
     def visFirma(self):
@@ -1169,8 +1187,6 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         self.firma.vilkar     = unicode(self.dittfirmaVilkar.text())
         self.firma.mva        = int(self.dittfirmaMva.value())
         self.firma.forfall    = unicode(self.dittfirmaForfall.value())
-
-        self.faktura.oppsett.fakturakatalog = unicode(self.dittfirmaFakturakatalog.text())
 
         mangler = self.sjekkFirmaMangler()
         if mangler:
@@ -1246,14 +1262,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
                 self.visLogo()
 
 
-    def endreFakturakatalog(self):
-        nu = self.dittfirmaFakturakatalog.text()
-        startdir = nu
-        ny = QFileDialog.getExistingDirectory(startdir, self, "Velg katalog fakturaene skal lagres i", "Velg fakturakatalog")
-        if len(unicode(ny)) > 0:
-            debug("Setter ny fakturakataolg: %s" % ny)
-            self.faktura.oppsett.fakturakatalog = unicode(ny)
-            self.dittfirmaFakturakatalog.setText(unicode(ny))
+
 
 ############## Epost ###################
 
@@ -1263,13 +1272,6 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             self.epostKopiadresse.setText(self.faktura.epostoppsett.bcc)
         self.epostLosning.setButton(self.faktura.epostoppsett.transport)
         self.roterAktivSeksjon(self.faktura.epostoppsett.transport)
-        if BRUK_GMAIL:
-            self.epostGmailUbrukelig.hide()
-            if self.faktura.epostoppsett.gmailbruker:
-                self.epostGmailEpost.setText(self.faktura.epostoppsett.gmailbruker)
-                if self.faktura.epostoppsett.gmailpassord:
-                    self.epostGmailPassord.setText(self.faktura.epostoppsett.gmailpassord)
-                self.epostGmailHuskEpost.setChecked(True)
         if self.faktura.epostoppsett.smtpserver:
             self.epostSmtpServer.setText(self.faktura.epostoppsett.smtpserver)
         if self.faktura.epostoppsett.smtpport:
@@ -1287,43 +1289,12 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         else:
             self.epostSendmailSti.setText('~')
 
-    def visEpostGML(self):
-        if self.faktura.epostoppsett.bcc:
-            self.epostSendkopi.setChecked(True)
-            self.epostKopiadresse.setText(self.faktura.epostoppsett.bcc)
-        self.epostLosning.setButton(self.faktura.epostoppsett.transport)
-        self.roterAktivSeksjon(self.faktura.epostoppsett.transport)
-        if BRUK_GMAIL:
-            self.epostGmailUbrukelig.hide()
-            if self.faktura.epostoppsett.gmailbruker:
-                self.epostGmailEpost.setText(self.faktura.epostoppsett.gmailbruker)
-                self.epostGmailPassord.setText(self.faktura.epostoppsett.gmailpassord)
-                self.epostGmailHuskEpost.setChecked(True)
-        self.epostSmtpServer.setText(self.faktura.epostoppsett.smtpserver)
-        self.epostSmtpPort.setValue(self.faktura.epostoppsett.smtpport)
-        self.epostSmtpTLS.setChecked(self.faktura.epostoppsett.smtptls)
-        self.epostSmtpAuth.setChecked(self.faktura.epostoppsett.smtpauth)
-        if self.faktura.epostoppsett.smtpbruker: # husk brukernavn og passord for smtp
-            self.epostSmtpHuskEpost.setChecked(True)
-            self.epostSmtpBrukernavn.setText(self.faktura.epostoppsett.smtpbruker)
-            self.epostSmtpPassord.setText(self.faktura.epostoppsett.smtppassord)
-        self.epostSendmailSti.setText(self.faktura.epostoppsett.sendmailsti)
-
-
-
     def oppdaterEpost(self):
         debug("lagrer epost")
         self.faktura.epostoppsett.transport = self.epostLosning.selectedId()
         if not self.epostSendkopi.isChecked():
             self.epostKopiadresse.setText('')
         self.faktura.epostoppsett.bcc = unicode(self.epostKopiadresse.text())
-        if self.epostGmailHuskEpost.isChecked():
-            self.faktura.epostoppsett.gmailbruker = unicode(self.epostGmailEpost.text())
-            self.faktura.epostoppsett.gmailpassord = unicode(self.epostGmailPassord.text())
-        else:
-            self.faktura.epostoppsett.gmailbruker = ''
-            self.faktura.epostoppsett.gmailpassord = ''
-
         self.faktura.epostoppsett.smtpserver = unicode(self.epostSmtpServer.text())
         self.faktura.epostoppsett.smtpport = self.epostSmtpPort.value()
         self.faktura.epostoppsett.smtptls = self.epostSmtpTLS.isChecked()
@@ -1341,13 +1312,13 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         if aktivId is None: aktivId = self.epostLosning.selectedId()
         i = 1
         debug("roterer til %i er synlig" % aktivId)
-        for seksjon in [self.epostSeksjonGmail, self.epostSeksjonSmtp, self.epostSeksjonSendmail]:
+        for seksjon in [self.epostSeksjonSmtp, self.epostSeksjonSendmail]:
             seksjon.setEnabled(aktivId == i)
             i += 1
 
     def testEpost(self):
         self.oppdaterEpost() # må lagre for å bruke de inntastede verdiene
-        trans = ['auto', 'gmail', 'smtp', 'sendmail']
+        trans = ['auto', 'smtp', 'sendmail']
         debug('bruker transport %s' % trans[self.epostLosning.selectedId()])
         try:
             transport = self.faktura.testEpost(trans[self.epostLosning.selectedId()])
@@ -1510,7 +1481,43 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         beskrivelse['firma'] = self.firma
         rapport = finfaktura.rapport.rapport('/tmp/hei.pdf', beskrivelse)
         rapport.lastOrdreliste(ordrer)
-        rapport.vis()
+        rapport.vis(program=self.faktura.oppsett.vispdf)
+
+############## OPPSETT ###################
+
+    def visOppsett(self):
+        self.oppsettFakturakatalog.setText(self.faktura.oppsett.fakturakatalog)
+        self.oppsettProgramVisPDF.setText(self.faktura.oppsett.vispdf)
+        self.oppsettProgramSkrivUtPDF.setText(self.faktura.oppsett.skrivutpdf)
+
+    def endreFakturakatalog(self):
+        nu = self.oppsettFakturakatalog.text()
+        startdir = nu
+        ny = QFileDialog.getExistingDirectory(startdir, self, "Velg katalog fakturaene skal lagres i", "Velg fakturakatalog")
+        if len(unicode(ny)) > 0:
+            debug("Setter ny fakturakataolg: %s" % ny)
+            self.faktura.oppsett.fakturakatalog = unicode(ny)
+            self.dittfirmaFakturakatalog.setText(unicode(ny))
+
+    def endreProgramVis(self):
+        ny = unicode(QFileDialog.getOpenFileName(self.oppsettProgramVisPDF.text(), "", self, "Velg program", u"Velg et program til å vise PDF i"))
+        if len(ny) > 0:
+            debug("Setter nytt visningsprogram: %s" % ny)
+            self.faktura.oppsett.vispdf= ny
+            self.oppsettProgramVisPDF.setText(ny)
+
+    def endreProgramUtskrift(self):
+        ny = unicode(QFileDialog.getOpenFileName(self.oppsettProgramSkrivUtPDF.text(), "", self, "Velg program", u"Velg et program til å skrive ut PDF med"))
+        if len(ny) > 0:
+            debug("Setter nytt utskriftsprogram: %s" % ny)
+            self.faktura.oppsett.skrivutpdf = ny
+            self.oppsettProgramSkrivUtPDF.setText(ny)
+
+    def oppdaterOppsett(self):
+        debug("Lager oppsett")
+        self.faktura.oppsett.fakturakatalog = unicode(self.oppsettFakturakatalog.text())
+        self.faktura.oppsett.vispdf = unicode(self.oppsettProgramVisPDF.text())
+        self.faktura.oppsett.skrivutpdf = unicode(self.oppsettProgramSkrivUtPDF.text())
 
 ############## MYNDIGHETER ###################
 

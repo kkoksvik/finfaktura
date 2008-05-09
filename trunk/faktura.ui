@@ -8,8 +8,8 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>1082</width>
-            <height>834</height>
+            <width>873</width>
+            <height>780</height>
         </rect>
     </property>
     <property name="font">
@@ -404,7 +404,7 @@
                                     <enum>Horizontal</enum>
                                 </property>
                                 <property name="sizeType">
-                                    <enum>Expanding</enum>
+                                    <enum>Preferred</enum>
                                 </property>
                                 <property name="sizeHint">
                                     <size>
@@ -421,7 +421,7 @@
                                     <enum>Horizontal</enum>
                                 </property>
                                 <property name="sizeType">
-                                    <enum>Expanding</enum>
+                                    <enum>MinimumExpanding</enum>
                                 </property>
                                 <property name="sizeHint">
                                     <size>
@@ -444,6 +444,14 @@
                             <widget class="QLabel" row="6" column="6">
                                 <property name="name">
                                     <cstring>fakturaFaktaSum</cstring>
+                                </property>
+                                <property name="sizePolicy">
+                                    <sizepolicy>
+                                        <hsizetype>3</hsizetype>
+                                        <vsizetype>5</vsizetype>
+                                        <horstretch>1</horstretch>
+                                        <verstretch>0</verstretch>
+                                    </sizepolicy>
                                 </property>
                                 <property name="text">
                                     <string>0 kr</string>
@@ -473,6 +481,14 @@
                                 <property name="name">
                                     <cstring>fakturaFaktaDato</cstring>
                                 </property>
+                                <property name="sizePolicy">
+                                    <sizepolicy>
+                                        <hsizetype>7</hsizetype>
+                                        <vsizetype>0</vsizetype>
+                                        <horstretch>1</horstretch>
+                                        <verstretch>0</verstretch>
+                                    </sizepolicy>
+                                </property>
                                 <property name="toolTip" stdset="0">
                                     <string>Dato for fakturering</string>
                                 </property>
@@ -480,6 +496,14 @@
                             <widget class="QPushButton" row="5" column="0" rowspan="1" colspan="3">
                                 <property name="name">
                                     <cstring>fakturaFaktaVareLeggtil</cstring>
+                                </property>
+                                <property name="sizePolicy">
+                                    <sizepolicy>
+                                        <hsizetype>0</hsizetype>
+                                        <vsizetype>0</vsizetype>
+                                        <horstretch>0</horstretch>
+                                        <verstretch>0</verstretch>
+                                    </sizepolicy>
                                 </property>
                                 <property name="text">
                                     <string>Le&amp;gg til ny vare</string>
@@ -1235,62 +1259,46 @@
                     <property name="name">
                         <cstring>unnamed</cstring>
                     </property>
-                    <widget class="QPushButton" row="0" column="0">
+                    <widget class="QGroupBox" row="1" column="3">
                         <property name="name">
-                            <cstring>varerNy</cstring>
+                            <cstring>groupBox8</cstring>
                         </property>
-                        <property name="text">
-                            <string>&amp;Ny vare</string>
+                        <property name="sizePolicy">
+                            <sizepolicy>
+                                <hsizetype>7</hsizetype>
+                                <vsizetype>3</vsizetype>
+                                <horstretch>5</horstretch>
+                                <verstretch>0</verstretch>
+                            </sizepolicy>
                         </property>
-                        <property name="accel">
-                            <string>Alt+N</string>
+                        <property name="title">
+                            <string>Detaljer</string>
                         </property>
+                        <grid>
+                            <property name="name">
+                                <cstring>unnamed</cstring>
+                            </property>
+                            <widget class="QLabel" row="0" column="0">
+                                <property name="name">
+                                    <cstring>varerDetaljerTekst</cstring>
+                                </property>
+                                <property name="sizePolicy">
+                                    <sizepolicy>
+                                        <hsizetype>3</hsizetype>
+                                        <vsizetype>3</vsizetype>
+                                        <horstretch>0</horstretch>
+                                        <verstretch>0</verstretch>
+                                    </sizepolicy>
+                                </property>
+                                <property name="textFormat">
+                                    <enum>RichText</enum>
+                                </property>
+                                <property name="alignment">
+                                    <set>WordBreak|AlignTop|AlignLeft</set>
+                                </property>
+                            </widget>
+                        </grid>
                     </widget>
-                    <widget class="QCheckBox" row="0" column="2">
-                        <property name="name">
-                            <cstring>varerVisFjernede</cstring>
-                        </property>
-                        <property name="text">
-                            <string>vis f&amp;jernede</string>
-                        </property>
-                        <property name="accel">
-                            <string>Alt+J</string>
-                        </property>
-                    </widget>
-                    <spacer row="0" column="1">
-                        <property name="name">
-                            <cstring>spacer10</cstring>
-                        </property>
-                        <property name="orientation">
-                            <enum>Horizontal</enum>
-                        </property>
-                        <property name="sizeType">
-                            <enum>Expanding</enum>
-                        </property>
-                        <property name="sizeHint">
-                            <size>
-                                <width>431</width>
-                                <height>20</height>
-                            </size>
-                        </property>
-                    </spacer>
-                    <spacer row="0" column="3">
-                        <property name="name">
-                            <cstring>spacer11</cstring>
-                        </property>
-                        <property name="orientation">
-                            <enum>Horizontal</enum>
-                        </property>
-                        <property name="sizeType">
-                            <enum>Expanding</enum>
-                        </property>
-                        <property name="sizeHint">
-                            <size>
-                                <width>71</width>
-                                <height>20</height>
-                            </size>
-                        </property>
-                    </spacer>
                     <widget class="QListView" row="1" column="0" rowspan="1" colspan="3">
                         <column>
                             <property name="text">
@@ -1354,7 +1362,7 @@
                             <sizepolicy>
                                 <hsizetype>7</hsizetype>
                                 <vsizetype>3</vsizetype>
-                                <horstretch>6</horstretch>
+                                <horstretch>18</horstretch>
                                 <verstretch>1</verstretch>
                             </sizepolicy>
                         </property>
@@ -1367,46 +1375,6 @@
                         <property name="resizeMode">
                             <enum>AllColumns</enum>
                         </property>
-                    </widget>
-                    <widget class="QGroupBox" row="1" column="3">
-                        <property name="name">
-                            <cstring>groupBox8</cstring>
-                        </property>
-                        <property name="sizePolicy">
-                            <sizepolicy>
-                                <hsizetype>7</hsizetype>
-                                <vsizetype>3</vsizetype>
-                                <horstretch>5</horstretch>
-                                <verstretch>0</verstretch>
-                            </sizepolicy>
-                        </property>
-                        <property name="title">
-                            <string>Detaljer</string>
-                        </property>
-                        <grid>
-                            <property name="name">
-                                <cstring>unnamed</cstring>
-                            </property>
-                            <widget class="QLabel" row="0" column="0">
-                                <property name="name">
-                                    <cstring>varerDetaljerTekst</cstring>
-                                </property>
-                                <property name="sizePolicy">
-                                    <sizepolicy>
-                                        <hsizetype>3</hsizetype>
-                                        <vsizetype>3</vsizetype>
-                                        <horstretch>0</horstretch>
-                                        <verstretch>0</verstretch>
-                                    </sizepolicy>
-                                </property>
-                                <property name="textFormat">
-                                    <enum>RichText</enum>
-                                </property>
-                                <property name="alignment">
-                                    <set>WordBreak|AlignTop|AlignLeft</set>
-                                </property>
-                            </widget>
-                        </grid>
                     </widget>
                     <widget class="QGroupBox" row="2" column="0" rowspan="1" colspan="4">
                         <property name="name">
@@ -1621,6 +1589,78 @@
                             </widget>
                         </grid>
                     </widget>
+                    <widget class="QPushButton" row="0" column="0">
+                        <property name="name">
+                            <cstring>varerNy</cstring>
+                        </property>
+                        <property name="sizePolicy">
+                            <sizepolicy>
+                                <hsizetype>0</hsizetype>
+                                <vsizetype>0</vsizetype>
+                                <horstretch>0</horstretch>
+                                <verstretch>0</verstretch>
+                            </sizepolicy>
+                        </property>
+                        <property name="text">
+                            <string>&amp;Ny vare</string>
+                        </property>
+                        <property name="accel">
+                            <string>Alt+N</string>
+                        </property>
+                    </widget>
+                    <widget class="QCheckBox" row="0" column="2">
+                        <property name="name">
+                            <cstring>varerVisFjernede</cstring>
+                        </property>
+                        <property name="sizePolicy">
+                            <sizepolicy>
+                                <hsizetype>0</hsizetype>
+                                <vsizetype>0</vsizetype>
+                                <horstretch>0</horstretch>
+                                <verstretch>0</verstretch>
+                            </sizepolicy>
+                        </property>
+                        <property name="text">
+                            <string>vis f&amp;jernede</string>
+                        </property>
+                        <property name="accel">
+                            <string>Alt+J</string>
+                        </property>
+                    </widget>
+                    <spacer row="0" column="3">
+                        <property name="name">
+                            <cstring>spacer18</cstring>
+                        </property>
+                        <property name="orientation">
+                            <enum>Horizontal</enum>
+                        </property>
+                        <property name="sizeType">
+                            <enum>Expanding</enum>
+                        </property>
+                        <property name="sizeHint">
+                            <size>
+                                <width>210</width>
+                                <height>20</height>
+                            </size>
+                        </property>
+                    </spacer>
+                    <spacer row="0" column="1">
+                        <property name="name">
+                            <cstring>spacer10</cstring>
+                        </property>
+                        <property name="orientation">
+                            <enum>Horizontal</enum>
+                        </property>
+                        <property name="sizeType">
+                            <enum>Expanding</enum>
+                        </property>
+                        <property name="sizeHint">
+                            <size>
+                                <width>650</width>
+                                <height>20</height>
+                            </size>
+                        </property>
+                    </spacer>
                 </grid>
             </widget>
             <widget class="QWidget">
@@ -1639,10 +1679,10 @@
                             <cstring>okonomiFakturaerSkrivut</cstring>
                         </property>
                         <property name="text">
-                            <string>Skriv &amp;ut</string>
+                            <string>Vis r&amp;apport</string>
                         </property>
                         <property name="accel">
-                            <string>Alt+U</string>
+                            <string>Alt+A</string>
                         </property>
                     </widget>
                     <widget class="QCheckBox" row="2" column="2">
@@ -2534,15 +2574,700 @@ betalingsvilkår</string>
                             </spacer>
                         </grid>
                     </widget>
-                    <widget class="QFrame" row="2" column="1">
+                </grid>
+            </widget>
+            <widget class="QWidget">
+                <property name="name">
+                    <cstring>TabPage</cstring>
+                </property>
+                <attribute name="title">
+                    <string>&amp;Epost</string>
+                </attribute>
+                <grid>
+                    <property name="name">
+                        <cstring>unnamed</cstring>
+                    </property>
+                    <widget class="QGroupBox" row="2" column="1">
+                        <property name="name">
+                            <cstring>epostSeksjonSmtp</cstring>
+                        </property>
+                        <property name="enabled">
+                            <bool>true</bool>
+                        </property>
+                        <property name="title">
+                            <string>SMTP</string>
+                        </property>
+                        <grid>
+                            <property name="name">
+                                <cstring>unnamed</cstring>
+                            </property>
+                            <widget class="QLabel" row="4" column="1" rowspan="1" colspan="2">
+                                <property name="name">
+                                    <cstring>textLabel3_4_2</cstring>
+                                </property>
+                                <property name="text">
+                                    <string>Passord:</string>
+                                </property>
+                            </widget>
+                            <widget class="QLabel" row="3" column="1" rowspan="1" colspan="2">
+                                <property name="name">
+                                    <cstring>textLabel3_4</cstring>
+                                </property>
+                                <property name="text">
+                                    <string>Brukernavn:</string>
+                                </property>
+                            </widget>
+                            <widget class="QCheckBox" row="1" column="1" rowspan="1" colspan="3">
+                                <property name="name">
+                                    <cstring>epostSmtpTLS</cstring>
+                                </property>
+                                <property name="enabled">
+                                    <bool>true</bool>
+                                </property>
+                                <property name="text">
+                                    <string>Serveren støtter krypterte overføringer (TLS)</string>
+                                </property>
+                            </widget>
+                            <widget class="QLineEdit" row="3" column="3">
+                                <property name="name">
+                                    <cstring>epostSmtpBrukernavn</cstring>
+                                </property>
+                                <property name="enabled">
+                                    <bool>false</bool>
+                                </property>
+                            </widget>
+                            <widget class="QCheckBox" row="2" column="1" rowspan="1" colspan="3">
+                                <property name="name">
+                                    <cstring>epostSmtpAuth</cstring>
+                                </property>
+                                <property name="enabled">
+                                    <bool>true</bool>
+                                </property>
+                                <property name="text">
+                                    <string>Serveren krever at jeg logger inn</string>
+                                </property>
+                            </widget>
+                            <widget class="QCheckBox" row="3" column="4">
+                                <property name="name">
+                                    <cstring>epostSmtpHuskEpost</cstring>
+                                </property>
+                                <property name="text">
+                                    <string>Husk</string>
+                                </property>
+                            </widget>
+                            <widget class="QSpinBox" row="0" column="8">
+                                <property name="name">
+                                    <cstring>epostSmtpPort</cstring>
+                                </property>
+                                <property name="buttonSymbols">
+                                    <enum>UpDownArrows</enum>
+                                </property>
+                                <property name="maxValue">
+                                    <number>999999</number>
+                                </property>
+                                <property name="minValue">
+                                    <number>1</number>
+                                </property>
+                                <property name="value">
+                                    <number>25</number>
+                                </property>
+                            </widget>
+                            <widget class="QLineEdit" row="4" column="3">
+                                <property name="name">
+                                    <cstring>epostSmtpPassord</cstring>
+                                </property>
+                                <property name="enabled">
+                                    <bool>false</bool>
+                                </property>
+                                <property name="echoMode">
+                                    <enum>Password</enum>
+                                </property>
+                            </widget>
+                            <widget class="QFrame" row="1" column="0" rowspan="4" colspan="1">
+                                <property name="name">
+                                    <cstring>frame18_2</cstring>
+                                </property>
+                                <property name="sizePolicy">
+                                    <sizepolicy>
+                                        <hsizetype>5</hsizetype>
+                                        <vsizetype>5</vsizetype>
+                                        <horstretch>1</horstretch>
+                                        <verstretch>0</verstretch>
+                                    </sizepolicy>
+                                </property>
+                                <property name="frameShape">
+                                    <enum>StyledPanel</enum>
+                                </property>
+                                <property name="frameShadow">
+                                    <enum>Raised</enum>
+                                </property>
+                                <property name="lineWidth">
+                                    <number>0</number>
+                                </property>
+                            </widget>
+                            <widget class="QFrame" row="1" column="5" rowspan="4" colspan="5">
+                                <property name="name">
+                                    <cstring>frame19</cstring>
+                                </property>
+                                <property name="sizePolicy">
+                                    <sizepolicy>
+                                        <hsizetype>5</hsizetype>
+                                        <vsizetype>5</vsizetype>
+                                        <horstretch>1</horstretch>
+                                        <verstretch>0</verstretch>
+                                    </sizepolicy>
+                                </property>
+                                <property name="frameShape">
+                                    <enum>StyledPanel</enum>
+                                </property>
+                                <property name="frameShadow">
+                                    <enum>Raised</enum>
+                                </property>
+                                <property name="lineWidth">
+                                    <number>0</number>
+                                </property>
+                            </widget>
+                            <spacer row="0" column="9">
+                                <property name="name">
+                                    <cstring>spacer19</cstring>
+                                </property>
+                                <property name="orientation">
+                                    <enum>Horizontal</enum>
+                                </property>
+                                <property name="sizeType">
+                                    <enum>Expanding</enum>
+                                </property>
+                                <property name="sizeHint">
+                                    <size>
+                                        <width>341</width>
+                                        <height>20</height>
+                                    </size>
+                                </property>
+                            </spacer>
+                            <widget class="QLabel" row="0" column="0" rowspan="1" colspan="2">
+                                <property name="name">
+                                    <cstring>textLabel1_12</cstring>
+                                </property>
+                                <property name="text">
+                                    <string>Send gjennom server (SMTP server):</string>
+                                </property>
+                                <property name="buddy" stdset="0">
+                                    <cstring>epostSmtpServer</cstring>
+                                </property>
+                            </widget>
+                            <widget class="QLineEdit" row="0" column="2" rowspan="1" colspan="4">
+                                <property name="name">
+                                    <cstring>epostSmtpServer</cstring>
+                                </property>
+                                <property name="text">
+                                    <string>localhost</string>
+                                </property>
+                            </widget>
+                            <widget class="QLabel" row="0" column="7">
+                                <property name="name">
+                                    <cstring>textLabel4_4</cstring>
+                                </property>
+                                <property name="text">
+                                    <string>Port:</string>
+                                </property>
+                            </widget>
+                            <spacer row="0" column="6">
+                                <property name="name">
+                                    <cstring>spacer20</cstring>
+                                </property>
+                                <property name="orientation">
+                                    <enum>Horizontal</enum>
+                                </property>
+                                <property name="sizeType">
+                                    <enum>Expanding</enum>
+                                </property>
+                                <property name="sizeHint">
+                                    <size>
+                                        <width>200</width>
+                                        <height>20</height>
+                                    </size>
+                                </property>
+                            </spacer>
+                        </grid>
+                    </widget>
+                    <widget class="QGroupBox" row="1" column="1">
+                        <property name="name">
+                            <cstring>epostSendkopi</cstring>
+                        </property>
+                        <property name="title">
+                            <string>Send kopi av e-faktura</string>
+                        </property>
+                        <property name="checkable">
+                            <bool>true</bool>
+                        </property>
+                        <property name="checked">
+                            <bool>false</bool>
+                        </property>
+                        <grid>
+                            <property name="name">
+                                <cstring>unnamed</cstring>
+                            </property>
+                            <widget class="QLineEdit" row="0" column="1">
+                                <property name="name">
+                                    <cstring>epostKopiadresse</cstring>
+                                </property>
+                            </widget>
+                            <widget class="QLabel" row="0" column="0">
+                                <property name="name">
+                                    <cstring>textLabel2_6</cstring>
+                                </property>
+                                <property name="text">
+                                    <string>Send kopi (BCC) til:</string>
+                                </property>
+                            </widget>
+                        </grid>
+                    </widget>
+                    <widget class="QButtonGroup" row="0" column="1">
+                        <property name="name">
+                            <cstring>epostLosning</cstring>
+                        </property>
+                        <property name="title">
+                            <string>Epostløsning for sending av e-faktura</string>
+                        </property>
+                        <grid>
+                            <property name="name">
+                                <cstring>unnamed</cstring>
+                            </property>
+                            <widget class="QLayoutWidget" row="0" column="0">
+                                <property name="name">
+                                    <cstring>layout11</cstring>
+                                </property>
+                                <vbox>
+                                    <property name="name">
+                                        <cstring>unnamed</cstring>
+                                    </property>
+                                    <widget class="QRadioButton">
+                                        <property name="name">
+                                            <cstring>epostLosningAuto</cstring>
+                                        </property>
+                                        <property name="text">
+                                            <string>Velg automatisk</string>
+                                        </property>
+                                        <property name="checked">
+                                            <bool>true</bool>
+                                        </property>
+                                        <property name="buttonGroupId">
+                                            <number>-1</number>
+                                        </property>
+                                    </widget>
+                                    <widget class="QRadioButton">
+                                        <property name="name">
+                                            <cstring>epostLosningSmtp</cstring>
+                                        </property>
+                                        <property name="sizePolicy">
+                                            <sizepolicy>
+                                                <hsizetype>0</hsizetype>
+                                                <vsizetype>0</vsizetype>
+                                                <horstretch>0</horstretch>
+                                                <verstretch>0</verstretch>
+                                            </sizepolicy>
+                                        </property>
+                                        <property name="text">
+                                            <string>SMTP</string>
+                                        </property>
+                                        <property name="buttonGroupId">
+                                            <number>-1</number>
+                                        </property>
+                                    </widget>
+                                    <widget class="QRadioButton">
+                                        <property name="name">
+                                            <cstring>epostLosningSendmail</cstring>
+                                        </property>
+                                        <property name="text">
+                                            <string>Sendmail</string>
+                                        </property>
+                                        <property name="buttonGroupId">
+                                            <number>-1</number>
+                                        </property>
+                                    </widget>
+                                </vbox>
+                            </widget>
+                        </grid>
+                    </widget>
+                    <widget class="QFrame" row="0" column="0" rowspan="5" colspan="1">
+                        <property name="name">
+                            <cstring>frame22_2_2</cstring>
+                        </property>
+                        <property name="sizePolicy">
+                            <sizepolicy>
+                                <hsizetype>3</hsizetype>
+                                <vsizetype>5</vsizetype>
+                                <horstretch>2</horstretch>
+                                <verstretch>0</verstretch>
+                            </sizepolicy>
+                        </property>
+                        <property name="frameShape">
+                            <enum>StyledPanel</enum>
+                        </property>
+                        <property name="frameShadow">
+                            <enum>Raised</enum>
+                        </property>
+                        <property name="lineWidth">
+                            <number>0</number>
+                        </property>
+                    </widget>
+                    <widget class="QFrame" row="0" column="2" rowspan="5" colspan="1">
+                        <property name="name">
+                            <cstring>frame23_2_2</cstring>
+                        </property>
+                        <property name="sizePolicy">
+                            <sizepolicy>
+                                <hsizetype>5</hsizetype>
+                                <vsizetype>5</vsizetype>
+                                <horstretch>2</horstretch>
+                                <verstretch>0</verstretch>
+                            </sizepolicy>
+                        </property>
+                        <property name="frameShape">
+                            <enum>StyledPanel</enum>
+                        </property>
+                        <property name="frameShadow">
+                            <enum>Raised</enum>
+                        </property>
+                        <property name="lineWidth">
+                            <number>0</number>
+                        </property>
+                        <grid>
+                            <property name="name">
+                                <cstring>unnamed</cstring>
+                            </property>
+                            <widget class="QLabel" row="1" column="0" rowspan="3" colspan="2">
+                                <property name="name">
+                                    <cstring>dittfirmaLagreInfo_2_2</cstring>
+                                </property>
+                                <property name="sizePolicy">
+                                    <sizepolicy>
+                                        <hsizetype>5</hsizetype>
+                                        <vsizetype>5</vsizetype>
+                                        <horstretch>0</horstretch>
+                                        <verstretch>0</verstretch>
+                                    </sizepolicy>
+                                </property>
+                                <property name="text">
+                                    <string></string>
+                                </property>
+                                <property name="textFormat">
+                                    <enum>RichText</enum>
+                                </property>
+                                <property name="alignment">
+                                    <set>WordBreak|AlignJustify|AlignBottom</set>
+                                </property>
+                            </widget>
+                            <spacer row="0" column="1">
+                                <property name="name">
+                                    <cstring>spacer25_2_2</cstring>
+                                </property>
+                                <property name="orientation">
+                                    <enum>Vertical</enum>
+                                </property>
+                                <property name="sizeType">
+                                    <enum>Expanding</enum>
+                                </property>
+                                <property name="sizeHint">
+                                    <size>
+                                        <width>20</width>
+                                        <height>380</height>
+                                    </size>
+                                </property>
+                            </spacer>
+                            <widget class="QPushButton" row="2" column="1">
+                                <property name="name">
+                                    <cstring>epostLosningTest</cstring>
+                                </property>
+                                <property name="sizePolicy">
+                                    <sizepolicy>
+                                        <hsizetype>0</hsizetype>
+                                        <vsizetype>0</vsizetype>
+                                        <horstretch>0</horstretch>
+                                        <verstretch>0</verstretch>
+                                    </sizepolicy>
+                                </property>
+                                <property name="text">
+                                    <string>Test forbindelse</string>
+                                </property>
+                            </widget>
+                            <widget class="QPushButton" row="3" column="1">
+                                <property name="name">
+                                    <cstring>epostLagre</cstring>
+                                </property>
+                                <property name="text">
+                                    <string>&amp;Lagre</string>
+                                </property>
+                                <property name="accel">
+                                    <string>Alt+L</string>
+                                </property>
+                            </widget>
+                        </grid>
+                    </widget>
+                    <widget class="QFrame" row="4" column="1">
+                        <property name="name">
+                            <cstring>frame24</cstring>
+                        </property>
+                        <property name="sizePolicy">
+                            <sizepolicy>
+                                <hsizetype>5</hsizetype>
+                                <vsizetype>5</vsizetype>
+                                <horstretch>1</horstretch>
+                                <verstretch>0</verstretch>
+                            </sizepolicy>
+                        </property>
+                        <property name="frameShape">
+                            <enum>StyledPanel</enum>
+                        </property>
+                        <property name="frameShadow">
+                            <enum>Raised</enum>
+                        </property>
+                        <property name="lineWidth">
+                            <number>0</number>
+                        </property>
+                    </widget>
+                    <widget class="QGroupBox" row="3" column="1">
+                        <property name="name">
+                            <cstring>epostSeksjonSendmail</cstring>
+                        </property>
+                        <property name="enabled">
+                            <bool>true</bool>
+                        </property>
+                        <property name="title">
+                            <string>Sendmail</string>
+                        </property>
+                        <grid>
+                            <property name="name">
+                                <cstring>unnamed</cstring>
+                            </property>
+                            <widget class="QLabel" row="0" column="0">
+                                <property name="name">
+                                    <cstring>textLabel5_4</cstring>
+                                </property>
+                                <property name="text">
+                                    <string>Sti til sendmail:</string>
+                                </property>
+                            </widget>
+                            <widget class="QLineEdit" row="0" column="1">
+                                <property name="name">
+                                    <cstring>epostSendmailSti</cstring>
+                                </property>
+                                <property name="text">
+                                    <string>/usr/sbin/sendmail</string>
+                                </property>
+                            </widget>
+                            <widget class="QPushButton" row="0" column="2">
+                                <property name="name">
+                                    <cstring>oppsettFakturakatalogSok_2</cstring>
+                                </property>
+                                <property name="text">
+                                    <string>Søk...</string>
+                                </property>
+                            </widget>
+                        </grid>
+                    </widget>
+                </grid>
+            </widget>
+            <widget class="QWidget">
+                <property name="name">
+                    <cstring>TabPage</cstring>
+                </property>
+                <attribute name="title">
+                    <string>&amp;Oppsett</string>
+                </attribute>
+                <grid>
+                    <property name="name">
+                        <cstring>unnamed</cstring>
+                    </property>
+                    <widget class="QFrame" row="0" column="0" rowspan="3" colspan="1">
+                        <property name="name">
+                            <cstring>frame22_2</cstring>
+                        </property>
+                        <property name="sizePolicy">
+                            <sizepolicy>
+                                <hsizetype>5</hsizetype>
+                                <vsizetype>5</vsizetype>
+                                <horstretch>1</horstretch>
+                                <verstretch>0</verstretch>
+                            </sizepolicy>
+                        </property>
+                        <property name="frameShape">
+                            <enum>StyledPanel</enum>
+                        </property>
+                        <property name="frameShadow">
+                            <enum>Raised</enum>
+                        </property>
+                        <property name="lineWidth">
+                            <number>0</number>
+                        </property>
+                    </widget>
+                    <widget class="QFrame" row="0" column="2" rowspan="3" colspan="1">
+                        <property name="name">
+                            <cstring>frame23_2</cstring>
+                        </property>
+                        <property name="sizePolicy">
+                            <sizepolicy>
+                                <hsizetype>5</hsizetype>
+                                <vsizetype>5</vsizetype>
+                                <horstretch>1</horstretch>
+                                <verstretch>0</verstretch>
+                            </sizepolicy>
+                        </property>
+                        <property name="frameShape">
+                            <enum>StyledPanel</enum>
+                        </property>
+                        <property name="frameShadow">
+                            <enum>Raised</enum>
+                        </property>
+                        <property name="lineWidth">
+                            <number>0</number>
+                        </property>
+                        <grid>
+                            <property name="name">
+                                <cstring>unnamed</cstring>
+                            </property>
+                            <widget class="QPushButton" row="2" column="0">
+                                <property name="name">
+                                    <cstring>oppsettLagre</cstring>
+                                </property>
+                                <property name="text">
+                                    <string>&amp;Lagre</string>
+                                </property>
+                                <property name="accel">
+                                    <string>Alt+L</string>
+                                </property>
+                            </widget>
+                            <widget class="QLabel" row="1" column="0">
+                                <property name="name">
+                                    <cstring>dittfirmaLagreInfo_2</cstring>
+                                </property>
+                                <property name="sizePolicy">
+                                    <sizepolicy>
+                                        <hsizetype>5</hsizetype>
+                                        <vsizetype>5</vsizetype>
+                                        <horstretch>0</horstretch>
+                                        <verstretch>1</verstretch>
+                                    </sizepolicy>
+                                </property>
+                                <property name="text">
+                                    <string></string>
+                                </property>
+                                <property name="textFormat">
+                                    <enum>RichText</enum>
+                                </property>
+                                <property name="alignment">
+                                    <set>WordBreak|AlignJustify|AlignBottom</set>
+                                </property>
+                            </widget>
+                            <spacer row="0" column="0">
+                                <property name="name">
+                                    <cstring>spacer25_2</cstring>
+                                </property>
+                                <property name="orientation">
+                                    <enum>Vertical</enum>
+                                </property>
+                                <property name="sizeType">
+                                    <enum>Expanding</enum>
+                                </property>
+                                <property name="sizeHint">
+                                    <size>
+                                        <width>20</width>
+                                        <height>380</height>
+                                    </size>
+                                </property>
+                            </spacer>
+                        </grid>
+                    </widget>
+                    <widget class="QGroupBox" row="1" column="1">
+                        <property name="name">
+                            <cstring>groupBox19</cstring>
+                        </property>
+                        <property name="sizePolicy">
+                            <sizepolicy>
+                                <hsizetype>5</hsizetype>
+                                <vsizetype>5</vsizetype>
+                                <horstretch>2</horstretch>
+                                <verstretch>0</verstretch>
+                            </sizepolicy>
+                        </property>
+                        <property name="title">
+                            <string>Hjelpeprogrammer</string>
+                        </property>
+                        <grid>
+                            <property name="name">
+                                <cstring>unnamed</cstring>
+                            </property>
+                            <widget class="QLabel" row="0" column="0">
+                                <property name="name">
+                                    <cstring>textLabel1_4</cstring>
+                                </property>
+                                <property name="text">
+                                    <string>Vis PDF</string>
+                                </property>
+                                <property name="buddy" stdset="0">
+                                    <cstring>lineEdit31</cstring>
+                                </property>
+                            </widget>
+                            <widget class="QLabel" row="1" column="0">
+                                <property name="name">
+                                    <cstring>textLabel2_7</cstring>
+                                </property>
+                                <property name="text">
+                                    <string>Skriv ut (PDF)</string>
+                                </property>
+                                <property name="buddy" stdset="0">
+                                    <cstring>lineEdit32</cstring>
+                                </property>
+                            </widget>
+                            <widget class="QLineEdit" row="0" column="1">
+                                <property name="name">
+                                    <cstring>oppsettProgramVisPDF</cstring>
+                                </property>
+                                <property name="text">
+                                    <string>/usr/bin/kpdf</string>
+                                </property>
+                                <property name="toolTip" stdset="0">
+                                    <string>Et program som kan vise PDF-filer</string>
+                                </property>
+                            </widget>
+                            <widget class="QLineEdit" row="1" column="1">
+                                <property name="name">
+                                    <cstring>oppsettProgramSkrivUtPDF</cstring>
+                                </property>
+                                <property name="text">
+                                    <string>/usr/bin/kprinter</string>
+                                </property>
+                                <property name="toolTip" stdset="0">
+                                    <string>Et program som kan skrive ut PDF</string>
+                                </property>
+                            </widget>
+                            <widget class="QPushButton" row="0" column="2">
+                                <property name="name">
+                                    <cstring>oppsettProgrammerVisSok</cstring>
+                                </property>
+                                <property name="text">
+                                    <string>Søk...</string>
+                                </property>
+                            </widget>
+                            <widget class="QPushButton" row="1" column="2">
+                                <property name="name">
+                                    <cstring>oppsettProgrammerUtskriftSok</cstring>
+                                </property>
+                                <property name="text">
+                                    <string>Søk...</string>
+                                </property>
+                            </widget>
+                        </grid>
+                    </widget>
+                    <widget class="QFrame" row="0" column="1">
                         <property name="name">
                             <cstring>frame28</cstring>
                         </property>
                         <property name="sizePolicy">
                             <sizepolicy>
                                 <hsizetype>5</hsizetype>
-                                <vsizetype>7</vsizetype>
-                                <horstretch>0</horstretch>
+                                <vsizetype>1</vsizetype>
+                                <horstretch>4</horstretch>
                                 <verstretch>0</verstretch>
                             </sizepolicy>
                         </property>
@@ -2566,15 +3291,18 @@ betalingsvilkår</string>
                             </widget>
                             <widget class="QLineEdit" row="0" column="1">
                                 <property name="name">
-                                    <cstring>dittfirmaFakturakatalog</cstring>
+                                    <cstring>oppsettFakturakatalog</cstring>
                                 </property>
                                 <property name="text">
                                     <string>~</string>
                                 </property>
+                                <property name="toolTip" stdset="0">
+                                    <string>Katalog blir PDF-fakturaene lagret</string>
+                                </property>
                             </widget>
                             <widget class="QPushButton" row="0" column="2">
                                 <property name="name">
-                                    <cstring>dittfirmaFakturakatalogSok</cstring>
+                                    <cstring>oppsettFakturakatalogSok</cstring>
                                 </property>
                                 <property name="text">
                                     <string>Søk...</string>
@@ -2582,604 +3310,20 @@ betalingsvilkår</string>
                             </widget>
                         </grid>
                     </widget>
-                </grid>
-            </widget>
-            <widget class="QWidget">
-                <property name="name">
-                    <cstring>TabPage</cstring>
-                </property>
-                <attribute name="title">
-                    <string>&amp;Epost</string>
-                </attribute>
-                <grid>
-                    <property name="name">
-                        <cstring>unnamed</cstring>
-                    </property>
-                    <widget class="QGroupBox" row="6" column="0" rowspan="1" colspan="3">
+                    <spacer row="2" column="1">
                         <property name="name">
-                            <cstring>epostSeksjonSendmail</cstring>
-                        </property>
-                        <property name="enabled">
-                            <bool>true</bool>
-                        </property>
-                        <property name="title">
-                            <string>Sendmail</string>
-                        </property>
-                        <widget class="QLabel">
-                            <property name="name">
-                                <cstring>textLabel5_4</cstring>
-                            </property>
-                            <property name="geometry">
-                                <rect>
-                                    <x>28</x>
-                                    <y>41</y>
-                                    <width>91</width>
-                                    <height>14</height>
-                                </rect>
-                            </property>
-                            <property name="text">
-                                <string>Sti til sendmail:</string>
-                            </property>
-                        </widget>
-                        <widget class="QLineEdit">
-                            <property name="name">
-                                <cstring>epostSendmailSti</cstring>
-                            </property>
-                            <property name="geometry">
-                                <rect>
-                                    <x>128</x>
-                                    <y>35</y>
-                                    <width>330</width>
-                                    <height>21</height>
-                                </rect>
-                            </property>
-                            <property name="text">
-                                <string>/usr/sbin/sendmail</string>
-                            </property>
-                        </widget>
-                    </widget>
-                    <widget class="QGroupBox" row="4" column="0" rowspan="1" colspan="3">
-                        <property name="name">
-                            <cstring>epostSeksjonGmail</cstring>
-                        </property>
-                        <property name="enabled">
-                            <bool>true</bool>
-                        </property>
-                        <property name="title">
-                            <string>Gmail</string>
-                        </property>
-                        <widget class="QLabel">
-                            <property name="name">
-                                <cstring>textLabel1_10_3</cstring>
-                            </property>
-                            <property name="geometry">
-                                <rect>
-                                    <x>30</x>
-                                    <y>40</y>
-                                    <width>150</width>
-                                    <height>14</height>
-                                </rect>
-                            </property>
-                            <property name="text">
-                                <string>Full epostadresse i gmail:</string>
-                            </property>
-                        </widget>
-                        <widget class="QLabel">
-                            <property name="name">
-                                <cstring>textLabel2_4_3</cstring>
-                            </property>
-                            <property name="geometry">
-                                <rect>
-                                    <x>30</x>
-                                    <y>70</y>
-                                    <width>135</width>
-                                    <height>14</height>
-                                </rect>
-                            </property>
-                            <property name="text">
-                                <string>Passord for innlogging:</string>
-                            </property>
-                        </widget>
-                        <widget class="QLineEdit">
-                            <property name="name">
-                                <cstring>epostGmailPassord</cstring>
-                            </property>
-                            <property name="geometry">
-                                <rect>
-                                    <x>191</x>
-                                    <y>68</y>
-                                    <width>280</width>
-                                    <height>21</height>
-                                </rect>
-                            </property>
-                            <property name="echoMode">
-                                <enum>Password</enum>
-                            </property>
-                        </widget>
-                        <widget class="QLineEdit">
-                            <property name="name">
-                                <cstring>epostGmailEpost</cstring>
-                            </property>
-                            <property name="geometry">
-                                <rect>
-                                    <x>191</x>
-                                    <y>34</y>
-                                    <width>280</width>
-                                    <height>21</height>
-                                </rect>
-                            </property>
-                        </widget>
-                        <widget class="QCheckBox">
-                            <property name="name">
-                                <cstring>epostGmailHuskEpost</cstring>
-                            </property>
-                            <property name="geometry">
-                                <rect>
-                                    <x>480</x>
-                                    <y>33</y>
-                                    <width>53</width>
-                                    <height>19</height>
-                                </rect>
-                            </property>
-                            <property name="text">
-                                <string>Husk</string>
-                            </property>
-                        </widget>
-                        <widget class="QLabel">
-                            <property name="name">
-                                <cstring>epostGmailUbrukelig</cstring>
-                            </property>
-                            <property name="geometry">
-                                <rect>
-                                    <x>90</x>
-                                    <y>40</y>
-                                    <width>521</width>
-                                    <height>60</height>
-                                </rect>
-                            </property>
-                            <property name="font">
-                                <font>
-                                    <pointsize>10</pointsize>
-                                    <bold>1</bold>
-                                </font>
-                            </property>
-                            <property name="frameShape">
-                                <enum>Box</enum>
-                            </property>
-                            <property name="lineWidth">
-                                <number>1</number>
-                            </property>
-                            <property name="text">
-                                <string>Du må installere modulen 'libgmail' for å sende gjennom Gmail.</string>
-                            </property>
-                            <property name="alignment">
-                                <set>WordBreak|AlignCenter</set>
-                            </property>
-                        </widget>
-                    </widget>
-                    <widget class="Line" row="3" column="0" rowspan="1" colspan="3">
-                        <property name="name">
-                            <cstring>line6_2</cstring>
-                        </property>
-                        <property name="frameShape">
-                            <enum>HLine</enum>
-                        </property>
-                        <property name="frameShadow">
-                            <enum>Sunken</enum>
+                            <cstring>spacer17</cstring>
                         </property>
                         <property name="orientation">
-                            <enum>Horizontal</enum>
-                        </property>
-                    </widget>
-                    <widget class="QPushButton" row="2" column="0">
-                        <property name="name">
-                            <cstring>epostLosningTest</cstring>
-                        </property>
-                        <property name="text">
-                            <string>Test forbindelse</string>
-                        </property>
-                    </widget>
-                    <widget class="QButtonGroup" row="0" column="0" rowspan="1" colspan="2">
-                        <property name="name">
-                            <cstring>epostLosning</cstring>
-                        </property>
-                        <property name="title">
-                            <string>Epostløsning for sending av e-faktura</string>
-                        </property>
-                        <widget class="QRadioButton">
-                            <property name="name">
-                                <cstring>epostLosningGmail</cstring>
-                            </property>
-                            <property name="geometry">
-                                <rect>
-                                    <x>20</x>
-                                    <y>53</y>
-                                    <width>301</width>
-                                    <height>21</height>
-                                </rect>
-                            </property>
-                            <property name="text">
-                                <string>Gmail</string>
-                            </property>
-                            <property name="buttonGroupId">
-                                <number>1</number>
-                            </property>
-                        </widget>
-                        <widget class="QRadioButton">
-                            <property name="name">
-                                <cstring>epostLosningAuto</cstring>
-                            </property>
-                            <property name="geometry">
-                                <rect>
-                                    <x>20</x>
-                                    <y>30</y>
-                                    <width>301</width>
-                                    <height>21</height>
-                                </rect>
-                            </property>
-                            <property name="text">
-                                <string>Velg automatisk</string>
-                            </property>
-                            <property name="checked">
-                                <bool>true</bool>
-                            </property>
-                            <property name="buttonGroupId">
-                                <number>0</number>
-                            </property>
-                        </widget>
-                        <widget class="QRadioButton">
-                            <property name="name">
-                                <cstring>epostLosningSmtp</cstring>
-                            </property>
-                            <property name="geometry">
-                                <rect>
-                                    <x>20</x>
-                                    <y>77</y>
-                                    <width>301</width>
-                                    <height>21</height>
-                                </rect>
-                            </property>
-                            <property name="text">
-                                <string>SMTP</string>
-                            </property>
-                            <property name="buttonGroupId">
-                                <number>2</number>
-                            </property>
-                        </widget>
-                        <widget class="QRadioButton">
-                            <property name="name">
-                                <cstring>epostLosningSendmail</cstring>
-                            </property>
-                            <property name="geometry">
-                                <rect>
-                                    <x>20</x>
-                                    <y>103</y>
-                                    <width>301</width>
-                                    <height>21</height>
-                                </rect>
-                            </property>
-                            <property name="text">
-                                <string>Sendmail</string>
-                            </property>
-                            <property name="buttonGroupId">
-                                <number>3</number>
-                            </property>
-                        </widget>
-                    </widget>
-                    <widget class="QGroupBox" row="5" column="0" rowspan="1" colspan="3">
-                        <property name="name">
-                            <cstring>epostSeksjonSmtp</cstring>
-                        </property>
-                        <property name="enabled">
-                            <bool>true</bool>
-                        </property>
-                        <property name="title">
-                            <string>SMTP</string>
-                        </property>
-                        <widget class="QLabel">
-                            <property name="name">
-                                <cstring>textLabel1_12</cstring>
-                            </property>
-                            <property name="geometry">
-                                <rect>
-                                    <x>20</x>
-                                    <y>30</y>
-                                    <width>213</width>
-                                    <height>14</height>
-                                </rect>
-                            </property>
-                            <property name="text">
-                                <string>Send gjennom server (SMTP server):</string>
-                            </property>
-                        </widget>
-                        <widget class="QLabel">
-                            <property name="name">
-                                <cstring>textLabel3_4_2</cstring>
-                            </property>
-                            <property name="geometry">
-                                <rect>
-                                    <x>119</x>
-                                    <y>114</y>
-                                    <width>131</width>
-                                    <height>21</height>
-                                </rect>
-                            </property>
-                            <property name="text">
-                                <string>Passord:</string>
-                            </property>
-                        </widget>
-                        <widget class="QLineEdit">
-                            <property name="name">
-                                <cstring>epostSmtpServer</cstring>
-                            </property>
-                            <property name="geometry">
-                                <rect>
-                                    <x>248</x>
-                                    <y>24</y>
-                                    <width>300</width>
-                                    <height>21</height>
-                                </rect>
-                            </property>
-                            <property name="text">
-                                <string>localhost</string>
-                            </property>
-                        </widget>
-                        <widget class="QLabel">
-                            <property name="name">
-                                <cstring>textLabel3_4</cstring>
-                            </property>
-                            <property name="geometry">
-                                <rect>
-                                    <x>118</x>
-                                    <y>91</y>
-                                    <width>131</width>
-                                    <height>21</height>
-                                </rect>
-                            </property>
-                            <property name="text">
-                                <string>Brukernavn:</string>
-                            </property>
-                        </widget>
-                        <widget class="QCheckBox">
-                            <property name="name">
-                                <cstring>epostSmtpTLS</cstring>
-                            </property>
-                            <property name="enabled">
-                                <bool>true</bool>
-                            </property>
-                            <property name="geometry">
-                                <rect>
-                                    <x>118</x>
-                                    <y>54</y>
-                                    <width>281</width>
-                                    <height>19</height>
-                                </rect>
-                            </property>
-                            <property name="text">
-                                <string>Serveren støtter krypterte overføringer (TLS)</string>
-                            </property>
-                        </widget>
-                        <widget class="QLineEdit">
-                            <property name="name">
-                                <cstring>epostSmtpBrukernavn</cstring>
-                            </property>
-                            <property name="enabled">
-                                <bool>false</bool>
-                            </property>
-                            <property name="geometry">
-                                <rect>
-                                    <x>198</x>
-                                    <y>91</y>
-                                    <width>261</width>
-                                    <height>21</height>
-                                </rect>
-                            </property>
-                        </widget>
-                        <widget class="QCheckBox">
-                            <property name="name">
-                                <cstring>epostSmtpAuth</cstring>
-                            </property>
-                            <property name="enabled">
-                                <bool>true</bool>
-                            </property>
-                            <property name="geometry">
-                                <rect>
-                                    <x>118</x>
-                                    <y>71</y>
-                                    <width>214</width>
-                                    <height>19</height>
-                                </rect>
-                            </property>
-                            <property name="text">
-                                <string>Serveren krever at jeg logger inn</string>
-                            </property>
-                        </widget>
-                        <widget class="QCheckBox">
-                            <property name="name">
-                                <cstring>epostSmtpHuskEpost</cstring>
-                            </property>
-                            <property name="geometry">
-                                <rect>
-                                    <x>470</x>
-                                    <y>90</y>
-                                    <width>53</width>
-                                    <height>19</height>
-                                </rect>
-                            </property>
-                            <property name="text">
-                                <string>Husk</string>
-                            </property>
-                        </widget>
-                        <widget class="QLabel">
-                            <property name="name">
-                                <cstring>textLabel4_4</cstring>
-                            </property>
-                            <property name="geometry">
-                                <rect>
-                                    <x>554</x>
-                                    <y>28</y>
-                                    <width>29</width>
-                                    <height>14</height>
-                                </rect>
-                            </property>
-                            <property name="text">
-                                <string>Port:</string>
-                            </property>
-                        </widget>
-                        <widget class="QSpinBox">
-                            <property name="name">
-                                <cstring>epostSmtpPort</cstring>
-                            </property>
-                            <property name="geometry">
-                                <rect>
-                                    <x>588</x>
-                                    <y>24</y>
-                                    <width>70</width>
-                                    <height>21</height>
-                                </rect>
-                            </property>
-                            <property name="buttonSymbols">
-                                <enum>UpDownArrows</enum>
-                            </property>
-                            <property name="maxValue">
-                                <number>999999</number>
-                            </property>
-                            <property name="minValue">
-                                <number>1</number>
-                            </property>
-                            <property name="value">
-                                <number>25</number>
-                            </property>
-                        </widget>
-                        <widget class="QLineEdit">
-                            <property name="name">
-                                <cstring>epostSmtpPassord</cstring>
-                            </property>
-                            <property name="enabled">
-                                <bool>false</bool>
-                            </property>
-                            <property name="geometry">
-                                <rect>
-                                    <x>198</x>
-                                    <y>114</y>
-                                    <width>261</width>
-                                    <height>21</height>
-                                </rect>
-                            </property>
-                            <property name="echoMode">
-                                <enum>Password</enum>
-                            </property>
-                        </widget>
-                    </widget>
-                    <widget class="QGroupBox" row="1" column="0" rowspan="1" colspan="2">
-                        <property name="name">
-                            <cstring>epostSendkopi</cstring>
-                        </property>
-                        <property name="title">
-                            <string>Send kopi av e-faktura</string>
-                        </property>
-                        <property name="checkable">
-                            <bool>true</bool>
-                        </property>
-                        <property name="checked">
-                            <bool>false</bool>
-                        </property>
-                        <widget class="QLineEdit">
-                            <property name="name">
-                                <cstring>epostKopiadresse</cstring>
-                            </property>
-                            <property name="geometry">
-                                <rect>
-                                    <x>120</x>
-                                    <y>20</y>
-                                    <width>340</width>
-                                    <height>21</height>
-                                </rect>
-                            </property>
-                        </widget>
-                        <widget class="QLabel">
-                            <property name="name">
-                                <cstring>textLabel2_6</cstring>
-                            </property>
-                            <property name="geometry">
-                                <rect>
-                                    <x>10</x>
-                                    <y>24</y>
-                                    <width>107</width>
-                                    <height>14</height>
-                                </rect>
-                            </property>
-                            <property name="text">
-                                <string>Send kopi (BCC) til:</string>
-                            </property>
-                        </widget>
-                    </widget>
-                    <widget class="QFrame" row="0" column="2" rowspan="2" colspan="1">
-                        <property name="name">
-                            <cstring>frame3_3</cstring>
-                        </property>
-                        <property name="frameShape">
-                            <enum>StyledPanel</enum>
-                        </property>
-                        <property name="frameShadow">
-                            <enum>Raised</enum>
-                        </property>
-                        <property name="lineWidth">
-                            <number>0</number>
-                        </property>
-                        <grid>
-                            <property name="name">
-                                <cstring>unnamed</cstring>
-                            </property>
-                            <widget class="QPushButton" row="1" column="0">
-                                <property name="name">
-                                    <cstring>epostLagre</cstring>
-                                </property>
-                                <property name="text">
-                                    <string>&amp;Lagre</string>
-                                </property>
-                                <property name="accel">
-                                    <string>Alt+L</string>
-                                </property>
-                            </widget>
-                            <widget class="QLabel" row="0" column="0">
-                                <property name="name">
-                                    <cstring>epostHjelpefelt</cstring>
-                                </property>
-                                <property name="sizePolicy">
-                                    <sizepolicy>
-                                        <hsizetype>3</hsizetype>
-                                        <vsizetype>3</vsizetype>
-                                        <horstretch>0</horstretch>
-                                        <verstretch>0</verstretch>
-                                    </sizepolicy>
-                                </property>
-                                <property name="text">
-                                    <string></string>
-                                </property>
-                                <property name="textFormat">
-                                    <enum>RichText</enum>
-                                </property>
-                                <property name="alignment">
-                                    <set>WordBreak|AlignTop</set>
-                                </property>
-                            </widget>
-                        </grid>
-                    </widget>
-                    <spacer row="2" column="1" rowspan="1" colspan="2">
-                        <property name="name">
-                            <cstring>spacer14</cstring>
-                        </property>
-                        <property name="orientation">
-                            <enum>Horizontal</enum>
+                            <enum>Vertical</enum>
                         </property>
                         <property name="sizeType">
                             <enum>Expanding</enum>
                         </property>
                         <property name="sizeHint">
                             <size>
-                                <width>641</width>
-                                <height>20</height>
+                                <width>20</width>
+                                <height>521</height>
                             </size>
                         </property>
                     </spacer>

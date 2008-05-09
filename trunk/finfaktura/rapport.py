@@ -22,6 +22,8 @@ except ImportError:
     REPORTLAB=False
     #raise
 
+PDFVIS = "/usr/bin/kpdf"
+
 class rapport:
     u'Lager økonomisk rapport på pdf'
     oppdatert = False
@@ -61,9 +63,9 @@ class rapport:
         dok.build(self.flow)
         self.oppdatert = True
 
-    def vis(self):
+    def vis(self, program=PDFVIS):
         if not self.oppdatert: self.lag()
-        os.system('okular %s' % self.filnavn)
+        os.system('"%s" "%s"' % (program, self.filnavn))
 
     def lastOrdreliste(self, ordreliste):
         for o in ordreliste: self.leggTilOrdre(o)

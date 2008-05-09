@@ -79,6 +79,8 @@ ENDRINGER ="""
 
 2.8:Epost:smtpfra=bcc
 
+3.1:Oppsett:vispdf+
+3.1:Oppsett:skrivutpdf+
 """
 
 
