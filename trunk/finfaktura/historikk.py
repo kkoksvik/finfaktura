@@ -52,7 +52,7 @@ class historiskHandling:
     
     def registrerHandling(self):
         #skriver til databasen
-        self.c.execute("INSERT INTO Historikk (ordreID, dato, handlingID, suksess, forklaring) VALUES (?,?,?,?,?)", (self.ordreID, self.dato, self.handlingID, self.suksess & 1, self.forklaring))
+        self.c.execute("INSERT INTO Historikk (ordreID, dato, handlingID, suksess, forklaring) VALUES (?,?,?,?,?)", (self.ordreID, self.dato, self.handlingID, (self.suksess and 1) or 0, self.forklaring))
         self.db.commit()
     
     def __init__(self, ordre, suksess, forklaring=None):
