@@ -1172,21 +1172,27 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         debug(u'oppdatere %s til %s' % (fraObj, kart[fraObj]))
         kart[fraObj] = fun() # finner riktig lagringssted og kjører riktig funksjon
 
+    def kanskjetall(self, obj):
+        try:
+            return int(obj.text())
+        except ValueError:
+            return None
+
     def oppdaterFirma(self):
         self.firma.firmanavn  = unicode(self.dittfirmaFirmanavn.text())
         self.firma.organisasjonsnummer = unicode(self.dittfirmaOrganisasjonsnummer.text())
         self.firma.kontaktperson = unicode(self.dittfirmaKontaktperson.text())
         self.firma.epost      = unicode(self.dittfirmaEpost.text())
         self.firma.adresse    = unicode(self.dittfirmaAdresse.text())
-        self.firma.postnummer = unicode(self.dittfirmaPostnummer.text())
+        self.firma.postnummer = self.kanskjetall(self.dittfirmaPostnummer)
         self.firma.poststed   = unicode(self.dittfirmaPoststed.text())
-        self.firma.telefon    = unicode(self.dittfirmaTelefon.text())
-        self.firma.mobil      = unicode(self.dittfirmaMobil.text())
-        self.firma.telefaks   = unicode(self.dittfirmaTelefaks.text())
-        self.firma.kontonummer = unicode(self.dittfirmaKontonummer.text())
+        self.firma.telefon    = self.kanskjetall(self.dittfirmaTelefon)
+        self.firma.mobil      = self.kanskjetall(self.dittfirmaMobil)
+        self.firma.telefaks   = self.kanskjetall(self.dittfirmaTelefaks)
+        self.firma.kontonummer = self.kanskjetall(self.dittfirmaKontonummer)
         self.firma.vilkar     = unicode(self.dittfirmaVilkar.text())
         self.firma.mva        = int(self.dittfirmaMva.value())
-        self.firma.forfall    = unicode(self.dittfirmaForfall.value())
+        self.firma.forfall    = int(self.dittfirmaForfall.value())
 
         mangler = self.sjekkFirmaMangler()
         if mangler:
