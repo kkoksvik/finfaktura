@@ -1,8 +1,8 @@
 #!/usr/bin/python -d
 # -*- coding:utf8 -*-
 ###########################################################################
-#    Copyright (C) 2005-2007 - Håvard Dahle
-#    <havard@dahle.no>
+#    Copyright (C) 2005-2008- Håvard Gulldahl
+#    <havard@lurtgjort.no>
 #
 #    Lisens: GPL2
 #
