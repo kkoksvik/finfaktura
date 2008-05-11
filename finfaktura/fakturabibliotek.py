@@ -271,7 +271,7 @@ def byggDatabase(db, sqlfile=None):
                     progfiles = os.getenv("PROGRAMFILES")
                     fdir = os.path.join(sysroot, progfiles, 'finfaktura', 'data')
                 else:
-                    fdir = os.path.join('usr','share','finfaktura','data')
+                    fdir = '/usr/share/finfaktura/data'
         sqlfile = os.path.join(fdir, 'faktura.sql')
     db.executescript(file(sqlfile).read())
     db.cursor().execute("INSERT INTO Oppsett (ID, databaseversjon, fakturakatalog) VALUES (1, ?, ?)", 
