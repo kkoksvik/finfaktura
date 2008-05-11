@@ -1,5 +1,6 @@
 faktura.py
 faktura.ui
+sendepost.ui
 faktura.sql
 setup.py
 finfaktura/__init__.py
@@ -7,6 +8,7 @@ finfaktura/cli.py
 finfaktura/epost.py
 finfaktura/fakturafeil.py
 finfaktura/faktura_ui.py
+finfaktura/sendepost_ui.py
 finfaktura/fakturabibliotek.py
 finfaktura/f60.py
 finfaktura/myndighetene.py

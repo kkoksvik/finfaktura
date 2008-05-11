@@ -38,7 +38,7 @@ build-stamp: configure-stamp
 	$(DH_PY_INTERPRETER) setup.py build
 
 	# always regenerate from ui files
-	(pyuic -x faktura.ui > finfaktura/faktura_ui.py)
+	#(pyuic -x faktura.ui > finfaktura/faktura_ui.py)
 	touch build-stamp
 
 
