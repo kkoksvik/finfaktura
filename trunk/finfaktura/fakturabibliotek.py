@@ -79,7 +79,7 @@ class FakturaBibliotek:
     def finnVareEllerLagNy(self, navn, pris, mva, enhet):
         sql = "SELECT ID FROM %s" % fakturaVare._tabellnavn
         sql += " WHERE navn=? AND pris=? AND mva=?"
-        print sql, navn, pris, mva
+        #print sql, navn, pris, mva
         self.c.execute(sql, (navn.strip(), pris, mva,))
         try:
             return fakturaVare(self.db, self.c.fetchone()[0])
@@ -93,14 +93,19 @@ class FakturaBibliotek:
             return vare
 
     def nyOrdre(self, _kunde = None, _Id = None, ordredato = None):
-        return fakturaOrdre(self.db, kunde=_kunde, Id=_Id, firma = self.__firmainfo, dato=ordredato)
+        return fakturaOrdre(self.db, kunde=_kunde, Id=_Id, firma = self.firmainfo(), dato=ordredato)
 
     def hentOrdrer(self):
         self.c.execute("SELECT ID FROM %s" % fakturaOrdre._tabellnavn)
         return [ fakturaOrdre(self.db, Id=z[0]) for z in self.c.fetchall() ]
 
     def firmainfo(self):
-        if not self.__firmainfo:
+        try:
+            self.__firmainfo.hentEgenskaper()
+            self.__firmainfo.sjekkData()
+        except AttributeError:
+            self.__firmainfo = fakturaFirmainfo(self.db)
+        except FirmainfoFeil:
             self.__firmainfo = fakturaFirmainfo(self.db)
         return self.__firmainfo
 

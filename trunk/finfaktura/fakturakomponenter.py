@@ -343,7 +343,6 @@ class fakturaFirmainfo(fakturaKomponent):
             self.lagFirma()
             self._egenskaper = self.hentEgenskaperListe()
             self.hentEgenskaper()
-        #print self._egenskaper
 
     def __str__(self):
         return u"""

@@ -265,6 +265,8 @@ class f60:
         firmainfo.setTextOrigin(160*mm, 290*mm)
         firmainfo.setFont("Helvetica", 8)
         firmainfo.setFillGray(0.3)
+        #for z,y in self.firma.iteritems():
+            #debug("%s (%s): %s" % (z, type(y), y))
         firmainfo.textLines(split("""%(kontaktperson)s
 %(adresse)s
 %(postnummer)04i %(poststed)s

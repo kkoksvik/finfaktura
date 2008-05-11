@@ -759,7 +759,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         if res == QDialog.Accepted:
           return self.sendEpostfaktura(ordre, unicode(epostboks.sendEpostTekst.text()), pdfFilnavn)
         else:
-          print unicode(epostboks.sendEpostTekst.text())
+          #print unicode(epostboks.sendEpostTekst.text())
           pass
 
 
@@ -1203,6 +1203,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             self.gammelTab = 3
             return False
         self.dittfirmaLagreInfo.setText('<font color=green><b>Opplysningene er lagret</b></font>')
+        #print self.faktura.firmainfo()
 
     def sjekkFirmaMangler(self):
         kravkart = {}
