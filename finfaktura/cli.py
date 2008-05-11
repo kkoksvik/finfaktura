@@ -2,8 +2,8 @@
 # -*- coding:utf-8 -*-
 """cli-magi"""
 ###########################################################################
-#    Copyright (C) 2006 - Håvard Dahle
-#    <havard@dahle.no>
+#    Copyright (C) 2005-2008- Håvard Gulldahl
+#    <havard@lurtgjort.no>
 #
 #    Lisens: GPL2
 #

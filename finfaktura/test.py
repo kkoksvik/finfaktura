@@ -1,8 +1,8 @@
 #!/usr/bin/python -d
 # -*-*- coding:utf8 -*-*-
 ###########################################################################
-#    Copyright (C) 2006 - Håvard Dahle
-#    <havard@dahle.no>
+#    Copyright (C) 2005-2008- Håvard Gulldahl
+#    <havard@lurtgjort.no>
 #
 #    Lisens: GPL2
 #
@@ -28,8 +28,8 @@ if __name__ == "__main__":
     cx = sqlite.connect(finnDatabasenavn())#, encoding='utf-8', command_logfile=logg)
     if "kunde" in test:
         kunde = fakturaKunde(cx)
-        kunde.navn = u"Havard Dahle"
-        kunde.epost = "havard@dahle.no"
+        kunde.navn = u"Havard Gulldahl"
+        kunde.epost = "havard@lurtgjort.no"
         print "kunde:", kunde
     if "hentkunder" in test:
         b = FakturaBibliotek(cx)
