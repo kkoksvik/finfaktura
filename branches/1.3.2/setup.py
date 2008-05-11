@@ -18,7 +18,7 @@ import sys, os.path, glob
 import finfaktura # for versjonsnummer
 
 setup(name="finfaktura",
-      version=finfaktura.__version__,
+      version="1.3.2f",
       description="Fryktelig Fin Faktura - fakturaprogram for norske næringsdrivende",
       author="Håvard Gulldahl",
       author_email="havard@gulldahl.no",
