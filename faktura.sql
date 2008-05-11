@@ -1,6 +1,6 @@
 -- ###########################################################################
--- #    Copyright (C) 2005-2006 - Håvard Dahle og Håvard Sjøvoll
--- #    <havard@dahle.no>, <sjovoll@ntnu.no>
+-- #    Copyright (C) 2005-2008 - Håvard Gulldahl og Håvard Sjøvoll
+-- #    <havard@lurtgjort.no>, <sjovoll@ntnu.no>
 -- #
 -- #    GPL version 2
 -- #
