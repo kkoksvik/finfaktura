@@ -1,3 +1,81 @@
+2008-05-09 19:03  havard.gulldahl
+
+	* debian/changelog, finfaktura/__init__.py: Gjør 1.3.1 klar til
+	  utgivelse
+
+2008-05-09 19:01  havard.gulldahl
+
+	* faktura.py: viktig bugfiks ved rar inputt
+
+2008-05-09 18:29  havard.dahle
+
+	* ChangeLog, debian/changelog, finfaktura/__init__.py: Gjør 1.3
+	  klar til utgivelse
+
+2008-05-09 18:11  havard.dahle
+
+	* faktura.py, faktura.sql, faktura.ui, finfaktura/ekstra.py,
+	  finfaktura/f60.py, finfaktura/faktura_ui.py,
+	  finfaktura/fakturabibliotek.py, finfaktura/fakturakomponenter.py,
+	  finfaktura/oppgradering.py, finfaktura/rapport.py, testdata.db:
+	  konfigurerbar utskrift/pdf-viser
+
+2008-05-09 18:10  havard.dahle
+
+	* doc/REGLER: opprom
+
+2008-05-09 18:09  havard.dahle
+
+	* finfaktura/sendepost_ui.py: connects
+
+2008-05-09 18:08  havard.dahle
+
+	* sendepost.ui: connects
+
+2008-05-09 16:47  havard.dahle
+
+	* finfaktura/historikk.py: bugfiks
+
+2008-05-09 15:51  havard.dahle
+
+	* setup.py: oppdaterer navn og adresser
+
+2008-05-09 15:51  havard.dahle
+
+	* MANIFEST: legger til nye filer
+
+2008-04-23 10:39  havard.dahle
+
+	* faktura.py: fikser sendepost-vinduet, tomromskontroll
+
+2008-04-23 10:37  havard.dahle
+
+	* finfaktura/fakturakomponenter.py, finfaktura/rapport.py: path of
+	  pdf viewer binary, whitespace fixuups
+
+2008-04-23 10:36  havard.dahle
+
+	* finfaktura/oppgradering.py: quoting table name, whitespace
+	  cleanup
+
+2008-04-23 10:35  havard.dahle
+
+	* finfaktura/faktura_ui.py, finfaktura/sendepost_ui.py,
+	  sendepost.ui: uui issues
+	  æ
+
+2008-04-23 10:05  havard.dahle
+
+	* finfaktura/sendepost_ui.py, sendepost.ui: Send email dialog
+
+2008-04-23 09:55  havard.dahle
+
+	* faktura.ui: last grid/layout issues fixed
+
+2008-04-23 09:50  havard.dahle
+
+	* faktura.ui, sendepost.ui: Fixing grid layout for resizability
+
 2007-05-08 23:30  havard.dahle
 
 	* doc/skjermdump.sh, faktura.py, finfaktura/rapport.py: Rapportene
