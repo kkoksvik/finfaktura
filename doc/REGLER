@@ -27,42 +27,48 @@
     cd $VERSJON
 
 * Endre på PRODUKSJONSVERDI-variabelen (til True) i finfaktura/fakturabibliotek.py
+    perl -pi -e 's/PRODUKSJONSVERSJON=False/PRODUKSJONSVERSJON=True/' finfaktura/fakturabibliotek.py
 
 * Prøvestarte programmet og se at alt ser greit ut
     FAKTURADIR=. ./faktura.py
+    FAKTURADIR=. FAKTURADB=testdata.db ./faktura.py
 
 * Lage .deb
-    fakeroot debian/rules binary
+    #fakeroot debian/rules binary
+    debuild -khavard@lurtgjort.no
+
+* Installer programmet og prøv å starte det
+   sudo dpkg -i /tmp/finfaktura_${VERSJON}_*.deb
 
 * Committe endringer til svn dersom .deb gikk smertefritt
     svn commit -m "pakker og klargjør $VERSJON til produksjon"
 
 * Tagge versjonen dersom .deb gikk smertefritt
-    svn copy https://finfaktura.googlecode.com/svn/branches/$VERSJON https://finfaktura.googlecode.com/svn/tags/versjon-$VERSJON -m "Tagger ferdigstilt $VERSJON for ettertiden"
+    svn copy https://finfaktura.googlecode.com/svn/branches/$VERSJON https://finfaktura.googlecode.com/svn/tags/versjon-$VERSJON -m "Tagger ferdigstilt $VERSJON"
 
 * Lage skjermdump
     doc/skjermdump.sh
-    -> navngi etter .deb-dir: finfaktura-$DEBVERSJON.deb-dir
+    <tilpasse navn og innhold etter skjermdump.sh>
+    svn co https://finfaktura.googlecode.com/svn/screenshots
+    for b in skjermbilder-finfaktura-${VERSJON}*/*.png; do convert -resize 75% $z screenshots/$z;done
+    svn commit screenshots -m "Skjermbilder for ${VERSJON}"
 
 
 * Kopier til http://code.google.com/p/finfaktura/downloads/entry
     #http://support.googlecode.com/svn/trunk/scripts/googlecode-upload.py
 
-    cd /tmp
-
     -> .deb
-    googlecode-upload.py -s "Fryktelig fin faktura (debian/ubuntu), versjon $VERSJON" -p finfaktura -u havard.dahle -l "Featured,Type-Package,OpSys-Linux" finfaktura_${VERSJON}_i386.deb
+    googlecode-upload.py -s "Fryktelig fin faktura (debian/ubuntu), versjon $VERSJON" -p finfaktura -u havard.gulldahl -l "Featured,Type-Package,OpSys-Linux" ../finfaktura_${VERSJON}_*.deb
 
     -> .rpm
-    fakeroot alien --to-rpm --scripts --keep-version finfaktura_${VERSJON}_i386.deb
+    fakeroot alien --to-rpm --scripts --keep-version finfaktura_${VERSJON}_*.deb
 
-    googlecode-upload.py -s "Fryktelig fin faktura (fedora/suse), versjon $VERSJON" -p finfaktura -u havard.dahle -l "Featured,Type-Package,OpSys-Linux" finfaktura-${VERSJON}-*.rpm
+    googlecode-upload.py -s "Fryktelig fin faktura (fedora/suse), versjon $VERSJON" -p finfaktura -u havard.gulldahl -l "Featured,Type-Package,OpSys-Linux" finfaktura-${VERSJON}-*.rpm
 
     -> source
     python setup.py sdist --format=zip
-    googlecode-upload.py -s "Fryktelig fin faktura (python kildekode), versjon $VERSJON" -p finfaktura -u havard.dahle -l "Featured,Type-Package,OpSys-All" dist/finfaktura-${VERSJON}.zip
+    googlecode-upload.py -s "Fryktelig fin faktura (python kildekode), versjon $VERSJON" -p finfaktura -u havard.gulldahl -l "Featured,Type-Package,OpSys-All" dist/finfaktura-${VERSJON}.zip
 
-    -> skjermdump
 
 * Hurra!
 

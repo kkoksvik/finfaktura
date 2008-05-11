@@ -1,7 +1,7 @@
 Source: finfaktura
 Section: office
 Priority: optional
-Maintainer: Håvard Dahle <havard@dahle.no>
+Maintainer: Håvard Gulldahl <havard@lurtgjort.no>
 Build-Depends: debhelper (>= 4.0.0), python (>= 2.3), python-dev, python-qt3, pyqt-tools
 Standards-Version: 3.6.2
 
@@ -9,7 +9,7 @@ Package: finfaktura
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, ${python:Depends}, python-qt3, python-reportlab
 Recommends: python-pysqlite2 
-Suggests: python-psyco, python-libgmail, python-beautifulsoup
+Suggests: python-psyco, python-beautifulsoup
 Description: Create and manage invoices (Norwegian specs)
  Invoices, customers, products. Creates PDF invoices.
  Automatic email submission and backup.
