@@ -23,7 +23,7 @@ from fakturakomponenter import fakturaOppsett, fakturaEpost, fakturaFirmainfo, \
 from ekstra import debug
 from fakturafeil import *
 
-PRODUKSJONSVERSJON=False # Sett denne til True for å skjule funksjonalitet som ikke er ferdigstilt
+PRODUKSJONSVERSJON=True # Sett denne til True for å skjule funksjonalitet som ikke er ferdigstilt
 DATABASEVERSJON=3.1
 DATABASENAVN="faktura.db"
 #DATABASECONVERTERS={"pdf":pdfdataToType}
@@ -261,8 +261,18 @@ def lagDatabase(database, sqlfile=None):
 
 def byggDatabase(db, sqlfile=None):
     if not sqlfile:
-        if not PRODUKSJONSVERSJON: sqlfile = "faktura.sql"
-        else: sqlfile = "/usr/share/finfaktura/data/faktura.sql"
+        fdir = os.getenv('FAKTURADIR')
+        if not fdir:
+            if not PRODUKSJONSVERSJON:
+                fdir = '.'
+            else:
+                if sys.platform.startswith('win'):
+                    sysroot = os.getenv("SYSROOT")
+                    progfiles = os.getenv("PROGRAMFILES")
+                    fdir = os.path.join(sysroot, progfiles, 'finfaktura', 'data')
+                else:
+                    fdir = os.path.join('usr','share','finfaktura','data')
+        sqlfile = os.path.join(fdir, 'faktura.sql')
     db.executescript(file(sqlfile).read())
     db.cursor().execute("INSERT INTO Oppsett (ID, databaseversjon, fakturakatalog) VALUES (1, ?, ?)", 
         (DATABASEVERSJON, '~'))
