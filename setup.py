@@ -18,14 +18,14 @@ import sys, os.path, glob
 import finfaktura # for versjonsnummer
 
 setup(name="finfaktura",
-      version=finfaktura.__version__,
+      version="1.3.2f",
       description="Fryktelig Fin Faktura - fakturaprogram for norske næringsdrivende",
       author="Håvard Gulldahl",
       author_email="havard@gulldahl.no",
       url="http://finfaktura.googlecode.com/",
       packages=['finfaktura',],
       data_files=[#('share/finfaktura/pixmaps', ['pixmaps/error.png', 'pixmaps/warning.png']),
-            ('share/finfaktura/data', ['faktura.ui', 'sendepost.ui', 'faktura.sql']),
+            ('share/finfaktura/data', ['faktura.ui', 'faktura.sql']),
             ('share/finfaktura/scripts', glob.glob('scripts/*')),
            ],
       #package_data={'finfaktura': ['pixmaps/*.png'] },
