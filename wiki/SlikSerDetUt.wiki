@@ -8,7 +8,7 @@ http://finfaktura.googlecode.com/svn/screenshots/fakturaoversikt.png
 _Ubetalte fakturaer, samt fakturaer fra de siste 6 måneder vises i listen. (Eldre og betalte fakturaer kan selvfølgelig også vises)._
 
 
-= Kundene dine = 
+= Kundene dine =
 
 http://finfaktura.googlecode.com/svn/screenshots/kundeoversikt.png
 
@@ -48,4 +48,4 @@ _All informasjon om firmaet ditt brukes til å utforme fakturaen. Det er også p
 
 http://finfaktura.googlecode.com/svn/screenshots/efaktura-0.96.jpg
 
-_Programmet produserer PDF-filer som passer norsk standard F60_
+_Programmet produserer [F60 PDF-filer som passer norsk standard F60]_

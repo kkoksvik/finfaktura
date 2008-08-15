@@ -3,7 +3,7 @@
 
 = Innledning =
 
-F60.py er en *python-modul* for å produsere en *faktura i PDF-format*. Dokumentet er laget i samsvar med _Norsk standard Giro F60_, og kan skrives ut på slike blanketter. 
+F60.py er en *python-modul* for å produsere en *faktura i PDF-format*. Dokumentet er laget i samsvar med _Norsk standard Giro F60_, og kan skrives ut på slike blanketter.
 
 F60.py brukes av finfaktura, men kan også brukes uavhengig, i ditt eget python-program. I det følgende vises hvordan.
 
@@ -34,6 +34,9 @@ faktura.settKundeinfo(06, "Topert\nRopertgata 33\n9022 Nissedal")
 faktura.settOrdrelinje([ ["Leder", 1, 300, 25], ['Reportasje', 1, 3000, 25], ])
 
 }}}
+
+http://finfaktura.googlecode.com/svn/screenshots/efaktura-0.96.jpg
+
 
 = Informasjon om fakturaen =
 
