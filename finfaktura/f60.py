@@ -1,6 +1,35 @@
-#!/usr/bin/python 
 # -*- coding:utf-8 -*-
-"""Produsere en faktura etter norsk standard f60"""
+"""Denne modulen lager en PDF-faktura etter norsk standard f60
+
+PDF-filen kan skrives ut på f60-skjema, eller sendes som en elektronisk
+versjon av denne.
+
+Her er et eksempel på hvordan man bruker modulen:
+
+filnavn = '/tmp/testfaktura.pdf'
+faktura = f60(filnavn, overskriv=True)
+faktura.settFakturainfo(
+  fakturanr=03,
+  utstedtEpoch=1145542709,
+  forfallEpoch=1146546709,
+  fakturatekst=u"Produksjon i august",
+  vilkaar=u"Takk for handelen, kom gjerne igjen.",
+  kid='4466986711175280')
+faktura.settFirmainfo({'firmanavn':'Firma Ein',
+                        'kontaktperson':'Rattatta Hansen',
+                        'adresse':u'Surdalsøyra',
+                        'postnummer':8999,
+                        'poststed':u'Fløya',
+                        'kontonummer':999999999,
+                        'organisasjonsnummer':876876,
+                        'telefon':23233322,
+                        'epost':'ratata@ta.no'})
+faktura.settKundeinfo(06, "Topert\nRopertgata 33\n9022 Nissedal")
+faktura.settOrdrelinje([ ["Leder", 1, 300, 25], ['Reportasje', 1, 3000, 25], ])
+
+
+
+"""
 ###########################################################################
 #    Copyright (C) 2005-2008- Håvard Gulldahl
 #    <havard@lurtgjort.no>
@@ -22,9 +51,7 @@ try:
 except ImportError:
     REPORTLAB=False
 
-__version__ = '0.9'
-
-__doc__ = """Modul for å produsere en faktura etter norsk standard f60"""
+__version__ = '0.10'
 
 class f60Eksisterer(Exception): pass
 class f60Feil(Exception): pass
@@ -57,6 +84,7 @@ class f60:
     # ============= MÅ FYLLES INN AV BRUKER =============== #
 
     def settFakturainfo(self, fakturanr, utstedtEpoch, forfallEpoch, fakturatekst, vilkaar = '', kid = None):
+        """Sett vital info om fakturaen"""
         self.faktura['nr'] = int(fakturanr)
         self.faktura['utstedt'] = time.strftime("%Y-%m-%d", time.localtime(utstedtEpoch))
         self.faktura['forfall'] = time.strftime("%Y-%m-%d", time.localtime(forfallEpoch))
@@ -66,9 +94,18 @@ class f60:
         self.faktura['kid'] = kid
 
     def settOrdrelinje(self, ordrelinje):
+        """Sett fakturaens ordrelinjer. Kan være
+        1. en list() hvor hver ordre er en
+          sekvens: [tekst, kvantum, enhetspris, mva]
+
+        2. en funksjon eller en metode som returnerer et objekt
+          med følgende egenskaper: .tekst, .kvantum, .enhetspris, .mva
+        """
         self.ordrelinje = ordrelinje
 
     def settLogo(self, logo):
+        """Setter logoen som kommer oppe til venstre på fakturaen.
+        Må være en str(), i et bildeformat som er lesbart av PIL."""
         if logo: self.firma['logo'] = logo
         else: raise f60Feil(u'Ugyldig logo: %s' % logo)
 
@@ -84,23 +121,26 @@ class f60:
             Epost: %(epost)s"""
         for k in info.keys():
             self.firma[k] = self._s(info[k])
-        
+
     def settKundeinfo(self, kundenr, adresse):
         self.kunde['nr'] = int(kundenr)
         self.kunde['adresse'] = self._s(adresse)
 
     # ==================== OFFENTLIGE FUNKSJONER ================ #
 
-    def lagPost(self):
+    def lagPapir(self):
+        "Ferdigstiller dokumentet for utskrift på papir (uten F60 skjemafelt)"
         self.fyll()
         return self.settSammen()
 
     def lagEpost(self):
+        "Ferdigstiller dokumentet for elektronisk forsendelse (med F60 skjemafelt)"
         self.lagBakgrunn()
         self.fyll()
         return self.settSammen()
-    
+
     def lagKvittering(self):
+        "Ferdigstiller en kvittering for utskrift på papir (med F60 skjemafelt)"
         self.lagBakgrunn()
         self.fyll()
         self.lagKopimerke()
@@ -114,27 +154,28 @@ class f60:
         return filnavn
 
     def skrivUt(self, program=PDFUTSKRIFT):
+        "Skriver ut den produserte PDF-filen"
         if not os.path.exists(self.filnavn):
             raise "Feil filnavn"
         os.system('"%s" "%s"' % (program, self.filnavn)) ### XXX: fiks dette
 
     def sjekkKid(self, kid):
-        "Sjekker en kid etter mod10/luhner-algoritmen. -> bool"
+        "Kontrollerer et kid-nr etter mod10/luhner-algoritmen. Returnerer True/False"
         #http://no.wikipedia.org/wiki/KID
         #hvert andre siffer (bakfra) skal dobles og tverrsummene av alle produktene legges sammen
         #totalsummen skal så moduleres med 10, uten rest
-        
-        #denne implementasjonen opprinnelig fra 
+
+        #denne implementasjonen opprinnelig fra
         # http://www.elifulkerson.com
         try:
-            cc = map(int, kid) 
+            cc = map(int, str(kid))
             cc.reverse() # snu rekken slik at vi jobber bakfra
         except TypeError:
             return False
-    
+
         total = 0
         for a in range(0, len(cc)):
-            if (a % 2) == 1: # hvert andre siffer 
+            if (a % 2) == 1: # hvert andre siffer
                 assert(cc[a] >= 0 and cc[a] <= 9)
                 d = cc[a]*2 # dobles
                 if d < 10: total += d
@@ -142,9 +183,9 @@ class f60:
             else:
                 total += cc[a]
         return (total % 10) == 0 # mod10 uten rest
-        
+
     # ==================== INTERNE FUNKSJONER ================ #
-    
+
     def sjekkFilnavn(self, filnavnUtf8):
         filnavn = ''
         for b in filnavnUtf8: # XXX: reportlab støtter ikke utf8-filnavn...
@@ -159,7 +200,7 @@ class f60:
         return filnavn
 
     def paragraf(self, t, par_bredde = 80):
-        """Setter inn linjeskift for å sørge for at teksten aldri overskrider en viss bredde"""
+        """Bryter teksten med harde linjeskift på en gitt bredde, 80 tegn hvis ikke annet er oppgitt"""
         #if not t: return ''
         assert(type(t) in (types.StringType, types.UnicodeType))
         if len(t) < par_bredde: return [t,]
@@ -185,19 +226,19 @@ class f60:
         if not type(t) in (types.StringType,types.UnicodeType): return t
         # Reportlab 2.x vil ha unicode
         if reportlab.Version[0] == '2':
-            try: 
+            try:
                 return unicode(t)
             except UnicodeDecodeError:
                 return unicode(t, 'latin1')
         #elif reportlab.Version[0] == '1':
         else: # Reportlab 1.x vil ha latin1
-            try: 
+            try:
                 return unicode(t).encode('latin1')
             except UnicodeDecodeError:
                 return unicode(t, 'latin1').encode('latin1')
 
     def lagBakgrunn(self):
-        "Lager den gule giroblanketten, bare for bruk til epostpdf, ikke print"
+        "Lager de gule skjemafeltene. Se .lagEpost() og .lagKvittering()"
 
         # a4 format spec:
         # http://www.cl.cam.ac.uk/~mgk25/iso-paper.html
@@ -207,21 +248,23 @@ class f60:
         # url: ?
         self.canvas.saveState()
         self.canvas.setFillColor(yellow)
+        # Lag de gule feltene
         self.canvas.rect(0*mm, 101*mm, 210*mm, 21*mm, stroke=0, fill=1)
         self.canvas.rect(0*mm, 33*mm, 210*mm, 9*mm, stroke=0, fill=1)
         self.canvas.rect(0*mm, 14*mm, 210*mm, 2*mm, stroke=0, fill=1)
 
         self.canvas.setFillColor(white)
-        self.canvas.rect(80*mm, 103*mm, 36*mm, 9*mm, stroke=0, fill=1)
-        self.canvas.rect(121*mm, 103*mm, 40*mm, 9*mm, stroke=0, fill=1)
-        self.canvas.rect(171*mm, 103*mm, 30*mm, 9*mm, stroke=0, fill=1)
+        # Legg de hvite feltene oppå for "gjennomsiktighet"
+        self.canvas.rect(80*mm, 103*mm, 36*mm, 9*mm, stroke=0, fill=1) # beløp
+        self.canvas.rect(126*mm, 103*mm, 40*mm, 9*mm, stroke=0, fill=1) # betalerens kontonummer
+        self.canvas.rect(170*mm, 103*mm, 31*mm, 9*mm, stroke=0, fill=1) # blankettnummer
 
         self.canvas.lines([(9*mm, 16*mm, 9*mm, 30*mm), (80*mm, 16*mm, 80*mm, 30*mm)])
 
         self.canvas.restoreState()
         blankettnr = "xxxxxxx"
         self.canvas.drawString(173*mm, 105*mm, blankettnr)
-        self.canvas.drawString(173*mm, 20*mm, blankettnr)
+        self.canvas.drawString(173*mm, 22*mm, blankettnr)
 
     def lagKopimerke(self):
         """Lager teksten "Kvittering" på skrå over fakturaen"""
@@ -333,12 +376,12 @@ Side: %i av %i
         totalBelop = 0
         totalMva = 0
         totalBrutto = 0
-        
+
         mvagrunnlag = {} # Holder en oppsummering av salg per mva-sats
-        
+
         if type(self.ordrelinje) in (types.FunctionType, types.MethodType):
             for vare in self.ordrelinje():
-                
+
                 # regn ut alt som skal regnes
                 brutto = vare.kvantum * vare.enhetspris
                 mva = brutto * vare.mva / 100
@@ -346,11 +389,11 @@ Side: %i av %i
                 totalBrutto += brutto
                 totalMva += mva
                 totalBelop += pris
-                
+
                 if not vare.mva in mvagrunnlag.keys(): # legg til i oppsummeringen av salg
                     mvagrunnlag[vare.mva] = []
                 mvagrunnlag[vare.mva] += [brutto,]
-                
+
                 self.canvas.drawString(tekstX, Y, self._s(vare.detaljertBeskrivelse()))
                 self.canvas.drawRightString(bruttoX, Y, "%.2f" % (brutto))
                 self.canvas.drawRightString(mvaX, Y, "%.2f" % (mva))
@@ -359,7 +402,7 @@ Side: %i av %i
         elif type(self.ordrelinje) == types.ListType:
             for vare in self.ordrelinje:
                 # [tekst, kvantum, enhetspris, mva]
-                
+
                 # regn ut alt som skal regnes
                 brutto = vare[1] * vare[2]
                 mva = brutto * vare[3] / 100
@@ -367,11 +410,11 @@ Side: %i av %i
                 totalBrutto += brutto
                 totalMva += mva
                 totalBelop += pris
-                
+
                 if not vare[3] in mvagrunnlag.keys(): # legg til i oppsummeringen av salg
                     mvagrunnlag[vare[3]] = []
                 mvagrunnlag[vare[3]] += [brutto,]
-                
+
                 self.canvas.drawString(tekstX, Y, "%s %s a kr %s" % (vare[1], vare[0], vare[2]))
                 self.canvas.drawRightString(bruttoX, Y, "%.2f" % (brutto))
                 self.canvas.drawRightString(mvaX, Y, "%.2f" % (mva))
@@ -391,7 +434,7 @@ Side: %i av %i
         self.canvas.drawRightString(prisX, sumY-7*mm, "TOTALT: %.2f" % totalBelop)
 
         # sum mvagrunnlag
-        
+
 
         # standard betalingsvilkår
         if len(self.faktura['vilkaar']):
@@ -414,7 +457,7 @@ Side: %i av %i
 
         # betalingsfrist
         from time import strftime, localtime
-        self.canvas.drawString(170*mm, 92*mm, self.faktura['forfall'])
+        self.canvas.drawString(170*mm, 93*mm, self.faktura['forfall'])
 
         # fakturainformasjon
         t = self.canvas.beginText()
@@ -425,28 +468,29 @@ Side: %i av %i
 
         # mottakerfelt
         kundeinfo = self.canvas.beginText()
-        kundeinfo.setTextOrigin(15*mm, 70*mm)
+        kundeinfo.setTextOrigin(15*mm, 58*mm)
         kundeinfo.textLines(split(self.kunde['adresse'], '\n'))
         self.canvas.drawText(kundeinfo)
 
         # avsenderfelt
         firmaadresse = self.canvas.beginText()
-        firmaadresse.setTextOrigin(115*mm, 70*mm)
+        firmaadresse.setTextOrigin(115*mm, 58*mm)
         firmaadresse.textLines(split("%(firmanavn)s\n%(kontaktperson)s\n%(adresse)s\n%(postnummer)04i %(poststed)s" % (self.firma), '\n'))
         self.canvas.drawText(firmaadresse)
 
         # KID
         if self.faktura['kid'] and self.sjekkKid(self.faktura['kid']):
-            self.canvas.drawString(14*mm, 20*mm, str(self.faktura['kid']))
+            self.canvas.drawString(14*mm, 21*mm, str(self.faktura['kid']))
 
         # SUM
         kr = int(totalBelop)
         ore = int((totalBelop - kr) * 100)
-        self.canvas.drawString(90*mm, 20*mm, str(kr))
-        self.canvas.drawString(110*mm, 20*mm, "%02d" % ore)
-        self.canvas.drawString(135*mm, 20*mm, str(self.firma['kontonummer']))
+        self.canvas.drawString(90*mm, 21*mm, str(kr))
+        self.canvas.drawString(110*mm, 21*mm, "%02d" % ore)
+        self.canvas.drawString(135*mm, 21*mm, str(self.firma['kontonummer']))
 
     def settSammen(self):
+        "Setter sammen fakturaen. Ikke for eksternt bruk. Bruk .lag*()-metodene"
         self.canvas.showPage()
         self.canvas.save()
         return True
@@ -471,8 +515,8 @@ if __name__ == '__main__':
                            'epost':'ratata@ta.no'})
     faktura.settKundeinfo(06, "Topert\nRopertgata 33\n9022 Nissedal")
     faktura.settOrdrelinje([ ["Leder", 1, 300, 25], ['Reportasje', 1, 3000, 25], ])
-    if faktura.lagKvittering():
+    if faktura.lagEpost():
         print "Kvittering laget i", filnavn
     else:
         print "Kvittering kunne ikke lagres i", filnavn
-    
+
