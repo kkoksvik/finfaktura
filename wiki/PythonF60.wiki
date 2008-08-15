@@ -1,0 +1,55 @@
+#summary Slik bruker du f60.py til å lage PDF-faktura
+#labels Featured
+
+= Innledning =
+
+F60.py er en *python-modul* for å produsere en *faktura i PDF-format*. Dokumentet er laget i samsvar med _Norsk standard Giro F60_, og kan skrives ut på slike blanketter. 
+
+F60.py brukes av finfaktura, men kan også brukes uavhengig, i ditt eget python-program. I det følgende vises hvordan.
+
+= Eksempel =
+
+{{{
+
+import f60
+filnavn = '/tmp/testfaktura.pdf'
+faktura = f60(filnavn, overskriv=True)
+faktura.settFakturainfo(
+  fakturanr=03,
+  utstedtEpoch=1145542709,
+  forfallEpoch=1146546709,
+  fakturatekst=u"Produksjon i august",
+  vilkaar=u"Takk for handelen, kom gjerne igjen.",
+  kid='4466986711175280')
+faktura.settFirmainfo({'firmanavn':'Firma Ein',
+                        'kontaktperson':'Rattatta Hansen',
+                        'adresse':u'Surdalsøyra',
+                        'postnummer':8999,
+                        'poststed':u'Fløya',
+                        'kontonummer':99999999999,
+                        'organisasjonsnummer':876876,
+                        'telefon':23233322,
+                        'epost':'ratata@ta.no'})
+faktura.settKundeinfo(06, "Topert\nRopertgata 33\n9022 Nissedal")
+faktura.settOrdrelinje([ ["Leder", 1, 300, 25], ['Reportasje', 1, 3000, 25], ])
+
+}}}
+
+= Informasjon om fakturaen =
+
+== Fakturainfo ==
+
+== Firmainfo ==
+
+== Kundeinfo ==
+
+== Ordrelinje ==
+
+
+= Format =
+
+== Epost ==
+
+== Papir/Utskrift ==
+
+== Kvittering ==
