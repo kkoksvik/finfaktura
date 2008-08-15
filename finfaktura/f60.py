@@ -20,7 +20,7 @@ faktura.settFirmainfo({'firmanavn':'Firma Ein',
                         'adresse':u'Surdalsøyra',
                         'postnummer':8999,
                         'poststed':u'Fløya',
-                        'kontonummer':999999999,
+                        'kontonummer':99999999999,
                         'organisasjonsnummer':876876,
                         'telefon':23233322,
                         'epost':'ratata@ta.no'})
@@ -509,7 +509,7 @@ if __name__ == '__main__':
                            'adresse':u'Surdalsøyra',
                            'postnummer':8999,
                            'poststed':u'Fløya',
-                           'kontonummer':97101164680,
+                           'kontonummer':99999999999,
                            'organisasjonsnummer':876876,
                            'telefon':23233322,
                            'epost':'ratata@ta.no'})
