@@ -26,9 +26,10 @@ faktura.settFirmainfo({'firmanavn':'Firma Ein',
                         'epost':'ratata@ta.no'})
 faktura.settKundeinfo(06, "Topert\nRopertgata 33\n9022 Nissedal")
 faktura.settOrdrelinje([ ["Leder", 1, 300, 25], ['Reportasje', 1, 3000, 25], ])
+if faktura.lagEpost():
+    print "Kvittering laget i", filnavn
 
-
-
+Se forøvrig http://code.google.com/p/finfaktura/wiki/PythonF60
 """
 ###########################################################################
 #    Copyright (C) 2005-2008- Håvard Gulldahl
@@ -52,6 +53,7 @@ except ImportError:
     REPORTLAB=False
 
 __version__ = '0.10'
+__license__ = 'GPLv2'
 
 class f60Eksisterer(Exception): pass
 class f60Feil(Exception): pass
@@ -128,7 +130,7 @@ class f60:
 
     # ==================== OFFENTLIGE FUNKSJONER ================ #
 
-    def lagPapir(self):
+    def lagPost(self):
         "Ferdigstiller dokumentet for utskrift på papir (uten F60 skjemafelt)"
         self.fyll()
         return self.settSammen()
