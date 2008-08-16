@@ -1,0 +1,17 @@
+<RCC>
+  <qresource prefix="pix" >
+    <file>process-stop.svg</file>
+    <file>dialog-error.svg</file>
+    <file>image-missing.svg</file>
+    <file>mail-attachment.svg</file>
+    <file>emblem-unreadable.svg</file>
+    <file>dialog-warning.svg</file>
+  </qresource>
+  <qresource prefix="data" >
+    <file>README</file>
+    <file>LICENSE</file>
+  </qresource>
+  <qresource prefix="sql" >
+    <file>faktura.sql</file>
+  </qresource>
+</RCC>
