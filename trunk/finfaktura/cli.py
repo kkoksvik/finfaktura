@@ -1,4 +1,4 @@
-#!/usr/bin/python 
+#!/usr/bin/python
 # -*- coding:utf-8 -*-
 """cli-magi"""
 ###########################################################################
@@ -10,13 +10,16 @@
 # $Id$
 ###########################################################################
 
-def xxcli_faktura():
+import sys
+from fakturabibliotek import FakturaBibliotek, kobleTilDatabase
+
+def cli_faktura():
     logg = open("faktura-interactive.sql.log", "a+")
     db = kobleTilDatabase(loggfil=logg)
     bib = FakturaBibliotek(db)
     kunder = bib.hentKunder()
     kunde = CLIListe(kunder, "velg kunde: ")
-    print "kunde: ", kunde
+    print "kunde: ", unicode(kunde)
     varer = bib.hentVarer()
     vare = CLIListe(varer, "velg vare: ")
     antall = ""
@@ -33,9 +36,9 @@ def xxcli_faktura():
     Tekst: %s
     SUM: %.2f kr (derav mva: %.2f)
     ===== """ % (kunde, antall, vare.enhet, vare, tekst, sum, mva)
-    ja = CLIInput("J/n ")
-    if len(ja) and ja.strip().lower()[0] != "j":
-        sys.exit(0)
+    ja = CLIInput("NEI/ja (Enter for å avbryte): ")
+    if not(len(ja) > 0 and ja.strip().lower()[0] == "j"):
+        return False
     firma = bib.firmainfo()
     ordre = bib.nyOrdre(kunde)
     ordre.tekst = tekst
@@ -43,7 +46,7 @@ def xxcli_faktura():
     bib.lagSikkerhetskopi(ordre)
 
     fakturanavn = ordre.lagFilnavn(bib.oppsett.fakturakatalog, fakturatype="epost")
-    
+
     try:
         pdf = bib.lagPDF(ordre, "epost", fakturanavn)
     except FakturaFeil,(E):
