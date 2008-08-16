@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>776</width>
-    <height>904</height>
+    <width>863</width>
+    <height>875</height>
    </rect>
   </property>
   <property name="font" >
@@ -26,12 +26,12 @@
     <rect>
      <x>0</x>
      <y>27</y>
-     <width>776</width>
-     <height>856</height>
+     <width>863</width>
+     <height>827</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout_9" >
-    <item row="0" column="1" >
+    <item row="0" column="0" >
      <widget class="QTabWidget" name="fakturaTab" >
       <property name="sizePolicy" >
        <sizepolicy vsizetype="Expanding" hsizetype="MinimumExpanding" >
@@ -48,15 +48,15 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex" >
-       <number>0</number>
+       <number>4</number>
       </property>
       <widget class="QWidget" name="tab" >
        <property name="geometry" >
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>760</width>
-         <height>818</height>
+         <width>847</width>
+         <height>789</height>
         </rect>
        </property>
        <attribute name="title" >
@@ -248,7 +248,7 @@
               <string>Lager en papirfaktura for utskrift på skjema F60 (gul faktura)</string>
              </property>
              <property name="text" >
-              <string>Papir</string>
+              <string>P&amp;apir</string>
              </property>
              <property name="shortcut" >
               <string/>
@@ -698,8 +698,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>760</width>
-         <height>818</height>
+         <width>847</width>
+         <height>789</height>
         </rect>
        </property>
        <attribute name="title" >
@@ -747,75 +747,6 @@
            <bool>true</bool>
           </property>
           <layout class="QGridLayout" name="gridLayout" >
-           <item row="0" column="1" >
-            <layout class="QVBoxLayout" name="verticalLayout" >
-             <item>
-              <widget class="QLabel" name="kundeInfoKryss" >
-               <property name="minimumSize" >
-                <size>
-                 <width>24</width>
-                 <height>24</height>
-                </size>
-               </property>
-               <property name="maximumSize" >
-                <size>
-                 <width>24</width>
-                 <height>24</height>
-                </size>
-               </property>
-               <property name="text" >
-                <string/>
-               </property>
-               <property name="pixmap" >
-                <pixmap resource="faktura.qrc" >:/pix/emblem-unreadable.svg</pixmap>
-               </property>
-               <property name="scaledContents" >
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <spacer name="verticalSpacer" >
-               <property name="orientation" >
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeHint" stdset="0" >
-                <size>
-                 <width>20</width>
-                 <height>220</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-            </layout>
-           </item>
-           <item row="1" column="0" colspan="2" >
-            <layout class="QHBoxLayout" name="horizontalLayout_6" >
-             <item>
-              <spacer name="horizontalSpacer_2" >
-               <property name="orientation" >
-                <enum>Qt::Horizontal</enum>
-               </property>
-               <property name="sizeHint" stdset="0" >
-                <size>
-                 <width>608</width>
-                 <height>20</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-             <item>
-              <widget class="QPushButton" name="kundeInfoEndre" >
-               <property name="text" >
-                <string>&amp;Lag ny kunde</string>
-               </property>
-               <property name="shortcut" >
-                <string>Alt+L</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
            <item row="0" column="0" >
             <layout class="QFormLayout" name="formLayout" >
              <property name="fieldGrowthPolicy" >
@@ -898,63 +829,23 @@
                </property>
               </widget>
              </item>
-             <item row="5" column="0" >
-              <widget class="QLabel" name="textLabel1_3_3_5" >
-               <property name="text" >
-                <string>Postnr</string>
+             <item row="7" column="1" >
+              <widget class="QLineEdit" name="kundeInfoPostnummer" >
+               <property name="sizePolicy" >
+                <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+                 <horstretch>4</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
                </property>
-               <property name="wordWrap" >
-                <bool>false</bool>
+               <property name="toolTip" >
+                <string>Sett inn norsk postnummer</string>
                </property>
-               <property name="buddy" >
-                <cstring>kundeInfoPostnummer</cstring>
+               <property name="inputMask" >
+                <string comment="Kommentar: Sett inn norsk postnummer" >0000; </string>
                </property>
               </widget>
              </item>
-             <item row="5" column="1" >
-              <layout class="QHBoxLayout" name="horizontalLayout" >
-               <item>
-                <widget class="QLineEdit" name="kundeInfoPoststed" >
-                 <property name="sizePolicy" >
-                  <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QLabel" name="textLabel1_3_4_2" >
-                 <property name="text" >
-                  <string>Pos&amp;tsted</string>
-                 </property>
-                 <property name="wordWrap" >
-                  <bool>false</bool>
-                 </property>
-                 <property name="buddy" >
-                  <cstring>kundeInfoPoststed</cstring>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QLineEdit" name="kundeInfoPostnummer" >
-                 <property name="sizePolicy" >
-                  <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
-                   <horstretch>4</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="toolTip" >
-                  <string>Sett inn norsk postnummer</string>
-                 </property>
-                 <property name="inputMask" >
-                  <string comment="Kommentar: Sett inn norsk postnummer" >0000; </string>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </item>
-             <item row="6" column="0" >
+             <item row="9" column="0" >
               <widget class="QLabel" name="textLabel1_3_3_2_4" >
                <property name="text" >
                 <string>Telefon</string>
@@ -967,50 +858,46 @@
                </property>
               </widget>
              </item>
-             <item row="6" column="1" >
-              <layout class="QHBoxLayout" name="horizontalLayout_5" >
-               <item>
-                <widget class="QLineEdit" name="kundeInfoTelefon" >
-                 <property name="sizePolicy" >
-                  <sizepolicy vsizetype="Fixed" hsizetype="Minimum" >
-                   <horstretch>1</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="inputMask" >
-                  <string>00000000; </string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QLabel" name="textLabel1_3_3_3_4" >
-                 <property name="text" >
-                  <string>Telefaks</string>
-                 </property>
-                 <property name="wordWrap" >
-                  <bool>false</bool>
-                 </property>
-                 <property name="buddy" >
-                  <cstring>kundeInfoTelefaks</cstring>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QLineEdit" name="kundeInfoTelefaks" >
-                 <property name="sizePolicy" >
-                  <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
-                   <horstretch>1</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="inputMask" >
-                  <string>00000000; </string>
-                 </property>
-                </widget>
-               </item>
-              </layout>
+             <item row="9" column="1" >
+              <widget class="QLineEdit" name="kundeInfoTelefon" >
+               <property name="sizePolicy" >
+                <sizepolicy vsizetype="Fixed" hsizetype="MinimumExpanding" >
+                 <horstretch>1</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="inputMask" >
+                <string>00000000; </string>
+               </property>
+              </widget>
              </item>
-             <item row="7" column="0" >
+             <item row="11" column="0" >
+              <widget class="QLabel" name="textLabel1_3_3_3_4" >
+               <property name="text" >
+                <string>Telefaks</string>
+               </property>
+               <property name="wordWrap" >
+                <bool>false</bool>
+               </property>
+               <property name="buddy" >
+                <cstring>kundeInfoTelefaks</cstring>
+               </property>
+              </widget>
+             </item>
+             <item row="11" column="1" >
+              <widget class="QLineEdit" name="kundeInfoTelefaks" >
+               <property name="sizePolicy" >
+                <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+                 <horstretch>1</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="inputMask" >
+                <string>00000000; </string>
+               </property>
+              </widget>
+             </item>
+             <item row="12" column="0" >
               <widget class="QLabel" name="textLabel4" >
                <property name="text" >
                 <string>&amp;Status</string>
@@ -1023,7 +910,7 @@
                </property>
               </widget>
              </item>
-             <item row="7" column="1" >
+             <item row="12" column="1" >
               <widget class="QComboBox" name="kundeInfoStatus" >
                <property name="sizePolicy" >
                 <sizepolicy vsizetype="Fixed" hsizetype="MinimumExpanding" >
@@ -1036,6 +923,111 @@
                </property>
                <property name="sizeAdjustPolicy" >
                 <enum>QComboBox::AdjustToContents</enum>
+               </property>
+              </widget>
+             </item>
+             <item row="8" column="1" >
+              <widget class="QLineEdit" name="kundeInfoPoststed" >
+               <property name="sizePolicy" >
+                <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+              </widget>
+             </item>
+             <item row="8" column="0" >
+              <widget class="QLabel" name="textLabel1_3_4_2" >
+               <property name="text" >
+                <string>Pos&amp;tsted</string>
+               </property>
+               <property name="wordWrap" >
+                <bool>false</bool>
+               </property>
+               <property name="buddy" >
+                <cstring>kundeInfoPoststed</cstring>
+               </property>
+              </widget>
+             </item>
+             <item row="7" column="0" >
+              <widget class="QLabel" name="textLabel1_3_3_5" >
+               <property name="text" >
+                <string>Postnr</string>
+               </property>
+               <property name="wordWrap" >
+                <bool>false</bool>
+               </property>
+               <property name="buddy" >
+                <cstring>kundeInfoPostnummer</cstring>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item row="0" column="1" >
+            <layout class="QVBoxLayout" name="verticalLayout" >
+             <item>
+              <widget class="QLabel" name="kundeInfoKryss" >
+               <property name="minimumSize" >
+                <size>
+                 <width>24</width>
+                 <height>24</height>
+                </size>
+               </property>
+               <property name="maximumSize" >
+                <size>
+                 <width>24</width>
+                 <height>24</height>
+                </size>
+               </property>
+               <property name="text" >
+                <string/>
+               </property>
+               <property name="pixmap" >
+                <pixmap resource="faktura.qrc" >:/pix/emblem-unreadable.svg</pixmap>
+               </property>
+               <property name="scaledContents" >
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="verticalSpacer" >
+               <property name="orientation" >
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeHint" stdset="0" >
+                <size>
+                 <width>20</width>
+                 <height>220</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </item>
+           <item row="1" column="0" colspan="2" >
+            <layout class="QHBoxLayout" name="horizontalLayout_6" >
+             <item>
+              <spacer name="horizontalSpacer_2" >
+               <property name="orientation" >
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0" >
+                <size>
+                 <width>608</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QPushButton" name="kundeInfoEndre" >
+               <property name="text" >
+                <string>&amp;Lag ny kunde</string>
+               </property>
+               <property name="shortcut" >
+                <string>Alt+L</string>
                </property>
               </widget>
              </item>
@@ -1164,8 +1156,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>760</width>
-         <height>818</height>
+         <width>847</width>
+         <height>789</height>
         </rect>
        </property>
        <attribute name="title" >
@@ -1318,6 +1310,9 @@
           <layout class="QGridLayout" name="gridLayout_3" >
            <item row="0" column="0" >
             <layout class="QFormLayout" name="formLayout_3" >
+             <property name="fieldGrowthPolicy" >
+              <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+             </property>
              <item row="0" column="0" >
               <widget class="QLabel" name="textLabel10" >
                <property name="text" >
@@ -1348,66 +1343,45 @@
               </widget>
              </item>
              <item row="1" column="1" >
-              <layout class="QHBoxLayout" name="horizontalLayout_9" >
-               <item>
-                <widget class="QComboBox" name="varerInfoEnhet" >
-                 <property name="sizePolicy" >
-                  <sizepolicy vsizetype="Fixed" hsizetype="Maximum" >
-                   <horstretch>1</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="editable" >
-                  <bool>true</bool>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <spacer name="horizontalSpacer" >
-                 <property name="orientation" >
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0" >
-                  <size>
-                   <width>40</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-               <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_10" >
-                 <item>
-                  <widget class="QLabel" name="textLabel10_4" >
-                   <property name="text" >
-                    <string>&amp;Pris</string>
-                   </property>
-                   <property name="wordWrap" >
-                    <bool>false</bool>
-                   </property>
-                   <property name="buddy" >
-                    <cstring>varerInfoPris</cstring>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QDoubleSpinBox" name="varerInfoPris" >
-                   <property name="sizePolicy" >
-                    <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
-                     <horstretch>7</horstretch>
-                     <verstretch>0</verstretch>
-                    </sizepolicy>
-                   </property>
-                   <property name="suffix" >
-                    <string/>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
-               </item>
-              </layout>
+              <widget class="QComboBox" name="varerInfoEnhet" >
+               <property name="sizePolicy" >
+                <sizepolicy vsizetype="Fixed" hsizetype="MinimumExpanding" >
+                 <horstretch>1</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="editable" >
+                <bool>true</bool>
+               </property>
+              </widget>
              </item>
              <item row="2" column="0" >
+              <widget class="QLabel" name="textLabel10_4" >
+               <property name="text" >
+                <string>&amp;Pris</string>
+               </property>
+               <property name="wordWrap" >
+                <bool>false</bool>
+               </property>
+               <property name="buddy" >
+                <cstring>varerInfoPris</cstring>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1" >
+              <widget class="QDoubleSpinBox" name="varerInfoPris" >
+               <property name="sizePolicy" >
+                <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+                 <horstretch>7</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="suffix" >
+                <string/>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="0" >
               <widget class="QLabel" name="textLabel10_3" >
                <property name="text" >
                 <string>&amp;Detaljer</string>
@@ -1420,7 +1394,7 @@
                </property>
               </widget>
              </item>
-             <item row="2" column="1" >
+             <item row="3" column="1" >
               <widget class="QPlainTextEdit" name="plainTextEdit" >
                <property name="maximumSize" >
                 <size>
@@ -1433,7 +1407,7 @@
                </property>
               </widget>
              </item>
-             <item row="3" column="0" >
+             <item row="4" column="0" >
               <widget class="QLabel" name="textLabel7_3" >
                <property name="text" >
                 <string>&amp;MVA-sats</string>
@@ -1446,48 +1420,12 @@
                </property>
               </widget>
              </item>
-             <item row="3" column="1" >
-              <layout class="QHBoxLayout" name="horizontalLayout_11" >
-               <item>
-                <widget class="QSpinBox" name="varerInfoMva" >
-                 <property name="value" >
-                  <number>25</number>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <spacer name="horizontalSpacer_3" >
-                 <property name="orientation" >
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                 <property name="sizeType" >
-                  <enum>QSizePolicy::Expanding</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0" >
-                  <size>
-                   <width>248</width>
-                   <height>26</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-               <item>
-                <widget class="QPushButton" name="varerInfoLegginn" >
-                 <property name="sizePolicy" >
-                  <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="text" >
-                  <string>&amp;Lag ny vare</string>
-                 </property>
-                 <property name="shortcut" >
-                  <string>Alt+L</string>
-                 </property>
-                </widget>
-               </item>
-              </layout>
+             <item row="4" column="1" >
+              <widget class="QSpinBox" name="varerInfoMva" >
+               <property name="value" >
+                <number>25</number>
+               </property>
+              </widget>
              </item>
             </layout>
            </item>
@@ -1536,15 +1474,59 @@
           </layout>
          </widget>
         </item>
+        <item row="4" column="0" colspan="3" >
+         <layout class="QHBoxLayout" name="horizontalLayout_11" >
+          <item>
+           <spacer name="horizontalSpacer_3" >
+            <property name="orientation" >
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeType" >
+             <enum>QSizePolicy::Expanding</enum>
+            </property>
+            <property name="sizeHint" stdset="0" >
+             <size>
+              <width>248</width>
+              <height>26</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QPushButton" name="varerInfoLegginn" >
+            <property name="sizePolicy" >
+             <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text" >
+             <string>&amp;Lag ny vare</string>
+            </property>
+            <property name="shortcut" >
+             <string>Alt+L</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
        </layout>
+       <zorder>varerNy</zorder>
+       <zorder>varerVareliste</zorder>
+       <zorder>varerVisFjernede</zorder>
+       <zorder>groupBox_4</zorder>
+       <zorder>varerInfo</zorder>
+       <zorder></zorder>
+       <zorder>varerInfoMva</zorder>
+       <zorder>horizontalSpacer_3</zorder>
       </widget>
       <widget class="QWidget" name="TabPage_2" >
        <property name="geometry" >
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>760</width>
-         <height>818</height>
+         <width>847</width>
+         <height>789</height>
         </rect>
        </property>
        <attribute name="title" >
@@ -1878,8 +1860,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>760</width>
-         <height>818</height>
+         <width>847</width>
+         <height>789</height>
         </rect>
        </property>
        <attribute name="title" >
@@ -2002,7 +1984,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>776</width>
+     <width>863</width>
      <height>27</height>
     </rect>
    </property>
@@ -2033,8 +2015,8 @@
    <property name="geometry" >
     <rect>
      <x>0</x>
-     <y>883</y>
-     <width>776</width>
+     <y>854</y>
+     <width>863</width>
      <height>21</height>
     </rect>
    </property>
