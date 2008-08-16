@@ -51,8 +51,7 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         #skjul ikke-ferdige tabs dersom vi er i produksjon
         # TODO: gjøre dem klare for produksjon
         if PRODUKSJONSVERSJON:
-            self.fakturaTab.removePage(self.fakturaTab.page(7)) # sikkerhetskopi
-            self.fakturaTab.removePage(self.fakturaTab.page(7)) # myndighetene
+            self.gui.fakturaTab.removeTab(3) # myndighetene
         else:
             self.gui.setWindowTitle("FRYKTELIG FIN FADESE (utviklerversjon)")
             self.patchDebugModus() # vis live debug-konsoll
@@ -63,7 +62,7 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
 #     self.connect(self.fakturaFakturaliste, QtCore.SIGNAL("doubleClicked(QListViewItem*, const QtGui.QPoint&, int)"), self.redigerFaktura)
         self.connect(self.gui.fakturaFaktaLegginn, QtCore.SIGNAL("clicked()"), self.leggTilFaktura)
         #self.connect(self.fakturaFaktaVare, QtCore.SIGNAL("highlighted(int)"), self.fakturaVareOppdater)
-        self.connect(self.gui.fakturaFakturaliste, QtCore.SIGNAL("selectionChanged(QListViewItem*)"), self.visFakturadetaljer)
+        self.connect(self.gui.fakturaFakturaliste, QtCore.SIGNAL("currentItemChanged (QTreeWidgetItem *,QTreeWidgetItem *)"), self.visFakturadetaljer)
         self.connect(self.gui.fakturaVareliste, QtCore.SIGNAL("valueChanged(int,int)"), self.fakturaVarelisteSynk)
         self.connect(self.gui.fakturaFaktaVareLeggtil, QtCore.SIGNAL("clicked()"), self.leggVareTilOrdre)
         #self.connect(self.gui.fakturaFaktaVareFjern, QtCore.SIGNAL("clicked()"), self.fjernVareFraOrdre)
@@ -76,19 +75,19 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         self.gui.fakturaFaktaKryss.mousePressEvent = self.lukkFakta
 
         self.connect(self.gui.kundeNy, QtCore.SIGNAL("clicked()"), self.lastKunde)
-        self.connect(self.gui.kundeKundeliste, QtCore.SIGNAL("doubleClicked(QListViewItem*, const QtGui.QPoint&, int)"), self.redigerKunde)
+        self.connect(self.gui.kundeKundeliste, QtCore.SIGNAL("itemDoubleClicked (QTreeWidgetItem *,int)"), self.redigerKunde)
         self.connect(self.gui.kundeInfoEndre, QtCore.SIGNAL("clicked()"), self.leggTilKunde)
         self.connect(self.gui.kundeNyfaktura, QtCore.SIGNAL("clicked()"), self.nyFakturaFraKunde)
-        self.connect(self.gui.kundeKundeliste, QtCore.SIGNAL("selectionChanged(QListViewItem*)"), self.visKundedetaljer)
+        self.connect(self.gui.kundeKundeliste, QtCore.SIGNAL("currentItemChanged (QTreeWidgetItem *,QTreeWidgetItem *)"), self.visKundedetaljer)
         self.connect(self.gui.kundeVisFjernede, QtCore.SIGNAL("toggled(bool)"), self.visKunder)
         self.gui.kundeInfoKryss.mousePressEvent = self.lukkKundeinfo
 
         #self.connect(self.gui.varerVareliste, QtCore.SIGNAL("selected(const QtGui.QString&)"), self.nyFaktura)
 
         self.connect(self.gui.varerNy, QtCore.SIGNAL("clicked()"), self.lastVare)
-        self.connect(self.gui.varerVareliste, QtCore.SIGNAL("doubleClicked(QListViewItem*, const QtGui.QPoint&, int)"), self.redigerVare)
+        self.connect(self.gui.varerVareliste, QtCore.SIGNAL("itemDoubleClicked (QTreeWidgetItem *,int)"), self.redigerVare)
         self.connect(self.gui.varerInfoLegginn, QtCore.SIGNAL("clicked()"), self.registrerVare)
-        self.connect(self.gui.varerVareliste, QtCore.SIGNAL("selectionChanged(QListViewItem*)"), self.visVaredetaljer)
+        self.connect(self.gui.varerVareliste, QtCore.SIGNAL("currentItemChanged (QTreeWidgetItem *,QTreeWidgetItem *)"), self.visVaredetaljer)
         self.connect(self.gui.varerVisFjernede, QtCore.SIGNAL("toggled(bool)"), self.visVarer)
         self.gui.varerInfoKryss.mousePressEvent = self.lukkVarerinfo
 
@@ -216,7 +215,8 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
             self.faktura.oppsett.skrivutpdf = PDFUTSKRIFT
         finfaktura.fakturakomponenter.PDFUTSKRIFT = self.faktura.oppsett.skrivutpdf
         f60.PDFUTSKRIFT = self.faktura.oppsett.skrivutpdf
-        self.visFaktura()
+
+        self.gui.fakturaTab.setCurrentIndex(0)
 
     def avslutt(self):
         debug("__del__")
@@ -557,10 +557,10 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
             s += "<font color=darkgreen>Betalt: %s</font><br>" % strftime("%Y-%m-%d", localtime(linje.ordre.betalt))
         for logglinje in ():#ordre.hentHistorikk():
             s += "<i>%s:</i> %i<br>" % (strftime("%Y-%m-%d", localtime(logglinje.dato)), logglinje.info)
-        self.fakturaDetaljerTekst.setText(s)
+        self.gui.fakturaDetaljerTekst.setText(s)
         # oppdater datofeltet. minste dato er ordredato. største dato er i dag
         minst, maks = localtime(linje.ordre.ordredato), localtime()
-        self.gui.fakturaBetaltDato.setRange(QDate(minst[0]-1, minst[1], minst[2]), QtGui.QDate(maks[0]+1, maks[1], maks[2])) # utvider rangen med ett år i hver retning slik at QtGui.QDateEdit-kontrollen skal bli brukelig
+        self.gui.fakturaBetaltDato.setDateRange(QtCore.QDate(minst[0]-1, minst[1], minst[2]), QtCore.QDate(maks[0]+1, maks[1], maks[2])) # utvider rangen med ett år i hver retning slik at QtGui.QDateEdit-kontrollen skal bli brukelig
 
     def lagFakturaKvittering(self):
         try:
@@ -784,14 +784,15 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         self.denne_kunde = kunde
         statuser = self.faktura.hentEgenskapVerdier("Kunde", "status")
         self.gui.kundeInfoStatus.clear()
-        self.gui.kundeInfoStatus.insertStrList(statuser)
+        self.gui.kundeInfoStatus.addItems(statuser)
 
         if kunde is not None: #redigerer eksisterende kunde
             self.gui.kundeInfoNavn.setText(kunde.navn)
             self.gui.kundeInfoKontaktperson.setText(unicode(kunde.kontaktperson))
             self.gui.kundeInfoEpost.setText(unicode(kunde.epost))
-            self.gui.kundeInfoStatus.setCurrentText(unicode(kunde.status))
-            self.gui.kundeInfoAdresse.setText(unicode(kunde.adresse))
+            comboidx = self.gui.kundeInfoStatus.findText(unicode(kunde.status))
+            if comboidx != 1: self.gui.kundeInfoStatus.setCurrentIndex(comboidx)
+            self.gui.kundeInfoAdresse.setPlainText(unicode(kunde.adresse))
             self.gui.kundeInfoPoststed.setText(unicode(kunde.poststed))
             self.gui.kundeInfoPostnummer.setText(str(kunde.postnummer))
             self.gui.kundeInfoTelefon.setText(str(kunde.telefon))
@@ -802,7 +803,7 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
             self.gui.kundeInfoKontaktperson.setText("")
             self.gui.kundeInfoEpost.setText("")
             self.gui.kundeInfoStatus.setCurrentItem(0)
-            self.gui.kundeInfoAdresse.setText("")
+            self.gui.kundeInfoAdresse.setPlainText("")
             self.gui.kundeInfoPoststed.setText("")
             self.gui.kundeInfoPostnummer.setText("")
             self.gui.kundeInfoTelefon.setText("")
@@ -823,7 +824,9 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
                     self.gui.kundeInfoPoststed: "Poststed",
                     }
         for obj in kravkart.keys():
-            if not obj.text():
+            if hasattr(obj, 'text'): t = obj.text()
+            elif hasattr(obj, 'toPlainText'): t = obj.toPlainText()
+            if not len(t):
                 self.alert(u'Du er nødt til å oppgi %s' % (kravkart[obj].lower()))
                 obj.setFocus()
                 return False
@@ -837,7 +840,7 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         k.kontaktperson = self.gui.kundeInfoKontaktperson.text()
         k.epost = self.gui.kundeInfoEpost.text()
         k.status = self.gui.kundeInfoStatus.currentText()
-        k.adresse = self.gui.kundeInfoAdresse.text()
+        k.adresse = self.gui.kundeInfoAdresse.toPlainText()
         k.poststed = self.gui.kundeInfoPoststed.text()
         k.postnummer = self.gui.kundeInfoPostnummer.text()
         k.telefon = self.gui.kundeInfoTelefon.text()
@@ -983,17 +986,18 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
             i(l)
 
     def redigerVare(self, linje = None, koord = None, kolonne = None):
-        self.lastVare(self.varerVareliste.currentItem().vare)
+        self.lastVare(self.gui.varerVareliste.currentItem().vare)
 
     def lastVare(self, vare = None):
         self.denne_vare = vare
         enheter = self.faktura.hentEgenskapVerdier("Vare", "enhet")
         self.gui.varerInfoEnhet.clear()
-        self.gui.varerInfoEnhet.insertStrList(enheter)
+        self.gui.varerInfoEnhet.addItems(enheter)
         if vare is not None:
             self.gui.varerInfoNavn.setText(unicode(vare.navn))
-            self.gui.varerInfoDetaljer.setText(unicode(vare.detaljer))
-            self.gui.varerInfoEnhet.setCurrentText(unicode(vare.enhet))
+            self.gui.varerInfoDetaljer.setPlainText(unicode(vare.detaljer))
+            idx = self.gui.varerInfoEnhet.findText(unicode(vare.enhet))
+            if idx != -1: self.gui.varerInfoEnhet.setCurrentIndex(idx)
             self.gui.varerInfoPris.setValue(int(vare.pris))
             if vare.enhet: sfx = unicode(" kr per %s" % vare.enhet)
             else: sfx = " kr"
@@ -1003,8 +1007,8 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
             self.gui.varerInfoLegginn.setText('&Oppdater')
         else:
             self.gui.varerInfoNavn.setText("")
-            self.gui.varerInfoDetaljer.setText("")
-            self.gui.varerInfoEnhet.setCurrentText("")
+            self.gui.varerInfoDetaljer.setPlainText("")
+            self.gui.varerInfoEnhet.clearEditText()
             self.gui.varerInfoPris.setValue(0)
             self.gui.varerInfoPris.setSuffix("")
             self.gui.varerInfoMva.setValue(int(self.firma.mva))
@@ -1034,7 +1038,7 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
             debug("oppdaterer vare, som var: " + unicode(v))
         #print self.varerInfoNavn.text.utf8
         v.navn = self.gui.varerInfoNavn.text()
-        v.detaljer = self.gui.varerInfoDetaljer.text()
+        v.detaljer = self.gui.varerInfoDetaljer.toPlainText()
         v.enhet = self.gui.varerInfoEnhet.currentText()
         v.pris = float(self.gui.varerInfoPris.value())
         v.mva = self.gui.varerInfoMva.value()
