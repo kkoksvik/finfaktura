@@ -48,7 +48,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex" >
-       <number>4</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab" >
        <property name="geometry" >
@@ -223,9 +223,6 @@
              </property>
              <property name="wordWrap" >
               <bool>false</bool>
-             </property>
-             <property name="buddy" >
-              <cstring>fakturaBlankettType</cstring>
              </property>
             </widget>
            </item>
