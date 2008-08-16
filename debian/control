@@ -6,9 +6,9 @@ Build-Depends: debhelper (>= 4.0.0), python (>= 2.3), python-dev, python-qt3, py
 Standards-Version: 3.6.2
 
 Package: finfaktura
-Architecture: any
+Architecture: all
 Depends: ${shlibs:Depends}, ${misc:Depends}, ${python:Depends}, python-qt3, python-reportlab
-Recommends: python-pysqlite2 
+Recommends: python-pysqlite2, qt3-qtconfig
 Suggests: python-psyco, python-beautifulsoup
 Description: Create and manage invoices (Norwegian specs)
  Invoices, customers, products. Creates PDF invoices.
@@ -17,7 +17,9 @@ Description: Create and manage invoices (Norwegian specs)
  Requires python, python-qt3 and the reportlab extension.
  Extra value added with the beautifulsoup and libgmail python modules.
  .
- If you have python2.5, you don't need python-pysqlite2 (as python2.5 already's got it)
+ If you have python2.5, you don't need python-pysqlite2 (as python2.5
+ already's got it). If you're not running KDE, get and run qt3-qtconfig,
+ else the interface will appear horrid!
 
 #Package: finfaktura-doc
 #Architecture: all
