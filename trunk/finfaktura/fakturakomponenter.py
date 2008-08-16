@@ -19,6 +19,8 @@ from string import join
 from ekstra import debug
 from fakturafeil import *
 
+from PyQt4 import QtCore
+
 PDFUTSKRIFT = "/usr/bin/kprinter"
 PDFVIS = "/usr/bin/kpdf"
 
@@ -95,8 +97,7 @@ class fakturaKomponent:
 
     def oppdaterEgenskap(self, egenskap, verdi):
         try:
-            import qt
-            if type(verdi) == qt.QString: verdi = unicode(verdi)
+            if type(verdi) == QtCore.QString: verdi = unicode(verdi)
         except ImportError: pass
         _sql = "UPDATE %s SET %s=? WHERE ID=?" % (self._tabellnavn, egenskap)
         #debug(_sql, (verdi, self._id))

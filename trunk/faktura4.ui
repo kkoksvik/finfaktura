@@ -99,7 +99,7 @@
          </spacer>
         </item>
         <item rowspan="4" row="1" column="0" colspan="2" >
-         <widget class="QTreeWidget" name="fakturaFaktaListe" >
+         <widget class="QTreeWidget" name="fakturaFakturaliste" >
           <property name="sizePolicy" >
            <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
             <horstretch>1</horstretch>
@@ -403,7 +403,7 @@
                <item>
                 <layout class="QVBoxLayout" name="verticalLayout_2" >
                  <item>
-                  <widget class="QTableWidget" name="fakturaVareListe" >
+                  <widget class="QTableWidget" name="fakturaVareliste" >
                    <property name="toolTip" >
                     <string>Varene som hører med fakturaen. Velg tidligerere definerte varer, eller legg til nye ved å skrive inn tekst, pris og MVA</string>
                    </property>
@@ -1035,7 +1035,7 @@
          </widget>
         </item>
         <item rowspan="3" row="2" column="0" colspan="3" >
-         <widget class="QTreeWidget" name="kundeKundeListe" >
+         <widget class="QTreeWidget" name="kundeKundeliste" >
           <property name="sizePolicy" >
            <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
             <horstretch>2</horstretch>

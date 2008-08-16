@@ -15,7 +15,8 @@
 import sys, os.path, dircache, mimetypes, re
 from string import join
 from time import time, strftime, localtime, mktime
-from finfaktura.fakturabibliotek import *
+from finfaktura.fakturabibliotek import PRODUKSJONSVERSJON, \
+    FakturaBibliotek, kobleTilDatabase
 import finfaktura.f60 as f60
 from finfaktura.myndighetene import myndighetene
 from finfaktura.epost import BRUK_GMAIL
@@ -25,25 +26,27 @@ import finfaktura.historikk as historikk
 import finfaktura.rapport
 import finfaktura.fakturakomponenter
 from finfaktura.fakturafeil import *
-from finfaktura.sendepost_ui import sendEpost
+##from finfaktura.sendepost_ui import sendEpost
 
-from PyQt4 import QtCore, QtGui
-from finfaktura.ekstra import QBuffer, slettetLogo_data, forfaltLogo_data
-from finfaktura.faktura_ui import faktura ## husk å kjøre "pyuic -x faktura.ui > faktura_ui.py" først!
+from PyQt4 import QtCore, QtGui, uic
+#from finfaktura.ekstra import QtGui.QBuffer, slettetLogo_data, forfaltLogo_data
+#from finfaktura.faktura_ui import faktura ## husk å kjøre "pyuic -x faktura.ui > faktura_ui.py" først!
 
 
 
 PDFVIS = "/usr/bin/kpdf" # program for å vise PDF
 
-class Faktura (faktura): ## leser gui fra faktura_ui.py
+class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
     db = None
     denne_kunde = None
     denne_faktura = None
     denne_vare = None
     gammelTab = 0
 
-    def __init__(self,parent = None,name = None,modal = 0,fl = 0):
-        faktura.__init__(self, parent, name, fl)
+    def __init__(self):
+        QtGui.QMainWindow.__init__(self)
+
+        self.gui = uic.loadUi('faktura4.ui')
 
         #skjul ikke-ferdige tabs dersom vi er i produksjon
         # TODO: gjøre dem klare for produksjon
@@ -51,117 +54,117 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             self.fakturaTab.removePage(self.fakturaTab.page(7)) # sikkerhetskopi
             self.fakturaTab.removePage(self.fakturaTab.page(7)) # myndighetene
         else:
-            self.setCaption("FRYKTELIG FIN FADESE (utviklerversjon)")
+            #self.gui.setCaption("FRYKTELIG FIN FADESE (utviklerversjon)")
             self.patchDebugModus() # vis live debug-konsoll
 
-        self.connect(self.fakturaTab, SIGNAL("currentChanged(QWidget*)"), self.skiftTab)
+        self.connect(self.gui.fakturaTab, QtCore.SIGNAL("currentChanged(QWidget*)"), self.skiftTab)
 
-        self.connect(self.fakturaNy, SIGNAL("clicked()"), self.nyFaktura)
-#     self.connect(self.fakturaFakturaliste, SIGNAL("doubleClicked(QListViewItem*, const QPoint&, int)"), self.redigerFaktura)
-        self.connect(self.fakturaFaktaLegginn, SIGNAL("clicked()"), self.leggTilFaktura)
-        #self.connect(self.fakturaFaktaVare, SIGNAL("highlighted(int)"), self.fakturaVareOppdater)
-        self.connect(self.fakturaFakturaliste, SIGNAL("selectionChanged(QListViewItem*)"), self.visFakturadetaljer)
-        self.connect(self.fakturaFaktaVareliste, SIGNAL("valueChanged(int,int)"), self.fakturaVarelisteSynk)
-        self.connect(self.fakturaFaktaVareLeggtil, SIGNAL("clicked()"), self.leggVareTilOrdre)
-        #self.connect(self.fakturaFaktaVareFjern, SIGNAL("clicked()"), self.fjernVareFraOrdre)
-        self.connect(self.fakturaLagEpost, SIGNAL("clicked()"), self.lagFakturaEpost)
-        self.connect(self.fakturaLagPapir, SIGNAL("clicked()"), self.lagFakturaPapir)
-        self.connect(self.fakturaLagKvittering, SIGNAL("clicked()"), self.lagFakturaKvittering)
-        self.connect(self.fakturaBetalt, SIGNAL("clicked()"), self.betalFaktura)
-        self.connect(self.fakturaVisKansellerte, SIGNAL("toggled(bool)"), self.visFaktura)
-        self.connect(self.fakturaVisGamle, SIGNAL("toggled(bool)"), self.visFaktura)
-        self.fakturaFaktaKryss.mousePressEvent = self.lukkFakta
+        self.connect(self.gui.fakturaNy, QtCore.SIGNAL("clicked()"), self.nyFaktura)
+#     self.connect(self.fakturaFakturaliste, QtCore.SIGNAL("doubleClicked(QListViewItem*, const QtGui.QPoint&, int)"), self.redigerFaktura)
+        self.connect(self.gui.fakturaFaktaLegginn, QtCore.SIGNAL("clicked()"), self.leggTilFaktura)
+        #self.connect(self.fakturaFaktaVare, QtCore.SIGNAL("highlighted(int)"), self.fakturaVareOppdater)
+        self.connect(self.gui.fakturaFakturaliste, QtCore.SIGNAL("selectionChanged(QListViewItem*)"), self.visFakturadetaljer)
+        self.connect(self.gui.fakturaVareliste, QtCore.SIGNAL("valueChanged(int,int)"), self.fakturaVarelisteSynk)
+        self.connect(self.gui.fakturaFaktaVareLeggtil, QtCore.SIGNAL("clicked()"), self.leggVareTilOrdre)
+        #self.connect(self.gui.fakturaFaktaVareFjern, QtCore.SIGNAL("clicked()"), self.fjernVareFraOrdre)
+        self.connect(self.gui.fakturaLagEpost, QtCore.SIGNAL("clicked()"), self.lagFakturaEpost)
+        self.connect(self.gui.fakturaLagPapir, QtCore.SIGNAL("clicked()"), self.lagFakturaPapir)
+        self.connect(self.gui.fakturaLagKvittering, QtCore.SIGNAL("clicked()"), self.lagFakturaKvittering)
+        self.connect(self.gui.fakturaBetalt, QtCore.SIGNAL("clicked()"), self.betalFaktura)
+        self.connect(self.gui.fakturaVisKansellerte, QtCore.SIGNAL("toggled(bool)"), self.visFaktura)
+        self.connect(self.gui.fakturaVisGamle, QtCore.SIGNAL("toggled(bool)"), self.visFaktura)
+        self.gui.fakturaFaktaKryss.mousePressEvent = self.lukkFakta
 
-        self.connect(self.kundeNy, SIGNAL("clicked()"), self.lastKunde)
-        self.connect(self.kundeKundeliste, SIGNAL("doubleClicked(QListViewItem*, const QPoint&, int)"), self.redigerKunde)
-        self.connect(self.kundeInfoEndre, SIGNAL("clicked()"), self.leggTilKunde)
-        self.connect(self.kundeNyfaktura, SIGNAL("clicked()"), self.nyFakturaFraKunde)
-        self.connect(self.kundeKundeliste, SIGNAL("selectionChanged(QListViewItem*)"), self.visKundedetaljer)
-        self.connect(self.kundeVisFjernede, SIGNAL("toggled(bool)"), self.visKunder)
-        self.kundeInfoKryss.mousePressEvent = self.lukkKundeinfo
+        self.connect(self.gui.kundeNy, QtCore.SIGNAL("clicked()"), self.lastKunde)
+        self.connect(self.gui.kundeKundeliste, QtCore.SIGNAL("doubleClicked(QListViewItem*, const QtGui.QPoint&, int)"), self.redigerKunde)
+        self.connect(self.gui.kundeInfoEndre, QtCore.SIGNAL("clicked()"), self.leggTilKunde)
+        self.connect(self.gui.kundeNyfaktura, QtCore.SIGNAL("clicked()"), self.nyFakturaFraKunde)
+        self.connect(self.gui.kundeKundeliste, QtCore.SIGNAL("selectionChanged(QListViewItem*)"), self.visKundedetaljer)
+        self.connect(self.gui.kundeVisFjernede, QtCore.SIGNAL("toggled(bool)"), self.visKunder)
+        self.gui.kundeInfoKryss.mousePressEvent = self.lukkKundeinfo
 
-        #self.connect(self.varerVareliste, SIGNAL("selected(const QString&)"), self.nyFaktura)
+        #self.connect(self.gui.varerVareliste, QtCore.SIGNAL("selected(const QtGui.QString&)"), self.nyFaktura)
 
-        self.connect(self.varerNy, SIGNAL("clicked()"), self.lastVare)
-        self.connect(self.varerVareliste, SIGNAL("doubleClicked(QListViewItem*, const QPoint&, int)"), self.redigerVare)
-        self.connect(self.varerInfoLegginn, SIGNAL("clicked()"), self.registrerVare)
-        self.connect(self.varerVareliste, SIGNAL("selectionChanged(QListViewItem*)"), self.visVaredetaljer)
-        self.connect(self.varerVisFjernede, SIGNAL("toggled(bool)"), self.visVarer)
-        self.varerInfoKryss.mousePressEvent = self.lukkVarerinfo
+        self.connect(self.gui.varerNy, QtCore.SIGNAL("clicked()"), self.lastVare)
+        self.connect(self.gui.varerVareliste, QtCore.SIGNAL("doubleClicked(QListViewItem*, const QtGui.QPoint&, int)"), self.redigerVare)
+        self.connect(self.gui.varerInfoLegginn, QtCore.SIGNAL("clicked()"), self.registrerVare)
+        self.connect(self.gui.varerVareliste, QtCore.SIGNAL("selectionChanged(QListViewItem*)"), self.visVaredetaljer)
+        self.connect(self.gui.varerVisFjernede, QtCore.SIGNAL("toggled(bool)"), self.visVarer)
+        self.gui.varerInfoKryss.mousePressEvent = self.lukkVarerinfo
 
-        self.connect(self.dittfirmaFinnFjernLogo, SIGNAL("clicked()"), self.finnFjernLogo)
-        self.connect(self.dittfirmaLagre, SIGNAL("clicked()"), self.oppdaterFirma)
+        #self.connect(self.gui.dittfirmaFinnFjernLogo, QtCore.SIGNAL("clicked()"), self.finnFjernLogo)
+        #self.connect(self.gui.dittfirmaLagre, QtCore.SIGNAL("clicked()"), self.oppdaterFirma)
 
-        self.connect(self.epostSmtpAuth, SIGNAL("toggled(bool)"), self.epostVisAuth)
-        self.connect(self.epostLagre, SIGNAL("clicked()"), self.oppdaterEpost)
-        self.connect(self.epostLosning, SIGNAL("clicked(int)"), self.roterAktivSeksjon)
-        self.connect(self.epostLosningTest, SIGNAL("clicked()"), self.testEpost)
+        #self.connect(self.gui.epostSmtpAuth, QtCore.SIGNAL("toggled(bool)"), self.epostVisAuth)
+        #self.connect(self.gui.epostLagre, QtCore.SIGNAL("clicked()"), self.oppdaterEpost)
+        #self.connect(self.epostLosning, QtCore.SIGNAL("clicked(int)"), self.roterAktivSeksjon)
+        #self.connect(self.epostLosningTest, QtCore.SIGNAL("clicked()"), self.testEpost)
 
-        self.connect(self.oppsettFakturakatalogSok, SIGNAL("clicked()"), self.endreFakturakatalog)
-        self.connect(self.oppsettProgrammerVisSok, SIGNAL("clicked()"), self.endreProgramVis)
-        self.connect(self.oppsettProgrammerUtskriftSok, SIGNAL("clicked()"), self.endreProgramUtskrift)
-        self.connect(self.oppsettLagre, SIGNAL("clicked()"), self.oppdaterOppsett)
+        #self.connect(self.oppsettFakturakatalogSok, QtCore.SIGNAL("clicked()"), self.endreFakturakatalog)
+        #self.connect(self.oppsettProgrammerVisSok, QtCore.SIGNAL("clicked()"), self.endreProgramVis)
+        #self.connect(self.oppsettProgrammerUtskriftSok, QtCore.SIGNAL("clicked()"), self.endreProgramUtskrift)
+        #self.connect(self.oppsettLagre, QtCore.SIGNAL("clicked()"), self.oppdaterOppsett)
 
 
-        self.connect(self.okonomiAvgrensningerDatoManed, SIGNAL("highlighted(int)"), self.okonomiFyllDatoPeriode)
-        self.connect(self.okonomiAvgrensningerDato, SIGNAL("toggled(bool)"), self.okonomiFyllDato)
-        self.connect(self.okonomiAvgrensningerKunde, SIGNAL("toggled(bool)"), self.okonomiFyllKunder)
-        self.connect(self.okonomiAvgrensningerVare, SIGNAL("toggled(bool)"), self.okonomiFyllVarer)
-        self.connect(self.okonomiSorter, SIGNAL("toggled(bool)"), self.okonomiFyllSortering)
-        self.connect(self.okonomiRegnskapRegnut, SIGNAL("clicked()"), self.okonomiRegnRegnskap)
-        self.connect(self.okonomiFakturaerSkrivut, SIGNAL("clicked()"), self.okonomiSkrivUtFakturaer)
+        self.connect(self.gui.okonomiAvgrensningerDatoManed, QtCore.SIGNAL("highlighted(int)"), self.okonomiFyllDatoPeriode)
+        self.connect(self.gui.okonomiAvgrensningerDato, QtCore.SIGNAL("toggled(bool)"), self.okonomiFyllDato)
+        self.connect(self.gui.okonomiAvgrensningerKunde, QtCore.SIGNAL("toggled(bool)"), self.okonomiFyllKunder)
+        self.connect(self.gui.okonomiAvgrensningerVare, QtCore.SIGNAL("toggled(bool)"), self.okonomiFyllVarer)
+        self.connect(self.gui.okonomiSorter, QtCore.SIGNAL("toggled(bool)"), self.okonomiFyllSortering)
+        self.connect(self.gui.okonomiRegnskapRegnut, QtCore.SIGNAL("clicked()"), self.okonomiRegnRegnskap)
+        self.connect(self.gui.okonomiFakturaerSkrivut, QtCore.SIGNAL("clicked()"), self.okonomiSkrivUtFakturaer)
 
-        #self.connect(self.sikkerhetskopiGmailLastopp, SIGNAL("clicked()"), self.sikkerhetskopiGmail)
+        #self.connect(self.sikkerhetskopiGmailLastopp, QtCore.SIGNAL("clicked()"), self.sikkerhetskopiGmail)
 
-        self.fakturaFaktaVareliste.setColumnStretchable(0, True)
-        self.fakturaFaktaVareliste.setColumnWidth(1, 70)
-        self.fakturaFaktaVareliste.setColumnWidth(2, 70)
-        self.fakturaFaktaVareliste.setColumnWidth(3, 70)
+        #self.gui.fakturaVareliste.setColumnStretchable(0, True)
+        #self.gui.fakturaVareliste.setColumnWidth(1, 70)
+        ##self.gui.fakturaVareliste.setColumnWidth(2, 70)
+        #self.gui.fakturaVareliste.setColumnWidth(3, 70)
 
-        for obj in (self.dittfirmaFirmanavn,
-            self.dittfirmaOrganisasjonsnummer,
-            self.dittfirmaKontaktperson,
-            self.dittfirmaEpost,
-            self.dittfirmaPostnummer,
-            self.dittfirmaPoststed,
-            self.dittfirmaTelefon,
-            self.dittfirmaTelefaks,
-            self.dittfirmaMobil,
-            self.dittfirmaKontonummer):
-            self.connect(obj, SIGNAL("lostFocus()"), self.firmaSjekk)
+        #for obj in (self.dittfirmaFirmanavn,
+            #self.dittfirmaOrganisasjonsnummer,
+            #self.dittfirmaKontaktperson,
+            #self.dittfirmaEpost,
+            #self.dittfirmaPostnummer,
+            #self.dittfirmaPoststed,
+            #self.dittfirmaTelefon,
+            #self.dittfirmaTelefaks,
+            #self.dittfirmaMobil,
+            #self.dittfirmaKontonummer):
+            #self.connect(obj, QtCore.SIGNAL("lostFocus()"), self.firmaSjekk)
 
-        for obj in (self.dittfirmaAdresse,
-            #self.dittfirmaVilkar
-            ):
-            obj.focusOutEvent = self.firmaSjekk
+        #for obj in (self.dittfirmaAdresse,
+            ##self.dittfirmaVilkar
+            #):
+            #obj.focusOutEvent = self.firmaSjekk
 
-        self.connect(self.dittfirmaForfall, SIGNAL("valueChanged(int)"), self.firmaSjekk)
+        #self.connect(self.dittfirmaForfall, QtCore.SIGNAL("valueChanged(int)"), self.firmaSjekk)
 
-        self.dittfirmaKontrollKart = {
-            self.dittfirmaFirmanavn:'Firmanavn',
-            self.dittfirmaOrganisasjonsnummer:u'Organisasjonsnummer fra Brønnøysund',
-            self.dittfirmaKontaktperson:'Kontaktperson',
-            self.dittfirmaEpost:'Epostadresse',
-            self.dittfirmaAdresse:'Adresse',
-            self.dittfirmaPostnummer:'Postnummer',
-            self.dittfirmaPoststed:'Poststed',
-            self.dittfirmaTelefon:'Telefonnummer',
-            self.dittfirmaMobil:'Mobilnummer',
-            self.dittfirmaKontonummer:'Kontonummer',
-            #self.dittfirmaMva:'Momssats',
-            self.dittfirmaForfall:'Forfallsperiode',
-        }
+        #self.dittfirmaKontrollKart = {
+            #self.dittfirmaFirmanavn:'Firmanavn',
+            #self.dittfirmaOrganisasjonsnummer:u'Organisasjonsnummer fra Brønnøysund',
+            #self.dittfirmaKontaktperson:'Kontaktperson',
+            #self.dittfirmaEpost:'Epostadresse',
+            #self.dittfirmaAdresse:'Adresse',
+            #self.dittfirmaPostnummer:'Postnummer',
+            #self.dittfirmaPoststed:'Poststed',
+            #self.dittfirmaTelefon:'Telefonnummer',
+            #self.dittfirmaMobil:'Mobilnummer',
+            #self.dittfirmaKontonummer:'Kontonummer',
+            ##self.dittfirmaMva:'Momssats',
+            #self.dittfirmaForfall:'Forfallsperiode',
+        #}
 
-        self.kundeKundeliste.contextMenuEvent = self.kundeContextMenu
-        self.fakturaFakturaliste.contextMenuEvent = self.fakturaContextMenu
-        self.varerVareliste.contextMenuEvent = self.vareContextMenu
+        self.gui.kundeKundeliste.contextMenuEvent = self.kundeContextMenu
+        self.gui.fakturaFakturaliste.contextMenuEvent = self.fakturaContextMenu
+        self.gui.varerVareliste.contextMenuEvent = self.vareContextMenu
 
         self.databaseTilkobler()
 
-        self.fakturaForfaltLogo = QPixmap()
-        self.fakturaForfaltLogo.loadFromData(forfaltLogo_data,"PNG")
-        self.slettetLogo = QPixmap()
-        self.slettetLogo.loadFromData(slettetLogo_data,"PNG")
+        self.fakturaForfaltLogo = QtGui.QPixmap()
+        #self.fakturaForfaltLogo.loadFromData(forfaltLogo_data,"PNG")
+        self.slettetLogo = QtGui.QPixmap()
+        #self.slettetLogo.loadFromData(slettetLogo_data,"PNG")
 
         try:
             self.faktura = FakturaBibliotek(self.db)
@@ -243,14 +246,14 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
     def patchDebugModus(self):
         # lag et konsoll til live inspeksjon
 
-        self.pythoncode = QTextEdit(self.centralWidget(),"pythoncode")
-        self.pythoncode.setGeometry(QRect(310,770,410,70))
+        self.pythoncode = QtGui.QTextEdit(self.centralWidget())
+        self.pythoncode.setGeometry(QtCore.QRect(310,770,410,70))
 
-        self.pythoncodeRun = QPushButton(self.centralWidget(),"pythoncodeRun")
-        self.pythoncodeRun.setGeometry(QRect(740,797,141,41))
+        self.pythoncodeRun = QtGui.QPushButton(self.centralWidget())
+        self.pythoncodeRun.setGeometry(QtCore.QRect(740,797,141,41))
         self.pythoncodeRun.setText(u'K&jør')
 
-        self.connect(self.pythoncodeRun, SIGNAL("clicked()"), self.runDebugCode)
+        self.connect(self.pythoncodeRun, QtCore.SIGNAL("clicked()"), self.runDebugCode)
 
 
     def runDebugCode(self):
@@ -270,8 +273,8 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             ordre = self.fakturaFakturaliste.selectedItem().ordre
         except AttributeError:
             return None #ingen ordre er valgt
-        meny = QPopupMenu(self)
-        tittel = QLabel("<b>Rediger faktura</b>", self)
+        meny = QtGui.QPopupMenu(self)
+        tittel = QtGui.QLabel("<b>Rediger faktura</b>", self)
         tittel.setAlignment(Qt.AlignCenter)
         meny.insertItem(tittel)
         if not ordre.betalt:
@@ -302,7 +305,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             if not visGamle and ordre.betalt and ordre.ordredato < nu-60*60*24*7*4*6: continue # eldre enn seks mnd og betalt
             if ordre.betalt: bet = strftime("%Y-%m-%d %H:%M", localtime(ordre.betalt))
             else: bet = "Nei"
-            l = QListViewItem(self.fakturaFakturaliste,
+            l = QtGui.QListViewItem(self.fakturaFakturaliste,
                               "%06d" % ordre.ID,
                               '%s' % ordre.tekst,
                               '%s' % ordre.kunde.navn,
@@ -414,7 +417,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
 
         #skal vi lage blanketter nå?
         s = u'Den nye fakturaen er laget. Vil du lage tilhørende blankett nå?'
-        knapp = QMessageBox.information(self, u'Lage blankett?', s, 'Epost', 'Papir', 'Senere', 0, 2)
+        knapp = QtGui.QMessageBox.information(self, u'Lage blankett?', s, 'Epost', 'Papir', 'Senere', 0, 2)
         if knapp == 0: self.lagFaktura(Type='epost')
         elif knapp == 1: self.lagFaktura(Type='papir')
 
@@ -436,44 +439,44 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
     def leggVareTilOrdre(self):
 
         sisterad = self.fakturaFaktaVareliste.numRows()
-        Antall = QSpinBox(self.fakturaFaktaVareliste, "Antall-%s" % sisterad)
+        Antall = QtGui.QSpinBox(self.fakturaFaktaVareliste, "Antall-%s" % sisterad)
         Antall.setMaxValue(100000)
         Antall.setValue(0)
         Antall.show()
-        QObject.connect(Antall, SIGNAL("valueChanged(int)"), self.oppdaterFakturaSum)
+        QtGui.QObject.connect(Antall, QtCore.SIGNAL("valueChanged(int)"), self.oppdaterFakturaSum)
 
-        Pris = QSpinBox(self.fakturaFaktaVareliste, "Pris-%s" % sisterad)
+        Pris = QtGui.QSpinBox(self.fakturaFaktaVareliste, "Pris-%s" % sisterad)
         Pris.setButtonSymbols(QSpinBox.UpDownArrows)
         Pris.setMaxValue(999999999)
         Pris.show()
-        QToolTip.add(Pris, u'Varens pris (uten MVA)')
-        QObject.connect(Pris, SIGNAL("valueChanged(int)"), self.oppdaterFakturaSum)
+        QtGui.QToolTip.add(Pris, u'Varens pris (uten MVA)')
+        QtGui.QObject.connect(Pris, QtCore.SIGNAL("valueChanged(int)"), self.oppdaterFakturaSum)
 
-        mvaListe = QStringList()
+        mvaListe = QtGui.QStringList()
         map(mvaListe.append, ['0','12','25'])
 
-        #Mva = QComboTableItem(self.fakturaFaktaVareliste, mvaListe, False)
-        Mva = QSpinBox(self.fakturaFaktaVareliste, "Mva-%s" % sisterad)
-        #Mva = QComboBox(self.fakturaFaktaVareliste, "Mva-%s" % sisterad)
+        #Mva = QtGui.QComboTableItem(self.fakturaFaktaVareliste, mvaListe, False)
+        Mva = QtGui.QSpinBox(self.fakturaFaktaVareliste, "Mva-%s" % sisterad)
+        #Mva = QtGui.QComboBox(self.fakturaFaktaVareliste, "Mva-%s" % sisterad)
         #Mva.insertStringList(mvaListe)
         #Mva.setEditable(False)
         Mva.setButtonSymbols(QSpinBox.UpDownArrows)
         Mva.setValue(25)
         Mva.show()
-        QObject.connect(Mva, SIGNAL("valueChanged(int)"), self.oppdaterFakturaSum)
-        QToolTip.add(Mva, u'MVA-sats som skal beregnes på varen')
-        #QObject.connect(Mva, SIGNAL("highlighted(int)"), self.oppdaterFakturaSum)
+        QtGui.QObject.connect(Mva, QtCore.SIGNAL("valueChanged(int)"), self.oppdaterFakturaSum)
+        QtGui.QToolTip.add(Mva, u'MVA-sats som skal beregnes på varen')
+        #QObject.connect(Mva, QtCore.SIGNAL("highlighted(int)"), self.oppdaterFakturaSum)
 
-        varer = QStringList()
+        varer = QtGui.QStringList()
         map(varer.append, [unicode(v.navn) for v in self.faktura.hentVarer()])
-        #Vare = QComboTableItem(self.fakturaFaktaVareliste, varer, True)
-        Vare = QComboBox(1, self.fakturaFaktaVareliste, "Beskrivelse-%s" % sisterad)
+        #Vare = QtGui.QComboTableItem(self.fakturaFaktaVareliste, varer, True)
+        Vare = QtGui.QComboBox(1, self.fakturaFaktaVareliste, "Beskrivelse-%s" % sisterad)
         Vare.insertStringList(varer)
         Vare.setEditable(True)
         Vare.setAutoCompletion(True)
         Vare.show()
-        QToolTip.add(Vare, u'Velg vare; eller skriv inn nytt varenavn og trykk enter for å legge til en ny vare')
-        QObject.connect(Vare, SIGNAL("activated(int)"), self.oppdaterFakturaSum)
+        QtGui.QToolTip.add(Vare, u'Velg vare; eller skriv inn nytt varenavn og trykk enter for å legge til en ny vare')
+        QtGui.QObject.connect(Vare, QtCore.SIGNAL("activated(int)"), self.oppdaterFakturaSum)
 
 
         self.fakturaFaktaVareliste.setNumRows(sisterad+1)
@@ -554,7 +557,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         self.fakturaDetaljerTekst.setText(s)
         # oppdater datofeltet. minste dato er ordredato. største dato er i dag
         minst, maks = localtime(linje.ordre.ordredato), localtime()
-        self.fakturaBetaltDato.setRange(QDate(minst[0]-1, minst[1], minst[2]), QDate(maks[0]+1, maks[1], maks[2])) # utvider rangen med ett år i hver retning slik at QDateEdit-kontrollen skal bli brukelig
+        self.fakturaBetaltDato.setRange(QDate(minst[0]-1, minst[1], minst[2]), QtGui.QDate(maks[0]+1, maks[1], maks[2])) # utvider rangen med ett år i hver retning slik at QtGui.QDateEdit-kontrollen skal bli brukelig
 
     def lagFakturaKvittering(self):
         try:
@@ -694,12 +697,12 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         ##u'Vedlagt følger epostfaktura #%i:\n%s\n\n-- \n%s\n' % (ordre.ID, ordre.tekst,  ordre.firma)
         epostboks = sendEpost()
         #self.fakturaSendepostBoks.show()
-        self.connect(epostboks.sendEpostSend, SIGNAL("clicked()"), epostboks.accept)
-        self.connect(epostboks.sendEpostAvbryt, SIGNAL("clicked()"), epostboks.reject)
+        self.connect(epostboks.sendEpostSend, QtCore.SIGNAL("clicked()"), epostboks.accept)
+        self.connect(epostboks.sendEpostAvbryt, QtCore.SIGNAL("clicked()"), epostboks.reject)
         epostboks.sendEpostTittel.setText(u'Sender faktura til %s <b>&lt;%s</b>&gt;' % (ordre.kunde.navn, ordre.kunde.epost))
         epostboks.sendEpostTekst.setText(u'Vedlagt følger epostfaktura #%i:\n%s\n\n-- \n%s\n%s' % (ordre.ID, ordre.tekst,  ordre.firma, ordre.firma.vilkar))
         res = epostboks.exec_loop()
-        if res == QDialog.Accepted:
+        if res == QtGui.QDialog.Accepted:
           return self.sendEpostfaktura(ordre, unicode(epostboks.sendEpostTekst.text()), pdfFilnavn)
         else:
           #print unicode(epostboks.sendEpostTekst.text())
@@ -737,8 +740,8 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             kunde = self.kundeKundeliste.selectedItem().kunde
         except AttributeError:
             return None # ingen kunde er valgt i lista
-        meny = QPopupMenu(self)
-        tittel = QLabel("<b>Rediger kunde</b>", self)
+        meny = QtGui.QPopupMenu(self)
+        tittel = QtGui.QLabel("<b>Rediger kunde</b>", self)
         tittel.setAlignment(Qt.AlignCenter)
         meny.insertItem(tittel)
         if not kunde.slettet:
@@ -755,7 +758,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         i = self.kundeKundeliste.insertItem
         self.kundeKundeliste.clear()
         for kunde in self.faktura.hentKunder(inkluderSlettede=visFjernede):
-            l = QListViewItem(self.kundeKundeliste,
+            l = QtGui.QListViewItem(self.kundeKundeliste,
                               "%03d" % kunde.ID,
                               '%s' % kunde.navn,
                               '%s' % kunde.epost,
@@ -943,8 +946,8 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             vare = self.varerVareliste.selectedItem().vare
         except AttributeError:
             return None # ingen kunde er valgt i lista
-        meny = QPopupMenu(self)
-        tittel = QLabel("<b>Rediger vare</b>", self)
+        meny = QtGui.QPopupMenu(self)
+        tittel = QtGui.QLabel("<b>Rediger vare</b>", self)
         tittel.setAlignment(Qt.AlignCenter)
         meny.insertItem(tittel)
         if not vare.slettet:
@@ -961,7 +964,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         i = self.varerVareliste.insertItem
         self.varerVareliste.clear()
         for vare in self.faktura.hentVarer(inkluderSlettede=visFjernede):
-            l = QListViewItem(self.varerVareliste,
+            l = QtGui.QListViewItem(self.varerVareliste,
                               "%03d" % vare.ID,
                               unicode(vare.navn),
                               unicode(vare.detaljer),
@@ -1010,9 +1013,9 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
                     self.varerInfoPris:"Pris",
                     }
         for obj in kravkart.keys():
-            if isinstance(obj, QSpinBox): test = obj.value() > 0
-            elif isinstance(obj, QComboBox): test = obj.currentText()
-            elif isinstance(obj, QLineEdit): test = obj.text()
+            if isinstance(obj, QtGui.QSpinBox): test = obj.value() > 0
+            elif isinstance(obj, QtGui.QComboBox): test = obj.currentText()
+            elif isinstance(obj, QtGui.QLineEdit): test = obj.text()
             if not test:
                 self.alert(u'Du er nødt til å oppgi %s' % (kravkart[obj].lower()))
                 obj.setFocus()
@@ -1101,15 +1104,15 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             self.dittfirmaFinnFjernLogo.setText('Finn logo')
             self.dittfirmaLogoPixmap.setPixmap(QPixmap())
         else:
-            logo = QPixmap()
+            logo = QtGui.QPixmap()
             logo.loadFromData(self.firma.logo)
             self.dittfirmaLogoPixmap.setPixmap(logo)
             self.dittfirmaFinnFjernLogo.setText('Fjern logo')
 
     def oppdaterFirmainfo(self, fraObj):
         kart = firmaWidgetKart()
-        if isinstance(fraObj, QSpinBox): fun = int(fraObj.value)
-        elif isinstance(fraObj, QComboBox): fun = unicode(fraObj.currentText)
+        if isinstance(fraObj, QtGui.QSpinBox): fun = int(fraObj.value)
+        elif isinstance(fraObj, QtGui.QComboBox): fun = unicode(fraObj.currentText)
         elif isinstance(fraObj, (QLineEdit,QTextEdit,)): fun = unicode(fraObj.text)
 
         debug(u'oppdatere %s til %s' % (fraObj, kart[fraObj]))
@@ -1152,8 +1155,8 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         kravkart = {}
         kravkart.update(self.dittfirmaKontrollKart)
         for obj in kravkart.keys():
-            if isinstance(obj, QSpinBox): test = obj.value() > 0
-            elif isinstance(obj, QComboBox): test = obj.currentText()
+            if isinstance(obj, QtGui.QSpinBox): test = obj.value() > 0
+            elif isinstance(obj, QtGui.QComboBox): test = obj.currentText()
             elif isinstance(obj, (QLineEdit,QTextEdit,)): test = obj.text()
             if test: kravkart.pop(obj)
         return kravkart
@@ -1161,11 +1164,11 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
     def firmaSjekk(self, event=None):
         mangler = 0
         s = u"<b><font color=red>Følgende felter må fylles ut:</font></b><ol>"
-        ok = QColor('white')
-        tom = QColor('red')
+        ok = QtGui.QColor('white')
+        tom = QtGui.QColor('red')
         for obj in self.dittfirmaKontrollKart.keys():
-            if isinstance(obj, QSpinBox): test = obj.value() > 0
-            elif isinstance(obj, QComboBox): test = obj.currentText()
+            if isinstance(obj, QtGui.QSpinBox): test = obj.value() > 0
+            elif isinstance(obj, QtGui.QComboBox): test = obj.currentText()
             elif isinstance(obj, (QLineEdit,QTextEdit,)): test = obj.text()
             if test:
                 obj.setPaletteBackgroundColor(ok)
@@ -1189,7 +1192,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             self.visLogo()
         else:
             startdir = ""
-            logo = QFileDialog.getOpenFileName(
+            logo = QtGui.QFileDialog.getOpenFileName(
                 startdir,
                 'Bildefiler (*.png *.xpm *.jpg *.jpeg *.gif *.bmp *.ppm *.pgm *.pbm)',
                 self,
@@ -1199,11 +1202,11 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
             if len(unicode(logo)) > 0:
                 debug("Setter ny logo: %s" % logo)
 
-                l = QPixmap()
+                l = QtGui.QPixmap()
                 l.loadFromData(open(unicode(logo)).read())
 
-                stream = QBuffer()
-                l.convertToImage().smoothScale(360,360, QImage.ScaleMax).save(stream, 'PNG')
+                stream = QtGui.QBuffer()
+                l.convertToImage().smoothScale(360,360, QtGui.QImage.ScaleMax).save(stream, 'PNG')
 
                 #import sqlite
 
@@ -1443,7 +1446,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
     def endreFakturakatalog(self):
         nu = self.oppsettFakturakatalog.text()
         startdir = nu
-        ny = QFileDialog.getExistingDirectory(startdir, self, "Velg katalog fakturaene skal lagres i", "Velg fakturakatalog")
+        ny = QtGui.QFileDialog.getExistingDirectory(startdir, self, "Velg katalog fakturaene skal lagres i", "Velg fakturakatalog")
         if len(unicode(ny)) > 0:
             debug("Setter ny fakturakataolg: %s" % ny)
             self.faktura.oppsett.fakturakatalog = unicode(ny)
@@ -1478,7 +1481,7 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
         debug("finner skjemaplikter for %s" % self.firma.organisasjonsnummer)
         self.myndigheteneSkjemaListe.clear()
         for skjema in offentlige.skjemaplikter(self.firma.organisasjonsnummer):
-            i = QListViewItem(self.myndigheteneSkjemaListe, skjema[0],skjema[1],skjema[2],skjema[3])
+            i = QtGui.QListViewItem(self.myndigheteneSkjemaListe, skjema[0],skjema[1],skjema[2],skjema[3])
             self.myndigheteneSkjemaListe.insertItem(i)
 
 
@@ -1522,14 +1525,20 @@ class Faktura (faktura): ## leser gui fra faktura_ui.py
 ############## GENERELLE METODER ###################
 
     def alert(self, msg):
-        QMessageBox.critical(self, "Feil!", msg, QMessageBox.Ok)
+        QtGui.QMessageBox.critical(self, "Feil!", msg, QtGui.QMessageBox.Ok)
 
     def obs(self, msg):
-        QMessageBox.information(self, "Obs!", msg, QMessageBox.Ok)
+        QtGui.QMessageBox.information(self, "Obs!", msg, QtGui.QMessageBox.Ok)
 
     def JaNei(self, s):
-        svar = QMessageBox.question(self, "Hm?", s, QMessageBox.Yes, QMessageBox.No | QMessageBox.Default, QMessageBox.NoButton)
-        return svar == QMessageBox.Yes
+        svar = QtGui.QMessageBox.question(self, "Hm?", s, QtGui.QMessageBox.Yes, QtGui.QMessageBox.No | QtGui.QMessageBox.Default, QtGui.QMessageBox.NoButton)
+        return svar == QtGui.QMessageBox.Yes
+
+def start():
+    app = QtGui.QApplication(sys.argv)
+    ff = FinFaktura()
+    ff.gui.show()
+    sys.exit(app.exec_())
 
 if __name__ == "__main__":
 
