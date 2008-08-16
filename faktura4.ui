@@ -48,7 +48,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex" >
-       <number>0</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="tab" >
        <property name="geometry" >
@@ -1802,7 +1802,7 @@
          </layout>
         </item>
         <item row="1" column="0" >
-         <widget class="QTextBrowser" name="textBrowser" >
+         <widget class="QTextBrowser" name="okonomiDetaljregnskap" >
           <property name="sizePolicy" >
            <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
             <horstretch>0</horstretch>
