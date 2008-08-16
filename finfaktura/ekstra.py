@@ -11,71 +11,71 @@
 
 PRODUKSJONSVERSJON=False
 
-from qt import *
-from cStringIO import StringIO
+#from qt import *
+#from cStringIO import StringIO
 
-class QBuffer(QIODevice):
+#class QBuffer(QIODevice):
 
-    def __init__(self):
-        QIODevice.__init__(self)
-        self.open( IO_ReadOnly)
+    #def __init__(self):
+        #QIODevice.__init__(self)
+        #self.open( IO_ReadOnly)
 
-    def open(self, mode):
-        self.__io = StringIO()
-        return True
+    #def open(self, mode):
+        #self.__io = StringIO()
+        #return True
 
-    def close(self):
-        self.__io.close()
+    #def close(self):
+        #self.__io.close()
 
-    def flush(self):
-        self.__io.flush()
+    #def flush(self):
+        #self.__io.flush()
 
-    def readAll(self):
-        return self.__io.read()
+    #def readAll(self):
+        #return self.__io.read()
 
-    def getch(self):
-        return self.__io.read(1)
+    #def getch(self):
+        #return self.__io.read(1)
 
-    def readBlock(self, size):
-        result = self.__io.read(size)
-        if result:
-            return (result,)
+    #def readBlock(self, size):
+        #result = self.__io.read(size)
+        #if result:
+            #return (result,)
 
-        return None
+        #return None
 
-    def writeBlock(self, data, length=None):
-        if type(data) == QByteArray:
-            data = data.data()
+    #def writeBlock(self, data, length=None):
+        #if type(data) == QByteArray:
+            #data = data.data()
 
-        self.__io.write(data)
+        #self.__io.write(data)
 
-        return len(data)
+        #return len(data)
 
-    def getData(self):
-        return self.__io.getvalue()
+    #def getData(self):
+        #return self.__io.getvalue()
 
-class QFloatSpinBox(QSpinBox):
-            #QString mapValueToText( int value )
-            #{
-                #if ( value == -1 ) // special case
-                    #return QString( "Auto" );
-                #return QString( "%1.%2" ) // 0.0 to 10.0
-                    #.arg( value / 10 ).arg( value % 10 );
-            #}
+#class QFloatSpinBox(QSpinBox):
+            ##QString mapValueToText( int value )
+            ##{
+                ##if ( value == -1 ) // special case
+                    ##return QString( "Auto" );
+                ##return QString( "%1.%2" ) // 0.0 to 10.0
+                    ##.arg( value / 10 ).arg( value % 10 );
+            ##}
 
-            #int mapTextToValue( bool *ok )
-            #{
-                #if ( text() == "Auto" ) // special case
-                    #return -1;
-                #return (int) ( 10 * text().toFloat() ); // 0 to 100
-    def mapValueToText(verdi): # oversetter fra intern verdi til teksten som vises
-        return QString("%i.%i" % (verdi / 10, verdi % 10))
-    
-    def mapTextToValue(boool):
-        return int(10 * float(self.text()))
+            ##int mapTextToValue( bool *ok )
+            ##{
+                ##if ( text() == "Auto" ) // special case
+                    ##return -1;
+                ##return (int) ( 10 * text().toFloat() ); // 0 to 100
+    #def mapValueToText(verdi): # oversetter fra intern verdi til teksten som vises
+        #return QString("%i.%i" % (verdi / 10, verdi % 10))
 
-# Logoer inlines slik at vi slipper å laste dem fra fil
-# Begge er i PNG-format
+    #def mapTextToValue(boool):
+        #return int(10 * float(self.text()))
+
+## Logoer inlines slik at vi slipper å laste dem fra fil
+## Begge er i PNG-format
 
 forfaltLogo_data = \
     "\x89\x50\x4e\x47\x0d\x0a\x1a\x0a\x00\x00\x00\x0d" \

@@ -32,8 +32,8 @@ if __name__ == "__main__":
         cli_faktura()
     else:
         try:
-            from finfaktura.gui import FinFaktura
-            FinFaktura(sys.argv)
+            import finfaktura.gui
+            finfaktura.gui.start()
         except ImportError, (e):
             print u"OOPS! Problemer med å laste moduler (bruk -d for å vise feilmelding)"
             if DEBUG:
