@@ -31,7 +31,7 @@ from finfaktura.fakturafeil import *
 from PyQt4 import QtCore, QtGui, uic
 #from finfaktura.ekstra import QtGui.QBuffer, slettetLogo_data, forfaltLogo_data
 #from finfaktura.faktura_ui import faktura ## husk å kjøre "pyuic -x faktura.ui > faktura_ui.py" først!
-
+from ekstra import debug
 
 
 PDFVIS = "/usr/bin/kpdf" # program for å vise PDF
@@ -54,7 +54,7 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
             self.fakturaTab.removePage(self.fakturaTab.page(7)) # sikkerhetskopi
             self.fakturaTab.removePage(self.fakturaTab.page(7)) # myndighetene
         else:
-            #self.gui.setCaption("FRYKTELIG FIN FADESE (utviklerversjon)")
+            self.gui.setWindowTitle("FRYKTELIG FIN FADESE (utviklerversjon)")
             self.patchDebugModus() # vis live debug-konsoll
 
         self.connect(self.gui.fakturaTab, QtCore.SIGNAL("currentChanged(QWidget*)"), self.skiftTab)
@@ -216,6 +216,7 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
             self.faktura.oppsett.skrivutpdf = PDFUTSKRIFT
         finfaktura.fakturakomponenter.PDFUTSKRIFT = self.faktura.oppsett.skrivutpdf
         f60.PDFUTSKRIFT = self.faktura.oppsett.skrivutpdf
+        self.visFaktura()
 
     def avslutt(self):
         debug("__del__")
@@ -229,7 +230,7 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         self.c = self.db.cursor()
 
     def skiftTab(self, w):
-        i = self.fakturaTab.currentPageIndex()
+        i = self.gui.fakturaTab.currentIndex()
         if i is 0: self.visFaktura()
         elif i is 1: self.visKunder()
         elif i is 2: self.visVarer()
@@ -266,11 +267,11 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
 
     fakturaVarelisteCache = []
 
-    def lukkFakta(self, *ev):self.fakturaFakta.hide()
+    def lukkFakta(self, *ev):self.gui.fakturaFakta.hide()
 
     def fakturaContextMenu(self, event):
         try:
-            ordre = self.fakturaFakturaliste.selectedItem().ordre
+            ordre = self.gui.fakturaFakturaliste.selectedItem().ordre
         except AttributeError:
             return None #ingen ordre er valgt
         meny = QtGui.QPopupMenu(self)
@@ -292,44 +293,46 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         meny.exec_loop(QCursor.pos())
 
     def visFaktura(self):
-        visKansellerte = self.fakturaVisKansellerte.isChecked()
-        visGamle = self.fakturaVisGamle.isChecked()
-        self.fakturaDetaljerTekst.setText('')
-        self.fakturaFakta.hide()
+        visKansellerte = self.gui.fakturaVisKansellerte.isChecked()
+        visGamle = self.gui.fakturaVisGamle.isChecked()
+        self.gui.fakturaDetaljerTekst.setText('')
+        self.gui.fakturaFakta.hide()
         #self.fakturaSendepostBoks.hide()
-        i = self.fakturaFakturaliste.insertItem
-        self.fakturaFakturaliste.clear()
+        i = self.gui.fakturaFakturaliste.addTopLevelItem
+        self.gui.fakturaFakturaliste.clear()
         nu = time()
         for ordre in self.faktura.hentOrdrer():
             if not visKansellerte and ordre.kansellert: continue
             if not visGamle and ordre.betalt and ordre.ordredato < nu-60*60*24*7*4*6: continue # eldre enn seks mnd og betalt
             if ordre.betalt: bet = strftime("%Y-%m-%d %H:%M", localtime(ordre.betalt))
             else: bet = "Nei"
-            l = QtGui.QListViewItem(self.fakturaFakturaliste,
+            l = QtGui.QTreeWidgetItem([#self.gui.fakturaFakturaliste,
                               "%06d" % ordre.ID,
                               '%s' % ordre.tekst,
                               '%s' % ordre.kunde.navn,
                               "%.2f kr" % (ordre.finnPris() + ordre.finnMva()),
                               strftime("%Y-%m-%d %H:%M", localtime(ordre.forfall)),
-                              bet
+                              bet,
+                              ]
                              )
             l.ordre = ordre
             if ordre.forfalt():
                 debug("%s er forfalt men ikke betalt!" % ordre._id)
-                l.setPixmap(5, self.fakturaForfaltLogo)
+                #l.setPixmap(5, self.fakturaForfaltLogo)
             if bool(ordre.kansellert):
-                l.setPixmap(0, self.slettetLogo)
+                pass
+                #l.setPixmap(0, self.slettetLogo)
             i(l)
-        self.fakturaBetaltDato.setDate(QDate.currentDate())
+        self.gui.fakturaBetaltDato.setDate(QtCore.QDate.currentDate())
 
     def nyFakturaFraKunde(self):
         try:
-            kunde = self.kundeKundeliste.selectedItem().kunde
+            kunde = self.gui.kundeKundeliste.selectedItem().kunde
         except AttributeError:
             self.alert(u'Ingen kunde er valgt')
             return False
         debug("ny faktura fra kunde: %s" % kunde.ID)
-        self.fakturaTab.setCurrentPage(0)
+        self.gui.fakturaTab.setCurrentPage(0)
         self.nyFaktura(kunde)
 
 #   def nyFakturaFraFaktura(self, faktura):
@@ -349,44 +352,44 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         if not kunde and not ordrelinje:
             self.denne_faktura=None
         if kunde is not None:
-            self.fakturaFaktaMottaker.clear()
-            self.fakturaFaktaMottaker.insertItem(unicode(kunde))
-            self.fakturaFaktaVare.setFocus()
+            self.gui.fakturaFaktaMottaker.clear()
+            self.gui.fakturaFaktaMottaker.insertItem(unicode(kunde))
+            self.gui.fakturaFaktaVare.setFocus()
         else:
             self.fyllFakturaMottaker()
-            self.fakturaFaktaMottaker.setFocus()
-        self.fakturaFaktaTekst.setText("")
+            self.gui.fakturaFaktaMottaker.setFocus()
+        self.gui.fakturaFaktaTekst.setText("")
         #self.fyllFakturaVare()
         self.fakturaVarelisteCache = self.faktura.hentVarer()
         self.fakturaFaktaVareliste.removeRows(range(self.fakturaFaktaVareliste.numRows())) # fjern alle
         self.leggVareTilOrdre() # legg til tom rad
-        self.fakturaFaktaDato.setDate(QDate.currentDate())
-        self.fakturaFakta.show()
+        self.gui.fakturaFaktaDato.setDate(QDate.currentDate())
+        self.gui.fakturaFakta.show()
 
     def leggTilFaktura(self):
         #legg inn faktura i registeret
         #er all nødvendig info samlet inn?
-        if not self.fakturaFaktaTekst.text() and \
+        if not self.gui.fakturaFaktaTekst.text() and \
             not self.JaNei(u"Vil du virkelig legge inn fakturaen uten fakturatekst?"):
-            self.fakturaFaktaTekst.setFocus()
+            self.gui.fakturaFaktaTekst.setFocus()
             return False
         #all nødvendig info er der, legg inn fakturaen
-        kundetekst = self.fakturaFaktaMottaker.currentText()
+        kundetekst = self.gui.fakturaFaktaMottaker.currentText()
         kre = re.search(re.compile(r'kunde\ #\s?(\d+)'), unicode(kundetekst))
         kunde = self.faktura.hentKunde(kre.group(1))
-        d = self.fakturaFaktaDato.date()
+        d = self.gui.fakturaFaktaDato.date()
         dato = mktime((d.year(),d.month(),d.day(),11,59,0,0,0,0)) # på midten av dagen (11:59) for å kunne betale fakturaen senere laget samme dag
         f = self.faktura.nyOrdre(kunde, ordredato=dato)
-        f.tekst = unicode(self.fakturaFaktaTekst.text())
+        f.tekst = unicode(self.gui.fakturaFaktaTekst.text())
         #finn varene som er i fakturaen
         varer = {}
-        for i in range(self.fakturaFaktaVareliste.numRows()): # gå gjennom alle rader
+        for i in range(self.gui.fakturaFaktaVareliste.numRows()): # gå gjennom alle rader
             v = {'id': None, 'ant': 0, 'pris': 0.0, 'mva': 0}
-            _tekst  = unicode(self.fakturaFaktaVareliste.cellWidget(i, 0).currentText()).strip()
-            v['ant'] = self.fakturaFaktaVareliste.cellWidget(i, 1).value()
-            _enhet = unicode(self.fakturaFaktaVareliste.cellWidget(i, 1).suffix()).strip()
-            v['pris'] = float(self.fakturaFaktaVareliste.cellWidget(i, 2).value())
-            v['mva'] = int(self.fakturaFaktaVareliste.cellWidget(i, 3).value())
+            _tekst  = unicode(self.gui.fakturaFaktaVareliste.cellWidget(i, 0).currentText()).strip()
+            v['ant'] = self.gui.fakturaFaktaVareliste.cellWidget(i, 1).value()
+            _enhet = unicode(self.gui.fakturaFaktaVareliste.cellWidget(i, 1).suffix()).strip()
+            v['pris'] = float(self.gui.fakturaFaktaVareliste.cellWidget(i, 2).value())
+            v['mva'] = int(self.gui.fakturaFaktaVareliste.cellWidget(i, 3).value())
             # sjekk at alt er riktig
             if not v['ant'] > 0:
                 self.alert(u'Antallet %s kan ikke være null (i rad %s) ' % (_tekst, i+1))
@@ -412,8 +415,8 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         debug("Lager sikkerhetskopi")
         self.faktura.lagSikkerhetskopi(f)
         self.visFaktura() # oppdater listen slik at den nye fakturaen blir med
-        self.fakturaFakturaliste.setSelected(self.fakturaFakturaliste.lastItem(), True) # velg den nye fakturaen
-        self.fakturaFakta.hide()
+        self.gui.fakturaFakturaliste.setSelected(self.fakturaFakturaliste.lastItem(), True) # velg den nye fakturaen
+        self.gui.fakturaFakta.hide()
 
         #skal vi lage blanketter nå?
         s = u'Den nye fakturaen er laget. Vil du lage tilhørende blankett nå?'
@@ -430,22 +433,22 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
 #     self.nyFaktura(ordre = rad.ordre, ordrelinje = linje)
 
     def fyllFakturaMottaker(self):
-        self.fakturaFaktaMottaker.setEnabled(True)
-        self.fakturaFaktaMottaker.clear()
-        i = self.fakturaFaktaMottaker.insertItem
+        self.gui.fakturaFaktaMottaker.setEnabled(True)
+        self.gui.fakturaFaktaMottaker.clear()
+        i = self.gui.fakturaFaktaMottaker.insertItem
         for kunde in self.faktura.hentKunder():
             i(unicode(kunde))
 
     def leggVareTilOrdre(self):
 
-        sisterad = self.fakturaFaktaVareliste.numRows()
-        Antall = QtGui.QSpinBox(self.fakturaFaktaVareliste, "Antall-%s" % sisterad)
+        sisterad = self.gui.fakturaFaktaVareliste.numRows()
+        Antall = QtGui.QSpinBox(self.gui.fakturaFaktaVareliste, "Antall-%s" % sisterad)
         Antall.setMaxValue(100000)
         Antall.setValue(0)
         Antall.show()
         QtGui.QObject.connect(Antall, QtCore.SIGNAL("valueChanged(int)"), self.oppdaterFakturaSum)
 
-        Pris = QtGui.QSpinBox(self.fakturaFaktaVareliste, "Pris-%s" % sisterad)
+        Pris = QtGui.QSpinBox(self.gui.fakturaFaktaVareliste, "Pris-%s" % sisterad)
         Pris.setButtonSymbols(QSpinBox.UpDownArrows)
         Pris.setMaxValue(999999999)
         Pris.show()
@@ -456,7 +459,7 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         map(mvaListe.append, ['0','12','25'])
 
         #Mva = QtGui.QComboTableItem(self.fakturaFaktaVareliste, mvaListe, False)
-        Mva = QtGui.QSpinBox(self.fakturaFaktaVareliste, "Mva-%s" % sisterad)
+        Mva = QtGui.QSpinBox(self.gui.fakturaFaktaVareliste, "Mva-%s" % sisterad)
         #Mva = QtGui.QComboBox(self.fakturaFaktaVareliste, "Mva-%s" % sisterad)
         #Mva.insertStringList(mvaListe)
         #Mva.setEditable(False)
@@ -470,7 +473,7 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         varer = QtGui.QStringList()
         map(varer.append, [unicode(v.navn) for v in self.faktura.hentVarer()])
         #Vare = QtGui.QComboTableItem(self.fakturaFaktaVareliste, varer, True)
-        Vare = QtGui.QComboBox(1, self.fakturaFaktaVareliste, "Beskrivelse-%s" % sisterad)
+        Vare = QtGui.QComboBox(1, self.gui.fakturaFaktaVareliste, "Beskrivelse-%s" % sisterad)
         Vare.insertStringList(varer)
         Vare.setEditable(True)
         Vare.setAutoCompletion(True)
@@ -479,27 +482,27 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         QtGui.QObject.connect(Vare, QtCore.SIGNAL("activated(int)"), self.oppdaterFakturaSum)
 
 
-        self.fakturaFaktaVareliste.setNumRows(sisterad+1)
+        self.gui.fakturaFaktaVareliste.setNumRows(sisterad+1)
 #        self.fakturaFaktaVareliste.setItem(sisterad, 0, Vare)
-        self.fakturaFaktaVareliste.setCellWidget(sisterad, 0, Vare)
-        self.fakturaFaktaVareliste.setCellWidget(sisterad, 1, Antall)
-        self.fakturaFaktaVareliste.setCellWidget(sisterad, 2, Pris)
-        self.fakturaFaktaVareliste.setCellWidget(sisterad, 3, Mva)
+        self.gui.fakturaFaktaVareliste.setCellWidget(sisterad, 0, Vare)
+        self.gui.fakturaFaktaVareliste.setCellWidget(sisterad, 1, Antall)
+        self.gui.fakturaFaktaVareliste.setCellWidget(sisterad, 2, Pris)
+        self.gui.fakturaFaktaVareliste.setCellWidget(sisterad, 3, Mva)
         return self.fakturaVarelisteSynk(sisterad, 0)
 
     def fakturaVarelisteSynk(self, rad, kol):
         debug("synk:", rad, kol)
-        sender = self.fakturaFaktaVareliste.cellWidget(rad, kol)
+        sender = self.gui.fakturaFaktaVareliste.cellWidget(rad, kol)
         if kol == 0: # endret på varen -> oppdater metadata
             try:
-                vare = self.fakturaVarelisteCache[sender.currentItem()]
+                vare = self.gui.fakturaVarelisteCache[sender.currentItem()]
             except IndexError: #
                 if sender.currentItem() >= len(self.fakturaVarelisteCache):
                     # ny vare, tøm andre felt
                     debug("ny vare opprettet", unicode(sender.currentText()))
-                    self.fakturaFaktaVareliste.cellWidget(rad, 1).setSuffix('')
-                    self.fakturaFaktaVareliste.cellWidget(rad, 2).setValue(0)
-                    self.fakturaFaktaVareliste.cellWidget(rad, 3).setValue(self.firma.mva)
+                    self.gui.fakturaFaktaVareliste.cellWidget(rad, 1).setSuffix('')
+                    self.gui.fakturaFaktaVareliste.cellWidget(rad, 2).setValue(0)
+                    self.gui.fakturaFaktaVareliste.cellWidget(rad, 3).setValue(self.firma.mva)
                     return
                 else: raise # ukjent problem
             except AttributeError: # hvorfor er dette ikke 0?
@@ -507,20 +510,20 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
                     vare = self.fakturaVarelisteCache[0] # UGH! HACK
                 except IndexError: #ingen varer lagt inn
                     return # UGH UGH UGH
-            self.fakturaFaktaVareliste.cellWidget(rad, 1).setSuffix(' '+vare.enhet)
-            self.fakturaFaktaVareliste.cellWidget(rad, 2).setValue(int(vare.pris))
-            self.fakturaFaktaVareliste.cellWidget(rad, 3).setValue(vare.mva)
+            self.gui.fakturaFaktaVareliste.cellWidget(rad, 1).setSuffix(' '+vare.enhet)
+            self.gui.fakturaFaktaVareliste.cellWidget(rad, 2).setValue(int(vare.pris))
+            self.gui.fakturaFaktaVareliste.cellWidget(rad, 3).setValue(vare.mva)
             #self.fakturaFaktaVareliste.cellWidget(rad, 3).setCurrentText(str(vare.mva))
         else:
             # endret på antall, mva eller pris -> oppdater sum
             p = mva = 0.0
-            for i in range(self.fakturaFaktaVareliste.numRows()):
-                _antall = self.fakturaFaktaVareliste.cellWidget(i, 1).value()
-                _pris   = float(self.fakturaFaktaVareliste.cellWidget(i, 2).value())
-                _mva    = self.fakturaFaktaVareliste.cellWidget(i, 3).value()
+            for i in range(self.gui.fakturaFaktaVareliste.numRows()):
+                _antall = self.gui.fakturaFaktaVareliste.cellWidget(i, 1).value()
+                _pris   = float(self.gui.fakturaFaktaVareliste.cellWidget(i, 2).value())
+                _mva    = self.gui.fakturaFaktaVareliste.cellWidget(i, 3).value()
                 p += _pris * _antall
                 mva += _pris * _antall * _mva / 100
-            self.fakturaFaktaSum.setText("<u>%.2fkr (+%.2fkr mva)</u>" % (p, mva))
+            self.gui.fakturaFaktaSum.setText("<u>%.2fkr (+%.2fkr mva)</u>" % (p, mva))
 
     def oppdaterFakturaSum(self):
         k = ['Beskrivelse', 'Antall', 'Pris', 'Mva']
@@ -557,11 +560,11 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         self.fakturaDetaljerTekst.setText(s)
         # oppdater datofeltet. minste dato er ordredato. største dato er i dag
         minst, maks = localtime(linje.ordre.ordredato), localtime()
-        self.fakturaBetaltDato.setRange(QDate(minst[0]-1, minst[1], minst[2]), QtGui.QDate(maks[0]+1, maks[1], maks[2])) # utvider rangen med ett år i hver retning slik at QtGui.QDateEdit-kontrollen skal bli brukelig
+        self.gui.fakturaBetaltDato.setRange(QDate(minst[0]-1, minst[1], minst[2]), QtGui.QDate(maks[0]+1, maks[1], maks[2])) # utvider rangen med ett år i hver retning slik at QtGui.QDateEdit-kontrollen skal bli brukelig
 
     def lagFakturaKvittering(self):
         try:
-            ordre = self.fakturaFakturaliste.selectedItem().ordre
+            ordre = self.gui.fakturaFakturaliste.selectedItem().ordre
         except AttributeError:
             self.alert(u'Ingen faktura er valgt')
             return False
@@ -570,7 +573,7 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
 
     def visFakturaKvittering(self):
         try:
-            ordre = self.fakturaFakturaliste.selectedItem().ordre
+            ordre = self.gui.fakturaFakturaliste.selectedItem().ordre
         except AttributeError:
             self.alert(u'Ingen faktura er valgt')
             return False
@@ -582,7 +585,7 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
 
     def lagFaktura(self, Type="epost"):
         try:
-            ordre = self.fakturaFakturaliste.selectedItem().ordre
+            ordre = self.gui.fakturaFakturaliste.selectedItem().ordre
         except AttributeError:
             self.alert(u'Ingen faktura er valgt')
             return False
@@ -613,7 +616,7 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         except FirmainfoFeil,(E):
             historikk.pdfEpost(ordre, False, "firmainfofeil: %s" % E)
             self.alert(u"Du må fylle ut firmainfo først:\n%s" % E)
-            self.fakturaTab.setCurrentPage(3)
+            self.gui.fakturaTab.setCurrentPage(3)
         except KundeFeil,(E):
             self.alert(u"Kan ikke lage PDF!\nÅrsak: %s" % E)
             historikk.pdfEpost(ordre, False, "kundefeil: %s" % E)
@@ -635,7 +638,7 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
 
     def betalFaktura(self):
         try:
-            ordre = self.fakturaFakturaliste.selectedItem().ordre
+            ordre = self.gui.fakturaFakturaliste.selectedItem().ordre
         except AttributeError:
             self.alert("Ingen faktura er valgt")
             return
@@ -645,7 +648,7 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         if ordre.kansellert:
             self.obs("Denne fakturaen ble kansellert den %s, og kan ikke betales." % strftime("%Y-%m-%d", localtime(ordre.kansellert)))
             return False
-        d = self.fakturaBetaltDato.date()
+        d = self.gui.fakturaBetaltDato.date()
         dato = mktime((d.year(),d.month(),d.day(),23,59,0,0,0,1)) # på slutten av dagen (23:59) for å kunne betale fakturaer laget tidligere samme dag
         if dato < ordre.ordredato:
             self.obs(u'Betalingsdato kan ikke være tidligere enn ordredato')
@@ -659,7 +662,7 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         self.visFaktura()
 
     def avbetalFaktura(self):
-        ordre = self.fakturaFakturaliste.selectedItem().ordre
+        ordre = self.gui.fakturaFakturaliste.selectedItem().ordre
         #if ordre.kansellert:
             #self.alert(u"Du kan ikke fjerne betaldenne ordren, den er betalt.")
         if self.JaNei(u"Vil du virkelig fjerne betalt-status på ordre nr %s?" % ordre.ID):
@@ -668,7 +671,7 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
             self.visFaktura()
 
     def kansellerFaktura(self):
-        ordre = self.fakturaFakturaliste.selectedItem().ordre
+        ordre = self.gui.fakturaFakturaliste.selectedItem().ordre
         if ordre.betalt:
             self.alert(u"Du kan ikke kansellere denne ordren, den er betalt.")
         elif self.JaNei(u"Vil du virkelig kansellere ordre nr %s?" % ordre.ID):
@@ -677,17 +680,17 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
             self.visFaktura()
 
     def avkansellerFaktura(self):
-        ordre = self.fakturaFakturaliste.selectedItem().ordre
+        ordre = self.gui.fakturaFakturaliste.selectedItem().ordre
         ordre.settKansellert(False)
         historikk.avKansellert(ordre, True, 'brukerklikk')
         self.visFaktura()
 
     def purrFaktura(self):
-        ordre = self.fakturaFakturaliste.selectedItem().ordre
+        ordre = self.gui.fakturaFakturaliste.selectedItem().ordre
         historikk.purret(ordre, True, 'brukerklikk')
 
     def inkassoFaktura(self):
-        ordre = self.fakturaFakturaliste.selectedItem().ordre
+        ordre = self.gui.fakturaFakturaliste.selectedItem().ordre
         historikk.sendtTilInkasso(ordre, True, 'brukerklikk')
 
     ##def skjulSendepostBoks(self):
@@ -733,11 +736,11 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
 
 ################## KUNDER ###########################
 
-    def lukkKundeinfo(self, *ev):self.kundeInfo.hide()
+    def lukkKundeinfo(self, *ev):self.gui.kundeInfo.hide()
 
     def kundeContextMenu(self, event):
         try:
-            kunde = self.kundeKundeliste.selectedItem().kunde
+            kunde = self.gui.kundeKundeliste.selectedItem().kunde
         except AttributeError:
             return None # ingen kunde er valgt i lista
         meny = QtGui.QPopupMenu(self)
@@ -752,70 +755,72 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         meny.exec_loop(QCursor.pos())
 
     def visKunder(self):
-        visFjernede = self.kundeVisFjernede.isChecked()
-        self.kundeDetaljerTekst.setText('')
-        self.kundeInfo.hide()
-        i = self.kundeKundeliste.insertItem
-        self.kundeKundeliste.clear()
+        visFjernede = self.gui.kundeVisFjernede.isChecked()
+        self.gui.kundeDetaljerTekst.setText('')
+        self.gui.kundeInfo.hide()
+        i = self.gui.kundeKundeliste.addTopLevelItem
+        self.gui.kundeKundeliste.clear()
         for kunde in self.faktura.hentKunder(inkluderSlettede=visFjernede):
-            l = QtGui.QListViewItem(self.kundeKundeliste,
+            l = QtGui.QTreeWidgetItem([ #self.kundeKundeliste,
                               "%03d" % kunde.ID,
                               '%s' % kunde.navn,
                               '%s' % kunde.epost,
                               '%s' % kunde.status,
                               "%s, %s %s" % (kunde.adresse, kunde.postnummer, kunde.poststed),
                               '%s' % kunde.telefon
+                              ]
                              )
             l.kunde = kunde
             if kunde.slettet:
-                l.setPixmap(0, self.slettetLogo)
+                pass
+                #l.setPixmap(0, self.slettetLogo)
             i(l)
 
     def redigerKunde(self, *kw):
-        kunde = self.kundeKundeliste.currentItem().kunde
+        kunde = self.gui.kundeKundeliste.currentItem().kunde
         self.lastKunde(kunde)
 
     def lastKunde(self, kunde = None):
         self.denne_kunde = kunde
         statuser = self.faktura.hentEgenskapVerdier("Kunde", "status")
-        self.kundeInfoStatus.clear()
-        self.kundeInfoStatus.insertStrList(statuser)
+        self.gui.kundeInfoStatus.clear()
+        self.gui.kundeInfoStatus.insertStrList(statuser)
 
         if kunde is not None: #redigerer eksisterende kunde
-            self.kundeInfoNavn.setText(kunde.navn)
-            self.kundeInfoKontaktperson.setText(unicode(kunde.kontaktperson))
-            self.kundeInfoEpost.setText(unicode(kunde.epost))
-            self.kundeInfoStatus.setCurrentText(unicode(kunde.status))
-            self.kundeInfoAdresse.setText(unicode(kunde.adresse))
-            self.kundeInfoPoststed.setText(unicode(kunde.poststed))
-            self.kundeInfoPostnummer.setText(str(kunde.postnummer))
-            self.kundeInfoTelefon.setText(str(kunde.telefon))
-            self.kundeInfoTelefaks.setText(str(kunde.telefaks))
-            self.kundeInfoEndre.setText("Oppdate&r")
+            self.gui.kundeInfoNavn.setText(kunde.navn)
+            self.gui.kundeInfoKontaktperson.setText(unicode(kunde.kontaktperson))
+            self.gui.kundeInfoEpost.setText(unicode(kunde.epost))
+            self.gui.kundeInfoStatus.setCurrentText(unicode(kunde.status))
+            self.gui.kundeInfoAdresse.setText(unicode(kunde.adresse))
+            self.gui.kundeInfoPoststed.setText(unicode(kunde.poststed))
+            self.gui.kundeInfoPostnummer.setText(str(kunde.postnummer))
+            self.gui.kundeInfoTelefon.setText(str(kunde.telefon))
+            self.gui.kundeInfoTelefaks.setText(str(kunde.telefaks))
+            self.gui.kundeInfoEndre.setText("Oppdate&r")
         else: # ny kunde - tømmer skjemaet helt
-            self.kundeInfoNavn.setText("")
-            self.kundeInfoKontaktperson.setText("")
-            self.kundeInfoEpost.setText("")
-            self.kundeInfoStatus.setCurrentItem(0)
-            self.kundeInfoAdresse.setText("")
-            self.kundeInfoPoststed.setText("")
-            self.kundeInfoPostnummer.setText("")
-            self.kundeInfoTelefon.setText("")
-            self.kundeInfoTelefaks.setText("")
-            self.kundeInfoEndre.setText("&Legg inn")
+            self.gui.kundeInfoNavn.setText("")
+            self.gui.kundeInfoKontaktperson.setText("")
+            self.gui.kundeInfoEpost.setText("")
+            self.gui.kundeInfoStatus.setCurrentItem(0)
+            self.gui.kundeInfoAdresse.setText("")
+            self.gui.kundeInfoPoststed.setText("")
+            self.gui.kundeInfoPostnummer.setText("")
+            self.gui.kundeInfoTelefon.setText("")
+            self.gui.kundeInfoTelefaks.setText("")
+            self.gui.kundeInfoEndre.setText("&Legg inn")
 
-        self.kundeInfo.show()
-        self.kundeInfoNavn.setFocus()
+        self.gui.kundeInfo.show()
+        self.gui.kundeInfoNavn.setFocus()
 
     def leggTilKunde(self):
         k = self.denne_kunde
 
         # sjekk om all nødvendig info er gitt
-        kravkart = {self.kundeInfoNavn: "Kundens navn",
-                    self.kundeInfoKontaktperson: "Kontaktperson",
-                    self.kundeInfoEpost:"Epostadresse",
-                    self.kundeInfoAdresse: "Adresse",
-                    self.kundeInfoPoststed: "Poststed",
+        kravkart = {self.gui.kundeInfoNavn: "Kundens navn",
+                    self.gui.kundeInfoKontaktperson: "Kontaktperson",
+                    self.gui.kundeInfoEpost:"Epostadresse",
+                    self.gui.kundeInfoAdresse: "Adresse",
+                    self.gui.kundeInfoPoststed: "Poststed",
                     }
         for obj in kravkart.keys():
             if not obj.text():
@@ -828,16 +833,16 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
             k = self.faktura.nyKunde()
         else:
             debug("oppdaterer kunde, som var " + unicode(k))
-        k.navn = self.kundeInfoNavn.text()
-        k.kontaktperson = self.kundeInfoKontaktperson.text()
-        k.epost = self.kundeInfoEpost.text()
-        k.status = self.kundeInfoStatus.currentText()
-        k.adresse = self.kundeInfoAdresse.text()
-        k.poststed = self.kundeInfoPoststed.text()
-        k.postnummer = self.kundeInfoPostnummer.text()
-        k.telefon = self.kundeInfoTelefon.text()
-        k.telefaks = self.kundeInfoTelefaks.text()
-        self.kundeInfo.hide()
+        k.navn = self.gui.kundeInfoNavn.text()
+        k.kontaktperson = self.gui.kundeInfoKontaktperson.text()
+        k.epost = self.gui.kundeInfoEpost.text()
+        k.status = self.gui.kundeInfoStatus.currentText()
+        k.adresse = self.gui.kundeInfoAdresse.text()
+        k.poststed = self.gui.kundeInfoPoststed.text()
+        k.postnummer = self.gui.kundeInfoPostnummer.text()
+        k.telefon = self.gui.kundeInfoTelefon.text()
+        k.telefaks = self.gui.kundeInfoTelefaks.text()
+        self.gui.kundeInfo.hide()
         self.visKunder()
 
     def visKundedetaljer(self, linje):
@@ -848,7 +853,7 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         fakturaer = linje.kunde.finnOrdrer()
         if not fakturaer:
             s += "Aldri fakturert"
-            self.kundeDetaljerTekst.setText(s)
+            self.gui.kundeDetaljerTekst.setText(s)
             return
 
         s += "Sist fakturert: %s<br>" % strftime('%Y-%m-%d', localtime(fakturaer[-1].ordredato))
@@ -922,28 +927,28 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
                 s += '<li>#%i: %s' % (uf._id, uf.tekst)
             s += '</ul>%i ubetalte fakturaer<br>' % len(ubetalte)
             s += 'Verdi: %.2f' % ubetaltverdi
-        self.kundeDetaljerTekst.setText(s)
+        self.gui.kundeDetaljerTekst.setText(s)
 
     def slettKunde(self):
-        kunde = self.kundeKundeliste.selectedItem().kunde
+        kunde = self.gui.kundeKundeliste.selectedItem().kunde
         debug("Sletter kunde # %i" % kunde.ID)
         if self.JaNei("Vil du virkelig slette kunde nr %s (%s)?" % (kunde.ID, kunde.navn)):
             kunde.settSlettet()
             self.visKunder()
 
     def ikkeSlettKunde(self):
-        kunde = self.kundeKundeliste.selectedItem().kunde
+        kunde = self.gui.kundeKundeliste.selectedItem().kunde
         debug("Fjerner slettet status for kunde # %i" % kunde.ID)
         kunde.settSlettet(False)
         self.visKunder()
 
 ################## VARER #########################
 
-    def lukkVarerinfo(self, *ev):self.varerInfo.hide()
+    def lukkVarerinfo(self, *ev):self.gui.varerInfo.hide()
 
     def vareContextMenu(self, event):
         try:
-            vare = self.varerVareliste.selectedItem().vare
+            vare = self.gui.varerVareliste.selectedItem().vare
         except AttributeError:
             return None # ingen kunde er valgt i lista
         meny = QtGui.QPopupMenu(self)
@@ -958,18 +963,19 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         meny.exec_loop(QCursor.pos())
 
     def visVarer(self):
-        visFjernede = self.varerVisFjernede.isChecked()
-        self.varerDetaljerTekst.setText('')
-        self.varerInfo.hide()
-        i = self.varerVareliste.insertItem
-        self.varerVareliste.clear()
+        visFjernede = self.gui.varerVisFjernede.isChecked()
+        self.gui.varerDetaljerTekst.setText('')
+        self.gui.varerInfo.hide()
+        i = self.gui.varerVareliste.addTopLevelItem
+        self.gui.varerVareliste.clear()
         for vare in self.faktura.hentVarer(inkluderSlettede=visFjernede):
-            l = QtGui.QListViewItem(self.varerVareliste,
+            l = QtGui.QTreeWidgetItem([#self.varerVareliste,
                               "%03d" % vare.ID,
                               unicode(vare.navn),
                               unicode(vare.detaljer),
                               "%.2f" % vare.pris,
                               unicode(vare.enhet)
+                              ]
                              )
             l.vare = vare
             if vare.slettet:
@@ -982,35 +988,35 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
     def lastVare(self, vare = None):
         self.denne_vare = vare
         enheter = self.faktura.hentEgenskapVerdier("Vare", "enhet")
-        self.varerInfoEnhet.clear()
-        self.varerInfoEnhet.insertStrList(enheter)
+        self.gui.varerInfoEnhet.clear()
+        self.gui.varerInfoEnhet.insertStrList(enheter)
         if vare is not None:
-            self.varerInfoNavn.setText(unicode(vare.navn))
-            self.varerInfoDetaljer.setText(unicode(vare.detaljer))
-            self.varerInfoEnhet.setCurrentText(unicode(vare.enhet))
-            self.varerInfoPris.setValue(int(vare.pris))
+            self.gui.varerInfoNavn.setText(unicode(vare.navn))
+            self.gui.varerInfoDetaljer.setText(unicode(vare.detaljer))
+            self.gui.varerInfoEnhet.setCurrentText(unicode(vare.enhet))
+            self.gui.varerInfoPris.setValue(int(vare.pris))
             if vare.enhet: sfx = unicode(" kr per %s" % vare.enhet)
             else: sfx = " kr"
 
-            self.varerInfoPris.setSuffix(sfx)
-            self.varerInfoMva.setValue(int(vare.mva))
-            self.varerInfoLegginn.setText('&Oppdater')
+            self.gui.varerInfoPris.setSuffix(sfx)
+            self.gui.varerInfoMva.setValue(int(vare.mva))
+            self.gui.varerInfoLegginn.setText('&Oppdater')
         else:
-            self.varerInfoNavn.setText("")
-            self.varerInfoDetaljer.setText("")
-            self.varerInfoEnhet.setCurrentText("")
-            self.varerInfoPris.setValue(0)
-            self.varerInfoPris.setSuffix("")
-            self.varerInfoMva.setValue(int(self.firma.mva))
-            self.varerInfoLegginn.setText('&Lag ny vare')
-        self.varerInfo.show()
-        self.varerInfoNavn.setFocus()
+            self.gui.varerInfoNavn.setText("")
+            self.gui.varerInfoDetaljer.setText("")
+            self.gui.varerInfoEnhet.setCurrentText("")
+            self.gui.varerInfoPris.setValue(0)
+            self.gui.varerInfoPris.setSuffix("")
+            self.gui.varerInfoMva.setValue(int(self.firma.mva))
+            self.gui.varerInfoLegginn.setText('&Lag ny vare')
+        self.gui.varerInfo.show()
+        self.gui.varerInfoNavn.setFocus()
 
     def registrerVare(self):
         v = self.denne_vare
-        kravkart = {self.varerInfoNavn:"Varenavn",
-                    self.varerInfoEnhet:"Enhet",
-                    self.varerInfoPris:"Pris",
+        kravkart = {self.gui.varerInfoNavn:"Varenavn",
+                    self.gui.varerInfoEnhet:"Enhet",
+                    self.gui.varerInfoPris:"Pris",
                     }
         for obj in kravkart.keys():
             if isinstance(obj, QtGui.QSpinBox): test = obj.value() > 0
@@ -1027,12 +1033,12 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         else:
             debug("oppdaterer vare, som var: " + unicode(v))
         #print self.varerInfoNavn.text.utf8
-        v.navn = self.varerInfoNavn.text()
-        v.detaljer = self.varerInfoDetaljer.text()
-        v.enhet = self.varerInfoEnhet.currentText()
-        v.pris = float(self.varerInfoPris.value())
-        v.mva = self.varerInfoMva.value()
-        self.varerInfo.hide()
+        v.navn = self.gui.varerInfoNavn.text()
+        v.detaljer = self.gui.varerInfoDetaljer.text()
+        v.enhet = self.gui.varerInfoEnhet.currentText()
+        v.pris = float(self.gui.varerInfoPris.value())
+        v.mva = self.gui.varerInfoMva.value()
+        self.gui.varerInfo.hide()
         self.visVarer()
 
     def visVaredetaljer(self, linje):
@@ -1049,17 +1055,17 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
             s += u'Totalbeløp: %.2f kr' % linje.vare.finnTotalsalg()
         else:
             s += u'Aldri solgt'
-        self.varerDetaljerTekst.setText(s)
+        self.gui.varerDetaljerTekst.setText(s)
 
     def slettVare(self, linje = None):
-        vare = self.varerVareliste.selectedItem().vare
+        vare = self.gui.varerVareliste.selectedItem().vare
         debug("Sletter vare # %i" % vare._id)
         if self.JaNei("Vil du virkelig slette vare nr %s (%s)?" % (vare.ID, vare.navn)):
             vare.settSlettet()
             self.visVarer()
 
     def ikkeSlettVare(self):
-        vare = self.varerVareliste.selectedItem().vare
+        vare = self.gui.varerVareliste.selectedItem().vare
         vare.settSlettet(False)
         self.visVarer()
 
@@ -1298,7 +1304,7 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
 ############## ØKONOMI ###################
 
     def visOkonomi(self):
-        self.okonomiAvgrensningerDatoAr.setValue(localtime()[0])
+        self.gui.okonomiAvgrensningerDatoAr.setValue(localtime()[0])
 
     def hentAktuelleOrdrer(self):
         ordrehenter = fakturaOkonomi.ordreHenter(self.db)
@@ -1309,9 +1315,9 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
                          'firma':None,
                          'visubetalte':False,
                          'viskansellerte':False}
-        if self.okonomiAvgrensningerDato.isChecked():
-            aar = self.okonomiAvgrensningerDatoAr.value()
-            bmnd = self.okonomiAvgrensningerDatoManed.currentItem()
+        if self.gui.okonomiAvgrensningerDato.isChecked():
+            aar = self.gui.okonomiAvgrensningerDatoAr.value()
+            bmnd = self.gui.okonomiAvgrensningerDatoManed.currentItem()
             if bmnd == 0:
                 bmnd = 1
                 smnd = 12
@@ -1322,33 +1328,33 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
             debug("%s %s %s %s" % (bmnd, smnd, beg, slutt))
             ordrehenter.begrensDato(beg, slutt)
             begrensninger['dato'] = (beg,slutt)
-        if self.okonomiAvgrensningerKunde.isChecked():
+        if self.gui.okonomiAvgrensningerKunde.isChecked():
             krex = re.search(re.compile(r'kunde\ #\s?(\d+)'),
-                unicode(self.okonomiAvgrensningerKundeliste.currentText()))
+                unicode(self.gui.okonomiAvgrensningerKundeliste.currentText()))
             try:
                 kunde = self.faktura.hentKunde(int(krex.group(1)))
                 ordrehenter.begrensKunde(kunde)
                 begrensninger['kunde'] = kunde
             except IndexError:
                 raise
-        if self.okonomiAvgrensningerVare.isChecked():
+        if self.gui.okonomiAvgrensningerVare.isChecked():
             vrex = re.search(re.compile(r'^\(#(\d+)\)'),
-                unicode(self.okonomiAvgrensningerVareliste.currentText()))
+                unicode(self.gui.okonomiAvgrensningerVareliste.currentText()))
             try:
                 vare = self.faktura.hentVare(int(vrex.group(1)))
                 ordrehenter.begrensVare(vare)
                 begrensninger['vare'] = vare
             except IndexError:
                 raise
-        begrensninger['viskansellerte'] = self.okonomiAvgrensningerVisKansellerte.isChecked()
+        begrensninger['viskansellerte'] = self.gui.okonomiAvgrensningerVisKansellerte.isChecked()
         ordrehenter.visKansellerte(begrensninger['viskansellerte'])
-        begrensninger['visubetalte'] = not self.okonomiAvgrensningerSkjulUbetalte.isChecked()
-        ordrehenter.visUbetalte(not self.okonomiAvgrensningerSkjulUbetalte.isChecked())
+        begrensninger['visubetalte'] = not self.gui.okonomiAvgrensningerSkjulUbetalte.isChecked()
+        ordrehenter.visUbetalte(not self.gui.okonomiAvgrensningerSkjulUbetalte.isChecked())
 
-        if self.okonomiSorter.isChecked():
+        if self.gui.okonomiSorter.isChecked():
             sorter = [ 'dato', 'kunde', 'vare' ]
-            ordrehenter.sorterEtter(sorter[self.okonomiSorterListe.currentItem()])
-            begrensninger['sortering'] = sorter[self.okonomiSorterListe.currentItem()]
+            ordrehenter.sorterEtter(sorter[self.gui.okonomiSorterListe.currentItem()])
+            begrensninger['sortering'] = sorter[self.gui.okonomiSorterListe.currentItem()]
 
         ordreliste = ordrehenter.hentOrdrer()
         return ordreliste, begrensninger
@@ -1385,46 +1391,46 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
                 u += 1
         s += "</ul>"
         #self.myndigheteneRegnskapHittil.setText("%d kr (derav MVA %d kr)" % (inn+mva, mva))
-        self.okonomiRegnskapTotalUMva.setText("%.2f kr" % inn)
-        self.okonomiRegnskapTotalMMva.setText("%.2f kr" % (inn+mva))
-        self.okonomiRegnskapMoms.setText("%.2f kr" % mva)
-        self.okonomiRegnskapAntallFakturaer.setText("%i stk (%i ubetalte)" % (b, u))
+        self.gui.okonomiRegnskapTotalUMva.setText("%.2f kr" % inn)
+        self.gui.okonomiRegnskapTotalMMva.setText("%.2f kr" % (inn+mva))
+        self.gui.okonomiRegnskapMoms.setText("%.2f kr" % mva)
+        self.gui.okonomiRegnskapAntallFakturaer.setText("%i stk (%i ubetalte)" % (b, u))
         #skriv detaljer om ordrer
-        self.okonomiDetaljregnskap.setText(s)
+        self.gui.okonomiDetaljregnskap.setText(s)
 
     def okonomiFyllDato(self, ibruk):
-        self.okonomiAvgrensningerDatoAr.setEnabled(ibruk)
-        self.okonomiAvgrensningerDatoManed.setEnabled(ibruk)
+        self.gui.okonomiAvgrensningerDatoAr.setEnabled(ibruk)
+        self.gui.okonomiAvgrensningerDatoManed.setEnabled(ibruk)
         if not ibruk:
-            self.okonomiAvgrensningerDatoPeriode.setEnabled(ibruk) # alltid disable denne
-        self.okonomiAvgrensningerDatoManed.clear()
-        self.okonomiAvgrensningerDatoPeriode.clear()
+            self.gui.okonomiAvgrensningerDatoPeriode.setEnabled(ibruk) # alltid disable denne
+        self.gui.okonomiAvgrensningerDatoManed.clear()
+        self.gui.okonomiAvgrensningerDatoPeriode.clear()
         mnd = [u'Hele året', 'Januar', 'Februar', 'Mars', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Desember']
-        in1 = self.okonomiAvgrensningerDatoManed.insertItem
-        in2 = self.okonomiAvgrensningerDatoPeriode.insertItem
+        in1 = self.gui.okonomiAvgrensningerDatoManed.insertItem
+        in2 = self.gui.okonomiAvgrensningerDatoPeriode.insertItem
         for z in mnd: in1(z)
         for i in range(1,12): in2(u'Og %i måneder fram' % i)
 
     def okonomiFyllDatoPeriode(self, manedId):
         #bare tilgjengelig dersom det ikke er valgt 'Hele året'
-        self.okonomiAvgrensningerDatoPeriode.setEnabled(manedId > 0)
+        self.gui.okonomiAvgrensningerDatoPeriode.setEnabled(manedId > 0)
 
     def okonomiFyllKunder(self, ibruk):
-        self.okonomiAvgrensningerKundeliste.setEnabled(ibruk)
-        self.okonomiAvgrensningerKundeliste.clear()
-        i = self.okonomiAvgrensningerKundeliste.insertItem
+        self.gui.okonomiAvgrensningerKundeliste.setEnabled(ibruk)
+        self.gui.okonomiAvgrensningerKundeliste.clear()
+        i = self.gui.okonomiAvgrensningerKundeliste.insertItem
         for kunde in self.faktura.hentKunder(inkluderSlettede=True):
             i(unicode(kunde))
 
     def okonomiFyllVarer(self, ibruk):
-        self.okonomiAvgrensningerVareliste.setEnabled(ibruk)
-        self.okonomiAvgrensningerVareliste.clear()
-        i = self.okonomiAvgrensningerVareliste.insertItem
+        self.gui.okonomiAvgrensningerVareliste.setEnabled(ibruk)
+        self.gui.okonomiAvgrensningerVareliste.clear()
+        i = self.gui.okonomiAvgrensningerVareliste.insertItem
         for v in self.faktura.hentVarer(inkluderSlettede=True):
             i(unicode("(#%i) %s") % (v.ID, v))
 
     def okonomiFyllSortering(self, ibruk):
-        self.okonomiSorterListe.setEnabled(ibruk)
+        self.gui.okonomiSorterListe.setEnabled(ibruk)
 
     def okonomiSkrivUtFakturaer(self):
         if not finfaktura.rapport.REPORTLAB:
