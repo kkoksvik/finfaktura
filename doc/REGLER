@@ -58,12 +58,12 @@
     #http://support.googlecode.com/svn/trunk/scripts/googlecode-upload.py
 
     -> .deb
-    googlecode-upload.py -s "Fryktelig fin faktura (debian/ubuntu), versjon $VERSJON" -p finfaktura -u havard.gulldahl -l "Featured,Type-Package,OpSys-Linux" ../finfaktura_${VERSJON}_*.deb
+    googlecode-upload.py -s "Fryktelig fin faktura (debian/ubuntu), versjon $VERSJON" -p finfaktura -u havard.gulldahl -l "Featured,Type-Package,OpSys-Linux" ../finfaktura_${VERSJON}_all.deb
 
     -> .rpm
     fakeroot alien --to-rpm --scripts --keep-version finfaktura_${VERSJON}_*.deb
 
-    googlecode-upload.py -s "Fryktelig fin faktura (fedora/suse), versjon $VERSJON" -p finfaktura -u havard.gulldahl -l "Featured,Type-Package,OpSys-Linux" finfaktura-${VERSJON}-*.rpm
+    googlecode-upload.py -s "Fryktelig fin faktura (fedora/suse), versjon $VERSJON" -p finfaktura -u havard.gulldahl -l "Featured,Type-Package,OpSys-Linux" ../finfaktura-${VERSJON}*noarch.rpm
 
     -> source
     python setup.py sdist --format=zip
