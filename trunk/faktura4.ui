@@ -60,7 +60,7 @@
        <enum>QTabWidget::West</enum>
       </property>
       <property name="currentIndex" >
-       <number>2</number>
+       <number>0</number>
       </property>
       <property name="usesScrollButtons" >
        <bool>true</bool>
@@ -78,42 +78,7 @@
         <string>&amp;Faktura</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_8" >
-        <item row="0" column="0" >
-         <widget class="QPushButton" name="fakturaNy" >
-          <property name="sizePolicy" >
-           <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="toolTip" >
-           <string>Viser skjema hvor du kan legge inn en ny faktura</string>
-          </property>
-          <property name="text" >
-           <string>&amp;Ny faktura</string>
-          </property>
-          <property name="shortcut" >
-           <string>Alt+N</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1" colspan="2" >
-         <spacer name="spacer3" >
-          <property name="orientation" >
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeType" >
-           <enum>QSizePolicy::Expanding</enum>
-          </property>
-          <property name="sizeHint" stdset="0" >
-           <size>
-            <width>221</width>
-            <height>21</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item rowspan="4" row="1" column="0" colspan="2" >
+        <item rowspan="5" row="0" column="0" colspan="2" >
          <widget class="QTreeWidget" name="fakturaFakturaliste" >
           <property name="sizePolicy" >
            <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
@@ -226,13 +191,21 @@
          </widget>
         </item>
         <item row="4" column="2" >
-         <widget class="QGroupBox" name="groupBox_3" >
+         <widget class="QGroupBox" name="fakturaHandlinger" >
+          <property name="enabled" >
+           <bool>false</bool>
+          </property>
           <property name="title" >
            <string>Handlinger</string>
           </property>
           <layout class="QGridLayout" name="gridLayout_12" >
            <item row="0" column="0" colspan="3" >
             <widget class="QLabel" name="textLabel2_2" >
+             <property name="font" >
+              <font>
+               <pointsize>9</pointsize>
+              </font>
+             </property>
              <property name="text" >
               <string>Du skal sende fakturaen:</string>
              </property>
@@ -279,6 +252,11 @@
            </item>
            <item row="3" column="0" colspan="3" >
             <widget class="QLabel" name="textLabel4_2" >
+             <property name="font" >
+              <font>
+               <pointsize>9</pointsize>
+              </font>
+             </property>
              <property name="text" >
               <string>Du trenger en kvittering:</string>
              </property>
@@ -312,6 +290,11 @@
            </item>
            <item row="6" column="0" colspan="3" >
             <widget class="QLabel" name="textLabel3_2" >
+             <property name="font" >
+              <font>
+               <pointsize>9</pointsize>
+              </font>
+             </property>
              <property name="text" >
               <string>Fakturaen er betalt:</string>
              </property>
@@ -349,7 +332,7 @@
         <item row="5" column="0" colspan="3" >
          <widget class="QGroupBox" name="fakturaFakta" >
           <property name="title" >
-           <string>Fakturafakta</string>
+           <string/>
           </property>
           <property name="flat" >
            <bool>true</bool>
@@ -390,6 +373,15 @@
                    </property>
                    <property name="editable" >
                     <bool>false</bool>
+                   </property>
+                   <property name="insertPolicy" >
+                    <enum>QComboBox::InsertAtCurrent</enum>
+                   </property>
+                   <property name="sizeAdjustPolicy" >
+                    <enum>QComboBox::AdjustToContents</enum>
+                   </property>
+                   <property name="minimumContentsLength" >
+                    <number>15</number>
                    </property>
                   </widget>
                  </item>
@@ -501,7 +493,7 @@
                <item>
                 <widget class="QGroupBox" name="fakturaFaktaOverstyr" >
                  <property name="title" >
-                  <string>Overstyr standardvalg</string>
+                  <string>Flere alternativer...</string>
                  </property>
                  <property name="flat" >
                   <bool>true</bool>
@@ -514,77 +506,102 @@
                  </property>
                  <layout class="QGridLayout" name="gridLayout_7" >
                   <item row="0" column="0" >
-                   <layout class="QHBoxLayout" name="horizontalLayout_7" >
-                    <item>
-                     <widget class="QLabel" name="textLabel1_11" >
-                      <property name="text" >
-                       <string>Fakturadato:</string>
-                      </property>
-                      <property name="wordWrap" >
-                       <bool>false</bool>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QDateEdit" name="fakturaFaktaDato" >
-                      <property name="focusPolicy" >
-                       <enum>Qt::TabFocus</enum>
-                      </property>
-                      <property name="toolTip" >
-                       <string>Sett eksplisitt dato for faktura (DD.MM.ÅÅÅÅ)</string>
-                      </property>
-                      <property name="displayFormat" >
-                       <string>dd.MM.yyyy</string>
-                      </property>
-                      <property name="calendarPopup" >
-                       <bool>true</bool>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QLabel" name="textLabel1_13" >
-                      <property name="text" >
-                       <string>Forfallsdato:</string>
-                      </property>
-                      <property name="wordWrap" >
-                       <bool>false</bool>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QDateEdit" name="fakturaFaktaForfall" >
-                      <property name="focusPolicy" >
-                       <enum>Qt::TabFocus</enum>
-                      </property>
-                      <property name="toolTip" >
-                       <string>Sett eksplisitt dato for forfall (DD.MM.ÅÅÅÅ)</string>
-                      </property>
-                      <property name="displayFormat" >
-                       <string>dd.MM.yyyy</string>
-                      </property>
-                      <property name="calendarPopup" >
-                       <bool>true</bool>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QCheckBox" name="fakturaFaktaVilkarligMVA" >
-                      <property name="text" >
-                       <string>Spesifikk MVA:</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QDoubleSpinBox" name="fakturaFaktaMVA" >
-                      <property name="suffix" >
-                       <string> kr</string>
-                      </property>
-                      <property name="maximum" >
-                       <double>999999.989999999990687</double>
-                      </property>
-                     </widget>
-                    </item>
-                   </layout>
+                   <widget class="QFrame" name="frame" >
+                    <property name="frameShape" >
+                     <enum>QFrame::NoFrame</enum>
+                    </property>
+                    <property name="frameShadow" >
+                     <enum>QFrame::Plain</enum>
+                    </property>
+                    <property name="lineWidth" >
+                     <number>-1</number>
+                    </property>
+                    <layout class="QGridLayout" name="gridLayout_16" >
+                     <property name="margin" >
+                      <number>0</number>
+                     </property>
+                     <property name="spacing" >
+                      <number>0</number>
+                     </property>
+                     <item row="0" column="0" >
+                      <layout class="QHBoxLayout" name="horizontalLayout_7" >
+                       <item>
+                        <widget class="QLabel" name="textLabel1_11" >
+                         <property name="text" >
+                          <string>Fakturadato:</string>
+                         </property>
+                         <property name="wordWrap" >
+                          <bool>false</bool>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QDateEdit" name="fakturaFaktaDato" >
+                         <property name="focusPolicy" >
+                          <enum>Qt::TabFocus</enum>
+                         </property>
+                         <property name="toolTip" >
+                          <string>Sett eksplisitt dato for faktura (DD.MM.ÅÅÅÅ)</string>
+                         </property>
+                         <property name="displayFormat" >
+                          <string>dd.MM.yyyy</string>
+                         </property>
+                         <property name="calendarPopup" >
+                          <bool>true</bool>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QLabel" name="textLabel1_13" >
+                         <property name="text" >
+                          <string>Forfallsdato:</string>
+                         </property>
+                         <property name="wordWrap" >
+                          <bool>false</bool>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QDateEdit" name="fakturaFaktaForfall" >
+                         <property name="focusPolicy" >
+                          <enum>Qt::TabFocus</enum>
+                         </property>
+                         <property name="toolTip" >
+                          <string>Sett eksplisitt dato for forfall (DD.MM.ÅÅÅÅ)</string>
+                         </property>
+                         <property name="displayFormat" >
+                          <string>dd.MM.yyyy</string>
+                         </property>
+                         <property name="calendarPopup" >
+                          <bool>true</bool>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QCheckBox" name="fakturaFaktaVilkarligMVA" >
+                         <property name="text" >
+                          <string>Spesifikk MVA:</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QDoubleSpinBox" name="fakturaFaktaMVA" >
+                         <property name="suffix" >
+                          <string> kr</string>
+                         </property>
+                         <property name="maximum" >
+                          <double>999999.989999999990687</double>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
+                     </item>
+                    </layout>
+                    <zorder></zorder>
+                    <zorder></zorder>
+                    <zorder></zorder>
+                    <zorder></zorder>
+                   </widget>
                   </item>
                  </layout>
                 </widget>
@@ -703,6 +720,25 @@
           </layout>
          </widget>
         </item>
+        <item row="0" column="2" >
+         <widget class="QPushButton" name="fakturaNy" >
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTip" >
+           <string>Viser skjema hvor du kan legge inn en ny faktura</string>
+          </property>
+          <property name="text" >
+           <string>&amp;Ny faktura</string>
+          </property>
+          <property name="shortcut" >
+           <string>Alt+N</string>
+          </property>
+         </widget>
+        </item>
        </layout>
       </widget>
       <widget class="QWidget" name="tab_2" >
@@ -718,42 +754,10 @@
         <string>&amp;Kunder</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_2" >
-        <item row="0" column="0" >
-         <widget class="QPushButton" name="kundeNy" >
-          <property name="sizePolicy" >
-           <sizepolicy vsizetype="Fixed" hsizetype="Maximum" >
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text" >
-           <string>&amp;Ny kunde</string>
-          </property>
-          <property name="shortcut" >
-           <string>Alt+N</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1" colspan="3" >
-         <spacer name="spacer8" >
-          <property name="orientation" >
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeType" >
-           <enum>QSizePolicy::Expanding</enum>
-          </property>
-          <property name="sizeHint" stdset="0" >
-           <size>
-            <width>630</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="5" column="0" colspan="4" >
+        <item row="4" column="0" colspan="3" >
          <widget class="QGroupBox" name="kundeInfo" >
           <property name="title" >
-           <string>Kundeinfo</string>
+           <string/>
           </property>
           <property name="flat" >
            <bool>true</bool>
@@ -933,6 +937,9 @@
                <property name="editable" >
                 <bool>true</bool>
                </property>
+               <property name="insertPolicy" >
+                <enum>QComboBox::InsertAtCurrent</enum>
+               </property>
                <property name="sizeAdjustPolicy" >
                 <enum>QComboBox::AdjustToContents</enum>
                </property>
@@ -1049,7 +1056,7 @@
           <zorder></zorder>
          </widget>
         </item>
-        <item rowspan="3" row="2" column="0" colspan="3" >
+        <item rowspan="4" row="0" column="0" colspan="2" >
          <widget class="QTreeWidget" name="kundeKundeliste" >
           <property name="sizePolicy" >
            <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
@@ -1119,7 +1126,7 @@
           </column>
          </widget>
         </item>
-        <item row="2" column="3" >
+        <item row="1" column="2" >
          <widget class="QCheckBox" name="kundeVisFjernede" >
           <property name="sizePolicy" >
            <sizepolicy vsizetype="Fixed" hsizetype="Maximum" >
@@ -1135,7 +1142,7 @@
           </property>
          </widget>
         </item>
-        <item rowspan="2" row="3" column="3" >
+        <item rowspan="2" row="2" column="2" >
          <widget class="QGroupBox" name="groupBox" >
           <property name="title" >
            <string>Detaljer</string>
@@ -1167,12 +1174,12 @@
             </widget>
            </item>
            <item row="1" column="0" >
-            <widget class="QPushButton" name="kundeNyfaktura" >
-             <property name="acceptDrops" >
-              <bool>true</bool>
+            <widget class="QPushButton" name="kundeNyFaktura" >
+             <property name="toolTip" >
+              <string>Oppretter en ny faktura til denne kunden</string>
              </property>
              <property name="text" >
-              <string>N&amp;y faktura til kunden</string>
+              <string>Lag n&amp;y faktura</string>
              </property>
              <property name="shortcut" >
               <string>Alt+Y</string>
@@ -1180,6 +1187,22 @@
             </widget>
            </item>
           </layout>
+         </widget>
+        </item>
+        <item row="0" column="2" >
+         <widget class="QPushButton" name="kundeNy" >
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="Fixed" hsizetype="Maximum" >
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text" >
+           <string>&amp;Ny kunde</string>
+          </property>
+          <property name="shortcut" >
+           <string>Alt+N</string>
+          </property>
          </widget>
         </item>
        </layout>
@@ -1197,39 +1220,7 @@
         <string>&amp;Varer</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_4" >
-        <item row="0" column="0" >
-         <widget class="QPushButton" name="varerNy" >
-          <property name="sizePolicy" >
-           <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text" >
-           <string>&amp;Ny vare</string>
-          </property>
-          <property name="shortcut" >
-           <string>Alt+N</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1" colspan="2" >
-         <spacer name="spacer10" >
-          <property name="orientation" >
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeType" >
-           <enum>QSizePolicy::Expanding</enum>
-          </property>
-          <property name="sizeHint" stdset="0" >
-           <size>
-            <width>650</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item rowspan="2" row="1" column="0" colspan="2" >
+        <item rowspan="3" row="0" column="0" colspan="2" >
          <widget class="QTreeWidget" name="varerVareliste" >
           <property name="sizePolicy" >
            <sizepolicy vsizetype="Expanding" hsizetype="MinimumExpanding" >
@@ -1350,7 +1341,7 @@
         <item row="3" column="0" colspan="3" >
          <widget class="QGroupBox" name="varerInfo" >
           <property name="title" >
-           <string>Vareinfo</string>
+           <string/>
           </property>
           <property name="flat" >
            <bool>true</bool>
@@ -1403,6 +1394,9 @@
                </property>
                <property name="editable" >
                 <bool>true</bool>
+               </property>
+               <property name="insertPolicy" >
+                <enum>QComboBox::InsertAtCurrent</enum>
                </property>
               </widget>
              </item>
@@ -1561,8 +1555,23 @@
           </item>
          </layout>
         </item>
+        <item row="0" column="2" >
+         <widget class="QPushButton" name="varerNy" >
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text" >
+           <string>&amp;Ny vare</string>
+          </property>
+          <property name="shortcut" >
+           <string>Alt+N</string>
+          </property>
+         </widget>
+        </item>
        </layout>
-       <zorder>varerNy</zorder>
        <zorder>varerVareliste</zorder>
        <zorder>varerVisFjernede</zorder>
        <zorder>groupBox_4</zorder>
@@ -1570,6 +1579,7 @@
        <zorder></zorder>
        <zorder>varerInfoMva</zorder>
        <zorder>horizontalSpacer_3</zorder>
+       <zorder>varerNy</zorder>
       </widget>
       <widget class="QWidget" name="TabPage_2" >
        <property name="geometry" >
@@ -2111,10 +2121,49 @@
    <property name="text" >
     <string>Avslutt</string>
    </property>
+   <property name="shortcut" >
+    <string>Ctrl+Q</string>
+   </property>
+   <property name="shortcutContext" >
+    <enum>Qt::ApplicationShortcut</enum>
+   </property>
   </action>
  </widget>
  <resources>
   <include location="faktura.qrc" />
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>actionAvslutt</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>431</x>
+     <y>437</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>fakturaFaktaOverstyr</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>frame</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>75</x>
+     <y>759</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>199</x>
+     <y>785</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
