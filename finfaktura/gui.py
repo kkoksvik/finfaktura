@@ -29,7 +29,8 @@ from finfaktura.fakturafeil import *
 ##from finfaktura.sendepost_ui import sendEpost
 
 from PyQt4 import QtCore, QtGui, uic
-#from finfaktura.ekstra import QtGui.QBuffer, slettetLogo_data, forfaltLogo_data
+import faktura_rc
+#from finfaktura.ekstra import QtGui.QBuffer, slettetIkon_data, forfaltLogo_data
 #from finfaktura.faktura_ui import faktura ## husk å kjøre "pyuic -x faktura.ui > faktura_ui.py" først!
 from ekstra import debug
 
@@ -160,10 +161,8 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
 
         self.databaseTilkobler()
 
-        self.fakturaForfaltLogo = QtGui.QPixmap()
-        #self.fakturaForfaltLogo.loadFromData(forfaltLogo_data,"PNG")
-        self.slettetLogo = QtGui.QPixmap()
-        #self.slettetLogo.loadFromData(slettetLogo_data,"PNG")
+        self.fakturaForfaltIkon = QtGui.QIcon(':/pix/emblem-important.svg')
+        self.slettetIkon = QtGui.QIcon(':/pix/process-stop.svg')
 
         try:
             self.faktura = FakturaBibliotek(self.db)
@@ -216,7 +215,7 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         finfaktura.fakturakomponenter.PDFUTSKRIFT = self.faktura.oppsett.skrivutpdf
         f60.PDFUTSKRIFT = self.faktura.oppsett.skrivutpdf
 
-        self.gui.fakturaTab.setCurrentIndex(0)
+        self.skiftTab(0)
 
     def avslutt(self):
         debug("__del__")
@@ -271,26 +270,24 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
 
     def fakturaContextMenu(self, event):
         try:
-            ordre = self.gui.fakturaFakturaliste.selectedItem().ordre
-        except AttributeError:
+            ordre = self.gui.fakturaFakturaliste.selectedItems()[0].ordre
+        except IndexError:
             return None #ingen ordre er valgt
-        meny = QtGui.QPopupMenu(self)
-        tittel = QtGui.QLabel("<b>Rediger faktura</b>", self)
-        tittel.setAlignment(Qt.AlignCenter)
-        meny.insertItem(tittel)
+        meny = QtGui.QMenu(self)
+        meny.setTitle(u"Redigér faktura")
         if not ordre.betalt:
-            meny.insertItem("Er betalt", self.betalFaktura)
-            #meny.insertItem("Send purring", self.purrFaktura)
-            #meny.insertItem("Send til inkasso", self.inkassoFaktura)
+            meny.addAction("Er betalt", self.betalFaktura)
+            #meny.addAction("Send purring", self.purrFaktura)
+            #meny.addAction("Send til inkasso", self.inkassoFaktura)
         else:
-            meny.insertItem("Ikke betalt", self.avbetalFaktura)
+            meny.addAction("Ikke betalt", self.avbetalFaktura)
         if not ordre.kansellert:
-            meny.insertItem(u"Kansellér", self.kansellerFaktura)
+            meny.addAction(u"Kansellér", self.kansellerFaktura)
         else:
-            meny.insertItem("Ikke kansellert", self.avkansellerFaktura)
-        meny.insertItem("Vis kvittering", self.visFakturaKvittering)
-        #meny.insertItem("Dupliser", self.dupliserFaktura)
-        meny.exec_loop(QCursor.pos())
+            meny.addAction("Ikke kansellert", self.avkansellerFaktura)
+        meny.addAction("Vis kvittering", self.visFakturaKvittering)
+        #meny.addAction("Dupliser", self.dupliserFaktura)
+        meny.exec_(event.globalPos())
 
     def visFaktura(self):
         visKansellerte = self.gui.fakturaVisKansellerte.isChecked()
@@ -318,17 +315,16 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
             l.ordre = ordre
             if ordre.forfalt():
                 debug("%s er forfalt men ikke betalt!" % ordre._id)
-                #l.setPixmap(5, self.fakturaForfaltLogo)
+                l.setIcon(5, self.fakturaForfaltIkon)
             if bool(ordre.kansellert):
-                pass
-                #l.setPixmap(0, self.slettetLogo)
+                l.setIcon(0, self.slettetIkon)
             i(l)
         self.gui.fakturaBetaltDato.setDate(QtCore.QDate.currentDate())
 
     def nyFakturaFraKunde(self):
         try:
-            kunde = self.gui.kundeKundeliste.selectedItem().kunde
-        except AttributeError:
+            kunde = self.gui.kundeKundeliste.selectedItems()[0].kunde
+        except IndexError:
             self.alert(u'Ingen kunde er valgt')
             return False
         debug("ny faktura fra kunde: %s" % kunde.ID)
@@ -532,6 +528,9 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         self.fakturaVarelisteSynk(int(rad), k.index(_kol))
 
     def visFakturadetaljer(self, linje):
+        if linje is None:
+            self.gui.fakturaDetaljerTekst.setText('')
+            return
         s = "<p><b>%s</b><p>" % unicode(linje.ordre.tekst)
         if linje.ordre.kansellert:
             s += '<b><font color=red>Denne fakturaen er kansellert</font></b><p>'
@@ -564,8 +563,8 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
 
     def lagFakturaKvittering(self):
         try:
-            ordre = self.gui.fakturaFakturaliste.selectedItem().ordre
-        except AttributeError:
+            ordre = self.gui.fakturaFakturaliste.selectedItems()[0].ordre
+        except IndexError:
             self.alert(u'Ingen faktura er valgt')
             return False
         kvitt = ordre.hentSikkerhetskopi()
@@ -573,8 +572,8 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
 
     def visFakturaKvittering(self):
         try:
-            ordre = self.gui.fakturaFakturaliste.selectedItem().ordre
-        except AttributeError:
+            ordre = self.gui.fakturaFakturaliste.selectedItems()[0].ordre
+        except IndexError:
             self.alert(u'Ingen faktura er valgt')
             return False
         kvitt = ordre.hentSikkerhetskopi()
@@ -585,8 +584,8 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
 
     def lagFaktura(self, Type="epost"):
         try:
-            ordre = self.gui.fakturaFakturaliste.selectedItem().ordre
-        except AttributeError:
+            ordre = self.gui.fakturaFakturaliste.selectedItems()[0].ordre
+        except IndexError:
             self.alert(u'Ingen faktura er valgt')
             return False
         ordre.firma = self.firma
@@ -638,8 +637,8 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
 
     def betalFaktura(self):
         try:
-            ordre = self.gui.fakturaFakturaliste.selectedItem().ordre
-        except AttributeError:
+            ordre = self.gui.fakturaFakturaliste.selectedItems()[0].ordre
+        except IndexError:
             self.alert("Ingen faktura er valgt")
             return
         if ordre.betalt:
@@ -662,7 +661,11 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         self.visFaktura()
 
     def avbetalFaktura(self):
-        ordre = self.gui.fakturaFakturaliste.selectedItem().ordre
+        try:
+            ordre = self.gui.fakturaFakturaliste.selectedItems()[0].ordre
+        except IndexError:
+            self.alert("Ingen faktura er valgt")
+            return
         #if ordre.kansellert:
             #self.alert(u"Du kan ikke fjerne betaldenne ordren, den er betalt.")
         if self.JaNei(u"Vil du virkelig fjerne betalt-status på ordre nr %s?" % ordre.ID):
@@ -671,7 +674,11 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
             self.visFaktura()
 
     def kansellerFaktura(self):
-        ordre = self.gui.fakturaFakturaliste.selectedItem().ordre
+        try:
+            ordre = self.gui.fakturaFakturaliste.selectedItems()[0].ordre
+        except IndexError:
+            self.alert("Ingen faktura er valgt")
+            return
         if ordre.betalt:
             self.alert(u"Du kan ikke kansellere denne ordren, den er betalt.")
         elif self.JaNei(u"Vil du virkelig kansellere ordre nr %s?" % ordre.ID):
@@ -680,17 +687,29 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
             self.visFaktura()
 
     def avkansellerFaktura(self):
-        ordre = self.gui.fakturaFakturaliste.selectedItem().ordre
+        try:
+            ordre = self.gui.fakturaFakturaliste.selectedItems()[0].ordre
+        except IndexError:
+            self.alert("Ingen faktura er valgt")
+            return
         ordre.settKansellert(False)
         historikk.avKansellert(ordre, True, 'brukerklikk')
         self.visFaktura()
 
     def purrFaktura(self):
-        ordre = self.gui.fakturaFakturaliste.selectedItem().ordre
+        try:
+            ordre = self.gui.fakturaFakturaliste.selectedItems()[0].ordre
+        except IndexError:
+            self.alert("Ingen faktura er valgt")
+            return
         historikk.purret(ordre, True, 'brukerklikk')
 
     def inkassoFaktura(self):
-        ordre = self.gui.fakturaFakturaliste.selectedItem().ordre
+        try:
+            ordre = self.gui.fakturaFakturaliste.selectedItems()[0].ordre
+        except IndexError:
+            self.alert("Ingen faktura er valgt")
+            return
         historikk.sendtTilInkasso(ordre, True, 'brukerklikk')
 
     ##def skjulSendepostBoks(self):
@@ -740,19 +759,17 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
 
     def kundeContextMenu(self, event):
         try:
-            kunde = self.gui.kundeKundeliste.selectedItem().kunde
-        except AttributeError:
+            kunde = self.gui.kundeKundeliste.selectedItems()[0].kunde
+        except IndexError:
             return None # ingen kunde er valgt i lista
-        meny = QtGui.QPopupMenu(self)
-        tittel = QtGui.QLabel("<b>Rediger kunde</b>", self)
-        tittel.setAlignment(Qt.AlignCenter)
-        meny.insertItem(tittel)
+        meny = QtGui.QMenu(self)
+        meny.setTitle(u"Redigér kunde")
         if not kunde.slettet:
-            meny.insertItem(u"Redigér", self.redigerKunde)
-            meny.insertItem("Slett", self.slettKunde)
+            meny.addAction(u"Redigér", self.redigerKunde)
+            meny.addAction("Slett", self.slettKunde)
         else:
-            meny.insertItem("Ikke slettet", self.ikkeSlettKunde)
-        meny.exec_loop(QCursor.pos())
+            meny.addAction("Ikke slettet", self.ikkeSlettKunde)
+        meny.exec_(event.globalPos())
 
     def visKunder(self):
         visFjernede = self.gui.kundeVisFjernede.isChecked()
@@ -772,8 +789,7 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
                              )
             l.kunde = kunde
             if kunde.slettet:
-                pass
-                #l.setPixmap(0, self.slettetLogo)
+                l.setIcon(0, self.slettetIkon)
             i(l)
 
     def redigerKunde(self, *kw):
@@ -802,7 +818,7 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
             self.gui.kundeInfoNavn.setText("")
             self.gui.kundeInfoKontaktperson.setText("")
             self.gui.kundeInfoEpost.setText("")
-            self.gui.kundeInfoStatus.setCurrentItem(0)
+            self.gui.kundeInfoStatus.setCurrentIndex(0)
             self.gui.kundeInfoAdresse.setPlainText("")
             self.gui.kundeInfoPoststed.setText("")
             self.gui.kundeInfoPostnummer.setText("")
@@ -849,6 +865,10 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         self.visKunder()
 
     def visKundedetaljer(self, linje):
+        if linje is None:
+            self.gui.kundeDetaljerTekst.setText('')
+            return
+
         s = "<p><b>%s</b></p>" % unicode(linje.kunde)
         if linje.kunde.slettet:
             s += '<p><b><font color=red>Fjernet %s</font></b>' % strftime('%Y-%m-%d', localtime(linje.kunde.slettet))
@@ -933,14 +953,20 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         self.gui.kundeDetaljerTekst.setText(s)
 
     def slettKunde(self):
-        kunde = self.gui.kundeKundeliste.selectedItem().kunde
+        try:
+            kunde = self.gui.kundeKundeliste.selectedItems()[0].kunde
+        except IndexError:
+            return None # ingen kunde er valgt i lista
         debug("Sletter kunde # %i" % kunde.ID)
         if self.JaNei("Vil du virkelig slette kunde nr %s (%s)?" % (kunde.ID, kunde.navn)):
             kunde.settSlettet()
             self.visKunder()
 
     def ikkeSlettKunde(self):
-        kunde = self.gui.kundeKundeliste.selectedItem().kunde
+        try:
+            kunde = self.gui.kundeKundeliste.selectedItems()[0].kunde
+        except IndexError:
+            return None # ingen kunde er valgt i lista
         debug("Fjerner slettet status for kunde # %i" % kunde.ID)
         kunde.settSlettet(False)
         self.visKunder()
@@ -951,19 +977,17 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
 
     def vareContextMenu(self, event):
         try:
-            vare = self.gui.varerVareliste.selectedItem().vare
-        except AttributeError:
-            return None # ingen kunde er valgt i lista
-        meny = QtGui.QPopupMenu(self)
-        tittel = QtGui.QLabel("<b>Rediger vare</b>", self)
-        tittel.setAlignment(Qt.AlignCenter)
-        meny.insertItem(tittel)
+            vare = self.gui.varerVareliste.selectedItems()[0].vare
+        except IndexError:
+            return None # ingen vare er valgt i lista
+        meny = QtGui.QMenu(self)
+        meny.setTitle(u"Redigér faktura")
         if not vare.slettet:
-            meny.insertItem(u"Redigér", self.redigerVare)
-            meny.insertItem("Slett", self.slettVare)
+            meny.addAction(u"Redigér", self.redigerVare)
+            meny.addAction("Slett", self.slettVare)
         else:
-            meny.insertItem("Ikke slettet", self.ikkeSlettVare)
-        meny.exec_loop(QCursor.pos())
+            meny.addAction("Ikke slettet", self.ikkeSlettVare)
+        meny.exec_(event.globalPos())
 
     def visVarer(self):
         visFjernede = self.gui.varerVisFjernede.isChecked()
@@ -972,7 +996,7 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         i = self.gui.varerVareliste.addTopLevelItem
         self.gui.varerVareliste.clear()
         for vare in self.faktura.hentVarer(inkluderSlettede=visFjernede):
-            l = QtGui.QTreeWidgetItem([#self.varerVareliste,
+            l = QtGui.QTreeWidgetItem([
                               "%03d" % vare.ID,
                               unicode(vare.navn),
                               unicode(vare.detaljer),
@@ -982,7 +1006,7 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
                              )
             l.vare = vare
             if vare.slettet:
-                l.setPixmap(0, self.slettetLogo)
+                l.setIcon(0, self.slettetIkon)
             i(l)
 
     def redigerVare(self, linje = None, koord = None, kolonne = None):
@@ -1046,6 +1070,9 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         self.visVarer()
 
     def visVaredetaljer(self, linje):
+        if linje is None:
+            self.gui.vareDetaljerTekst.setText('')
+            return
         s = '<p><b>%s</b></p>' % unicode(linje.vare)
         if linje.vare.slettet:
             s += '<p><b><font color=red>Fjernet %s</font></b>' % strftime('%Y-%m-%d', localtime(linje.vare.slettet))
@@ -1062,14 +1089,20 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         self.gui.varerDetaljerTekst.setText(s)
 
     def slettVare(self, linje = None):
-        vare = self.gui.varerVareliste.selectedItem().vare
+        try:
+            vare = self.gui.varerVareliste.selectedItems()[0].vare
+        except IndexError:
+            return None # ingen vare er valgt i lista
         debug("Sletter vare # %i" % vare._id)
         if self.JaNei("Vil du virkelig slette vare nr %s (%s)?" % (vare.ID, vare.navn)):
             vare.settSlettet()
             self.visVarer()
 
     def ikkeSlettVare(self):
-        vare = self.gui.varerVareliste.selectedItem().vare
+        try:
+            vare = self.gui.varerVareliste.selectedItems()[0].vare
+        except IndexError:
+            return None # ingen vare er valgt i lista
         vare.settSlettet(False)
         self.visVarer()
 

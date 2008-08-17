@@ -1,5 +1,8 @@
 <RCC>
   <qresource prefix="pix" >
+    <file>emblem-important.svg</file>
+    <file>emblem-favorite.svg</file>
+    <file>emblem-readonly.svg</file>
     <file>process-stop.svg</file>
     <file>dialog-error.svg</file>
     <file>image-missing.svg</file>
