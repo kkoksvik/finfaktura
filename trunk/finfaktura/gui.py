@@ -103,19 +103,6 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         self.connect(self.gui.varerVisFjernede, QtCore.SIGNAL("toggled(bool)"), self.visVarer)
         self.gui.varerInfoKryss.mousePressEvent = self.lukkVarerinfo
 
-        #self.connect(self.gui.dittfirmaFinnFjernLogo, QtCore.SIGNAL("clicked()"), self.finnFjernLogo)
-        #self.connect(self.gui.dittfirmaLagre, QtCore.SIGNAL("clicked()"), self.oppdaterFirma)
-
-        #self.connect(self.gui.epostSmtpAuth, QtCore.SIGNAL("toggled(bool)"), self.epostVisAuth)
-        #self.connect(self.gui.epostLagre, QtCore.SIGNAL("clicked()"), self.oppdaterEpost)
-        #self.connect(self.epostLosning, QtCore.SIGNAL("clicked(int)"), self.roterAktivSeksjon)
-        #self.connect(self.epostLosningTest, QtCore.SIGNAL("clicked()"), self.testEpost)
-
-        #self.connect(self.oppsettFakturakatalogSok, QtCore.SIGNAL("clicked()"), self.endreFakturakatalog)
-        #self.connect(self.oppsettProgrammerVisSok, QtCore.SIGNAL("clicked()"), self.endreProgramVis)
-        #self.connect(self.oppsettProgrammerUtskriftSok, QtCore.SIGNAL("clicked()"), self.endreProgramUtskrift)
-        #self.connect(self.oppsettLagre, QtCore.SIGNAL("clicked()"), self.oppdaterOppsett)
-
         # kontroller i økonomi-vinduet
 
         self.connect(self.gui.okonomiAvgrensningerDatoManed, QtCore.SIGNAL("highlighted(int)"), self.okonomiFyllDatoPeriode)
@@ -126,46 +113,10 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         self.connect(self.gui.okonomiRegnskapRegnut, QtCore.SIGNAL("clicked()"), self.okonomiRegnRegnskap)
         self.connect(self.gui.okonomiFakturaerSkrivut, QtCore.SIGNAL("clicked()"), self.okonomiSkrivUtFakturaer)
 
-        #self.connect(self.sikkerhetskopiGmailLastopp, QtCore.SIGNAL("clicked()"), self.sikkerhetskopiGmail)
-
         #self.gui.fakturaVareliste.setColumnStretchable(0, True)
         #self.gui.fakturaVareliste.setColumnWidth(1, 70)
         ##self.gui.fakturaVareliste.setColumnWidth(2, 70)
         #self.gui.fakturaVareliste.setColumnWidth(3, 70)
-
-        #for obj in (self.dittfirmaFirmanavn,
-            #self.dittfirmaOrganisasjonsnummer,
-            #self.dittfirmaKontaktperson,
-            #self.dittfirmaEpost,
-            #self.dittfirmaPostnummer,
-            #self.dittfirmaPoststed,
-            #self.dittfirmaTelefon,
-            #self.dittfirmaTelefaks,
-            #self.dittfirmaMobil,
-            #self.dittfirmaKontonummer):
-            #self.connect(obj, QtCore.SIGNAL("lostFocus()"), self.firmaSjekk)
-
-        #for obj in (self.dittfirmaAdresse,
-            ##self.dittfirmaVilkar
-            #):
-            #obj.focusOutEvent = self.firmaSjekk
-
-        #self.connect(self.dittfirmaForfall, QtCore.SIGNAL("valueChanged(int)"), self.firmaSjekk)
-
-        #self.dittfirmaKontrollKart = {
-            #self.dittfirmaFirmanavn:'Firmanavn',
-            #self.dittfirmaOrganisasjonsnummer:u'Organisasjonsnummer fra Brønnøysund',
-            #self.dittfirmaKontaktperson:'Kontaktperson',
-            #self.dittfirmaEpost:'Epostadresse',
-            #self.dittfirmaAdresse:'Adresse',
-            #self.dittfirmaPostnummer:'Postnummer',
-            #self.dittfirmaPoststed:'Poststed',
-            #self.dittfirmaTelefon:'Telefonnummer',
-            #self.dittfirmaMobil:'Mobilnummer',
-            #self.dittfirmaKontonummer:'Kontonummer',
-            ##self.dittfirmaMva:'Momssats',
-            #self.dittfirmaForfall:'Forfallsperiode',
-        #}
 
         self.gui.kundeKundeliste.contextMenuEvent = self.kundeContextMenu
         self.gui.fakturaFakturaliste.contextMenuEvent = self.fakturaContextMenu
@@ -173,8 +124,8 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
 
         self.databaseTilkobler()
 
-        self.fakturaForfaltIkon = QtGui.QIcon(':/pix/emblem-important.svg')
-        self.slettetIkon = QtGui.QIcon(':/pix/process-stop.svg')
+        self.fakturaForfaltIkon = QtGui.QIcon(':/pix/important.svg')
+        self.slettetIkon = QtGui.QIcon(':/pix/stop.svg')
 
         try:
             self.faktura = FakturaBibliotek(self.db)
@@ -385,12 +336,7 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
             not self.JaNei(u"Vil du virkelig legge inn fakturaen uten fakturatekst?"):
             self.gui.fakturaFaktaTekst.setFocus()
             return False
-        #all nødvendig info er der, legg inn fakturaen
-        #kundetekst = self.gui.fakturaFaktaMottaker.currentText()
-        #kre = re.search(re.compile(r'kunde\ #\s?(\d+)'), unicode(kundetekst))
-        #kunde = self.faktura.hentKunde(kre.group(1))
         kunde = self.gui.fakturaFaktamottaker.itemData(self.gui.fakturaFaktaMottaker.currentIndex()).toPyObject()
-        print kunde
         d = self.gui.fakturaFaktaDato.date()
         dato = mktime((d.year(),d.month(),d.day(),11,59,0,0,0,0)) # på midten av dagen (11:59) for å kunne betale fakturaen senere laget samme dag
         f = self.faktura.nyOrdre(kunde, ordredato=dato)
@@ -1060,11 +1006,9 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
                 return False
 
         if v is None:
-            #debug("registrerer ny vare")
             v = self.faktura.nyVare()
         else:
             debug("oppdaterer vare, som var: " + unicode(v))
-        #print self.varerInfoNavn.text.utf8
         v.navn = self.gui.varerInfoNavn.text()
         v.detaljer = self.gui.varerInfoDetaljer.toPlainText()
         v.enhet = self.gui.varerInfoEnhet.currentText()
@@ -1110,237 +1054,6 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         vare.settSlettet(False)
         self.visVarer()
 
-############## FIRMAINFO ###################
-
-    def firmaWidgetKart(self):
-        return {
-            self.dittfirmaFirmanavn            :  self.firma.firmanavn,
-            self.dittfirmaOrganisasjonsnummer  :  self.firma.organisasjonsnummer,
-            self.dittfirmaKontaktperson        :  self.firma.kontaktperson,
-            self.dittfirmaEpost                :  self.firma.epost,
-            self.dittfirmaAdresse              :  self.firma.adresse,
-            self.dittfirmaPostnummer           :  self.firma.postnummer,
-            self.dittfirmaPoststed             :  self.firma.poststed,
-            self.dittfirmaTelefon              :  self.firma.telefon,
-            self.dittfirmaMobil                :  self.firma.mobil,
-            self.dittfirmaTelefaks             :  self.firma.telefaks,
-            self.dittfirmaKontonummer          :  self.firma.kontonummer,
-            self.dittfirmaVilkar               :  self.firma.vilkar,
-            self.dittfirmaMva                 :  self.firma.mva,
-            self.dittfirmaForfall             :  self.firma.forfall,
-            }
-
-    def visFirma(self):
-        format = { self.dittfirmaPostnummer: "%04i", }
-        for til, fra in self.firmaWidgetKart().iteritems():
-            #debug("fra", fra, type(fra))
-            #debug("til", til, type(til))
-            if hasattr(til, 'setText'):
-                if not fra: continue
-                if til in format: s = format[til] % fra
-                else: s = unicode(fra)
-                til.setText(s)
-            elif hasattr(til, 'setValue'):
-                if not fra: continue
-                til.setValue(int(fra))
-        self.visLogo()
-        self.firmaSjekk()
-
-    def visLogo(self):
-        if not self.firma.logo:
-            self.dittfirmaFinnFjernLogo.setText('Finn logo')
-            self.dittfirmaLogoPixmap.setPixmap(QPixmap())
-        else:
-            logo = QtGui.QPixmap()
-            logo.loadFromData(self.firma.logo)
-            self.dittfirmaLogoPixmap.setPixmap(logo)
-            self.dittfirmaFinnFjernLogo.setText('Fjern logo')
-
-    def oppdaterFirmainfo(self, fraObj):
-        kart = firmaWidgetKart()
-        if isinstance(fraObj, QtGui.QSpinBox): fun = int(fraObj.value)
-        elif isinstance(fraObj, QtGui.QComboBox): fun = unicode(fraObj.currentText)
-        elif isinstance(fraObj, (QLineEdit,QTextEdit,)): fun = unicode(fraObj.text)
-
-        debug(u'oppdatere %s til %s' % (fraObj, kart[fraObj]))
-        kart[fraObj] = fun() # finner riktig lagringssted og kjører riktig funksjon
-
-    def kanskjetall(self, obj):
-        try:
-            return int(obj.text())
-        except ValueError:
-            return None
-
-    def oppdaterFirma(self):
-        self.firma.firmanavn  = unicode(self.dittfirmaFirmanavn.text())
-        self.firma.organisasjonsnummer = unicode(self.dittfirmaOrganisasjonsnummer.text())
-        self.firma.kontaktperson = unicode(self.dittfirmaKontaktperson.text())
-        self.firma.epost      = unicode(self.dittfirmaEpost.text())
-        self.firma.adresse    = unicode(self.dittfirmaAdresse.text())
-        self.firma.postnummer = self.kanskjetall(self.dittfirmaPostnummer)
-        self.firma.poststed   = unicode(self.dittfirmaPoststed.text())
-        self.firma.telefon    = self.kanskjetall(self.dittfirmaTelefon)
-        self.firma.mobil      = self.kanskjetall(self.dittfirmaMobil)
-        self.firma.telefaks   = self.kanskjetall(self.dittfirmaTelefaks)
-        self.firma.kontonummer = self.kanskjetall(self.dittfirmaKontonummer)
-        self.firma.vilkar     = unicode(self.dittfirmaVilkar.text())
-        self.firma.mva        = int(self.dittfirmaMva.value())
-        self.firma.forfall    = int(self.dittfirmaForfall.value())
-
-        mangler = self.sjekkFirmaMangler()
-        if mangler:
-            mangel = u'Ufullstendige opplysninger. Du er nødt til å oppgi:\n%s' % ([ mangler[obj].lower() for obj in mangler.keys() ])
-            self.alert(mangel)
-            self.fakturaTab.showPage(self.fakturaTab.page(3))
-            obj.setFocus()
-            self.gammelTab = 3
-            return False
-        self.dittfirmaLagreInfo.setText('<font color=green><b>Opplysningene er lagret</b></font>')
-        #print self.faktura.firmainfo()
-
-    def sjekkFirmaMangler(self):
-        kravkart = {}
-        kravkart.update(self.dittfirmaKontrollKart)
-        for obj in kravkart.keys():
-            if isinstance(obj, QtGui.QSpinBox): test = obj.value() > 0
-            elif isinstance(obj, QtGui.QComboBox): test = obj.currentText()
-            elif isinstance(obj, (QLineEdit,QTextEdit,)): test = obj.text()
-            if test: kravkart.pop(obj)
-        return kravkart
-
-    def firmaSjekk(self, event=None):
-        mangler = 0
-        s = u"<b><font color=red>Følgende felter må fylles ut:</font></b><ol>"
-        ok = QtGui.QColor('white')
-        tom = QtGui.QColor('red')
-        for obj in self.dittfirmaKontrollKart.keys():
-            if isinstance(obj, QtGui.QSpinBox): test = obj.value() > 0
-            elif isinstance(obj, QtGui.QComboBox): test = obj.currentText()
-            elif isinstance(obj, (QLineEdit,QTextEdit,)): test = obj.text()
-            if test:
-                obj.setPaletteBackgroundColor(ok)
-                #self.oppdaterFirmainfo(obj) # lagrer informasjonen
-            else:
-                s += u"<li>%s" % self.dittfirmaKontrollKart[obj]
-                obj.setPaletteBackgroundColor(tom)
-                mangler += 1
-        if not mangler:
-            self.dittfirmaLagreInfo.setText('')
-            self.dittfirmaLagre.setEnabled(True)
-            return True
-        else:
-            s += "</ol>"
-            self.dittfirmaLagreInfo.setText(s)
-            self.dittfirmaLagre.setEnabled(False)
-
-    def finnFjernLogo(self):
-        if self.firma.logo:
-            self.firma.logo = ""
-            self.visLogo()
-        else:
-            startdir = ""
-            logo = QtGui.QFileDialog.getOpenFileName(
-                startdir,
-                'Bildefiler (*.png *.xpm *.jpg *.jpeg *.gif *.bmp *.ppm *.pgm *.pbm)',
-                self,
-                "Velg logofil",
-                "Velg bildefil for firmaets logo"
-                )
-            if len(unicode(logo)) > 0:
-                debug("Setter ny logo: %s" % logo)
-
-                l = QtGui.QPixmap()
-                l.loadFromData(open(unicode(logo)).read())
-
-                stream = QtGui.QBuffer()
-                l.convertToImage().smoothScale(360,360, QtGui.QImage.ScaleMax).save(stream, 'PNG')
-
-                #import sqlite
-
-                #self.firma.logo = sqlite.encode(stream.getData())
-                self.firma.logo = buffer(stream.getData())
-                self.visLogo()
-
-
-
-
-############## Epost ###################
-
-    def visEpost(self):
-        if self.faktura.epostoppsett.bcc:
-            self.epostSendkopi.setChecked(True)
-            self.epostKopiadresse.setText(self.faktura.epostoppsett.bcc)
-        self.epostLosning.setButton(self.faktura.epostoppsett.transport)
-        self.roterAktivSeksjon(self.faktura.epostoppsett.transport)
-        if self.faktura.epostoppsett.smtpserver:
-            self.epostSmtpServer.setText(self.faktura.epostoppsett.smtpserver)
-        if self.faktura.epostoppsett.smtpport:
-            self.epostSmtpPort.setValue(self.faktura.epostoppsett.smtpport)
-        self.epostSmtpTLS.setChecked(self.faktura.epostoppsett.smtptls)
-        self.epostSmtpAuth.setChecked(self.faktura.epostoppsett.smtpauth)
-        if self.faktura.epostoppsett.smtpbruker: # husk brukernavn og passord for smtp
-            self.epostSmtpHuskEpost.setChecked(True)
-            if self.faktura.epostoppsett.smtpbruker:
-                self.epostSmtpBrukernavn.setText(self.faktura.epostoppsett.smtpbruker)
-            if self.faktura.epostoppsett.smtppassord:
-                self.epostSmtpPassord.setText(self.faktura.epostoppsett.smtppassord)
-        if self.faktura.epostoppsett.sendmailsti:
-            self.epostSendmailSti.setText(self.faktura.epostoppsett.sendmailsti)
-        else:
-            self.epostSendmailSti.setText('~')
-
-    def oppdaterEpost(self):
-        debug("lagrer epost")
-        self.faktura.epostoppsett.transport = self.epostLosning.selectedId()
-        if not self.epostSendkopi.isChecked():
-            self.epostKopiadresse.setText('')
-        self.faktura.epostoppsett.bcc = unicode(self.epostKopiadresse.text())
-        self.faktura.epostoppsett.smtpserver = unicode(self.epostSmtpServer.text())
-        self.faktura.epostoppsett.smtpport = self.epostSmtpPort.value()
-        self.faktura.epostoppsett.smtptls = self.epostSmtpTLS.isChecked()
-        self.faktura.epostoppsett.smtpauth = self.epostSmtpAuth.isChecked()
-        if self.epostSmtpHuskEpost.isChecked():
-            self.faktura.epostoppsett.smtpbruker = unicode(self.epostSmtpBrukernavn.text())
-            self.faktura.epostoppsett.smtppassord = unicode(self.epostSmtpPassord.text())
-        else:
-            self.faktura.epostoppsett.smtpbruker = ''
-            self.faktura.epostoppsett.smtppassord = ''
-        self.faktura.epostoppsett.sendmailsti = unicode(self.epostSendmailSti.text())
-
-    def roterAktivSeksjon(self, aktivId=None):
-        return
-        if aktivId is None: aktivId = self.epostLosning.selectedId()
-        i = 1
-        debug("roterer til %i er synlig" % aktivId)
-        for seksjon in [self.epostSeksjonSmtp, self.epostSeksjonSendmail]:
-            seksjon.setEnabled(aktivId == i)
-            i += 1
-
-    def testEpost(self):
-        self.oppdaterEpost() # må lagre for å bruke de inntastede verdiene
-        trans = ['auto', 'smtp', 'sendmail']
-        debug('bruker transport %s' % trans[self.epostLosning.selectedId()])
-        try:
-            transport = self.faktura.testEpost(trans[self.epostLosning.selectedId()])
-        except Exception,ex:
-            s = u'Epostoppsettet fungerer ikke. Oppgitt feilmelding:\n %s \n\nKontroller at de oppgitte innstillingene \ner korrekte' % ex.message
-            raise
-            trans = getattr(ex, 'transport')
-            if trans != 'auto':
-                ex.transportmetoder.remove(trans) # fjerner feilet metode fra tilgjengelig-liste
-                s += u', eller prøv en annen metode.\nTilgjengelige metoder:\n%s' % ', '.join(ex.transportmetoder)
-            self.alert(s)
-        else:
-            self.obs("Epostoppsettet fungerer. Bruker %s" % transport)
-            try:
-                self.epostLosning.setButton(trans.index(transport))
-                self.roterAktivSeksjon(trans.index(transport))
-            except:pass
-            self.oppdaterEpost() # må lagre for å bruke den aktive løsningen
-
-    def epostVisAuth(self, vis):
-        self.epostSmtpBrukernavn.setEnabled(vis)
-        self.epostSmtpPassord.setEnabled(vis)
 
 ############## ØKONOMI ###################
 
@@ -1483,42 +1196,6 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         rapport.lastOrdreliste(ordrer)
         rapport.vis(program=self.faktura.oppsett.vispdf)
 
-############## OPPSETT ###################
-
-    def visOppsett(self):
-        self.oppsettFakturakatalog.setText(self.faktura.oppsett.fakturakatalog)
-        self.oppsettProgramVisPDF.setText(self.faktura.oppsett.vispdf)
-        self.oppsettProgramSkrivUtPDF.setText(self.faktura.oppsett.skrivutpdf)
-
-    def endreFakturakatalog(self):
-        nu = self.oppsettFakturakatalog.text()
-        startdir = nu
-        ny = QtGui.QFileDialog.getExistingDirectory(startdir, self, "Velg katalog fakturaene skal lagres i", "Velg fakturakatalog")
-        if len(unicode(ny)) > 0:
-            debug("Setter ny fakturakataolg: %s" % ny)
-            self.faktura.oppsett.fakturakatalog = unicode(ny)
-            self.dittfirmaFakturakatalog.setText(unicode(ny))
-
-    def endreProgramVis(self):
-        ny = unicode(QFileDialog.getOpenFileName(self.oppsettProgramVisPDF.text(), "", self, "Velg program", u"Velg et program til å vise PDF i"))
-        if len(ny) > 0:
-            debug("Setter nytt visningsprogram: %s" % ny)
-            self.faktura.oppsett.vispdf= ny
-            self.oppsettProgramVisPDF.setText(ny)
-
-    def endreProgramUtskrift(self):
-        ny = unicode(QFileDialog.getOpenFileName(self.oppsettProgramSkrivUtPDF.text(), "", self, "Velg program", u"Velg et program til å skrive ut PDF med"))
-        if len(ny) > 0:
-            debug("Setter nytt utskriftsprogram: %s" % ny)
-            self.faktura.oppsett.skrivutpdf = ny
-            self.oppsettProgramSkrivUtPDF.setText(ny)
-
-    def oppdaterOppsett(self):
-        debug("Lager oppsett")
-        self.faktura.oppsett.fakturakatalog = unicode(self.oppsettFakturakatalog.text())
-        self.faktura.oppsett.vispdf = unicode(self.oppsettProgramVisPDF.text())
-        self.faktura.oppsett.skrivutpdf = unicode(self.oppsettProgramSkrivUtPDF.text())
-
 ############## MYNDIGHETER ###################
 
     def visMyndigheter(self):
@@ -1530,44 +1207,6 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         for skjema in offentlige.skjemaplikter(self.firma.organisasjonsnummer):
             i = QtGui.QListViewItem(self.myndigheteneSkjemaListe, skjema[0],skjema[1],skjema[2],skjema[3])
             self.myndigheteneSkjemaListe.insertItem(i)
-
-
-
-
-############## SIKKERHETSKOPI ###################
-
-    def visSikkerhetskopi(self):
-
-        if sikkerhetskopi.BRUK_GMAIL:
-            self.sikkerhetskopiGmailUbrukelig.hide()
-            self.sikkerhetskopiGmailLastopp.setEnabled(True)
-            if len(self.faktura.epostoppsett.gmailbruker):
-                self.sikkerhetskopiGmailHuskEpost.setChecked(True)
-            if len(self.faktura.epostoppsett.gmailpassord):
-                self.sikkerhetskopiGmailHuskPassord.setChecked(True)
-            self.sikkerhetskopiGmailEpost.setText(self.faktura.epostoppsett.gmailbruker)
-            self.sikkerhetskopiGmailPassord.setText(self.faktura.epostoppsett.gmailpassord)
-        else:
-            self.sikkerhetskopiGmailUbrukelig.show()
-            self.sikkerhetskopiGmailLastopp.setEnabled(False)
-
-
-    def sikkerhetskopiGmail(self):
-        bruker = self.sikkerhetskopiGmailEpost.text()
-        passord = self.sikkerhetskopiGmailPassord.text()
-        if not (bruker and passord):
-            self.alert(u'Du har ikke oppgitt brukernavn og passord i Gmail')
-            return False
-        if PRODUKSJONSVERSJON: label = "finfaktura"
-        else: label = "fakturatest"
-        sikker = sikkerhetskopi.gmailkopi(finnDatabasenavn(), bruker, passord, label)
-        r = sikker.lagre()
-        if self.sikkerhetskopiGmailHuskEpost.isChecked():
-            self.faktura.epostoppsett.gmailbruker = self.sikkerhetskopiGmailEpost.text()
-        if self.sikkerhetskopiGmailHuskPassord.isChecked():
-            self.faktura.epostoppsett.gmailpassord = self.sikkerhetskopiGmailPassord.text()
-        return r
-
 
 ############## GENERELLE METODER ###################
 
