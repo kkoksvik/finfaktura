@@ -266,7 +266,9 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
 
     fakturaVarelisteCache = []
 
-    def lukkFakta(self, *ev):self.gui.fakturaFakta.hide()
+    def lukkFakta(self, *ev):
+        self.gui.fakturaFakta.hide()
+        self.gui.fakturaHandlinger.show()
 
     def fakturaContextMenu(self, event):
         try:
@@ -294,6 +296,7 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         visGamle = self.gui.fakturaVisGamle.isChecked()
         self.gui.fakturaDetaljerTekst.setText('')
         self.gui.fakturaFakta.hide()
+        self.gui.fakturaHandlinger.show()
         #self.fakturaSendepostBoks.hide()
         i = self.gui.fakturaFakturaliste.addTopLevelItem
         self.gui.fakturaFakturaliste.clear()
@@ -360,6 +363,7 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         self.gui.fakturaVareliste.clearContents()
         self.leggVareTilOrdre() # legg til tom rad
         self.gui.fakturaFaktaDato.setDate(QtCore.QDate.currentDate())
+        self.gui.fakturaHandlinger.hide()
         self.gui.fakturaFakta.show()
 
     def leggTilFaktura(self):
