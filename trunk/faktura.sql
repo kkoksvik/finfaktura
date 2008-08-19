@@ -26,7 +26,7 @@
     	vilkar UNICODE,
     	logo BLOB);
     --	PRIMARY KEY(ID));
-    
+
     -- Versjon 0.1
     CREATE TABLE Kunde (ID INTEGER PRIMARY KEY,
         slettet INT,
@@ -40,7 +40,7 @@
     	status UNICODE,
     	epost UNICODE);
     --	PRIMARY KEY(ID));
-    	
+
     -- Versjon 0.1
     CREATE TABLE Vare (ID INTEGER PRIMARY KEY,
         slettet INT,
@@ -50,26 +50,28 @@
         mva INT,
     	pris FLOAT);
     --	PRIMARY KEY(ID));
-    	
+
     -- Versjon 0.1
     CREATE TABLE Ordrehode (ID INTEGER PRIMARY KEY,
     	kundeID MEDIUMINT NOT NULL,
     	ordredato INT NOT NULL,
     	forfall INT NOT NULL,
     	tekst UNICODE,
-        kansellert INT DEFAULT 0,
+      kansellert INT DEFAULT 0,
+      ferdigstilt INT DEFAULT 1, -- versjon 3.2
     	betalt INT DEFAULT 0);
     --	PRIMARY KEY(ID));
-   	
+
     -- Versjon 0.1
     CREATE TABLE Ordrelinje (ID INTEGER PRIMARY KEY,
     	ordrehodeID MEDIUMINT NOT NULL,
     	vareID MEDIUMINT NOT NULL,
     	kvantum INT NOT NULL,
         mva INT NOT NULL,
+      tekst UNICODE, -- versjon 3.2
     	enhetspris FLOAT NOT NULL);
     --	PRIMARY KEY(ID));
-    
+
     -- Versjon 2.2
     CREATE TABLE Postnummer (postnummer INTEGER NOT NULL,
         poststed UNICODE );
@@ -80,7 +82,7 @@
         fakturakatalog UNICODE NOT NULL,
         skrivutpdf UNICODE NOT NULL DEFAULT "", -- Versjon 3.1
         vispdf UNICODE NOT NULL DEFAULT ""); -- Versjon 3.1
-    
+
     -- Versjon 2.1
     CREATE TABLE Sikkerhetskopi (ID INTEGER PRIMARY KEY,
         ordreID INT NOT NULL,
@@ -94,12 +96,12 @@
         handlingID NOT NULL,
         suksess INT DEFAULT 0,
         forklaring UNICODE);
-    
+
     -- Versjon 2.6
     CREATE TABLE Handling (ID INTEGER PRIMARY KEY,
         navn UNICODE NOT NULL,
         tekst UNICODE);
-        
+
     -- Versjon 2.7
     CREATE TABLE Epost (ID INTEGER PRIMARY KEY,
         bcc UNICODE,
@@ -113,7 +115,7 @@
         smtpbruker UNICODE,
         smtppassord UNICODE,
         sendmailsti UNICODE);
-    
+
     -- Versjon 2.9
     DELETE FROM Handling;
     INSERT INTO Handling (ID, navn) VALUES (NULL, 'opprettet');
