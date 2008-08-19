@@ -1,14 +1,14 @@
 <RCC>
   <qresource prefix="pix" >
-    <file>emblem-important.svg</file>
-    <file>emblem-favorite.svg</file>
-    <file>emblem-readonly.svg</file>
-    <file>process-stop.svg</file>
-    <file>dialog-error.svg</file>
-    <file>image-missing.svg</file>
-    <file>mail-attachment.svg</file>
-    <file>emblem-unreadable.svg</file>
-    <file>dialog-warning.svg</file>
+    <file alias="error.svg" >finfaktura/ui/dialog-error.svg</file>
+    <file alias="warning.svg" >finfaktura/ui/dialog-warning.svg</file>
+    <file alias="favorite.svg" >finfaktura/ui/emblem-favorite.svg</file>
+    <file alias="important.svg" >finfaktura/ui/emblem-important.svg</file>
+    <file alias="lock.svg" >finfaktura/ui/emblem-readonly.svg</file>
+    <file alias="cross.svg" >finfaktura/ui/emblem-unreadable.svg</file>
+    <file alias="missing.svg" >finfaktura/ui/image-missing.svg</file>
+    <file alias="attachment.svg" >finfaktura/ui/mail-attachment.svg</file>
+    <file alias="stop.svg" >finfaktura/ui/process-stop.svg</file>
   </qresource>
   <qresource prefix="data" >
     <file>README</file>

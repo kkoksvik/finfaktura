@@ -538,7 +538,7 @@
                   </size>
                  </property>
                  <property name="pixmap" >
-                  <pixmap resource="faktura.qrc" >:/pix/emblem-unreadable.svg</pixmap>
+                  <pixmap resource="faktura.qrc" >:/pix/cross.svg</pixmap>
                  </property>
                  <property name="scaledContents" >
                   <bool>true</bool>
@@ -1038,7 +1038,7 @@
                 <string/>
                </property>
                <property name="pixmap" >
-                <pixmap resource="faktura.qrc" >:/pix/emblem-unreadable.svg</pixmap>
+                <pixmap resource="faktura.qrc" >:/pix/cross.svg</pixmap>
                </property>
                <property name="scaledContents" >
                 <bool>true</bool>
@@ -1529,7 +1529,7 @@
                 <string/>
                </property>
                <property name="pixmap" >
-                <pixmap resource="faktura.qrc" >:/pix/emblem-unreadable.svg</pixmap>
+                <pixmap resource="faktura.qrc" >:/pix/cross.svg</pixmap>
                </property>
                <property name="scaledContents" >
                 <bool>true</bool>
