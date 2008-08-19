@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>483</width>
-    <height>559</height>
+    <width>479</width>
+    <height>582</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -24,11 +24,11 @@
     </widget>
    </item>
    <item row="0" column="0" >
-    <widget class="Q3ButtonGroup" name="epostLosning" >
+    <widget class="QGroupBox" name="groupBox" >
      <property name="title" >
       <string>Epostløsning for sending av e-faktura</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout" >
+     <layout class="QGridLayout" name="gridLayout_4" >
       <item row="0" column="0" colspan="2" >
        <layout class="QVBoxLayout" name="_4" >
         <item>
@@ -72,7 +72,7 @@
         </item>
        </layout>
       </item>
-      <item row="1" column="0" >
+      <item row="2" column="0" >
        <spacer name="horizontalSpacer" >
         <property name="orientation" >
          <enum>Qt::Horizontal</enum>
@@ -85,7 +85,7 @@
         </property>
        </spacer>
       </item>
-      <item row="1" column="1" >
+      <item row="2" column="1" >
        <widget class="QPushButton" name="epostLosningTest" >
         <property name="sizePolicy" >
          <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
@@ -99,12 +99,19 @@
        </widget>
       </item>
      </layout>
+     <zorder></zorder>
+     <zorder>horizontalSpacer</zorder>
+     <zorder>epostLosningTest</zorder>
+     <zorder>textLabel1_12</zorder>
     </widget>
    </item>
    <item row="1" column="0" >
-    <widget class="Q3GroupBox" name="epostSendkopi" >
+    <widget class="QGroupBox" name="sendKopi" >
      <property name="title" >
       <string>Send kopi av e-faktura</string>
+     </property>
+     <property name="flat" >
+      <bool>false</bool>
      </property>
      <property name="checkable" >
       <bool>true</bool>
@@ -112,10 +119,7 @@
      <property name="checked" >
       <bool>false</bool>
      </property>
-     <layout class="QGridLayout" >
-      <item row="0" column="1" >
-       <widget class="QLineEdit" name="epostKopiadresse" />
-      </item>
+     <layout class="QGridLayout" name="gridLayout" >
       <item row="0" column="0" >
        <widget class="QLabel" name="textLabel2_6" >
         <property name="text" >
@@ -124,20 +128,23 @@
         <property name="wordWrap" >
          <bool>false</bool>
         </property>
+        <property name="buddy" >
+         <cstring>kopiAdresse</cstring>
+        </property>
        </widget>
+      </item>
+      <item row="0" column="1" >
+       <widget class="QLineEdit" name="kopiAdresse" />
       </item>
      </layout>
     </widget>
    </item>
    <item row="3" column="0" >
-    <widget class="Q3GroupBox" name="epostSeksjonSendmail" >
-     <property name="enabled" >
-      <bool>true</bool>
-     </property>
+    <widget class="QGroupBox" name="boxSendmail" >
      <property name="title" >
       <string>Sendmail</string>
      </property>
-     <layout class="QGridLayout" name="_2" >
+     <layout class="QGridLayout" name="gridLayout_5" >
       <item row="0" column="0" >
        <widget class="QLabel" name="textLabel5_4" >
         <property name="text" >
@@ -146,17 +153,20 @@
         <property name="wordWrap" >
          <bool>false</bool>
         </property>
+        <property name="buddy" >
+         <cstring>sendmailSti</cstring>
+        </property>
        </widget>
       </item>
       <item row="0" column="1" >
-       <widget class="QLineEdit" name="epostSendmailSti" >
+       <widget class="QLineEdit" name="sendmailSti" >
         <property name="text" >
          <string>/usr/sbin/sendmail</string>
         </property>
        </widget>
       </item>
       <item row="0" column="2" >
-       <widget class="QPushButton" name="oppsettFakturakatalogSok_2" >
+       <widget class="QPushButton" name="sendmailSok" >
         <property name="text" >
          <string>Søk...</string>
         </property>
@@ -166,31 +176,28 @@
     </widget>
    </item>
    <item row="2" column="0" >
-    <widget class="Q3GroupBox" name="epostSeksjonSmtp" >
-     <property name="enabled" >
-      <bool>true</bool>
-     </property>
+    <widget class="QGroupBox" name="boxSMTP" >
      <property name="title" >
       <string>SMTP</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout_2" >
+     <layout class="QGridLayout" name="gridLayout_6" >
       <item row="0" column="0" >
        <layout class="QHBoxLayout" name="horizontalLayout_2" >
         <item>
          <widget class="QLabel" name="textLabel1_12" >
           <property name="text" >
-           <string>Bruk server (SMTP server):</string>
+           <string>Bruk server:</string>
           </property>
           <property name="wordWrap" >
            <bool>false</bool>
           </property>
           <property name="buddy" >
-           <cstring>epostSmtpServer</cstring>
+           <cstring>smtpServer</cstring>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="epostSmtpServer" >
+         <widget class="QLineEdit" name="smtpServer" >
           <property name="sizePolicy" >
            <sizepolicy vsizetype="Fixed" hsizetype="MinimumExpanding" >
             <horstretch>0</horstretch>
@@ -210,10 +217,13 @@
           <property name="wordWrap" >
            <bool>false</bool>
           </property>
+          <property name="buddy" >
+           <cstring>smtpPort</cstring>
+          </property>
          </widget>
         </item>
         <item>
-         <widget class="QSpinBox" name="epostSmtpPort" >
+         <widget class="QSpinBox" name="smtpPort" >
           <property name="buttonSymbols" >
            <enum>QAbstractSpinBox::UpDownArrows</enum>
           </property>
@@ -228,26 +238,10 @@
           </property>
          </widget>
         </item>
-        <item>
-         <spacer name="spacer19" >
-          <property name="orientation" >
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeType" >
-           <enum>QSizePolicy::Preferred</enum>
-          </property>
-          <property name="sizeHint" stdset="0" >
-           <size>
-            <width>341</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
        </layout>
       </item>
-      <item row="1" column="0" >
-       <widget class="QCheckBox" name="epostSmtpTLS" >
+      <item row="2" column="0" >
+       <widget class="QCheckBox" name="smtpTLS" >
         <property name="enabled" >
          <bool>true</bool>
         </property>
@@ -256,99 +250,109 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="0" >
-       <widget class="QCheckBox" name="epostSmtpAuth" >
-        <property name="enabled" >
-         <bool>true</bool>
-        </property>
-        <property name="text" >
+      <item row="1" column="0" >
+       <widget class="QGroupBox" name="smtpAuth" >
+        <property name="title" >
          <string>Serveren krever at jeg logger inn</string>
         </property>
+        <property name="flat" >
+         <bool>true</bool>
+        </property>
+        <property name="checkable" >
+         <bool>true</bool>
+        </property>
+        <property name="checked" >
+         <bool>false</bool>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_7" >
+         <item row="0" column="0" >
+          <widget class="QLabel" name="textLabel3_4" >
+           <property name="text" >
+            <string>Brukernavn:</string>
+           </property>
+           <property name="wordWrap" >
+            <bool>false</bool>
+           </property>
+           <property name="buddy" >
+            <cstring>smtpBrukernavn</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1" >
+          <widget class="QLineEdit" name="smtpBrukernavn" >
+           <property name="enabled" >
+            <bool>false</bool>
+           </property>
+           <property name="sizePolicy" >
+            <sizepolicy vsizetype="Fixed" hsizetype="Minimum" >
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2" >
+          <widget class="QCheckBox" name="smtpHuskEpost" >
+           <property name="text" >
+            <string>Husk</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0" >
+          <widget class="QLabel" name="textLabel3_4_2" >
+           <property name="text" >
+            <string>Passord:</string>
+           </property>
+           <property name="wordWrap" >
+            <bool>false</bool>
+           </property>
+           <property name="buddy" >
+            <cstring>smtpPassord</cstring>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1" >
+          <widget class="QLineEdit" name="smtpPassord" >
+           <property name="enabled" >
+            <bool>false</bool>
+           </property>
+           <property name="sizePolicy" >
+            <sizepolicy vsizetype="Fixed" hsizetype="Minimum" >
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="echoMode" >
+            <enum>QLineEdit::Password</enum>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </widget>
-      </item>
-      <item row="3" column="0" >
-       <layout class="QFormLayout" name="formLayout" >
-        <item row="0" column="0" >
-         <widget class="QLabel" name="textLabel3_4" >
-          <property name="text" >
-           <string>Brukernavn:</string>
-          </property>
-          <property name="wordWrap" >
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1" >
-         <layout class="QHBoxLayout" name="horizontalLayout" >
-          <item>
-           <widget class="QLineEdit" name="epostSmtpBrukernavn" >
-            <property name="enabled" >
-             <bool>false</bool>
-            </property>
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="Fixed" hsizetype="Minimum" >
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QCheckBox" name="epostSmtpHuskEpost" >
-            <property name="text" >
-             <string>Husk</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item row="1" column="0" >
-         <widget class="QLabel" name="textLabel3_4_2" >
-          <property name="text" >
-           <string>Passord:</string>
-          </property>
-          <property name="wordWrap" >
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1" >
-         <widget class="QLineEdit" name="epostSmtpPassord" >
-          <property name="enabled" >
-           <bool>false</bool>
-          </property>
-          <property name="sizePolicy" >
-           <sizepolicy vsizetype="Fixed" hsizetype="Minimum" >
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="echoMode" >
-           <enum>QLineEdit::Password</enum>
-          </property>
-         </widget>
-        </item>
-       </layout>
       </item>
      </layout>
     </widget>
    </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>Q3GroupBox</class>
-   <extends>QGroupBox</extends>
-   <header>Qt3Support/Q3GroupBox</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>Q3ButtonGroup</class>
-   <extends>Q3GroupBox</extends>
-   <header>Qt3Support/Q3ButtonGroup</header>
-   <container>1</container>
-  </customwidget>
- </customwidgets>
+ <tabstops>
+  <tabstop>epostLosningAuto</tabstop>
+  <tabstop>epostLosningSmtp</tabstop>
+  <tabstop>epostLosningSendmail</tabstop>
+  <tabstop>epostLosningTest</tabstop>
+  <tabstop>sendKopi</tabstop>
+  <tabstop>kopiAdresse</tabstop>
+  <tabstop>smtpServer</tabstop>
+  <tabstop>smtpPort</tabstop>
+  <tabstop>smtpAuth</tabstop>
+  <tabstop>smtpBrukernavn</tabstop>
+  <tabstop>smtpHuskEpost</tabstop>
+  <tabstop>smtpPassord</tabstop>
+  <tabstop>smtpTLS</tabstop>
+  <tabstop>sendmailSti</tabstop>
+  <tabstop>sendmailSok</tabstop>
+  <tabstop>buttonBox</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
@@ -358,8 +362,8 @@
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>248</x>
-     <y>254</y>
+     <x>252</x>
+     <y>773</y>
     </hint>
     <hint type="destinationlabel" >
      <x>157</x>
@@ -374,8 +378,8 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>316</x>
-     <y>260</y>
+     <x>320</x>
+     <y>773</y>
     </hint>
     <hint type="destinationlabel" >
      <x>286</x>
