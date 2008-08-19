@@ -31,33 +31,17 @@
        </property>
       </widget>
      </item>
-     <item row="2" column="0" >
-      <widget class="QPushButton" name="avbryt" >
-       <property name="toolTip" >
-        <string>Avbryter sendingen av efaktura</string>
-       </property>
-       <property name="text" >
-        <string>Avbryt</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1" >
-      <widget class="QPushButton" name="send" >
-       <property name="toolTip" >
-        <string>Sender efakturaen som PDF-fil til adressen over</string>
-       </property>
-       <property name="text" >
-        <string>Send</string>
-       </property>
-       <property name="default" >
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
      <item row="1" column="0" colspan="2" >
       <widget class="QPlainTextEdit" name="tekst" >
        <property name="tabChangesFocus" >
         <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0" >
+      <widget class="QDialogButtonBox" name="buttonBox" >
+       <property name="standardButtons" >
+        <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
        </property>
       </widget>
      </item>
@@ -68,5 +52,38 @@
  <layoutdefault spacing="6" margin="11" />
  <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>sendEpost</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>525</x>
+     <y>356</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>503</x>
+     <y>-13</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>sendEpost</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>566</x>
+     <y>358</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>665</x>
+     <y>304</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
