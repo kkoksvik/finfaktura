@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="pix" >
+    <file alias="draft.svg" >finfaktura/ui/emblem-symbolic-link.svg</file>
     <file alias="error.svg" >finfaktura/ui/dialog-error.svg</file>
     <file alias="warning.svg" >finfaktura/ui/dialog-warning.svg</file>
     <file alias="favorite.svg" >finfaktura/ui/emblem-favorite.svg</file>
