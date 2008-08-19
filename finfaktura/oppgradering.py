@@ -81,6 +81,9 @@ ENDRINGER ="""
 
 3.1:Oppsett:vispdf+
 3.1:Oppsett:skrivutpdf+
+
+3.2:Ordrehode:ferdigstilt+
+3.2:Ordrelinje:tekst+
 """
 
 
