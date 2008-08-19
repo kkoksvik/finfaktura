@@ -11,5 +11,5 @@
 
 __version__ = "1.9.9"
 
-__all__ = ['fakturabibliotek','oppgradering','f60','cli','faktura_ui','sikkerhetskopi', 'okonomi', 'epost', 'historikk', 'ekstra', 'fakturafeil', 'fakturakomponenter', 'rapport', 'gui']
+__all__ = ['fakturabibliotek','oppgradering','f60','cli', 'sikkerhetskopi', 'okonomi', 'epost', 'historikk', 'ekstra', 'fakturafeil', 'fakturakomponenter', 'rapport', 'gui']
 
