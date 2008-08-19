@@ -30,8 +30,7 @@ from finfaktura.fakturafeil import *
 
 from PyQt4 import QtCore, QtGui, uic
 import faktura_rc
-#from finfaktura.ekstra import QtGui.QBuffer, slettetIkon_data, forfaltLogo_data
-#from finfaktura.faktura_ui import faktura ## husk å kjøre "pyuic -x faktura.ui > faktura_ui.py" først!
+import gui_sendepost
 from ekstra import debug
 
 
@@ -57,6 +56,16 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
             self.gui.setWindowTitle("FRYKTELIG FIN FADESE (utviklerversjon)")
             self.patchDebugModus() # vis live debug-konsoll
 
+        # rullegardinmeny:
+        #self.connect(self.gui.actionDitt_firma, QtCore.SIGNAL("activated()"), self.visDittFirma)
+        #self.connect(self.gui.actionEpost, QtCore.SIGNAL("activated()"), self.visEpost)
+        #self.connect(self.gui.actionProgrammer, QtCore.SIGNAL("activated()"), self.visProgrammer)
+        #self.connect(self.gui.actionOm_Finfaktura, QtCore.SIGNAL("activated()"), self.visOm)
+        #self.connect(self.gui.actionLisens, QtCore.SIGNAL("activated()"), self.visVinduTekst('Lisens'))
+        #self.connect(self.gui.actionLover_og_regler, QtCore.SIGNAL("activated()"), self.visLover)
+        #self.connect(self.gui.actionSikkerhetskopi, QtCore.SIGNAL("activated()"), self.visSikkerhetskopi)
+
+        # kontroller i faktura-vinudet
         self.connect(self.gui.fakturaTab, QtCore.SIGNAL("currentChanged(QWidget*)"), self.skiftTab)
 
         self.connect(self.gui.fakturaNy, QtCore.SIGNAL("clicked()"), self.nyFaktura)
@@ -75,6 +84,7 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         self.connect(self.gui.fakturaVisGamle, QtCore.SIGNAL("toggled(bool)"), self.visFaktura)
         self.gui.fakturaFaktaKryss.mousePressEvent = self.lukkFakta
 
+        # kontroller i kunde-vinduet
         self.connect(self.gui.kundeNy, QtCore.SIGNAL("clicked()"), self.lastKunde)
         self.connect(self.gui.kundeKundeliste, QtCore.SIGNAL("itemDoubleClicked (QTreeWidgetItem *,int)"), self.redigerKunde)
         self.connect(self.gui.kundeInfoEndre, QtCore.SIGNAL("clicked()"), self.leggTilKunde)
@@ -85,6 +95,7 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
 
         #self.connect(self.gui.varerVareliste, QtCore.SIGNAL("selected(const QtGui.QString&)"), self.nyFaktura)
 
+        # kontroller i vare-vinduet
         self.connect(self.gui.varerNy, QtCore.SIGNAL("clicked()"), self.lastVare)
         self.connect(self.gui.varerVareliste, QtCore.SIGNAL("itemDoubleClicked (QTreeWidgetItem *,int)"), self.redigerVare)
         self.connect(self.gui.varerInfoLegginn, QtCore.SIGNAL("clicked()"), self.registrerVare)
@@ -105,6 +116,7 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         #self.connect(self.oppsettProgrammerUtskriftSok, QtCore.SIGNAL("clicked()"), self.endreProgramUtskrift)
         #self.connect(self.oppsettLagre, QtCore.SIGNAL("clicked()"), self.oppdaterOppsett)
 
+        # kontroller i økonomi-vinduet
 
         self.connect(self.gui.okonomiAvgrensningerDatoManed, QtCore.SIGNAL("highlighted(int)"), self.okonomiFyllDatoPeriode)
         self.connect(self.gui.okonomiAvgrensningerDato, QtCore.SIGNAL("toggled(bool)"), self.okonomiFyllDato)
@@ -716,24 +728,11 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
             return
         historikk.sendtTilInkasso(ordre, True, 'brukerklikk')
 
-    ##def skjulSendepostBoks(self):
-        #self.fakturaSendepostBoks.hide()
-
     def visEpostfaktura(self, ordre, pdfFilnavn):
-        ##u'Vedlagt følger epostfaktura #%i:\n%s\n\n-- \n%s\n' % (ordre.ID, ordre.tekst,  ordre.firma)
-        epostboks = sendEpost()
-        #self.fakturaSendepostBoks.show()
-        self.connect(epostboks.sendEpostSend, QtCore.SIGNAL("clicked()"), epostboks.accept)
-        self.connect(epostboks.sendEpostAvbryt, QtCore.SIGNAL("clicked()"), epostboks.reject)
-        epostboks.sendEpostTittel.setText(u'Sender faktura til %s <b>&lt;%s</b>&gt;' % (ordre.kunde.navn, ordre.kunde.epost))
-        epostboks.sendEpostTekst.setText(u'Vedlagt følger epostfaktura #%i:\n%s\n\n-- \n%s\n%s' % (ordre.ID, ordre.tekst,  ordre.firma, ordre.firma.vilkar))
-        res = epostboks.exec_loop()
+        epostboks = gui_sendepost.sendEpost(self, ordre)
+        res, tekst = epostboks.exec_()
         if res == QtGui.QDialog.Accepted:
-          return self.sendEpostfaktura(ordre, unicode(epostboks.sendEpostTekst.text()), pdfFilnavn)
-        else:
-          #print unicode(epostboks.sendEpostTekst.text())
-          pass
-
+          return self.sendEpostfaktura(ordre, tekst, pdfFilnavn)
 
     def sendEpostfaktura(self, ordre, tekst, filnavn):
         try:
@@ -754,7 +753,6 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
             raise
         else:
             historikk.epostSendt(ordre, True, "Tid: %s, transport: %s" % (time(), trans[self.faktura.epostoppsett.transport]))
-            #self.fakturaSendepostBoks.hide()
             self.obs('Fakturaen er sendt')
 
 ################## KUNDER ###########################

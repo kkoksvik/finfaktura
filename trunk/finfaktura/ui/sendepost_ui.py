@@ -2,76 +2,53 @@
 
 # Form implementation generated from reading ui file 'sendepost.ui'
 #
-# Created: fr. mai 9 20:09:00 2008
-#      by: The PyQt User Interface Compiler (pyuic) 3.17.4
+# Created: Wed Aug 20 01:11:26 2008
+#      by: PyQt4 UI code generator 4.4.3
 #
 # WARNING! All changes made in this file will be lost!
 
+from PyQt4 import QtCore, QtGui
 
-import sys
-from qt import *
+class Ui_sendEpost(object):
+    def setupUi(self, sendEpost):
+        sendEpost.setObjectName("sendEpost")
+        sendEpost.resize(667, 378)
+        sendEpost.setModal(True)
+        self.gridLayout_2 = QtGui.QGridLayout(sendEpost)
+        self.gridLayout_2.setObjectName("gridLayout_2")
+        self.gridLayout = QtGui.QGridLayout()
+        self.gridLayout.setObjectName("gridLayout")
+        self.tittel = QtGui.QLabel(sendEpost)
+        self.tittel.setTextFormat(QtCore.Qt.RichText)
+        self.tittel.setWordWrap(False)
+        self.tittel.setObjectName("tittel")
+        self.gridLayout.addWidget(self.tittel, 0, 0, 1, 2)
+        self.tekst = QtGui.QPlainTextEdit(sendEpost)
+        self.tekst.setTabChangesFocus(True)
+        self.tekst.setObjectName("tekst")
+        self.gridLayout.addWidget(self.tekst, 1, 0, 1, 2)
+        self.buttonBox = QtGui.QDialogButtonBox(sendEpost)
+        self.buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Cancel|QtGui.QDialogButtonBox.Ok)
+        self.buttonBox.setObjectName("buttonBox")
+        self.gridLayout.addWidget(self.buttonBox, 2, 0, 1, 1)
+        self.gridLayout_2.addLayout(self.gridLayout, 0, 0, 1, 1)
 
+        self.retranslateUi(sendEpost)
+        QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL("accepted()"), sendEpost.accept)
+        QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL("rejected()"), sendEpost.reject)
+        QtCore.QMetaObject.connectSlotsByName(sendEpost)
 
-class sendEpost(QDialog):
-    def __init__(self,parent = None,name = None,modal = 0,fl = 0):
-        QDialog.__init__(self,parent,name,modal,fl)
+    def retranslateUi(self, sendEpost):
+        sendEpost.setWindowTitle(QtGui.QApplication.translate("sendEpost", "Send faktura per epost", None, QtGui.QApplication.UnicodeUTF8))
+        self.tittel.setText(QtGui.QApplication.translate("sendEpost", "Sender epost til", None, QtGui.QApplication.UnicodeUTF8))
 
-        if not name:
-            self.setName("sendEpost")
-
-        self.setModal(1)
-
-        sendEpostLayout = QGridLayout(self,1,1,11,6,"sendEpostLayout")
-
-        layout12 = QGridLayout(None,1,1,0,6,"layout12")
-
-        self.sendEpostSend = QPushButton(self,"sendEpostSend")
-        self.sendEpostSend.setDefault(1)
-
-        layout12.addWidget(self.sendEpostSend,2,1)
-
-        self.sendEpostTittel = QLabel(self,"sendEpostTittel")
-        self.sendEpostTittel.setTextFormat(QLabel.RichText)
-
-        layout12.addMultiCellWidget(self.sendEpostTittel,0,0,0,1)
-
-        self.sendEpostTekst = QTextEdit(self,"sendEpostTekst")
-        self.sendEpostTekst.setTextFormat(QTextEdit.PlainText)
-
-        layout12.addMultiCellWidget(self.sendEpostTekst,1,1,0,1)
-
-        self.sendEpostAvbryt = QPushButton(self,"sendEpostAvbryt")
-
-        layout12.addWidget(self.sendEpostAvbryt,2,0)
-
-        sendEpostLayout.addLayout(layout12,0,0)
-
-        self.languageChange()
-
-        self.resize(QSize(574,477).expandedTo(self.minimumSizeHint()))
-        self.clearWState(Qt.WState_Polished)
-
-        self.connect(self.sendEpostAvbryt,SIGNAL("clicked()"),self.reject)
-        self.connect(self.sendEpostSend,SIGNAL("clicked()"),self.accept)
-
-
-    def languageChange(self):
-        self.setCaption(self.__tr("Send faktura per epost"))
-        self.sendEpostSend.setText(self.__tr("Send"))
-        QToolTip.add(self.sendEpostSend,self.__tr("Sender efakturaen som PDF-fil til adressen over"))
-        self.sendEpostTittel.setText(self.__tr("Sender epost til"))
-        QToolTip.add(self.sendEpostTekst,self.__tr("Valgfri tekst som vil bli vist i kundens epostprogram (fakturaen sendes som vedlegg)"))
-        self.sendEpostAvbryt.setText(self.__tr("Avbryt"))
-        QToolTip.add(self.sendEpostAvbryt,self.__tr("Avbryter sendingen av efaktura"))
-
-
-    def __tr(self,s,c = None):
-        return qApp.translate("sendEpost",s,c)
 
 if __name__ == "__main__":
-    a = QApplication(sys.argv)
-    QObject.connect(a,SIGNAL("lastWindowClosed()"),a,SLOT("quit()"))
-    w = sendEpost()
-    a.setMainWidget(w)
-    w.show()
-    a.exec_loop()
+    import sys
+    app = QtGui.QApplication(sys.argv)
+    sendEpost = QtGui.QDialog()
+    ui = Ui_sendEpost()
+    ui.setupUi(sendEpost)
+    sendEpost.show()
+    sys.exit(app.exec_())
+
