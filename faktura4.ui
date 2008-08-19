@@ -6,7 +6,7 @@
     <x>0</x>
     <y>0</y>
     <width>863</width>
-    <height>875</height>
+    <height>915</height>
    </rect>
   </property>
   <property name="font" >
@@ -27,7 +27,7 @@
      <x>0</x>
      <y>27</y>
      <width>863</width>
-     <height>827</height>
+     <height>867</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout_9" >
@@ -71,14 +71,14 @@
          <x>0</x>
          <y>0</y>
          <width>821</width>
-         <height>811</height>
+         <height>851</height>
         </rect>
        </property>
        <attribute name="title" >
         <string>&amp;Faktura</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_8" >
-        <item rowspan="5" row="0" column="0" colspan="2" >
+        <item rowspan="6" row="0" column="0" colspan="2" >
          <widget class="QTreeWidget" name="fakturaFakturaliste" >
           <property name="sizePolicy" >
            <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
@@ -165,171 +165,7 @@
           </property>
          </widget>
         </item>
-        <item row="3" column="2" >
-         <widget class="QGroupBox" name="groupBox_2" >
-          <property name="title" >
-           <string>Detaljer</string>
-          </property>
-          <layout class="QGridLayout" name="gridLayout_11" >
-           <item row="0" column="0" >
-            <widget class="QLabel" name="fakturaDetaljerTekst" >
-             <property name="text" >
-              <string/>
-             </property>
-             <property name="textFormat" >
-              <enum>Qt::RichText</enum>
-             </property>
-             <property name="alignment" >
-              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-             </property>
-             <property name="wordWrap" >
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item row="4" column="2" >
-         <widget class="QGroupBox" name="fakturaHandlinger" >
-          <property name="enabled" >
-           <bool>false</bool>
-          </property>
-          <property name="title" >
-           <string>Handlinger</string>
-          </property>
-          <layout class="QGridLayout" name="gridLayout_12" >
-           <item row="0" column="0" colspan="3" >
-            <widget class="QLabel" name="textLabel2_2" >
-             <property name="font" >
-              <font>
-               <pointsize>9</pointsize>
-              </font>
-             </property>
-             <property name="text" >
-              <string>Du skal sende fakturaen:</string>
-             </property>
-             <property name="wordWrap" >
-              <bool>false</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0" >
-            <widget class="QPushButton" name="fakturaLagEpost" >
-             <property name="toolTip" >
-              <string>Lager en efaktura for sending per epost</string>
-             </property>
-             <property name="text" >
-              <string>Ep&amp;ost</string>
-             </property>
-             <property name="shortcut" >
-              <string>Alt+O</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="2" >
-            <widget class="QPushButton" name="fakturaLagPapir" >
-             <property name="toolTip" >
-              <string>Lager en papirfaktura for utskrift på skjema F60 (gul faktura)</string>
-             </property>
-             <property name="text" >
-              <string>P&amp;apir</string>
-             </property>
-             <property name="shortcut" >
-              <string/>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="0" colspan="3" >
-            <widget class="Line" name="line1_2" >
-             <property name="frameShape" >
-              <enum>QFrame::HLine</enum>
-             </property>
-             <property name="frameShadow" >
-              <enum>QFrame::Sunken</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="0" colspan="3" >
-            <widget class="QLabel" name="textLabel4_2" >
-             <property name="font" >
-              <font>
-               <pointsize>9</pointsize>
-              </font>
-             </property>
-             <property name="text" >
-              <string>Du trenger en kvittering:</string>
-             </property>
-             <property name="wordWrap" >
-              <bool>false</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="0" colspan="3" >
-            <widget class="QPushButton" name="fakturaLagKvittering" >
-             <property name="toolTip" >
-              <string>Skriver ut en kvittering på skriveren</string>
-             </property>
-             <property name="text" >
-              <string>Skriv &amp;ut</string>
-             </property>
-             <property name="shortcut" >
-              <string>Alt+U</string>
-             </property>
-            </widget>
-           </item>
-           <item row="5" column="0" colspan="3" >
-            <widget class="Line" name="line1" >
-             <property name="frameShape" >
-              <enum>QFrame::HLine</enum>
-             </property>
-             <property name="frameShadow" >
-              <enum>QFrame::Sunken</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="6" column="0" colspan="3" >
-            <widget class="QLabel" name="textLabel3_2" >
-             <property name="font" >
-              <font>
-               <pointsize>9</pointsize>
-              </font>
-             </property>
-             <property name="text" >
-              <string>Fakturaen er betalt:</string>
-             </property>
-             <property name="wordWrap" >
-              <bool>false</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="7" column="2" >
-            <widget class="QPushButton" name="fakturaBetalt" >
-             <property name="toolTip" >
-              <string>Markerer fakturaen som betalt (på angitt dato)</string>
-             </property>
-             <property name="text" >
-              <string>Betalt</string>
-             </property>
-             <property name="shortcut" >
-              <string/>
-             </property>
-            </widget>
-           </item>
-           <item row="7" column="0" colspan="2" >
-            <widget class="QDateEdit" name="fakturaBetaltDato" >
-             <property name="displayFormat" >
-              <string>dd.MM.yyyy</string>
-             </property>
-             <property name="calendarPopup" >
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item row="5" column="0" colspan="3" >
+        <item row="6" column="0" colspan="3" >
          <widget class="QGroupBox" name="fakturaFakta" >
           <property name="title" >
            <string/>
@@ -400,6 +236,12 @@
                  </item>
                  <item row="2" column="1" >
                   <widget class="QPlainTextEdit" name="fakturaFaktaTekst" >
+                   <property name="sizePolicy" >
+                    <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
+                     <horstretch>0</horstretch>
+                     <verstretch>1</verstretch>
+                    </sizepolicy>
+                   </property>
                    <property name="tabChangesFocus" >
                     <bool>true</bool>
                    </property>
@@ -411,6 +253,12 @@
                 <layout class="QVBoxLayout" name="verticalLayout_2" >
                  <item>
                   <widget class="QTableWidget" name="fakturaVareliste" >
+                   <property name="sizePolicy" >
+                    <sizepolicy vsizetype="MinimumExpanding" hsizetype="Expanding" >
+                     <horstretch>0</horstretch>
+                     <verstretch>3</verstretch>
+                    </sizepolicy>
+                   </property>
                    <property name="toolTip" >
                     <string>Varene som hører med fakturaen. Velg tidligerere definerte varer, eller legg til nye ved å skrive inn tekst, pris og MVA</string>
                    </property>
@@ -739,6 +587,193 @@
           </property>
          </widget>
         </item>
+        <item row="4" column="2" >
+         <widget class="QGroupBox" name="groupBox_2" >
+          <property name="title" >
+           <string>Detaljer</string>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_11" >
+           <item row="0" column="0" >
+            <widget class="QLabel" name="fakturaDetaljerTekst" >
+             <property name="minimumSize" >
+              <size>
+               <width>200</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="text" >
+              <string/>
+             </property>
+             <property name="textFormat" >
+              <enum>Qt::RichText</enum>
+             </property>
+             <property name="alignment" >
+              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+             </property>
+             <property name="wordWrap" >
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="3" column="2" >
+         <widget class="QGroupBox" name="fakturaHandlinger" >
+          <property name="enabled" >
+           <bool>false</bool>
+          </property>
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="Minimum" hsizetype="Preferred" >
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="title" >
+           <string>Handlinger</string>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_12" >
+           <item row="0" column="0" colspan="3" >
+            <widget class="QLabel" name="textLabel2_2" >
+             <property name="font" >
+              <font>
+               <pointsize>9</pointsize>
+              </font>
+             </property>
+             <property name="text" >
+              <string>Du skal sende fakturaen:</string>
+             </property>
+             <property name="wordWrap" >
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0" >
+            <widget class="QPushButton" name="fakturaLagEpost" >
+             <property name="toolTip" >
+              <string>Lager en efaktura for sending per epost</string>
+             </property>
+             <property name="text" >
+              <string>Ep&amp;ost</string>
+             </property>
+             <property name="shortcut" >
+              <string>Alt+O</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="2" >
+            <widget class="QPushButton" name="fakturaLagPapir" >
+             <property name="toolTip" >
+              <string>Lager en papirfaktura for utskrift på skjema F60 (gul faktura)</string>
+             </property>
+             <property name="text" >
+              <string>P&amp;apir</string>
+             </property>
+             <property name="shortcut" >
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0" colspan="3" >
+            <widget class="Line" name="line1_2" >
+             <property name="frameShape" >
+              <enum>QFrame::HLine</enum>
+             </property>
+             <property name="frameShadow" >
+              <enum>QFrame::Sunken</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0" colspan="3" >
+            <widget class="QLabel" name="textLabel4_2" >
+             <property name="font" >
+              <font>
+               <pointsize>9</pointsize>
+              </font>
+             </property>
+             <property name="text" >
+              <string>Du trenger en kvittering:</string>
+             </property>
+             <property name="wordWrap" >
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="0" colspan="3" >
+            <widget class="QPushButton" name="fakturaLagKvittering" >
+             <property name="toolTip" >
+              <string>Skriver ut en kvittering på skriveren</string>
+             </property>
+             <property name="text" >
+              <string>Skriv &amp;ut</string>
+             </property>
+             <property name="shortcut" >
+              <string>Alt+U</string>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="0" colspan="3" >
+            <widget class="Line" name="line1" >
+             <property name="frameShape" >
+              <enum>QFrame::HLine</enum>
+             </property>
+             <property name="frameShadow" >
+              <enum>QFrame::Sunken</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="0" colspan="3" >
+            <widget class="QLabel" name="textLabel3_2" >
+             <property name="font" >
+              <font>
+               <pointsize>9</pointsize>
+              </font>
+             </property>
+             <property name="text" >
+              <string>Fakturaen er betalt:</string>
+             </property>
+             <property name="wordWrap" >
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="7" column="2" >
+            <widget class="QPushButton" name="fakturaBetalt" >
+             <property name="toolTip" >
+              <string>Markerer fakturaen som betalt (på angitt dato)</string>
+             </property>
+             <property name="text" >
+              <string>Betalt</string>
+             </property>
+             <property name="shortcut" >
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="7" column="0" colspan="2" >
+            <widget class="QDateEdit" name="fakturaBetaltDato" >
+             <property name="displayFormat" >
+              <string>dd.MM.yyyy</string>
+             </property>
+             <property name="calendarPopup" >
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
+          <zorder>textLabel2_2</zorder>
+          <zorder>fakturaLagEpost</zorder>
+          <zorder>fakturaLagPapir</zorder>
+          <zorder>line1_2</zorder>
+          <zorder>textLabel4_2</zorder>
+          <zorder>fakturaLagKvittering</zorder>
+          <zorder>line1</zorder>
+          <zorder>textLabel3_2</zorder>
+          <zorder>fakturaBetalt</zorder>
+          <zorder>fakturaBetaltDato</zorder>
+          <zorder>groupBox_2</zorder>
+         </widget>
+        </item>
        </layout>
       </widget>
       <widget class="QWidget" name="tab_2" >
@@ -747,7 +782,7 @@
          <x>0</x>
          <y>0</y>
          <width>821</width>
-         <height>811</height>
+         <height>851</height>
         </rect>
        </property>
        <attribute name="title" >
@@ -1213,7 +1248,7 @@
          <x>0</x>
          <y>0</y>
          <width>821</width>
-         <height>811</height>
+         <height>851</height>
         </rect>
        </property>
        <attribute name="title" >
@@ -1587,7 +1622,7 @@
          <x>0</x>
          <y>0</y>
          <width>821</width>
-         <height>811</height>
+         <height>851</height>
         </rect>
        </property>
        <attribute name="title" >
@@ -1922,7 +1957,7 @@
          <x>0</x>
          <y>0</y>
          <width>821</width>
-         <height>811</height>
+         <height>851</height>
         </rect>
        </property>
        <attribute name="title" >
@@ -2076,7 +2111,7 @@
    <property name="geometry" >
     <rect>
      <x>0</x>
-     <y>854</y>
+     <y>894</y>
      <width>863</width>
      <height>21</height>
     </rect>
