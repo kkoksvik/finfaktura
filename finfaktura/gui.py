@@ -19,18 +19,17 @@ from finfaktura.fakturabibliotek import PRODUKSJONSVERSJON, \
     FakturaBibliotek, kobleTilDatabase
 import finfaktura.f60 as f60
 from finfaktura.myndighetene import myndighetene
-from finfaktura.epost import BRUK_GMAIL
+from finfaktura.epost import TRANSPORT_METODER
 import finfaktura.okonomi as fakturaOkonomi
 import finfaktura.sikkerhetskopi as sikkerhetskopi
 import finfaktura.historikk as historikk
 import finfaktura.rapport
 import finfaktura.fakturakomponenter
 from finfaktura.fakturafeil import *
-##from finfaktura.sendepost_ui import sendEpost
 
 from PyQt4 import QtCore, QtGui, uic
 import faktura_rc
-import gui_sendepost
+import gui_sendepost, gui_epost
 from ekstra import debug
 
 
@@ -58,7 +57,7 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
 
         # rullegardinmeny:
         #self.connect(self.gui.actionDitt_firma, QtCore.SIGNAL("activated()"), self.visDittFirma)
-        #self.connect(self.gui.actionEpost, QtCore.SIGNAL("activated()"), self.visEpost)
+        self.connect(self.gui.actionEpost, QtCore.SIGNAL("activated()"), self.visEpostOppsett)
         #self.connect(self.gui.actionProgrammer, QtCore.SIGNAL("activated()"), self.visProgrammer)
         #self.connect(self.gui.actionOm_Finfaktura, QtCore.SIGNAL("activated()"), self.visOm)
         #self.connect(self.gui.actionLisens, QtCore.SIGNAL("activated()"), self.visVinduTekst('Lisens'))
@@ -260,7 +259,6 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         self.gui.fakturaDetaljerTekst.setText('')
         self.gui.fakturaFakta.hide()
         self.gui.fakturaHandlinger.show()
-        #self.fakturaSendepostBoks.hide()
         i = self.gui.fakturaFakturaliste.addTopLevelItem
         self.gui.fakturaFakturaliste.clear()
         nu = time()
@@ -683,12 +681,11 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
     def sendEpostfaktura(self, ordre, tekst, filnavn):
         try:
             debug('sender epostfaktura: ordre # %i, til: %s' % (ordre._id, ordre.kunde.epost))
-            trans = ['auto', 'smtp', 'sendmail']
-            debug('bruker transport %s' % trans[self.faktura.epostoppsett.transport])
+            debug('bruker transport %s' % TRANSPORT_METODER[self.faktura.epostoppsett.transport])
             self.faktura.sendEpost(ordre,
                                    filnavn,
                                    tekst,
-                                   trans[self.faktura.epostoppsett.transport]
+                                   TRANSPORT_METODER[self.faktura.epostoppsett.transport]
                                    )
             #self.fakturaSendepostBoks.ordre.sendt = time() # XXX TODO: logg tid for sending
 
@@ -1207,6 +1204,21 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         for skjema in offentlige.skjemaplikter(self.firma.organisasjonsnummer):
             i = QtGui.QListViewItem(self.myndigheteneSkjemaListe, skjema[0],skjema[1],skjema[2],skjema[3])
             self.myndigheteneSkjemaListe.insertItem(i)
+
+############## INTERNE DIALOGER ###################
+
+    def visEpostOppsett(self):
+        dialog = gui_epost.epostOppsett(self.faktura)
+        res = dialog.exec_()
+
+    def visFirmaOppsett(self):
+        dialog = gui_firma.firmaOppsett(self.faktura)
+        res = dialog.exec_()
+        #if res == QtGui.QDialog.Accepted:
+          #return self.sendEpostfaktura(ordre, tekst, pdfFilnavn)
+
+
+
 
 ############## GENERELLE METODER ###################
 
