@@ -11,24 +11,38 @@
 ###########################################################################
 
 from PyQt4 import QtCore, QtGui
-from ui import firma_ui
+from ui import firmainfo_ui
 
-class firmaOppsett(firma_ui.Ui_firmaOppsett):
-    def __init__(self, faktura):
-        self.faktura = faktura
+class firmaOppsett(firmainfo_ui.Ui_firmaOppsett):
+    def __init__(self, firma):
+        self.firma = firma
         self.gui = QtGui.QDialog()
         self.setupUi(self.gui)
-        self.connect(self.gui.FinnFjernLogo, QtCore.SIGNAL("clicked()"), self.finnFjernLogo)
-        self.connect(self.gui.Lagre, QtCore.SIGNAL("clicked()"), self.oppdaterFirma)
+        self.gui.connect(self.lagreLogo, QtCore.SIGNAL("clicked()"), self.finnFjernLogo)
 
+        self._kontrollkart = {
+            self.Firmanavn:'Firmanavn',
+            self.Organisasjonsnummer:u'Organisasjonsnummer fra Brønnøysund',
+            self.Kontaktperson:'Kontaktperson',
+            self.Epost:'Epostadresse',
+            self.Adresse:'Adresse',
+            self.Postnummer:'Postnummer',
+            self.Poststed:'Poststed',
+            self.Telefon:'Telefonnummer',
+            self.Mobil:'Mobilnummer',
+            self.Kontonummer:'Kontonummer',
+            #self.Mva:'Momssats',
+            self.Forfall:'Forfallsperiode',
+        }
         self.vis()
         self.gui.show()
+
 
     def exec_(self):
         res = self.gui.exec_()
         if res == QtGui.QDialog.Accepted:
-            debug('oppdaterer')
-            self.oppdaterEpost()
+            print('oppdaterer')
+            self.oppdater()
         return res
 
 
@@ -52,41 +66,27 @@ class firmaOppsett(firma_ui.Ui_firmaOppsett):
 
         #self.connect(self.Forfall, QtCore.SIGNAL("valueChanged(int)"), self.firmaSjekk)
 
-        #self.KontrollKart = {
-            #self.Firmanavn:'Firmanavn',
-            #self.Organisasjonsnummer:u'Organisasjonsnummer fra Brønnøysund',
-            #self.Kontaktperson:'Kontaktperson',
-            #self.Epost:'Epostadresse',
-            #self.Adresse:'Adresse',
-            #self.Postnummer:'Postnummer',
-            #self.Poststed:'Poststed',
-            #self.Telefon:'Telefonnummer',
-            #self.Mobil:'Mobilnummer',
-            #self.Kontonummer:'Kontonummer',
-            ##self.Mva:'Momssats',
-            #self.Forfall:'Forfallsperiode',
-        #}
 ############## FIRMAINFO ###################
 
     def firmaWidgetKart(self):
         return {
-            self.gui.Firmanavn            :  self.firma.firmanavn,
-            self.gui.Organisasjonsnummer  :  self.firma.organisasjonsnummer,
-            self.gui.Kontaktperson        :  self.firma.kontaktperson,
-            self.gui.Epost                :  self.firma.epost,
-            self.gui.Adresse              :  self.firma.adresse,
-            self.gui.Postnummer           :  self.firma.postnummer,
-            self.gui.Poststed             :  self.firma.poststed,
-            self.gui.Telefon              :  self.firma.telefon,
-            self.gui.Mobil                :  self.firma.mobil,
-            self.gui.Telefaks             :  self.firma.telefaks,
-            self.gui.Kontonummer          :  self.firma.kontonummer,
-            self.gui.Vilkar               :  self.firma.vilkar,
-            self.gui.Mva                 :  self.firma.mva,
-            self.gui.Forfall             :  self.firma.forfall,
+            self.Firmanavn            :  self.firma.firmanavn,
+            self.Organisasjonsnummer  :  self.firma.organisasjonsnummer,
+            self.Kontaktperson        :  self.firma.kontaktperson,
+            self.Epost                :  self.firma.epost,
+            self.Adresse              :  self.firma.adresse,
+            self.Postnummer           :  self.firma.postnummer,
+            self.Poststed             :  self.firma.poststed,
+            self.Telefon              :  self.firma.telefon,
+            self.Mobil                :  self.firma.mobil,
+            self.Telefaks             :  self.firma.telefaks,
+            self.Kontonummer          :  self.firma.kontonummer,
+            self.Vilkar               :  self.firma.vilkar,
+            self.Mva                 :  self.firma.mva,
+            self.Forfall             :  self.firma.forfall,
             }
 
-    def visFirma(self):
+    def vis(self):
         format = { self.Postnummer: "%04i", }
         for til, fra in self.firmaWidgetKart().iteritems():
             #debug("fra", fra, type(fra))
@@ -99,24 +99,27 @@ class firmaOppsett(firma_ui.Ui_firmaOppsett):
             elif hasattr(til, 'setValue'):
                 if not fra: continue
                 til.setValue(int(fra))
+            elif hasattr(til, 'setPlainText'):
+                if not fra: continue
+                til.setPlainText(unicode(fra))
         self.visLogo()
         self.firmaSjekk()
 
     def visLogo(self):
         if not self.firma.logo:
-            self.gui.FinnFjernLogo.setText('Finn logo')
-            self.gui.LogoPixmap.setPixmap(QPixmap())
+            self.lagreLogo.setText('Finn logo')
+            self.LogoPixmap.setPixmap(QtGui.QPixmap())
         else:
             logo = QtGui.QPixmap()
             logo.loadFromData(self.firma.logo)
-            self.gui.LogoPixmap.setPixmap(logo)
-            self.gui.FinnFjernLogo.setText('Fjern logo')
+            self.LogoPixmap.setPixmap(logo)
+            self.lagreLogo.setText('Fjern logo')
 
     def oppdaterFirmainfo(self, fraObj):
         kart = firmaWidgetKart()
         if isinstance(fraObj, QtGui.QSpinBox): fun = int(fraObj.value)
         elif isinstance(fraObj, QtGui.QComboBox): fun = unicode(fraObj.currentText)
-        elif isinstance(fraObj, (QLineEdit,QTextEdit,)): fun = unicode(fraObj.text)
+        elif isinstance(fraObj, (QtGui.QLineEdit,QtGui.QTextEdit,)): fun = unicode(fraObj.text)
 
         debug(u'oppdatere %s til %s' % (fraObj, kart[fraObj]))
         kart[fraObj] = fun() # finner riktig lagringssted og kjører riktig funksjon
@@ -127,21 +130,21 @@ class firmaOppsett(firma_ui.Ui_firmaOppsett):
         except ValueError:
             return None
 
-    def oppdaterFirma(self):
-        self.firma.firmanavn  = unicode(self.gui.Firmanavn.text())
-        self.firma.organisasjonsnummer = unicode(self.gui.Organisasjonsnummer.text())
-        self.firma.kontaktperson = unicode(self.gui.Kontaktperson.text())
-        self.firma.epost      = unicode(self.gui.Epost.text())
-        self.firma.adresse    = unicode(self.gui.Adresse.text())
-        self.firma.postnummer = self.kanskjetall(self.gui.Postnummer)
-        self.firma.poststed   = unicode(self.gui.Poststed.text())
-        self.firma.telefon    = self.kanskjetall(self.gui.Telefon)
-        self.firma.mobil      = self.kanskjetall(self.gui.Mobil)
-        self.firma.telefaks   = self.kanskjetall(self.gui.Telefaks)
-        self.firma.kontonummer = self.kanskjetall(self.gui.Kontonummer)
-        self.firma.vilkar     = unicode(self.gui.Vilkar.text())
-        self.firma.mva        = int(self.gui.Mva.value())
-        self.firma.forfall    = int(self.gui.Forfall.value())
+    def oppdater(self):
+        self.firma.firmanavn  = unicode(self.Firmanavn.text())
+        self.firma.organisasjonsnummer = unicode(self.Organisasjonsnummer.text())
+        self.firma.kontaktperson = unicode(self.Kontaktperson.text())
+        self.firma.epost      = unicode(self.Epost.text())
+        self.firma.adresse    = unicode(self.Adresse.toPlainText())
+        self.firma.postnummer = self.kanskjetall(self.Postnummer)
+        self.firma.poststed   = unicode(self.Poststed.text())
+        self.firma.telefon    = self.kanskjetall(self.Telefon)
+        self.firma.mobil      = self.kanskjetall(self.Mobil)
+        self.firma.telefaks   = self.kanskjetall(self.Telefaks)
+        self.firma.kontonummer = self.kanskjetall(self.Kontonummer)
+        self.firma.vilkar     = unicode(self.Vilkar.toPlainText())
+        self.firma.mva        = int(self.Mva.value())
+        self.firma.forfall    = int(self.Forfall.value())
 
         mangler = self.sjekkFirmaMangler()
         if mangler:
@@ -156,11 +159,11 @@ class firmaOppsett(firma_ui.Ui_firmaOppsett):
 
     def sjekkFirmaMangler(self):
         kravkart = {}
-        kravkart.update(self.KontrollKart)
+        kravkart.update(self._kontrollkart)
         for obj in kravkart.keys():
             if isinstance(obj, QtGui.QSpinBox): test = obj.value() > 0
             elif isinstance(obj, QtGui.QComboBox): test = obj.currentText()
-            elif isinstance(obj, (QLineEdit,QTextEdit,)): test = obj.text()
+            elif isinstance(obj, (QtGui.QLineEdit,QtGui.QTextEdit,)): test = obj.text()
             if test: kravkart.pop(obj)
         return kravkart
 
@@ -169,25 +172,27 @@ class firmaOppsett(firma_ui.Ui_firmaOppsett):
         s = u"<b><font color=red>Følgende felter må fylles ut:</font></b><ol>"
         ok = QtGui.QColor('white')
         tom = QtGui.QColor('red')
-        for obj in self.KontrollKart.keys():
+        for obj in self._kontrollkart.keys():
             if isinstance(obj, QtGui.QSpinBox): test = obj.value() > 0
             elif isinstance(obj, QtGui.QComboBox): test = obj.currentText()
-            elif isinstance(obj, (QLineEdit,QTextEdit,)): test = obj.text()
+            elif isinstance(obj, (QtGui.QLineEdit,QtGui.QTextEdit,)): test = obj.text()
             if test:
-                obj.setPaletteBackgroundColor(ok)
+                #obj.setPaletteBackgroundColor(ok)
+                obj.setStyleSheet("QWidget { background-color: white; }")
                 #self.oppdaterFirmainfo(obj) # lagrer informasjonen
             else:
-                s += u"<li>%s" % self.KontrollKart[obj]
-                obj.setPaletteBackgroundColor(tom)
+                s += u"<li>%s" % self._kontrollkart[obj]
+                obj.setStyleSheet("QWidget { background-color: red; }")
+                #obj.setPaletteBackgroundColor(tom)
                 mangler += 1
         if not mangler:
-            self.gui.LagreInfo.setText('')
-            self.gui.Lagre.setEnabled(True)
+            #self.LagreInfo.setText('')
+            #self.Lagre.setEnabled(True)
             return True
         else:
             s += "</ol>"
-            self.gui.LagreInfo.setText(s)
-            self.gui.Lagre.setEnabled(False)
+            #self.LagreInfo.setText(s)
+            #self.Lagre.setEnabled(False)
 
     def finnFjernLogo(self):
         if self.firma.logo:
@@ -195,26 +200,25 @@ class firmaOppsett(firma_ui.Ui_firmaOppsett):
             self.visLogo()
         else:
             startdir = ""
-            logo = QtGui.QFileDialog.getOpenFileName(
+            logo = QtGui.QFileDialog.getOpenFileName(self.gui,
+                "Velg bildefil for firmaets logo",
                 startdir,
                 'Bildefiler (*.png *.xpm *.jpg *.jpeg *.gif *.bmp *.ppm *.pgm *.pbm)',
-                self,
-                "Velg logofil",
-                "Velg bildefil for firmaets logo"
                 )
             if len(unicode(logo)) > 0:
-                debug("Setter ny logo: %s" % logo)
+                print ("Setter ny logo: %s" % logo)
 
                 l = QtGui.QPixmap()
                 l.loadFromData(open(unicode(logo)).read())
 
-                stream = QtGui.QBuffer()
-                l.convertToImage().smoothScale(360,360, QtGui.QImage.ScaleMax).save(stream, 'PNG')
+                stream = QtCore.QBuffer()
+                l.toImage().save(stream, 'PNG')
+                #l.convertToImage().smoothScale(360,360, QtGui.QImage.ScaleMax).save(stream, 'PNG')
 
                 #import sqlite
 
                 #self.firma.logo = sqlite.encode(stream.getData())
-                self.firma.logo = buffer(stream.getData())
+                self.firma.logo = buffer(stream.data())
                 self.visLogo()
 
 
