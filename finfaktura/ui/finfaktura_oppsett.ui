@@ -41,7 +41,7 @@
          <bool>false</bool>
         </property>
         <property name="buddy" >
-         <cstring>lineEdit31</cstring>
+         <cstring>oppsettProgramVisPDF</cstring>
         </property>
        </widget>
       </item>
@@ -78,6 +78,9 @@
         </property>
         <property name="wordWrap" >
          <bool>false</bool>
+        </property>
+        <property name="buddy" >
+         <cstring>oppsettFakturakatalog</cstring>
         </property>
        </widget>
       </item>
