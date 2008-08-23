@@ -29,7 +29,7 @@ from finfaktura.fakturafeil import *
 
 from PyQt4 import QtCore, QtGui, uic
 import faktura_rc
-import gui_sendepost, gui_epost, gui_finfaktura_oppsett
+import gui_sendepost, gui_epost, gui_finfaktura_oppsett, gui_firma
 from ekstra import debug
 
 
@@ -56,7 +56,7 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
             self.patchDebugModus() # vis live debug-konsoll
 
         # rullegardinmeny:
-        #self.connect(self.gui.actionDitt_firma, QtCore.SIGNAL("activated()"), self.visDittFirma)
+        self.connect(self.gui.actionDitt_firma, QtCore.SIGNAL("activated()"), self.visFirmaOppsett)
         self.connect(self.gui.actionEpost, QtCore.SIGNAL("activated()"), self.visEpostOppsett)
         self.connect(self.gui.actionProgrammer, QtCore.SIGNAL("activated()"), self.visProgramOppsett)
         #self.connect(self.gui.actionOm_Finfaktura, QtCore.SIGNAL("activated()"), self.visOm)
@@ -1216,7 +1216,7 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         res = dialog.exec_()
 
     def visFirmaOppsett(self):
-        dialog = gui_firma.firmaOppsett(self.faktura)
+        dialog = gui_firma.firmaOppsett(self.firma)
         res = dialog.exec_()
         #if res == QtGui.QDialog.Accepted:
           #return self.sendEpostfaktura(ordre, tekst, pdfFilnavn)
