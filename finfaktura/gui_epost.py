@@ -108,7 +108,7 @@ class epostOppsett(epost_ui.Ui_epostOppsett):
             except:pass
             self.oppdaterEpost() # må lagre for å bruke den aktive løsningen
 
-    def finnAktivTransport:
+    def finnAktivTransport():
         for i, w in enumerate(self._epostlosninger):
             if w.isChecked(): return i
 
