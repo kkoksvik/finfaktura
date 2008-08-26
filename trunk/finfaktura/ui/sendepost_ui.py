@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'sendepost.ui'
+# Form implementation generated from reading ui file 'finfaktura\ui\sendepost.ui'
 #
-# Created: Wed Aug 20 01:11:26 2008
+# Created: Wed Aug 27 01:08:49 2008
 #      by: PyQt4 UI code generator 4.4.3
 #
 # WARNING! All changes made in this file will be lost!
