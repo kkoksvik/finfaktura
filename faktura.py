@@ -34,6 +34,10 @@ if __name__ == "__main__":
         try:
             import finfaktura.gui
             finfaktura.gui.start()
+        except RessurserManglerFeil, (e):
+            print u"Feil! Ressursene er ikke generert (det må du gjøre dersom du sjekker ut fra SVN)"
+            print u"Ta en titt på scripts/forbered_ressurser.sh eller setup.py"
+            raise
         except ImportError, (e):
             print u"OOPS! Problemer med å laste moduler (bruk -d for å vise feilmelding)"
             if DEBUG:
