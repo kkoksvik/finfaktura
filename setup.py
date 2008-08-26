@@ -17,18 +17,6 @@ import sys, os, os.path, glob
 
 import finfaktura # for versjonsnummer
 
-def install_resources():
-    """Kjører pyrcc4 og pyuic4 på de nødvendige filene"""
-    ui_files = glob.glob(os.path.join('finfaktura', 'ui', '*.ui'))
-    rc_files = ['faktura.qrc',]
-
-    for f in ui_files:
-        out = os.path.join('finfaktura', 'ui', os.path.basename(f) + '_ui.py')
-        os.system('pyuic4 -x -o "%s" "%s"' % (out, f)
-    for f in rc_files:
-        out = os.path.join('finfaktura', 'ui', os.path.basename(f) + '_rc.py')
-        os.system('pyrcc4 -x -o "%s" "%s"' % (out, f)
-                  
 setup(name="finfaktura",
       version=finfaktura.__version__,
       description="Fryktelig Fin Faktura - fakturaprogram for norske næringsdrivende",

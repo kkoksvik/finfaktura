@@ -1,4 +1,4 @@
-#!/usr/bin/python -d
+#!/usr/bin/python
 # -*- coding:utf8 -*-
 # kate: indent-width 4;
 ###########################################################################
@@ -14,6 +14,7 @@
 __doc__ = """Fryktelig fin faktura: skriv ut fakturaene dine"""
 
 import sys
+from finfaktura.fakturafeil import *
 
 if __name__ == "__main__":
 
@@ -35,9 +36,13 @@ if __name__ == "__main__":
             import finfaktura.gui
             finfaktura.gui.start()
         except RessurserManglerFeil, (e):
-            print u"Feil! Ressursene er ikke generert (det må du gjøre dersom du sjekker ut fra SVN)"
+            print e
+            #print u"Feil! Ressursene er ikke generert (det må du gjøre dersom du sjekker ut fra SVN)"
             print u"Ta en titt på scripts/forbered_ressurser.sh eller setup.py"
-            raise
+            #raise
+            print u"Gjr arbeidet for deg"
+            from finfaktura.ekstra import forbered_ressurser
+            forbered_ressurser()
         except ImportError, (e):
             print u"OOPS! Problemer med å laste moduler (bruk -d for å vise feilmelding)"
             if DEBUG:
