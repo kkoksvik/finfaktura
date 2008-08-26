@@ -28,8 +28,11 @@ import finfaktura.fakturakomponenter
 from finfaktura.fakturafeil import *
 
 from PyQt4 import QtCore, QtGui, uic
-import faktura_rc
-import gui_sendepost, gui_epost, gui_finfaktura_oppsett, gui_firma
+try:
+    import faktura_rc
+    import gui_sendepost, gui_epost, gui_finfaktura_oppsett, gui_firma
+except ImportError, (e):
+    raise RessurserManglerFeil(e)
 from ekstra import debug
 
 
