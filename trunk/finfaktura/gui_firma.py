@@ -45,27 +45,6 @@ class firmaOppsett(firmainfo_ui.Ui_firmaOppsett):
             self.oppdater()
         return res
 
-
-
-        #for obj in (self.Firmanavn,
-            #self.Organisasjonsnummer,
-            #self.Kontaktperson,
-            #self.Epost,
-            #self.Postnummer,
-            #self.Poststed,
-            #self.Telefon,
-            #self.Telefaks,
-            #self.Mobil,
-            #self.Kontonummer):
-            #self.connect(obj, QtCore.SIGNAL("lostFocus()"), self.firmaSjekk)
-
-        #for obj in (self.Adresse,
-            ##self.Vilkar
-            #):
-            #obj.focusOutEvent = self.firmaSjekk
-
-        #self.connect(self.Forfall, QtCore.SIGNAL("valueChanged(int)"), self.firmaSjekk)
-
 ############## FIRMAINFO ###################
 
     def firmaWidgetKart(self):
@@ -176,6 +155,9 @@ class firmaOppsett(firmainfo_ui.Ui_firmaOppsett):
             if isinstance(obj, QtGui.QSpinBox): test = obj.value() > 0
             elif isinstance(obj, QtGui.QComboBox): test = obj.currentText()
             elif isinstance(obj, (QtGui.QLineEdit,QtGui.QTextEdit,)): test = obj.text()
+            elif isinstance(obj, (QtGui.QPlainTextEdit,)): test = obj.toPlainText()
+            else:
+                print obj, type(obj)
             if test:
                 #obj.setPaletteBackgroundColor(ok)
                 obj.setStyleSheet("QWidget { background-color: white; }")
