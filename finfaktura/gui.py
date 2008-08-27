@@ -16,7 +16,7 @@ import sys, os.path, dircache, mimetypes, re
 from string import join
 from time import time, strftime, localtime, mktime
 from finfaktura.fakturabibliotek import PRODUKSJONSVERSJON, \
-    FakturaBibliotek, kobleTilDatabase
+    FakturaBibliotek, kobleTilDatabase, lagDatabase, finnDatabasenavn
 import finfaktura.f60 as f60
 from finfaktura.myndighetene import myndighetene
 from finfaktura.epost import TRANSPORT_METODER
@@ -143,8 +143,9 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
             self.faktura = FakturaBibliotek(self.db)
             self.firma   = self.faktura.firmainfo()
             self.obs(u"Dette er første gang du starter programmet.\nFør du kan legge inn din første faktura, \ner jeg nødt til å få informasjon om firmaet ditt.")
-            self.fakturaTab.showPage(self.fakturaTab.page(4))
-            self.gammelTab = 3
+            self.visFirmaOppsett()
+            #self.fakturaTab.showPage(self.fakturaTab.page(4))
+            #self.gammelTab = 3
         except DBGammelFeil, (E):
             #oppgrader databasen
             if not self.JaNei(u"Databasen må oppgraderes.\nVil du gjøre det nå?"):
@@ -175,10 +176,10 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         finfaktura.rapport.PDFVIS = self.faktura.oppsett.vispdf
         finfaktura.fakturakomponenter.PDFVIS = self.faktura.oppsett.vispdf
 
-        if not self.faktura.oppsett.skrivutpdf:
-            self.faktura.oppsett.skrivutpdf = PDFUTSKRIFT
-        finfaktura.fakturakomponenter.PDFUTSKRIFT = self.faktura.oppsett.skrivutpdf
-        f60.PDFUTSKRIFT = self.faktura.oppsett.skrivutpdf
+        #if not self.faktura.oppsett.skrivutpdf:
+        #    self.faktura.oppsett.skrivutpdf = PDFUTSKRIFT
+        #finfaktura.fakturakomponenter.PDFUTSKRIFT = self.faktura.oppsett.skrivutpdf
+        #f60.PDFUTSKRIFT = self.faktura.oppsett.skrivutpdf
 
         self.skiftTab(0)
 
@@ -800,12 +801,12 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
             k = self.faktura.nyKunde()
         else:
             debug("oppdaterer kunde, som var " + unicode(k))
-        k.navn = self.gui.kundeInfoNavn.text()
-        k.kontaktperson = self.gui.kundeInfoKontaktperson.text()
-        k.epost = self.gui.kundeInfoEpost.text()
-        k.status = self.gui.kundeInfoStatus.currentText()
-        k.adresse = self.gui.kundeInfoAdresse.toPlainText()
-        k.poststed = self.gui.kundeInfoPoststed.text()
+        k.navn = unicode(self.gui.kundeInfoNavn.text()).strip()
+        k.kontaktperson = unicode(self.gui.kundeInfoKontaktperson.text()).strip()
+        k.epost = unicode(self.gui.kundeInfoEpost.text()).strip()
+        k.status = unicode(self.gui.kundeInfoStatus.currentText()).strip()
+        k.adresse = unicode(self.gui.kundeInfoAdresse.toPlainText()).strip()
+        k.poststed = unicode(self.gui.kundeInfoPoststed.text()).strip()
         k.postnummer = self.gui.kundeInfoPostnummer.text()
         k.telefon = self.gui.kundeInfoTelefon.text()
         k.telefaks = self.gui.kundeInfoTelefaks.text()
@@ -997,9 +998,10 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
                     self.gui.varerInfoPris:"Pris",
                     }
         for obj in kravkart.keys():
-            if isinstance(obj, QtGui.QSpinBox): test = obj.value() > 0
+            if isinstance(obj, (QtGui.QSpinBox, QtGui.QDoubleSpinBox)): test = obj.value() > 0.0
             elif isinstance(obj, QtGui.QComboBox): test = obj.currentText()
             elif isinstance(obj, QtGui.QLineEdit): test = obj.text()
+            elif isinstance(obj, QtGui.QPlainTextEdit): test = obj.toPlainText()
             if not test:
                 self.alert(u'Du er nødt til å oppgi %s' % (kravkart[obj].lower()))
                 obj.setFocus()
@@ -1009,11 +1011,11 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
             v = self.faktura.nyVare()
         else:
             debug("oppdaterer vare, som var: " + unicode(v))
-        v.navn = self.gui.varerInfoNavn.text()
-        v.detaljer = self.gui.varerInfoDetaljer.toPlainText()
-        v.enhet = self.gui.varerInfoEnhet.currentText()
+        v.navn = unicode(self.gui.varerInfoNavn.text()).strip()
+        v.detaljer = unicode(self.gui.varerInfoDetaljer.toPlainText()).strip()
+        v.enhet = unicode(self.gui.varerInfoEnhet.currentText()).strip()
         v.pris = float(self.gui.varerInfoPris.value())
-        v.mva = self.gui.varerInfoMva.value()
+        v.mva = int(self.gui.varerInfoMva.value())
         self.gui.varerInfo.hide()
         self.visVarer()
 
@@ -1071,31 +1073,29 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
                          'viskansellerte':False}
         if self.gui.okonomiAvgrensningerDato.isChecked():
             aar = self.gui.okonomiAvgrensningerDatoAr.value()
-            bmnd = self.gui.okonomiAvgrensningerDatoManed.currentItem()
+            bmnd = self.gui.okonomiAvgrensningerDatoManed.currentIndex()
             if bmnd == 0:
                 bmnd = 1
                 smnd = 12
             else:
-                smnd = bmnd + self.okonomiAvgrensningerDatoPeriode.currentItem()
+                smnd = bmnd + self.gui.okonomiAvgrensningerDatoPeriode.currentIndex()
             beg = mktime((aar,bmnd,1,0,0,0,0,0,0))
             slutt = mktime((aar,smnd,31,0,0,0,0,0,0))
             debug("%s %s %s %s" % (bmnd, smnd, beg, slutt))
             ordrehenter.begrensDato(beg, slutt)
             begrensninger['dato'] = (beg,slutt)
         if self.gui.okonomiAvgrensningerKunde.isChecked():
-            krex = re.search(re.compile(r'kunde\ #\s?(\d+)'),
-                unicode(self.gui.okonomiAvgrensningerKundeliste.currentText()))
+            kliste = self.gui.okonomiAvgrensningerKundeliste 
             try:
-                kunde = self.faktura.hentKunde(int(krex.group(1)))
+                kunde = kliste.itemData(kliste.currentIndex()).toPyObject()
                 ordrehenter.begrensKunde(kunde)
                 begrensninger['kunde'] = kunde
             except IndexError:
                 raise
         if self.gui.okonomiAvgrensningerVare.isChecked():
-            vrex = re.search(re.compile(r'^\(#(\d+)\)'),
-                unicode(self.gui.okonomiAvgrensningerVareliste.currentText()))
+            vliste = self.gui.okonomiAvgrensningerVareliste
             try:
-                vare = self.faktura.hentVare(int(vrex.group(1)))
+                vare = vliste.itemData(vliste.currentIndex()).toPyObject()
                 ordrehenter.begrensVare(vare)
                 begrensninger['vare'] = vare
             except IndexError:
@@ -1107,8 +1107,8 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
 
         if self.gui.okonomiSorter.isChecked():
             sorter = [ 'dato', 'kunde', 'vare' ]
-            ordrehenter.sorterEtter(sorter[self.gui.okonomiSorterListe.currentItem()])
-            begrensninger['sortering'] = sorter[self.gui.okonomiSorterListe.currentItem()]
+            ordrehenter.sorterEtter(sorter[self.gui.okonomiSorterListe.currentIndex()])
+            begrensninger['sortering'] = sorter[self.gui.okonomiSorterListe.currentIndex()]
 
         ordreliste = ordrehenter.hentOrdrer()
         return ordreliste, begrensninger
@@ -1160,11 +1160,9 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         self.gui.okonomiAvgrensningerDatoManed.clear()
         self.gui.okonomiAvgrensningerDatoPeriode.clear()
         mnd = [u'Hele året', 'Januar', 'Februar', 'Mars', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Desember']
-        in1 = self.gui.okonomiAvgrensningerDatoManed.insertItem
-        in2 = self.gui.okonomiAvgrensningerDatoPeriode.insertItem
-        for z in mnd: in1(z)
-        for i in range(1,12): in2(u'Og %i måneder fram' % i)
-
+        self.gui.okonomiAvgrensningerDatoManed.addItems(mnd)
+        self.gui.okonomiAvgrensningerDatoPeriode.addItems( [ u'Og %i måneder fram' % i for i in range(1,12) ] )
+        
     def okonomiFyllDatoPeriode(self, manedId):
         #bare tilgjengelig dersom det ikke er valgt 'Hele året'
         self.gui.okonomiAvgrensningerDatoPeriode.setEnabled(manedId > 0)
@@ -1172,16 +1170,18 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
     def okonomiFyllKunder(self, ibruk):
         self.gui.okonomiAvgrensningerKundeliste.setEnabled(ibruk)
         self.gui.okonomiAvgrensningerKundeliste.clear()
-        i = self.gui.okonomiAvgrensningerKundeliste.insertItem
-        for kunde in self.faktura.hentKunder(inkluderSlettede=True):
-            i(unicode(kunde))
+        if ibruk:
+            i = self.gui.okonomiAvgrensningerKundeliste.addItem
+            for kunde in self.faktura.hentKunder(inkluderSlettede=True):
+                i(unicode(kunde), QtCore.QVariant(kunde))
 
     def okonomiFyllVarer(self, ibruk):
         self.gui.okonomiAvgrensningerVareliste.setEnabled(ibruk)
         self.gui.okonomiAvgrensningerVareliste.clear()
-        i = self.gui.okonomiAvgrensningerVareliste.insertItem
-        for v in self.faktura.hentVarer(inkluderSlettede=True):
-            i(unicode("(#%i) %s") % (v.ID, v))
+        if ibruk:
+            i = self.gui.okonomiAvgrensningerVareliste.addItem
+            for v in self.faktura.hentVarer(inkluderSlettede=True):
+                i(unicode("(#%i) %s") % (v.ID, v), QtCore.QVariant(v))
 
     def okonomiFyllSortering(self, ibruk):
         self.gui.okonomiSorterListe.setEnabled(ibruk)
@@ -1195,18 +1195,6 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         rapport = finfaktura.rapport.rapport('/tmp/hei.pdf', beskrivelse)
         rapport.lastOrdreliste(ordrer)
         rapport.vis(program=self.faktura.oppsett.vispdf)
-
-############## MYNDIGHETER ###################
-
-    def visMyndigheter(self):
-        from finfaktura.myndighetene import myndighetene
-        offentlige = myndighetene()
-
-        debug("finner skjemaplikter for %s" % self.firma.organisasjonsnummer)
-        self.myndigheteneSkjemaListe.clear()
-        for skjema in offentlige.skjemaplikter(self.firma.organisasjonsnummer):
-            i = QtGui.QListViewItem(self.myndigheteneSkjemaListe, skjema[0],skjema[1],skjema[2],skjema[3])
-            self.myndigheteneSkjemaListe.insertItem(i)
 
 ############## INTERNE DIALOGER ###################
 
