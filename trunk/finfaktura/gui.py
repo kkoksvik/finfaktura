@@ -113,9 +113,8 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         topplinje = self.gui.fakturaVareliste.horizontalHeader()
         topplinje.setResizeMode(0, QtGui.QHeaderView.Stretch)
         topplinje.setResizeMode(3, QtGui.QHeaderView.Fixed)
-        topplinje.setMinimumSectionSize(85)
-        topplinje.resizeSection(1, 85)
-        topplinje.resizeSection(2, 90)
+        topplinje.resizeSection(1, 100)
+        topplinje.resizeSection(2, 100)
         topplinje.resizeSection(3, 85)
 
         self.gui.kundeKundeliste.contextMenuEvent = self.kundeContextMenu
@@ -422,8 +421,6 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         self.gui.fakturaVareliste.setCellWidget(rad, 1, Antall)
         self.gui.fakturaVareliste.setCellWidget(rad, 2, Pris)
         self.gui.fakturaVareliste.setCellWidget(rad, 3, Mva)
-        #self.gui.fakturaVareliste.horizontalHeader().resizeSections(QtGui.QHeaderView.Stretch)
-        #self.gui.fakturaVareliste.resizeColumnsToContents()
         return self.fakturaVarelisteSynk(rad, 0)
 
     def fakturaVarelisteSynk(self, rad, kol):
