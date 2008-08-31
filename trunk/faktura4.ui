@@ -6,7 +6,7 @@
     <x>0</x>
     <y>0</y>
     <width>852</width>
-    <height>864</height>
+    <height>873</height>
    </rect>
   </property>
   <property name="font" >
@@ -337,7 +337,7 @@
                  </property>
                  <layout class="QGridLayout" name="gridLayout_7" >
                   <item row="0" column="0" >
-                   <widget class="QFrame" name="frame" >
+                   <widget class="QFrame" name="fakturaAlternativer" >
                     <property name="frameShape" >
                      <enum>QFrame::NoFrame</enum>
                     </property>
@@ -759,33 +759,6 @@
            <bool>true</bool>
           </property>
           <layout class="QGridLayout" name="gridLayout" >
-           <item row="1" column="0" colspan="2" >
-            <layout class="QHBoxLayout" name="horizontalLayout_6" >
-             <item>
-              <spacer name="horizontalSpacer_2" >
-               <property name="orientation" >
-                <enum>Qt::Horizontal</enum>
-               </property>
-               <property name="sizeHint" stdset="0" >
-                <size>
-                 <width>608</width>
-                 <height>20</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-             <item>
-              <widget class="QPushButton" name="kundeInfoEndre" >
-               <property name="text" >
-                <string>&amp;Lag ny kunde</string>
-               </property>
-               <property name="shortcut" >
-                <string>Alt+L</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
            <item row="0" column="0" >
             <layout class="QFormLayout" name="formLayout" >
              <property name="fieldGrowthPolicy" >
@@ -1045,6 +1018,33 @@
                 </size>
                </property>
               </spacer>
+             </item>
+            </layout>
+           </item>
+           <item row="1" column="0" colspan="2" >
+            <layout class="QHBoxLayout" name="horizontalLayout_6" >
+             <item>
+              <spacer name="horizontalSpacer_2" >
+               <property name="orientation" >
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0" >
+                <size>
+                 <width>608</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QPushButton" name="kundeInfoEndre" >
+               <property name="text" >
+                <string>&amp;Lag ny kunde</string>
+               </property>
+               <property name="shortcut" >
+                <string>Alt+L</string>
+               </property>
+              </widget>
              </item>
             </layout>
            </item>
@@ -1904,7 +1904,7 @@
      <x>0</x>
      <y>0</y>
      <width>852</width>
-     <height>21</height>
+     <height>27</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuOppsett" >
@@ -2001,7 +2001,7 @@
   <connection>
    <sender>fakturaFaktaOverstyr</sender>
    <signal>toggled(bool)</signal>
-   <receiver>frame</receiver>
+   <receiver>fakturaAlternativer</receiver>
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel" >
