@@ -19,5 +19,6 @@ finfaktura/test.py
 finfaktura/historikk.py
 finfaktura/rapport.py
 README
+LICENSE
 scripts/oppgrader-databasen-til-1.0.sh
 
