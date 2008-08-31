@@ -9,8 +9,7 @@ Miljøvariabelen FAKTURADIR kan brukes til å styre hvor databasen skal lagres. 
 
 $ FAKTURADIR=/var/fakturadb ./faktura.py
 
-Du finner mer informasjon om programmet på prosjektsidene_.
-
+Du finner mer informasjon om programmet, og informasjon om feilsøking på prosjektsidene_.
 
 .. _pdf: http://en.wikipedia.org/wiki/Portable_Document_Format
 .. _prosjektsidene: http://finfaktura.googlecode.com/
@@ -22,7 +21,7 @@ Programmet er laget for å kjøre på linux, windows og apple osx.
 
 Følgende moduler er påkrevet:
 
-- python_ Fryktelig fin faktura utvikles og testes i python2.5. Andre versjoner kan fungere
+- python_ Fryktelig fin faktura utvikles og testes i python2.5. Andre versjoner *kan* fungere
 - python-modulen PyQt4_
 - python-modulen Reportlab_
 
@@ -35,8 +34,7 @@ Disse oppfylles automatisk med når du installerer fra pakke (linux) eller medf�
 Opphavsrett
 ===========
 
-Idé og koding: Håvard Dahle
-Med god hjelp fra Håvard Sjøvoll
+Idé og koding: Håvard Gulldahl <havard@gulldahl.no>
 Dette er åpen kildekode, du kan fritt gjenbruke og videredistribuere under GPL2-lisensen.
 
 Kjente feil og planlagte egenskaper
@@ -51,7 +49,7 @@ Historikk
 2006-05-12: Lisensbetingelser
 2006-05-31: Kjente feil & Planlagte egenskaper
 2006-10-09: Flyttet feil og planlagte egenskaper til code.google.com
-2008-08-24: Oppdaterte
+2008-08-31: Oppdaterte
 
 $Id$
 
