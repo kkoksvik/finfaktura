@@ -1,47 +1,57 @@
-
 Fryktelig fin fakura
 ====================
-:oppdatert:$Date: 2006/09/10 12:38:25 $
 
 Dette er et enkelt program for å lage fakturaer. Fakturaene lages som pdf_ og kan skrives ut på skjema f60 eller sendes som epost. Programmet lager en database over varer, kunder, og utsendte fakturaer.
 
-Programmet startes ved å kjøre faktura.py. For tekstmodus, bruk opsjonen -i. 
+Programmet startes ved å kjøre faktura.py. For tekstmodus, bruk opsjonen -i.
 
 Miljøvariabelen FAKTURADIR kan brukes til å styre hvor databasen skal lagres. Eksempel:
 
 $ FAKTURADIR=/var/fakturadb ./faktura.py
 
+Du finner mer informasjon om programmet på prosjektsidene_.
+
+
+.. _pdf: http://en.wikipedia.org/wiki/Portable_Document_Format
+.. _prosjektsidene: http://finfaktura.googlecode.com/
+
 Systemkrav
 ==========
 
-- python_ Testet i python2.4, andre versjoner kan fungere
-- python-modulen sqlite_
-- python-modulen pyqt_
+Programmet er laget for å kjøre på linux, windows og apple osx.
 
-.. _pdf: http://en.wikipedia.org/wiki/Portable_Document_Format
+Følgende moduler er påkrevet:
+
+- python_ Fryktelig fin faktura utvikles og testes i python2.5. Andre versjoner kan fungere
+- python-modulen PyQt4_
+- python-modulen Reportlab_
+
+Disse oppfylles automatisk med når du installerer fra pakke (linux) eller medfølgende installasjonsprogram (windows).
+
 .. _python: http://python.org/
-.. _sqlite: http://pysqlite.org/
-.. _pyqt: http://www.riverbankcomputing.co.uk/pyqt
+.. _pyqt: http://www.riverbankcomputing.com/software/pyqt/intro
+.. _reportlab: http://www.reportlab.org/rl_toolkit.html
 
 Opphavsrett
 ===========
 
 Idé og koding: Håvard Dahle
 Med god hjelp fra Håvard Sjøvoll
-Distribueres under GPL2 
+Dette er åpen kildekode, du kan fritt gjenbruke og videredistribuere under GPL2-lisensen.
 
 Kjente feil og planlagte egenskaper
 ===================================
 
 Se http://code.google.com/p/finfaktura/issues/list
 
-Historikk 
+Historikk
 =========
 2005-12-12: Første disposisjon.
 2006-05-07: Restructured Text
 2006-05-12: Lisensbetingelser
 2006-05-31: Kjente feil & Planlagte egenskaper
 2006-10-09: Flyttet feil og planlagte egenskaper til code.google.com
+2008-08-24: Oppdaterte
 
 $Id$
 
