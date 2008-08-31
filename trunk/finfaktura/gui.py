@@ -1238,6 +1238,10 @@ class tekstVindu(object):
         return self.gui.exec_()
 
 def les_ressurs(ressurs):
+    """Leser en intern QT4-ressurs (qrc) og returnerer den som en QString.
+
+    'ressurs' er på formatet ':/sti/navn', for eksempel ':/sql/faktura.sql'
+    """
     f = QtCore.QFile(ressurs)
     if not f.open(QtCore.QIODevice.ReadOnly | QtCore.QIODevice.Text):
         raise IOError(u"Kunne ikke åpne ressursen '%s'" % ressurs)
@@ -1252,11 +1256,4 @@ def start():
     ff = FinFaktura()
     ff.gui.show()
     sys.exit(app.exec_())
-
-
-
-if __name__ == "__main__":
-
-    DEBUG = "-d" in sys.argv[1:]
-
 
