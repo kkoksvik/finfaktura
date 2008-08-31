@@ -10,9 +10,11 @@
 #
 ###########################################################################
 
+import logging
 from PyQt4 import QtCore, QtGui
 from ui import epost_ui
 import epost
+
 
 class epostOppsett(epost_ui.Ui_epostOppsett):
     def __init__(self, faktura):
@@ -34,7 +36,7 @@ class epostOppsett(epost_ui.Ui_epostOppsett):
     def exec_(self):
         res = self.gui.exec_()
         if res == QtGui.QDialog.Accepted:
-            debug('oppdaterer')
+            logging.debug('oppdaterer')
             self.oppdaterEpost()
         return res
 
@@ -62,7 +64,7 @@ class epostOppsett(epost_ui.Ui_epostOppsett):
             self.sendmailSti.setText('~')
 
     def oppdaterEpost(self):
-        debug("lagrer epost")
+        logging.debug("lagrer epost")
         self.faktura.epostoppsett.transport = self.finnAktivTransport()
         if not self.sendKopi.isChecked():
             self.kopiAdresse.setText('')
@@ -80,7 +82,7 @@ class epostOppsett(epost_ui.Ui_epostOppsett):
         self.faktura.epostoppsett.sendmailsti = unicode(self.sendmailSti.text())
 
     def roterAktivSeksjon(self, seksjon):
-        debug("roterer til %s er synlig" % seksjon)
+        logging.debug("roterer til %s er synlig" % seksjon)
         bokser = {'smtp':self.boxSMTP, 'sendmail':self.boxSendmail}
         if seksjon == 'auto': #vis alt
             map(lambda x: x.setEnabled(True), bokser.values())
@@ -116,5 +118,5 @@ class epostOppsett(epost_ui.Ui_epostOppsett):
         ##self.epostSmtpBrukernavn.setEnabled(vis)
         #self.epostSmtpPassord.setEnabled(vis)
 
-def debug(s):
+def logging.debug(s):
     print 'XXX', s

@@ -10,6 +10,7 @@
 #
 ###########################################################################
 
+import logging
 from PyQt4 import QtCore, QtGui
 from ui import finfaktura_oppsett_ui
 
@@ -27,7 +28,7 @@ class finfakturaOppsett(finfaktura_oppsett_ui.Ui_FinFakturaOppsett):
     def exec_(self):
         res = self.gui.exec_()
         if res == QtGui.QDialog.Accepted:
-            print 'oppdaterer'
+            logging.debug('oppdaterer')
             self.oppdater()
         return res
 
@@ -44,7 +45,7 @@ class finfakturaOppsett(finfaktura_oppsett_ui.Ui_FinFakturaOppsett):
             QtGui.QFileDialog.ShowDirsOnly
             )
         if len(unicode(ny)) > 0:
-            print "Setter ny fakturakataolg: %s" % ny
+            logging.debug("Setter ny fakturakataolg: %s" % ny)
             self.faktura.oppsett.fakturakatalog = unicode(ny)
             self.oppsettFakturakatalog.setText(unicode(ny))
 
@@ -53,12 +54,12 @@ class finfakturaOppsett(finfaktura_oppsett_ui.Ui_FinFakturaOppsett):
             u"Velg et program til å åpne PDF i",
             self.oppsettProgramVisPDF.text()))
         if len(ny) > 0:
-            print "Setter nytt visningsprogram: %s" % ny
+            logging.debug("Setter nytt visningsprogram: %s" % ny)
             self.faktura.oppsett.vispdf = ny
             self.oppsettProgramVisPDF.setText(ny)
 
     def oppdater(self):
-        print("Lager oppsett")
+        logging.debug("Lager oppsett")
         self.faktura.oppsett.fakturakatalog = unicode(self.oppsettFakturakatalog.text())
         self.faktura.oppsett.vispdf = unicode(self.oppsettProgramVisPDF.text())
 

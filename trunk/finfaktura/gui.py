@@ -15,6 +15,8 @@
 import sys, os.path, dircache, mimetypes, re
 from string import join
 from time import time, strftime, localtime, mktime
+import logging
+
 from finfaktura.fakturabibliotek import PRODUKSJONSVERSJON, \
     FakturaBibliotek, kobleTilDatabase, lagDatabase, finnDatabasenavn
 import finfaktura.f60 as f60
@@ -33,8 +35,6 @@ try:
     import gui_sendepost, gui_epost, gui_finfaktura_oppsett, gui_firma
 except ImportError, (e):
     raise RessurserManglerFeil(e)
-from ekstra import debug
-
 
 PDFVIS = "/usr/bin/kpdf" # program for å vise PDF
 
@@ -178,8 +178,8 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         self.skiftTab(0)
 
     def avslutt(self):
-        debug("__del__")
-        debug("sikkerhetskopierer databasen", finnDatabasenavn())
+        logging.debug("__del__")
+        logging.debug("sikkerhetskopierer databasen", finnDatabasenavn())
         sikkerhetskopierFil(finnDatabasenavn())
         self.c.close()
         self.db.close()
@@ -253,7 +253,7 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
                              )
             l.ordre = ordre
             if ordre.forfalt():
-                debug("%s er forfalt men ikke betalt!" % ordre._id)
+                logging.debug("%s er forfalt men ikke betalt!" % ordre._id)
                 l.setIcon(5, self.fakturaForfaltIkon)
             if bool(ordre.kansellert):
                 l.setIcon(0, self.slettetIkon)
@@ -266,7 +266,7 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         except IndexError:
             self.alert(u'Ingen kunde er valgt')
             return False
-        debug("ny faktura fra kunde: %s" % kunde.ID)
+        logging.debug("ny faktura fra kunde: %s" % kunde.ID)
         self.gui.fakturaTab.setCurrentIndex(0)
         self.nyFaktura(kunde)
 
@@ -331,7 +331,7 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
                 return False
             # hvilken vare er dette?
             vare = self.faktura.finnVareEllerLagNy(_tekst, v['pris'], v['mva'], _enhet)
-            debug("fant vare i fakturaen:", unicode(v), unicode(vare))
+            logging.debug("fant vare i fakturaen:", unicode(v), unicode(vare))
             # er dette en duplikatoppføring?
             if varer.has_key(vare.ID) and varer[v['id']]['mva'] == v['mva'] \
                 and varer[v['id']]['pris'] == v['pris']:
@@ -343,8 +343,8 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
             #legg varen til fakturaen
             f.leggTilVare(vare, v['ant'], v['pris'], v['mva'])
 
-        debug("legger inn faktura: %s " % unicode(f))
-        debug("Lager sikkerhetskopi")
+        logging.debug("legger inn faktura: %s " % unicode(f))
+        logging.debug("Lager sikkerhetskopi")
         self.faktura.lagSikkerhetskopi(f)
         self.gui.fakturaFakta.hide()
         self.visFaktura() # oppdater listen slik at den nye fakturaen blir med
@@ -429,7 +429,7 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         return self.fakturaVarelisteSynk(rad, 0)
 
     def fakturaVarelisteSynk(self, rad, kol):
-        debug("synk:", rad, kol)
+        logging.debug("synk:", rad, kol)
         sender = self.gui.fakturaVareliste.cellWidget(rad, kol)
         if kol == 0: # endret på varen -> oppdater metadata
             _vare = sender.itemData(sender.currentIndex())
@@ -437,7 +437,7 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
                 vare = _vare.toPyObject()
             else:
                 # ny vare, tøm andre felt
-                debug("ny vare opprettet", unicode(sender.currentText()))
+                logging.debug("ny vare opprettet", unicode(sender.currentText()))
                 self.gui.fakturaVareliste.cellWidget(rad, 1).setSuffix('')
                 self.gui.fakturaVareliste.cellWidget(rad, 2).setValue(0.0)
                 self.gui.fakturaVareliste.cellWidget(rad, 3).setValue(float(self.firma.mva))
@@ -653,8 +653,8 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
 
     def sendEpostfaktura(self, ordre, tekst, filnavn):
         try:
-            debug('sender epostfaktura: ordre # %i, til: %s' % (ordre._id, ordre.kunde.epost))
-            debug('bruker transport %s' % TRANSPORT_METODER[self.faktura.epostoppsett.transport])
+            logging.debug('sender epostfaktura: ordre # %i, til: %s' % (ordre._id, ordre.kunde.epost))
+            logging.debug('bruker transport %s' % TRANSPORT_METODER[self.faktura.epostoppsett.transport])
             self.faktura.sendEpost(ordre,
                                    filnavn,
                                    tekst,
@@ -766,10 +766,10 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
                 return False
 
         if k is None:
-            #debug("registrerer ny kunde")
+            #logging.debug("registrerer ny kunde")
             k = self.faktura.nyKunde()
         else:
-            debug("oppdaterer kunde, som var " + unicode(k))
+            logging.debug("oppdaterer kunde, som var " + unicode(k))
         k.navn = unicode(self.gui.kundeInfoNavn.text()).strip()
         k.kontaktperson = unicode(self.gui.kundeInfoKontaktperson.text()).strip()
         k.epost = unicode(self.gui.kundeInfoEpost.text()).strip()
@@ -841,7 +841,7 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         # finn ut hvor mange fakturaer som er betalt før forfall
         # TODO: mer avansert, ta høyde for antall dager, purring etc
         # og komme opp med en karakter
-        debug("kunde#%i: fakturaer som er betalt før forfall: %i - etter forfall eller aldri: %i" %\
+        logging.debug("kunde#%i: fakturaer som er betalt før forfall: %i - etter forfall eller aldri: %i" %\
             (linje.kunde._id, ny_betalt+forfalt_betalt, forfalt_sentbetalt+forfalt_ikkebetalt))
         korpus = float(ny_betalt+forfalt_betalt+forfalt_sentbetalt+forfalt_ikkebetalt)
         if korpus == 0.0:
@@ -877,7 +877,7 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
             kunde = self.gui.kundeKundeliste.selectedItems()[0].kunde
         except IndexError:
             return None # ingen kunde er valgt i lista
-        debug("Sletter kunde # %i" % kunde.ID)
+        logging.debug("Sletter kunde # %i" % kunde.ID)
         if self.JaNei("Vil du virkelig slette kunde nr %s (%s)?" % (kunde.ID, kunde.navn)):
             kunde.settSlettet()
             self.visKunder()
@@ -887,7 +887,7 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
             kunde = self.gui.kundeKundeliste.selectedItems()[0].kunde
         except IndexError:
             return None # ingen kunde er valgt i lista
-        debug("Fjerner slettet status for kunde # %i" % kunde.ID)
+        logging.debug("Fjerner slettet status for kunde # %i" % kunde.ID)
         kunde.settSlettet(False)
         self.visKunder()
 
@@ -979,7 +979,7 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         if v is None:
             v = self.faktura.nyVare()
         else:
-            debug("oppdaterer vare, som var: " + unicode(v))
+            logging.debug("oppdaterer vare, som var: " + unicode(v))
         v.navn = unicode(self.gui.varerInfoNavn.text()).strip()
         v.detaljer = unicode(self.gui.varerInfoDetaljer.toPlainText()).strip()
         v.enhet = unicode(self.gui.varerInfoEnhet.currentText()).strip()
@@ -1012,7 +1012,7 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
             vare = self.gui.varerVareliste.selectedItems()[0].vare
         except IndexError:
             return None # ingen vare er valgt i lista
-        debug("Sletter vare # %i" % vare._id)
+        logging.debug("Sletter vare # %i" % vare._id)
         if self.JaNei("Vil du virkelig slette vare nr %s (%s)?" % (vare.ID, vare.navn)):
             vare.settSlettet()
             self.visVarer()
@@ -1050,7 +1050,7 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
                 smnd = bmnd + self.gui.okonomiAvgrensningerDatoPeriode.currentIndex()
             beg = mktime((aar,bmnd,1,0,0,0,0,0,0))
             slutt = mktime((aar,smnd,31,0,0,0,0,0,0))
-            debug("%s %s %s %s" % (bmnd, smnd, beg, slutt))
+            logging.debug("%s %s %s %s" % (bmnd, smnd, beg, slutt))
             ordrehenter.begrensDato(beg, slutt)
             begrensninger['dato'] = (beg,slutt)
         if self.gui.okonomiAvgrensningerKunde.isChecked():
@@ -1083,7 +1083,7 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         return ordreliste, begrensninger
 
     def okonomiRegnRegnskap(self):
-        debug("regner regnskap")
+        logging.debug("regner regnskap")
         ordreliste = self.hentAktuelleOrdrer()[0]
         inn = mva = 0.0
         b = u = 0
