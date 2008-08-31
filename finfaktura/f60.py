@@ -42,6 +42,7 @@ Se forøvrig http://code.google.com/p/finfaktura/wiki/PythonF60
 
 import time, os, types
 from string import join, split
+import logging
 
 try:
     import reportlab
@@ -288,7 +289,7 @@ class f60:
         # logo
         logoForskyvning = 0
         if self.firma.has_key('logo') and self.firma['logo']:
-            debug("Har logo!")
+            logging.debug("Har logo!")
             try: import Image
             except ImportError: pass
             else:
@@ -311,7 +312,7 @@ class f60:
         firmainfo.setFont("Helvetica", 8)
         firmainfo.setFillGray(0.3)
         #for z,y in self.firma.iteritems():
-            #debug("%s (%s): %s" % (z, type(y), y))
+            #logging.debug("%s (%s): %s" % (z, type(y), y))
         firmainfo.textLines(split("""%(kontaktperson)s
 %(adresse)s
 %(postnummer)04i %(poststed)s
@@ -354,7 +355,7 @@ Side: %i av %i
         fakturatekst.setTextOrigin(20*mm, 230*mm)
         fakturatekst.textLines(self.paragraf(self.faktura['tekst'], 100))
         fakturatekstNedreY = int(fakturatekst.getY() / mm)
-        #debug("fakturateksten strekker seg ned til Y: %i mm (%i PDF pt)" % (fakturatekstNedreY/mm, fakturatekstNedreY))
+        #logging.debug("fakturateksten strekker seg ned til Y: %i mm (%i PDF pt)" % (fakturatekstNedreY/mm, fakturatekstNedreY))
         #if fakturatekstNedreY > sikkerhetsgrense: tekst = self.kutt(faktura.tekst) ...
         self.canvas.drawText(fakturatekst)
 
@@ -423,7 +424,7 @@ Side: %i av %i
                 self.canvas.drawRightString(prisX, Y, "%.2f" % (pris))
                 Y -= 3*mm
 
-        #debug("Nå har vi kommet til Y: %i (%i)" % (Y/mm, Y))
+        #logging.debug("Nå har vi kommet til Y: %i (%i)" % (Y/mm, Y))
         #if Y < 140*mm: self.lagNySide() # vi har lagt inn for mange varer til at vi får plass på en side
 
         sumY = 131*mm
@@ -496,10 +497,6 @@ Side: %i av %i
         self.canvas.showPage()
         self.canvas.save()
         return True
-
-def debug(s):
-    print "[f60]:",s
-
 
 if __name__ == '__main__':
     #test

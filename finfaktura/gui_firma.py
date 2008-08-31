@@ -10,6 +10,7 @@
 #
 ###########################################################################
 
+import logging
 from PyQt4 import QtCore, QtGui
 from ui import firmainfo_ui
 
@@ -41,7 +42,7 @@ class firmaOppsett(firmainfo_ui.Ui_firmaOppsett):
     def exec_(self):
         res = self.gui.exec_()
         if res == QtGui.QDialog.Accepted:
-            print('oppdaterer')
+            logging.debug('oppdaterer')
             self.oppdater()
         return res
 
@@ -128,13 +129,13 @@ class firmaOppsett(firmainfo_ui.Ui_firmaOppsett):
         mangler = self.sjekkFirmaMangler()
         if mangler:
             mangel = u'Ufullstendige opplysninger. Du er nødt til å oppgi:\n%s' % ([ mangler[obj].lower() for obj in mangler.keys() ])
-            print (mangel)
+            logging.debug (mangel)
             #self.fakturaTab.showPage(self.fakturaTab.page(3))
             obj.setFocus()
             #self.gammelTab = 3
             return False
         #self.LagreInfo.setText('<font color=green><b>Opplysningene er lagret</b></font>')
-        #print self.faktura.firmainfo()
+        #logging.debug self.faktura.firmainfo()
 
     def sjekkFirmaMangler(self):
         kravkart = {}
@@ -157,7 +158,7 @@ class firmaOppsett(firmainfo_ui.Ui_firmaOppsett):
             elif isinstance(obj, (QtGui.QLineEdit,QtGui.QTextEdit,)): test = obj.text()
             elif isinstance(obj, (QtGui.QPlainTextEdit,)): test = obj.toPlainText()
             else:
-                print obj, type(obj)
+                logging.debug(obj, type(obj))
             if test:
                 #obj.setPaletteBackgroundColor(ok)
                 obj.setStyleSheet("QWidget { background-color: white; }")
@@ -188,7 +189,7 @@ class firmaOppsett(firmainfo_ui.Ui_firmaOppsett):
                 'Bildefiler (*.png *.xpm *.jpg *.jpeg *.gif *.bmp *.ppm *.pgm *.pbm)',
                 )
             if len(unicode(logo)) > 0:
-                print ("Setter ny logo: %s" % logo)
+                logging.debug ("Setter ny logo: %s" % logo)
 
                 l = QtGui.QPixmap()
                 l.loadFromData(open(unicode(logo)).read())

@@ -15,8 +15,8 @@ except ImportError:
     from pysqlite2 import dbapi2 as sqlite # prøv bruker/system-installert modul
 import types, time, os.path
 from string import join
+import logging
 
-from ekstra import debug
 from fakturafeil import *
 
 from PyQt4 import QtCore
@@ -42,19 +42,19 @@ class fakturaKomponent:
         self.hentEgenskaper()
 
     def __getattr__(self, egenskap):
-        #debug("__getattr__: %s" % (egenskap))
+        #logging.debug("__getattr__: %s" % (egenskap))
         if not self._sqlExists: #tabellen finnes ikke i databasen
             return None
         if not self._egenskaper.has_key(egenskap):
             raise AttributeError(u"%s har ikke egenskapen %s" % (self.__class__, egenskap))
         if egenskap in self._egenskaperAldriCache:
             self.hentEgenskaper()
-        #debug("__getattr__:2: %s" % type(self._egenskaper[egenskap]))
+        #logging.debug("__getattr__:2: %s" % type(self._egenskaper[egenskap]))
         return self._egenskaper[egenskap]
 
     def __setattr__(self, egenskap, verdi):
-        #debug("__setattr__: %s  " % (egenskap))
-        #debug("__setattr__: %s = %s " % (egenskap, verdi))
+        #logging.debug("__setattr__: %s  " % (egenskap))
+        #logging.debug("__setattr__: %s = %s " % (egenskap, verdi))
         if type(verdi) == types.BooleanType: verdi = int(verdi) # lagrer bool som int: 0 | 1
         if self._egenskaper.has_key(egenskap): # denne egenskapen skal lagres i databasen
             self.oppdaterEgenskap(egenskap, verdi) # oppdater databasen
@@ -71,13 +71,13 @@ class fakturaKomponent:
         r = {}
         for z in self._egenskaperListe:
             r.update({z:None})
-#       debug("hentEgenskaperListe: %s = %s" % (self._id, r))
+#       logging.debug("hentEgenskaperListe: %s = %s" % (self._id, r))
         return r
 
     def hentEgenskaper(self):
         if self._id is None:
             return False
-        #debug("SELECT * FROM %s WHERE ID=?" % self._tabellnavn, (self._id,))
+        #logging.debug("SELECT * FROM %s WHERE ID=?" % self._tabellnavn, (self._id,))
         self.c.execute("SELECT * FROM %s WHERE ID=?" % self._tabellnavn, (self._id,))
         r = self.c.fetchone()
         if r is None: raise DBTomFeil(u'Det finnes ingen %s med ID %s' % (self._tabellnavn, self._id))
@@ -100,13 +100,13 @@ class fakturaKomponent:
             if type(verdi) == QtCore.QString: verdi = unicode(verdi)
         except ImportError: pass
         _sql = "UPDATE %s SET %s=? WHERE ID=?" % (self._tabellnavn, egenskap)
-        #debug(_sql, (verdi, self._id))
+        #logging.debug(_sql, (verdi, self._id))
         self.c.execute(_sql, (verdi, self._id))
         self.db.commit()
 
 
     def nyId(self):
-#       debug("nyId: -> %s <- %s" % (self._tabellnavn, self._IDnavn))
+#       logging.debug("nyId: -> %s <- %s" % (self._tabellnavn, self._IDnavn))
         self.c.execute("INSERT INTO %s (ID) VALUES (NULL)" % self._tabellnavn)
         self.db.commit()
         return self.c.lastrowid
@@ -143,7 +143,7 @@ class fakturaKunde(fakturaKomponent):
         return '"%s" <%s>' % (self.navn, self.epost)
 
     def settSlettet(self, erSlettet=True):
-        debug("sletter kunde %s: %s" % (self._id, str(erSlettet)))
+        logging.debug("sletter kunde %s: %s" % (self._id, str(erSlettet)))
         if erSlettet: self.slettet = time.time()
         else: self.slettet = False
 
@@ -164,7 +164,7 @@ class fakturaVare(fakturaKomponent):
         return unicode("%s, vare # %s" % (self.navn, self._id))
 
     def settSlettet(self, erSlettet=True):
-        debug("sletter vare? %s" % self._id)
+        logging.debug("sletter vare? %s" % self._id)
         if erSlettet: self.slettet = time.time()
         else: self.slettet = False
 
@@ -260,14 +260,14 @@ class fakturaOrdre(fakturaKomponent):
         return mva
 
     def settKansellert(self, kansellert=True):
-        debug("Ordre #%s er kansellert: %s" % (self._id, str(kansellert)))
+        logging.debug("Ordre #%s er kansellert: %s" % (self._id, str(kansellert)))
         if kansellert:
             self.kansellert = time.time()
         else:
             self.kansellert = False
 
     def betal(self, dato = False):
-        debug("Betaler faktura #%s" % self._id)
+        logging.debug("Betaler faktura #%s" % self._id)
         if not dato:
             dato = time.time()
         self.betalt = dato
@@ -358,7 +358,7 @@ class fakturaFirmainfo(fakturaKomponent):
         #pass
 
     def lagFirma(self):
-        debug("Lager firma")
+        logging.debug("Lager firma")
         nyFirmanavn = "Fryktelig fint firma"
         nyMva       = 25 #prosent
         nyForfall   = 21 #dager
@@ -428,8 +428,8 @@ class fakturaOppsett(fakturaKomponent):
 
         if not versjonsjekk: return
 
-        debug("sjekker versjon")
-        debug("arkivet er %s, siste er %s" % (self.databaseversjon, self.apiversjon))
+        logging.debug("sjekker versjon")
+        logging.debug("arkivet er %s, siste er %s" % (self.databaseversjon, self.apiversjon))
         if self.databaseversjon != self.apiversjon:
             raise DBGammelFeil(u"Databasen er versjon %s og må oppgraderes til %s" % (self.databaseversjon, self.apiversjon))
 
