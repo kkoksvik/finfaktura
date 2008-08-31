@@ -11,6 +11,7 @@
 
 import time, os, types
 from string import join, split
+import logging
 
 try:
     import reportlab
@@ -36,7 +37,7 @@ class rapport:
         self.liste  = self.stiler['Bullet']
         self.overskrift = self.stiler['Heading3']
         self.seksjonover = self.stiler['Heading2']
-        print dir(self.seksjonover)
+        #print dir(self.seksjonover)
         self.tittel = self.stiler['Heading1']
         self.flow = []
         self.flow.append(Paragraph(u'Økonomisk rapport fra <i>Fryktelig Fin Faktura</i>', self.tittel))

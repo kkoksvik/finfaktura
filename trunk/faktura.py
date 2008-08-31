@@ -13,13 +13,15 @@
 
 __doc__ = """Fryktelig fin faktura: skriv ut fakturaene dine"""
 
-import sys
+import sys, logging
 from finfaktura.fakturafeil import *
 
 if __name__ == "__main__":
 
     DEBUG = "-d" in sys.argv[1:]
 
+    if DEBUG:
+        logging.basicConfig(level=logging.DEBUG)
     if "-h" in sys.argv[1:]:
         print __doc__
         print "Bruk %s -i for å lage kommandolinjefaktura" % sys.argv[0]
