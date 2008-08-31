@@ -118,5 +118,3 @@ class epostOppsett(epost_ui.Ui_epostOppsett):
         ##self.epostSmtpBrukernavn.setEnabled(vis)
         #self.epostSmtpPassord.setEnabled(vis)
 
-def logging.debug(s):
-    print 'XXX', s
