@@ -11,5 +11,5 @@ done
 
 echo "Forbereder QRC (ressurser)";
 echo ".. faktura.qrc";
-pyrcc4 -o "finfaktura/ui/faktura_rc.py" faktura.qrc;
+pyrcc4 -o "finfaktura/faktura_rc.py" faktura.qrc;
 
