@@ -52,7 +52,7 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
 
         if not PRODUKSJONSVERSJON:
             self.gui.setWindowTitle("FRYKTELIG FIN FADESE (utviklerversjon)")
-
+        #self.gui.resize(852, 600)
         # rullegardinmeny:
         self.connect(self.gui.actionDitt_firma, QtCore.SIGNAL("activated()"), self.visFirmaOppsett)
         self.connect(self.gui.actionEpost, QtCore.SIGNAL("activated()"), self.visEpostOppsett)
@@ -308,7 +308,7 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
             not self.JaNei(u"Vil du virkelig legge inn fakturaen uten fakturatekst?"):
             self.gui.fakturaFaktaTekst.setFocus()
             return False
-        kunde = self.gui.fakturaFaktamottaker.itemData(self.gui.fakturaFaktaMottaker.currentIndex()).toPyObject()
+        kunde = self.gui.fakturaFaktaMottaker.itemData(self.gui.fakturaFaktaMottaker.currentIndex()).toPyObject()
         d = self.gui.fakturaFaktaDato.date()
         dato = mktime((d.year(),d.month(),d.day(),11,59,0,0,0,0)) # på midten av dagen (11:59) for å kunne betale fakturaen senere laget samme dag
         f = self.faktura.nyOrdre(kunde, ordredato=dato)
@@ -346,9 +346,14 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         debug("legger inn faktura: %s " % unicode(f))
         debug("Lager sikkerhetskopi")
         self.faktura.lagSikkerhetskopi(f)
-        self.visFaktura() # oppdater listen slik at den nye fakturaen blir med
-        self.gui.fakturaFakturaliste.setSelected(self.fakturaFakturaliste.lastItem(), True) # velg den nye fakturaen
         self.gui.fakturaFakta.hide()
+        self.visFaktura() # oppdater listen slik at den nye fakturaen blir med
+        try:
+            # velg den nye fakturaen
+            nylinje = self.gui.fakturaFakturaliste.findItems("%06d" % f.ID, QtCore.Qt.MatchExactly, 0)[0]
+            self.gui.fakturaFakturaliste.setCurrentItem(nylinje)
+        except IndexError:
+            pass
 
         #skal vi lage blanketter nå?
         s = u'Den nye fakturaen er laget. Vil du lage tilhørende blankett nå?'
