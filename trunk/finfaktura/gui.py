@@ -50,13 +50,8 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
 
         self.gui = uic.loadUi('faktura4.ui')
 
-        #skjul ikke-ferdige tabs dersom vi er i produksjon
-        # TODO: gjøre dem klare for produksjon
-        if PRODUKSJONSVERSJON:
-            self.gui.fakturaTab.removeTab(3) # myndighetene
-        else:
+        if not PRODUKSJONSVERSJON:
             self.gui.setWindowTitle("FRYKTELIG FIN FADESE (utviklerversjon)")
-            #self.patchDebugModus() # vis live debug-konsoll
 
         # rullegardinmeny:
         self.connect(self.gui.actionDitt_firma, QtCore.SIGNAL("activated()"), self.visFirmaOppsett)
@@ -115,10 +110,13 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         self.connect(self.gui.okonomiRegnskapRegnut, QtCore.SIGNAL("clicked()"), self.okonomiRegnRegnskap)
         self.connect(self.gui.okonomiFakturaerSkrivut, QtCore.SIGNAL("clicked()"), self.okonomiSkrivUtFakturaer)
 
-        #self.gui.fakturaVareliste.setColumnStretchable(0, True)
-        #self.gui.fakturaVareliste.setColumnWidth(1, 70)
-        ##self.gui.fakturaVareliste.setColumnWidth(2, 70)
-        #self.gui.fakturaVareliste.setColumnWidth(3, 70)
+        topplinje = self.gui.fakturaVareliste.horizontalHeader()
+        topplinje.setResizeMode(0, QtGui.QHeaderView.Stretch)
+        topplinje.setResizeMode(3, QtGui.QHeaderView.Fixed)
+        topplinje.setMinimumSectionSize(85)
+        topplinje.resizeSection(1, 85)
+        topplinje.resizeSection(2, 90)
+        topplinje.resizeSection(3, 85)
 
         self.gui.kundeKundeliste.contextMenuEvent = self.kundeContextMenu
         self.gui.fakturaFakturaliste.contextMenuEvent = self.fakturaContextMenu
@@ -203,27 +201,6 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         elif i is 7: self.visSikkerhetskopi()
         elif i is 8: self.visMyndigheter()
         self.gammelTab = i
-
-################## DEBUG ########################
-
-    def patchDebugModus(self):
-        # lag et konsoll til live inspeksjon
-
-        self.pythoncode = QtGui.QTextEdit(self.centralWidget())
-        self.pythoncode.setGeometry(QtCore.QRect(310,770,410,70))
-
-        self.pythoncodeRun = QtGui.QPushButton(self.centralWidget())
-        self.pythoncodeRun.setGeometry(QtCore.QRect(740,797,141,41))
-        self.pythoncodeRun.setText(u'K&jør')
-
-        self.connect(self.pythoncodeRun, QtCore.SIGNAL("clicked()"), self.runDebugCode)
-
-
-    def runDebugCode(self):
-        # kjør debug-kode
-        code = unicode(self.pythoncode.text())
-        run = eval(code) # oooh!
-        debug(run)
 
 ################## FAKTURA ########################
 
@@ -401,6 +378,7 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         Antall.setMaximum(100000.0)
         Antall.setValue(0.0)
         Antall.setDecimals(1)
+        #Antall.setMinimumSize(85, 10)
         Antall.show()
         Antall.setToolTip(u'Antall varer levert')
         self.connect(Antall, QtCore.SIGNAL("valueChanged(double)"),
@@ -411,6 +389,7 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         Pris.setMaximum(999999999.0)
         Pris.setDecimals(2)
         Pris.setSuffix(' kr')
+        #Pris.setMinimumSize(90, 10)
         Pris.show()
         Pris.setToolTip(u'Varens pris (uten MVA)')
         self.connect(Pris, QtCore.SIGNAL("valueChanged(double)"),
@@ -420,6 +399,7 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         Mva.setButtonSymbols(QtGui.QDoubleSpinBox.UpDownArrows)
         Mva.setValue(25)
         Mva.setSuffix(' %')
+        #Mva.setMinimumSize(85, 10)
         Mva.show()
         Mva.setToolTip(u'MVA-sats som skal beregnes på varen')
         self.connect(Mva, QtCore.SIGNAL("valueChanged(double)"),
@@ -430,6 +410,7 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
             Vare.addItem(unicode(v.navn), QtCore.QVariant(v))
         Vare.setEditable(True)
         Vare.setAutoCompletion(True)
+        #Vare.setMinimumSize(472, 10)
         Vare.show()
         Vare.setToolTip(u'Velg vare; eller skriv inn nytt varenavn og trykk <em>enter</em> for å legge til en ny vare')
         self.connect(Vare, QtCore.SIGNAL("activated(int)"),
@@ -441,7 +422,8 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         self.gui.fakturaVareliste.setCellWidget(rad, 1, Antall)
         self.gui.fakturaVareliste.setCellWidget(rad, 2, Pris)
         self.gui.fakturaVareliste.setCellWidget(rad, 3, Mva)
-        self.gui.fakturaVareliste.resizeColumnsToContents()
+        #self.gui.fakturaVareliste.horizontalHeader().resizeSections(QtGui.QHeaderView.Stretch)
+        #self.gui.fakturaVareliste.resizeColumnsToContents()
         return self.fakturaVarelisteSynk(rad, 0)
 
     def fakturaVarelisteSynk(self, rad, kol):
@@ -461,6 +443,7 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
             self.gui.fakturaVareliste.cellWidget(rad, 1).setSuffix(' '+str(vare.enhet))
             self.gui.fakturaVareliste.cellWidget(rad, 2).setValue(float(vare.pris))
             self.gui.fakturaVareliste.cellWidget(rad, 3).setValue(float(vare.mva))
+            #self.gui.fakturaVareliste.resizeColumnsToContents()
         else:
             # endret på antall, mva eller pris -> oppdater sum
             p = mva = 0.0
