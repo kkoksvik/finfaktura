@@ -53,12 +53,15 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         if not PRODUKSJONSVERSJON:
             self.gui.setWindowTitle("FRYKTELIG FIN FADESE (utviklerversjon)")
         #self.gui.resize(852, 600)
+
+        self.gui.actionSikkerhetskopi.setEnabled(False)
+
         # rullegardinmeny:
         self.connect(self.gui.actionDitt_firma, QtCore.SIGNAL("activated()"), self.visFirmaOppsett)
         self.connect(self.gui.actionEpost, QtCore.SIGNAL("activated()"), self.visEpostOppsett)
         self.connect(self.gui.actionProgrammer, QtCore.SIGNAL("activated()"), self.visProgramOppsett)
-        #self.connect(self.gui.actionOm_Finfaktura, QtCore.SIGNAL("activated()"), self.visOm)
-        #self.connect(self.gui.actionLisens, QtCore.SIGNAL("activated()"), self.visVinduTekst('Lisens'))
+        self.connect(self.gui.actionOm_Finfaktura, QtCore.SIGNAL("activated()"), lambda: self.visTekstVindu('om'))
+        self.connect(self.gui.actionLisens, QtCore.SIGNAL("activated()"), lambda: self.visTekstVindu('lisens'))
         #self.connect(self.gui.actionLover_og_regler, QtCore.SIGNAL("activated()"), self.visLover)
         #self.connect(self.gui.actionSikkerhetskopi, QtCore.SIGNAL("activated()"), self.visSikkerhetskopi)
 
@@ -1181,8 +1184,25 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         #if res == QtGui.QDialog.Accepted:
           #return self.sendEpostfaktura(ordre, tekst, pdfFilnavn)
 
+    def visTekstVindu(self, ressurs):
+        if ressurs == 'om':
+            tittel = 'Om Fryktelig Fin Faktura'
+            fil = QtCore.QFile(':/data/README')
+        elif ressurs == 'lisens':
+            tittel = u'Programmet er fritt tilgjengelig under følgende lisens'
+            fil = QtCore.QFile(':/data/LICENSE')
 
-
+        if not fil.open(QtCore.QIODevice.ReadOnly | QtCore.QIODevice.Text):
+            logging.error("Kunne ikke åpne ressurs %s", ressurs)
+            self.alert(u"Feil ved visning av vindu")
+            return False
+        tekst = QtCore.QTextStream(fil)
+        tekst.setCodec("UTF-8")
+        vindu = tekstVindu(tittel, QtCore.QString(tekst.readAll()))
+        fil.close()
+        res = vindu.exec_()
+        logging.debug(res)
+        return res
 
 ############## GENERELLE METODER ###################
 
@@ -1196,11 +1216,40 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         svar = QtGui.QMessageBox.question(self, "Hm?", s, QtGui.QMessageBox.Yes, QtGui.QMessageBox.No | QtGui.QMessageBox.Default, QtGui.QMessageBox.NoButton)
         return svar == QtGui.QMessageBox.Yes
 
+class tekstVindu(object):
+    def __init__(self, tittel, tekst):
+        self.gui = QtGui.QDialog()
+        self.gui.setObjectName('tekstvindu')
+        self.gui.resize(600, 600)
+        self.gui.setModal(True)
+
+        self.vbox = QtGui.QVBoxLayout(self.gui)
+        self.tittel = QtGui.QLabel(self.gui)
+        self.tittel.setText('<b>%s</b>' % tittel)
+        self.tekst = QtGui.QPlainTextEdit(self.gui)
+        self.tekst.setTabChangesFocus(True)
+        self.tekst.setObjectName("tekst")
+        self.tekst.setPlainText(tekst)
+        self.tekst.setReadOnly(True)
+        self.knapper = QtGui.QDialogButtonBox(self.gui)
+        self.knapper.setStandardButtons(QtGui.QDialogButtonBox.Ok)
+        self.vbox.addWidget(self.tittel)
+        self.vbox.addWidget(self.tekst)
+        self.vbox.addWidget(self.knapper)
+
+        QtCore.QObject.connect(self.knapper, QtCore.SIGNAL("accepted()"), self.gui.accept)
+
+        self.gui.show()
+    def exec_(self):
+        return self.gui.exec_()
+
 def start():
     app = QtGui.QApplication(sys.argv)
     ff = FinFaktura()
     ff.gui.show()
     sys.exit(app.exec_())
+
+
 
 if __name__ == "__main__":
 
