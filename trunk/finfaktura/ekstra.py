@@ -9,8 +9,6 @@
 # $Id$
 ###########################################################################
 
-PRODUKSJONSVERSJON=False
-
 import os.path, glob
 
 def forbered_ressurser():
@@ -20,11 +18,12 @@ def forbered_ressurser():
 
     for f in ui_files:
         ret = os.system('pyuic4 -x -o "%s" "%s"' % (os.path.splitext(f)[0] + '_ui.py', f))
-        print "%s: %s" % (f, ret)
+        print "%s: %s" % (f, ok(ret))
     for f in rc_files:
-        ret = os.system('pyrcc4 -o "%s" "%s"' % (os.path.splitext(f)[0] + '_rc.py', f))
-        print "%s: %s" % (f, ret)
-                  
-def debug(*s):
-    if not PRODUKSJONSVERSJON: print "[faktura]:", s
+        plassering = os.path.join('finfaktura', os.path.splitext(f)[0] + '_rc.py')
+        ret = os.system('pyrcc4 -o "%s" "%s"' % (plassering, f))
+        print "%s -> %s: %s" % (f, plassering, ok(ret))
 
+def ok(status):
+    if status == 0: return "OK"
+    return "FEIL"
