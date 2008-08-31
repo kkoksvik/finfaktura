@@ -1187,22 +1187,16 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
     def visTekstVindu(self, ressurs):
         if ressurs == 'om':
             tittel = 'Om Fryktelig Fin Faktura'
-            fil = QtCore.QFile(':/data/README')
+            r = ':/data/README'
         elif ressurs == 'lisens':
             tittel = u'Programmet er fritt tilgjengelig under følgende lisens'
-            fil = QtCore.QFile(':/data/LICENSE')
-
-        if not fil.open(QtCore.QIODevice.ReadOnly | QtCore.QIODevice.Text):
-            logging.error("Kunne ikke åpne ressurs %s", ressurs)
-            self.alert(u"Feil ved visning av vindu")
-            return False
-        tekst = QtCore.QTextStream(fil)
-        tekst.setCodec("UTF-8")
-        vindu = tekstVindu(tittel, QtCore.QString(tekst.readAll()))
-        fil.close()
-        res = vindu.exec_()
-        logging.debug(res)
-        return res
+            r = ':/data/LICENSE'
+        try:
+            vindu = tekstVindu(tittel, les_ressurs(r))
+            res = vindu.exec_()
+            return res
+        except IOError, (e):
+            self.alert(unicode(e))
 
 ############## GENERELLE METODER ###################
 
@@ -1242,6 +1236,16 @@ class tekstVindu(object):
         self.gui.show()
     def exec_(self):
         return self.gui.exec_()
+
+def les_ressurs(ressurs):
+    f = QtCore.QFile(ressurs)
+    if not f.open(QtCore.QIODevice.ReadOnly | QtCore.QIODevice.Text):
+        raise IOError(u"Kunne ikke åpne ressursen '%s'" % ressurs)
+    t = QtCore.QTextStream(f)
+    t.setCodec("UTF-8")
+    s = QtCore.QString(t.readAll())
+    f.close()
+    return s
 
 def start():
     app = QtGui.QApplication(sys.argv)
