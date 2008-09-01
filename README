@@ -14,6 +14,17 @@ Du finner mer informasjon om programmet, og informasjon om feilsøking på prosj
 .. _pdf: http://en.wikipedia.org/wiki/Portable_Document_Format
 .. _prosjektsidene: http://finfaktura.googlecode.com/
 
+
+Diskusjonsgruppe
+================
+
+Lurer du på noe? Er det noe som mangler?
+
+Ta en titt på diskusjonsgruppa, hvor nye versjoner og funksjoner blir diskutert, hvor problemer blir løst, og hvor solen aldri går ned:
+
+http://groups.google.com/group/finfaktura
+
+
 Systemkrav
 ==========
 
@@ -28,8 +39,9 @@ Følgende moduler er påkrevet:
 Disse oppfylles automatisk med når du installerer fra pakke (linux) eller medfølgende installasjonsprogram (windows).
 
 .. _python: http://python.org/
-.. _pyqt: http://www.riverbankcomputing.com/software/pyqt/intro
+.. _PyQt4: http://www.riverbankcomputing.com/software/pyqt/intro
 .. _reportlab: http://www.reportlab.org/rl_toolkit.html
+
 
 Opphavsrett
 ===========
@@ -37,10 +49,12 @@ Opphavsrett
 Idé og koding: Håvard Gulldahl <havard@gulldahl.no>
 Dette er åpen kildekode, du kan fritt gjenbruke og videredistribuere under GPL2-lisensen.
 
+
 Kjente feil og planlagte egenskaper
 ===================================
 
 Se http://code.google.com/p/finfaktura/issues/list
+
 
 Historikk
 =========
@@ -52,4 +66,3 @@ Historikk
 2008-08-31: Oppdaterte
 
 $Id$
-
