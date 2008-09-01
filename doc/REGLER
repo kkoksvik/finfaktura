@@ -29,6 +29,9 @@
 * Endre på PRODUKSJONSVERDI-variabelen (til True) i finfaktura/fakturabibliotek.py
     perl -pi -e 's/PRODUKSJONSVERSJON=False/PRODUKSJONSVERSJON=True/' finfaktura/fakturabibliotek.py
 
+* Oppdatere QRC-ressurser
+    scripts/forbered_ressurser.sh
+
 * Prøvestarte programmet og se at alt ser greit ut
     FAKTURADIR=. ./faktura.py
     FAKTURADIR=. FAKTURADB=testdata.db ./faktura.py
