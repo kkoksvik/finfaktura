@@ -983,6 +983,10 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
 
     def registrerVare(self):
         v = self.denne_vare
+        if not (unicode(self.gui.varerInfoEnhet.currentText()).strip().isnumeric() and \
+            self.JaNei(u"Enhet bruker ikke å være et tall. Er du sikker på at du vil dette?")):
+            self.gui.varerInfoEnhet.setFocus()
+            return
         kravkart = {self.gui.varerInfoNavn:"Varenavn",
                     self.gui.varerInfoEnhet:"Enhet",
                     self.gui.varerInfoPris:"Pris",
