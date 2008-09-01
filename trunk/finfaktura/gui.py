@@ -18,7 +18,8 @@ from time import time, strftime, localtime, mktime
 import logging
 
 from finfaktura.fakturabibliotek import PRODUKSJONSVERSJON, \
-    FakturaBibliotek, kobleTilDatabase, lagDatabase, finnDatabasenavn
+    FakturaBibliotek, kobleTilDatabase, lagDatabase, finnDatabasenavn, \
+    sikkerhetskopierFil
 import finfaktura.f60 as f60
 from finfaktura.myndighetene import myndighetene
 from finfaktura.epost import TRANSPORT_METODER
@@ -52,10 +53,10 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
 
         if not PRODUKSJONSVERSJON:
             self.gui.setWindowTitle("FRYKTELIG FIN FADESE (utviklerversjon)")
-        #self.gui.resize(852, 600)
+        self.gui.resize(880, 600)
 
         self.gui.actionSikkerhetskopi.setEnabled(False)
-
+        self.gui.actionLover_og_regler.setEnabled(False)
         # rullegardinmeny:
         self.connect(self.gui.actionDitt_firma, QtCore.SIGNAL("activated()"), self.visFirmaOppsett)
         self.connect(self.gui.actionEpost, QtCore.SIGNAL("activated()"), self.visEpostOppsett)
@@ -71,7 +72,6 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         self.connect(self.gui.fakturaNy, QtCore.SIGNAL("clicked()"), self.nyFaktura)
 #     self.connect(self.fakturaFakturaliste, QtCore.SIGNAL("doubleClicked(QListViewItem*, const QtGui.QPoint&, int)"), self.redigerFaktura)
         self.connect(self.gui.fakturaFaktaLegginn, QtCore.SIGNAL("clicked()"), self.leggTilFaktura)
-        #self.connect(self.fakturaFaktaVare, QtCore.SIGNAL("highlighted(int)"), self.fakturaVareOppdater)
         self.connect(self.gui.fakturaFakturaliste, QtCore.SIGNAL("currentItemChanged (QTreeWidgetItem *,QTreeWidgetItem *)"), self.visFakturadetaljer)
         self.connect(self.gui.fakturaVareliste, QtCore.SIGNAL("cellChanged(int,int)"), self.fakturaVarelisteSynk)
         self.connect(self.gui.fakturaFaktaVareLeggtil, QtCore.SIGNAL("clicked()"), self.leggVareTilOrdre)
@@ -181,11 +181,11 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         self.skiftTab(0)
 
     def avslutt(self):
-        logging.debug("__del__")
-        logging.debug("sikkerhetskopierer databasen", finnDatabasenavn())
+        logging.debug("sikkerhetskopierer databasen: %s ", finnDatabasenavn())
         sikkerhetskopierFil(finnDatabasenavn())
-        self.c.close()
-        self.db.close()
+        self.db.commit()
+        #self.c.close()
+        #self.db.close()
 
     def databaseTilkobler(self):
         self.db = kobleTilDatabase()
@@ -209,6 +209,8 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
     def lukkFakta(self, *ev):
         self.gui.fakturaFakta.hide()
         self.gui.fakturaHandlinger.show()
+        self.gui.fakturaDetaljer.show()
+        self.gui.fakturaFakturaliste.show()
 
     def fakturaContextMenu(self, event):
         try:
@@ -237,6 +239,8 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         self.gui.fakturaDetaljerTekst.setText('')
         self.gui.fakturaFakta.hide()
         self.gui.fakturaHandlinger.show()
+        self.gui.fakturaDetaljer.show()
+        self.gui.fakturaFakturaliste.show()
         i = self.gui.fakturaFakturaliste.addTopLevelItem
         self.gui.fakturaFakturaliste.clear()
         nu = time()
@@ -245,7 +249,7 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
             if not visGamle and ordre.betalt and ordre.ordredato < nu-60*60*24*7*4*6: continue # eldre enn seks mnd og betalt
             if ordre.betalt: bet = strftime("%Y-%m-%d %H:%M", localtime(ordre.betalt))
             else: bet = "Nei"
-            l = QtGui.QTreeWidgetItem([#self.gui.fakturaFakturaliste,
+            l = QtGui.QTreeWidgetItem([
                               "%06d" % ordre.ID,
                               '%s' % ordre.tekst,
                               '%s' % ordre.kunde.navn,
@@ -300,8 +304,14 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         self.gui.fakturaVareliste.clearContents()
         self.leggVareTilOrdre(rad=0) # legg til tom rad
         self.gui.fakturaFaktaDato.setDate(QtCore.QDate.currentDate())
+        self.gui.fakturaFaktaLeveringsdato.setDate(QtCore.QDate.currentDate())
+        self.gui.fakturaFaktaLeveringsdato.setEnabled(False)
+        forfall = QtCore.QDate(QtCore.QDate.currentDate())
+        self.gui.fakturaFaktaForfall.setDate(forfall.addDays(self.firma.forfall))
         self.gui.fakturaHandlinger.hide()
+        self.gui.fakturaFaktaOverstyr.setChecked(False)
         self.gui.fakturaAlternativer.hide()
+        self.gui.fakturaDetaljer.hide()
         self.gui.fakturaFakta.show()
 
     def leggTilFaktura(self):
@@ -311,10 +321,17 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
             not self.JaNei(u"Vil du virkelig legge inn fakturaen uten fakturatekst?"):
             self.gui.fakturaFaktaTekst.setFocus()
             return False
+        if self.gui.fakturaFaktaDato.date() > self.gui.fakturaFaktaForfall.date():
+            self.gui.fakturaAlternativer.show()
+            self.gui.fakturaFaktaForfall.setFocus()
+            self.alert(u"Forfallsdato kan ikke være før fakturadato")
+            return False
         kunde = self.gui.fakturaFaktaMottaker.itemData(self.gui.fakturaFaktaMottaker.currentIndex()).toPyObject()
         d = self.gui.fakturaFaktaDato.date()
         dato = mktime((d.year(),d.month(),d.day(),11,59,0,0,0,0)) # på midten av dagen (11:59) for å kunne betale fakturaen senere laget samme dag
-        f = self.faktura.nyOrdre(kunde, ordredato=dato)
+        fd = self.gui.fakturaFaktaForfall.date()
+        fdato = mktime((fd.year(),fd.month(),fd.day(),11,59,0,0,0,0))
+        f = self.faktura.nyOrdre(kunde, ordredato=dato, forfall=fdato)
         f.tekst = unicode(self.gui.fakturaFaktaTekst.toPlainText())
         #finn varene som er i fakturaen
         varer = {}
@@ -334,7 +351,7 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
                 return False
             # hvilken vare er dette?
             vare = self.faktura.finnVareEllerLagNy(_tekst, v['pris'], v['mva'], _enhet)
-            logging.debug("fant vare i fakturaen:", unicode(v), unicode(vare))
+            logging.debug("fant vare i fakturaen: %s -> %s", unicode(v), unicode(vare))
             # er dette en duplikatoppføring?
             if varer.has_key(vare.ID) and varer[v['id']]['mva'] == v['mva'] \
                 and varer[v['id']]['pris'] == v['pris']:
@@ -432,7 +449,7 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         return self.fakturaVarelisteSynk(rad, 0)
 
     def fakturaVarelisteSynk(self, rad, kol):
-        logging.debug("synk:", rad, kol)
+        logging.debug("synk: %s, %s", rad, kol)
         sender = self.gui.fakturaVareliste.cellWidget(rad, kol)
         if kol == 0: # endret på varen -> oppdater metadata
             _vare = sender.itemData(sender.currentIndex())
@@ -440,7 +457,7 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
                 vare = _vare.toPyObject()
             else:
                 # ny vare, tøm andre felt
-                logging.debug("ny vare opprettet", unicode(sender.currentText()))
+                logging.debug("ny vare opprettet: %s", unicode(sender.currentText()))
                 self.gui.fakturaVareliste.cellWidget(rad, 1).setSuffix('')
                 self.gui.fakturaVareliste.cellWidget(rad, 2).setValue(0.0)
                 self.gui.fakturaVareliste.cellWidget(rad, 3).setValue(float(self.firma.mva))
@@ -656,7 +673,7 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
 
     def sendEpostfaktura(self, ordre, tekst, filnavn):
         try:
-            logging.debug('sender epostfaktura: ordre # %i, til: %s' % (ordre._id, ordre.kunde.epost))
+            logging.debug('sender epostfaktura: ordre # %i, til: %s', ordre._id, ordre.kunde.epost)
             logging.debug('bruker transport %s' % TRANSPORT_METODER[self.faktura.epostoppsett.transport])
             self.faktura.sendEpost(ordre,
                                    filnavn,
@@ -1255,5 +1272,6 @@ def start():
     app = QtGui.QApplication(sys.argv)
     ff = FinFaktura()
     ff.gui.show()
-    sys.exit(app.exec_())
+    QtCore.QObject.connect(app, QtCore.SIGNAL("lastWindowClosed()"), ff.avslutt)
+    return app.exec_()
 
