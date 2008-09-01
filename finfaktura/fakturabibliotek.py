@@ -92,8 +92,8 @@ class FakturaBibliotek:
             vare.enhet = enhet.strip()
             return vare
 
-    def nyOrdre(self, _kunde = None, _Id = None, ordredato = None):
-        return fakturaOrdre(self.db, kunde=_kunde, Id=_Id, firma = self.firmainfo(), dato=ordredato)
+    def nyOrdre(self, kunde = None, Id = None, ordredato = None, forfall = None):
+        return fakturaOrdre(self.db, kunde=kunde, Id=Id, firma=self.firmainfo(), dato=ordredato, forfall=forfall)
 
     def hentOrdrer(self):
         self.c.execute("SELECT ID FROM %s" % fakturaOrdre._tabellnavn)

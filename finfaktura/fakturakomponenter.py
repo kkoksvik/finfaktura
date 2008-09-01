@@ -202,12 +202,13 @@ class fakturaOrdre(fakturaKomponent):
     _tabellnavn = "Ordrehode"
     linje      = []
 
-    def __init__(self, db, kunde = None, Id = None, firma = None, dato = None):
+    def __init__(self, db, kunde = None, Id = None, firma = None, dato = None, forfall = None):
         self.linje = []
         if dato is not None:
             self.ordredato = dato
         self.kunde = kunde
         self.firma = firma
+        self.ordreforfall = forfall
         fakturaKomponent.__init__(self, db, Id)
         self._egenskaperAldriCache = ['kansellert', 'betalt']
         if Id is not None:
@@ -223,8 +224,9 @@ class fakturaOrdre(fakturaKomponent):
         return unicode(s)
 
     def nyId(self):
-        forfall = self.firma.forfall
-        self.c.execute("INSERT INTO %s (ID, kundeID, ordredato, forfall) VALUES (NULL, ?, ?, ?)" % self._tabellnavn, (self.kunde._id, self.ordredato, self.ordredato+3600*24*forfall,))
+        if self.ordreforfall is None:
+            self.ordreforfall = int(self.ordredato+3600*24*self.firma.forfall) # .firma.forfall er hele dager - ganger opp til sekunder
+        self.c.execute("INSERT INTO %s (ID, kundeID, ordredato, forfall) VALUES (NULL, ?, ?, ?)" % self._tabellnavn, (self.kunde._id, self.ordredato, self.ordreforfall,))
         self.db.commit()
         return self.c.lastrowid
 
