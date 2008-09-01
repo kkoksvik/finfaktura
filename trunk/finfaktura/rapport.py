@@ -40,8 +40,8 @@ class rapport:
         #print dir(self.seksjonover)
         self.tittel = self.stiler['Heading1']
         self.flow = []
-        self.flow.append(Paragraph(u'Økonomisk rapport fra <i>Fryktelig Fin Faktura</i>', self.tittel))
-        self.flow.append(Paragraph(u'Rapport fra '+self.info['firma'].firmanavn, self.normal))
+        self.flow.append(Paragraph(u'Fakturaer hos %s' % self.info['firma'].firmanavn, self.tittel))
+        self.flow.append(Paragraph(u'Generert av <i>Fryktelig Fin Faktura</i> den %s' % time.strftime("%Y-%m-%d", time.localtime()), self.normal))
         det = u'Viser fakturaer '
         if self.info['visubetalte']: det += u'(også ubetalte) '
         else: det += u'(ikke ubetalte) '
@@ -54,13 +54,13 @@ class rapport:
         self.flow.append(Paragraph(det, self.normal))
         self.okonomi = {'inn':0.0, 'mva':0.0, 'b':0, 'u':0}
         self.seksjon = ''
-        #canvas.setAuthor("the ReportLab Team")
-        #canvas.setTitle("ReportLab PDF Generation User Guide")
-        #canvas.setSubject("How to Generate PDF files using the ReportLab modules")
-        print self.info
+        logging.debug(self.info)
 
     def lag(self):
         dok = SimpleDocTemplate(self.filnavn,pagesize = A4)
+        #dok.setAuthor("%s (Fryktelig Fin Faktura)" % self.info.firma.kontaktperson)
+        #dok.setTitle("Fakturaer hos %s" % self.info.firma.firmanavn)
+        #canvas.setSubject("How to Generate PDF files using the ReportLab modules")
         dok.build(self.flow)
         self.oppdatert = True
 
