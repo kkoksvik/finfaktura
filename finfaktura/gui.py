@@ -17,6 +17,7 @@ from string import join
 from time import time, strftime, localtime, mktime
 import logging
 
+import finfaktura
 from finfaktura.fakturabibliotek import PRODUKSJONSVERSJON, \
     FakturaBibliotek, kobleTilDatabase, lagDatabase, finnDatabasenavn, \
     sikkerhetskopierFil
@@ -1181,7 +1182,7 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
             return False
         ordrer, beskrivelse = self.hentAktuelleOrdrer()
         beskrivelse['firma'] = self.firma
-        rapport = finfaktura.rapport.rapport('/tmp/hei.pdf', beskrivelse)
+        rapport = finfaktura.rapport.rapport('/tmp/rapport.pdf', beskrivelse)
         rapport.lastOrdreliste(ordrer)
         rapport.vis(program=self.faktura.oppsett.vispdf)
 
@@ -1203,10 +1204,10 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
 
     def visTekstVindu(self, ressurs):
         if ressurs == 'om':
-            tittel = 'Om Fryktelig Fin Faktura'
+            tittel = 'Om Fryktelig Fin Faktura, versjon %s' % finfaktura.__version__
             r = ':/data/README'
         elif ressurs == 'lisens':
-            tittel = u'Programmet er fritt tilgjengelig under følgende lisens'
+            tittel = u'Programmet er fritt tilgjengelig under GPL, versjon 2:'
             r = ':/data/LICENSE'
         try:
             vindu = tekstVindu(tittel, les_ressurs(r))
