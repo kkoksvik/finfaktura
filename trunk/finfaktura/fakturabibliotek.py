@@ -258,21 +258,11 @@ def lagDatabase(database, sqlfile=None):
             print "FEIL!",e
             raise DBVersjonFeil(e)
 
-
 def byggDatabase(db, sqlfile=None):
-    if not sqlfile:
-        fdir = os.getenv('FAKTURADIR')
-        if not fdir:
-            if not PRODUKSJONSVERSJON:
-                fdir = '.'
-            else:
-                if sys.platform.startswith('win'):
-                    sysroot = os.getenv("SYSROOT")
-                    progfiles = os.getenv("PROGRAMFILES")
-                    fdir = os.path.join(sysroot, progfiles, 'finfaktura', 'data')
-                else:
-                    fdir = os.path.join('usr','share','finfaktura','data')
-        sqlfile = os.path.join(fdir, 'faktura.sql')
+    if sqlfile is not None:
+        sql = file(sqlfile).read()
+    else:
+        sql = unicode(lesRessurs(':/sql/faktura.sql'))
     db.executescript(file(sqlfile).read())
     db.cursor().execute("INSERT INTO Oppsett (ID, databaseversjon, fakturakatalog) VALUES (1, ?, ?)",
         (DATABASEVERSJON, '~'))
@@ -340,3 +330,19 @@ def sikkerhetskopierFil(filnavn):
     assert os.path.exists(filnavn)
     bkpfil = "%s-%s~" % (filnavn, int(time()))
     return shutil.copyfile(filnavn, bkpfil)
+
+def lesRessurs(ressurs):
+    """Leser en intern QT4-ressurs (qrc) og returnerer den som en QString.
+
+    'ressurs' er på formatet ':/sti/navn', for eksempel ':/sql/faktura.sql'
+    """
+    from PyQt4 import QtCore
+    f = QtCore.QFile(ressurs)
+    if not f.open(QtCore.QIODevice.ReadOnly | QtCore.QIODevice.Text):
+        raise IOError(u"Kunne ikke åpne ressursen '%s'" % ressurs)
+    t = QtCore.QTextStream(f)
+    t.setCodec("UTF-8")
+    s = QtCore.QString(t.readAll())
+    f.close()
+    return s
+
