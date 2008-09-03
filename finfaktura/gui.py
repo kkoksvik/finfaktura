@@ -20,7 +20,7 @@ import logging
 import finfaktura
 from finfaktura.fakturabibliotek import PRODUKSJONSVERSJON, \
     FakturaBibliotek, kobleTilDatabase, lagDatabase, finnDatabasenavn, \
-    sikkerhetskopierFil
+    sikkerhetskopierFil, lesRessurs
 import finfaktura.f60 as f60
 from finfaktura.myndighetene import myndighetene
 from finfaktura.epost import TRANSPORT_METODER
@@ -1214,7 +1214,7 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
             tittel = u'Programmet er fritt tilgjengelig under GPL, versjon 2:'
             r = ':/data/LICENSE'
         try:
-            vindu = tekstVindu(tittel, les_ressurs(r))
+            vindu = tekstVindu(tittel, lesRessurs(r))
             res = vindu.exec_()
             return res
         except IOError, (e):
@@ -1258,20 +1258,6 @@ class tekstVindu(object):
         self.gui.show()
     def exec_(self):
         return self.gui.exec_()
-
-def les_ressurs(ressurs):
-    """Leser en intern QT4-ressurs (qrc) og returnerer den som en QString.
-
-    'ressurs' er på formatet ':/sti/navn', for eksempel ':/sql/faktura.sql'
-    """
-    f = QtCore.QFile(ressurs)
-    if not f.open(QtCore.QIODevice.ReadOnly | QtCore.QIODevice.Text):
-        raise IOError(u"Kunne ikke åpne ressursen '%s'" % ressurs)
-    t = QtCore.QTextStream(f)
-    t.setCodec("UTF-8")
-    s = QtCore.QString(t.readAll())
-    f.close()
-    return s
 
 def start():
     app = QtGui.QApplication(sys.argv)
