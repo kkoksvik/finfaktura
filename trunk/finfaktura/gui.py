@@ -266,6 +266,9 @@ class FinFaktura(QtGui.QMainWindow):#Ui_MainWindow): ## leser gui fra faktura_ui
                 l.setIcon(0, self.slettetIkon)
             i(l)
         self.gui.fakturaBetaltDato.setDate(QtCore.QDate.currentDate())
+        for col in range(0, self.gui.fakturaFakturaliste.columnCount()):
+            logging.debug("resizeing column # %i", col)
+            self.gui.fakturaFakturaliste.resizeColumnToContents(col)
 
     def nyFakturaFraKunde(self):
         try:
