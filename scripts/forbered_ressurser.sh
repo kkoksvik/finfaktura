@@ -6,7 +6,8 @@ for f in finfaktura/ui/*.ui;
 do
   F=$(basename "$f" .ui);
   echo ".. $F.ui";
-  pyuic4 -o "finfaktura/ui/$F" "$f";
+#   echo pyuic4 -o "finfaktura/ui/${F}_ui.py" "$f";
+  pyuic4 -o "finfaktura/ui/${F}_ui.py" "$f";
 done
 
 echo "Forbereder QRC (ressurser)";
