@@ -33,6 +33,7 @@ from finfaktura.fakturafeil import *
 
 from PyQt4 import QtCore, QtGui, uic
 try:
+    from finfaktura.ui.faktura_ui import Ui_FinFaktura
     import faktura_rc
     import gui_sendepost, gui_epost, gui_finfaktura_oppsett, gui_firma
 except ImportError, (e):
@@ -40,7 +41,7 @@ except ImportError, (e):
 
 PDFVIS = "/usr/bin/kpdf" # program for å vise PDF
 
-class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
+class FinFaktura(QtGui.QMainWindow):#Ui_MainWindow): ## leser gui fra faktura_ui.py
     db = None
     denne_kunde = None
     denne_faktura = None
@@ -50,69 +51,75 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
     def __init__(self):
         QtGui.QMainWindow.__init__(self)
 
-        self.gui = uic.loadUi('faktura4.ui')
+        #self.gui = uic.loadUi('faktura4.ui')
+        #self.gui = ui #QtGui.QMainWindow()
+        self.gui = Ui_FinFaktura()
+        self.gui.setupUi(self)
+        #self.mainwindow = mainwindow
+        self.show()
 
         if not PRODUKSJONSVERSJON:
-            self.gui.setWindowTitle("FRYKTELIG FIN FADESE (utviklerversjon)")
-        self.gui.resize(880, 600)
+            self.setWindowTitle("FRYKTELIG FIN FADESE (utviklerversjon)")
+        #self.mainwindow.setMaximumSize(1024, 600)
+
 
         self.gui.actionSikkerhetskopi.setEnabled(False)
         self.gui.actionLover_og_regler.setEnabled(False)
         # rullegardinmeny:
-        self.connect(self.gui.actionDitt_firma, QtCore.SIGNAL("activated()"), self.visFirmaOppsett)
-        self.connect(self.gui.actionEpost, QtCore.SIGNAL("activated()"), self.visEpostOppsett)
-        self.connect(self.gui.actionProgrammer, QtCore.SIGNAL("activated()"), self.visProgramOppsett)
-        self.connect(self.gui.actionOm_Finfaktura, QtCore.SIGNAL("activated()"), lambda: self.visTekstVindu('om'))
-        self.connect(self.gui.actionLisens, QtCore.SIGNAL("activated()"), lambda: self.visTekstVindu('lisens'))
-        #self.connect(self.gui.actionLover_og_regler, QtCore.SIGNAL("activated()"), self.visLover)
-        #self.connect(self.gui.actionSikkerhetskopi, QtCore.SIGNAL("activated()"), self.visSikkerhetskopi)
+        QtCore.QObject.connect(self.gui.actionDitt_firma, QtCore.SIGNAL("activated()"), self.visFirmaOppsett)
+        QtCore.QObject.connect(self.gui.actionEpost, QtCore.SIGNAL("activated()"), self.visEpostOppsett)
+        QtCore.QObject.connect(self.gui.actionProgrammer, QtCore.SIGNAL("activated()"), self.visProgramOppsett)
+        QtCore.QObject.connect(self.gui.actionOm_Finfaktura, QtCore.SIGNAL("activated()"), lambda: self.visTekstVindu('om'))
+        QtCore.QObject.connect(self.gui.actionLisens, QtCore.SIGNAL("activated()"), lambda: self.visTekstVindu('lisens'))
+        #QtCore.QObject.connect(self.gui.actionLover_og_regler, QtCore.SIGNAL("activated()"), self.visLover)
+        #QtCore.QObject.connect(self.gui.actionSikkerhetskopi, QtCore.SIGNAL("activated()"), self.visSikkerhetskopi)
 
         # kontroller i faktura-vinudet
-        self.connect(self.gui.fakturaTab, QtCore.SIGNAL("currentChanged(QWidget*)"), self.skiftTab)
+        QtCore.QObject.connect(self.gui.fakturaTab, QtCore.SIGNAL("currentChanged(QWidget*)"), self.skiftTab)
 
-        self.connect(self.gui.fakturaNy, QtCore.SIGNAL("clicked()"), self.nyFaktura)
-#     self.connect(self.fakturaFakturaliste, QtCore.SIGNAL("doubleClicked(QListViewItem*, const QtGui.QPoint&, int)"), self.redigerFaktura)
-        self.connect(self.gui.fakturaFaktaLegginn, QtCore.SIGNAL("clicked()"), self.leggTilFaktura)
-        self.connect(self.gui.fakturaFakturaliste, QtCore.SIGNAL("currentItemChanged (QTreeWidgetItem *,QTreeWidgetItem *)"), self.visFakturadetaljer)
-        self.connect(self.gui.fakturaVareliste, QtCore.SIGNAL("cellChanged(int,int)"), self.fakturaVarelisteSynk)
-        self.connect(self.gui.fakturaFaktaVareLeggtil, QtCore.SIGNAL("clicked()"), self.leggVareTilOrdre)
-        #self.connect(self.gui.fakturaFaktaVareFjern, QtCore.SIGNAL("clicked()"), self.fjernVareFraOrdre)
-        self.connect(self.gui.fakturaLagEpost, QtCore.SIGNAL("clicked()"), self.lagFakturaEpost)
-        self.connect(self.gui.fakturaLagPapir, QtCore.SIGNAL("clicked()"), self.lagFakturaPapir)
-        self.connect(self.gui.fakturaLagKvittering, QtCore.SIGNAL("clicked()"), self.lagFakturaKvittering)
-        self.connect(self.gui.fakturaBetalt, QtCore.SIGNAL("clicked()"), self.betalFaktura)
-        self.connect(self.gui.fakturaVisKansellerte, QtCore.SIGNAL("toggled(bool)"), self.visFaktura)
-        self.connect(self.gui.fakturaVisGamle, QtCore.SIGNAL("toggled(bool)"), self.visFaktura)
+        QtCore.QObject.connect(self.gui.fakturaNy, QtCore.SIGNAL("clicked()"), self.nyFaktura)
+#     QtCore.QObject.connect(self.fakturaFakturaliste, QtCore.SIGNAL("doubleClicked(QListViewItem*, const QtGui.QPoint&, int)"), self.redigerFaktura)
+        QtCore.QObject.connect(self.gui.fakturaFaktaLegginn, QtCore.SIGNAL("clicked()"), self.leggTilFaktura)
+        QtCore.QObject.connect(self.gui.fakturaFakturaliste, QtCore.SIGNAL("currentItemChanged (QTreeWidgetItem *,QTreeWidgetItem *)"), self.visFakturadetaljer)
+        QtCore.QObject.connect(self.gui.fakturaVareliste, QtCore.SIGNAL("cellChanged(int,int)"), self.fakturaVarelisteSynk)
+        QtCore.QObject.connect(self.gui.fakturaFaktaVareLeggtil, QtCore.SIGNAL("clicked()"), self.leggVareTilOrdre)
+        #QtCore.QObject.connect(self.gui.fakturaFaktaVareFjern, QtCore.SIGNAL("clicked()"), self.fjernVareFraOrdre)
+        QtCore.QObject.connect(self.gui.fakturaLagEpost, QtCore.SIGNAL("clicked()"), self.lagFakturaEpost)
+        QtCore.QObject.connect(self.gui.fakturaLagPapir, QtCore.SIGNAL("clicked()"), self.lagFakturaPapir)
+        QtCore.QObject.connect(self.gui.fakturaLagKvittering, QtCore.SIGNAL("clicked()"), self.lagFakturaKvittering)
+        QtCore.QObject.connect(self.gui.fakturaBetalt, QtCore.SIGNAL("clicked()"), self.betalFaktura)
+        QtCore.QObject.connect(self.gui.fakturaVisKansellerte, QtCore.SIGNAL("toggled(bool)"), self.visFaktura)
+        QtCore.QObject.connect(self.gui.fakturaVisGamle, QtCore.SIGNAL("toggled(bool)"), self.visFaktura)
         self.gui.fakturaFaktaKryss.mousePressEvent = self.lukkFakta
 
         # kontroller i kunde-vinduet
-        self.connect(self.gui.kundeNy, QtCore.SIGNAL("clicked()"), self.lastKunde)
-        self.connect(self.gui.kundeKundeliste, QtCore.SIGNAL("itemDoubleClicked (QTreeWidgetItem *,int)"), self.redigerKunde)
-        self.connect(self.gui.kundeInfoEndre, QtCore.SIGNAL("clicked()"), self.leggTilKunde)
-        self.connect(self.gui.kundeNyFaktura, QtCore.SIGNAL("clicked()"), self.nyFakturaFraKunde)
-        self.connect(self.gui.kundeKundeliste, QtCore.SIGNAL("currentItemChanged (QTreeWidgetItem *,QTreeWidgetItem *)"), self.visKundedetaljer)
-        self.connect(self.gui.kundeVisFjernede, QtCore.SIGNAL("toggled(bool)"), self.visKunder)
+        QtCore.QObject.connect(self.gui.kundeNy, QtCore.SIGNAL("clicked()"), self.lastKunde)
+        QtCore.QObject.connect(self.gui.kundeKundeliste, QtCore.SIGNAL("itemDoubleClicked (QTreeWidgetItem *,int)"), self.redigerKunde)
+        QtCore.QObject.connect(self.gui.kundeInfoEndre, QtCore.SIGNAL("clicked()"), self.leggTilKunde)
+        QtCore.QObject.connect(self.gui.kundeNyFaktura, QtCore.SIGNAL("clicked()"), self.nyFakturaFraKunde)
+        QtCore.QObject.connect(self.gui.kundeKundeliste, QtCore.SIGNAL("currentItemChanged (QTreeWidgetItem *,QTreeWidgetItem *)"), self.visKundedetaljer)
+        QtCore.QObject.connect(self.gui.kundeVisFjernede, QtCore.SIGNAL("toggled(bool)"), self.visKunder)
         self.gui.kundeInfoKryss.mousePressEvent = self.lukkKundeinfo
 
-        #self.connect(self.gui.varerVareliste, QtCore.SIGNAL("selected(const QtGui.QString&)"), self.nyFaktura)
+        #QtCore.QObject.connect(self.gui.varerVareliste, QtCore.SIGNAL("selected(const QtGui.QString&)"), self.nyFaktura)
 
         # kontroller i vare-vinduet
-        self.connect(self.gui.varerNy, QtCore.SIGNAL("clicked()"), self.lastVare)
-        self.connect(self.gui.varerVareliste, QtCore.SIGNAL("itemDoubleClicked (QTreeWidgetItem *,int)"), self.redigerVare)
-        self.connect(self.gui.varerInfoLegginn, QtCore.SIGNAL("clicked()"), self.registrerVare)
-        self.connect(self.gui.varerVareliste, QtCore.SIGNAL("currentItemChanged (QTreeWidgetItem *,QTreeWidgetItem *)"), self.visVaredetaljer)
-        self.connect(self.gui.varerVisFjernede, QtCore.SIGNAL("toggled(bool)"), self.visVarer)
+        QtCore.QObject.connect(self.gui.varerNy, QtCore.SIGNAL("clicked()"), self.lastVare)
+        QtCore.QObject.connect(self.gui.varerVareliste, QtCore.SIGNAL("itemDoubleClicked (QTreeWidgetItem *,int)"), self.redigerVare)
+        QtCore.QObject.connect(self.gui.varerInfoLegginn, QtCore.SIGNAL("clicked()"), self.registrerVare)
+        QtCore.QObject.connect(self.gui.varerVareliste, QtCore.SIGNAL("currentItemChanged (QTreeWidgetItem *,QTreeWidgetItem *)"), self.visVaredetaljer)
+        QtCore.QObject.connect(self.gui.varerVisFjernede, QtCore.SIGNAL("toggled(bool)"), self.visVarer)
         self.gui.varerInfoKryss.mousePressEvent = self.lukkVarerinfo
 
         # kontroller i økonomi-vinduet
 
-        self.connect(self.gui.okonomiAvgrensningerDatoManed, QtCore.SIGNAL("highlighted(int)"), self.okonomiFyllDatoPeriode)
-        self.connect(self.gui.okonomiAvgrensningerDato, QtCore.SIGNAL("toggled(bool)"), self.okonomiFyllDato)
-        self.connect(self.gui.okonomiAvgrensningerKunde, QtCore.SIGNAL("toggled(bool)"), self.okonomiFyllKunder)
-        self.connect(self.gui.okonomiAvgrensningerVare, QtCore.SIGNAL("toggled(bool)"), self.okonomiFyllVarer)
-        self.connect(self.gui.okonomiSorter, QtCore.SIGNAL("toggled(bool)"), self.okonomiFyllSortering)
-        self.connect(self.gui.okonomiRegnskapRegnut, QtCore.SIGNAL("clicked()"), self.okonomiRegnRegnskap)
-        self.connect(self.gui.okonomiFakturaerSkrivut, QtCore.SIGNAL("clicked()"), self.okonomiSkrivUtFakturaer)
+        QtCore.QObject.connect(self.gui.okonomiAvgrensningerDatoManed, QtCore.SIGNAL("highlighted(int)"), self.okonomiFyllDatoPeriode)
+        QtCore.QObject.connect(self.gui.okonomiAvgrensningerDato, QtCore.SIGNAL("toggled(bool)"), self.okonomiFyllDato)
+        QtCore.QObject.connect(self.gui.okonomiAvgrensningerKunde, QtCore.SIGNAL("toggled(bool)"), self.okonomiFyllKunder)
+        QtCore.QObject.connect(self.gui.okonomiAvgrensningerVare, QtCore.SIGNAL("toggled(bool)"), self.okonomiFyllVarer)
+        QtCore.QObject.connect(self.gui.okonomiSorter, QtCore.SIGNAL("toggled(bool)"), self.okonomiFyllSortering)
+        QtCore.QObject.connect(self.gui.okonomiRegnskapRegnut, QtCore.SIGNAL("clicked()"), self.okonomiRegnRegnskap)
+        QtCore.QObject.connect(self.gui.okonomiFakturaerSkrivut, QtCore.SIGNAL("clicked()"), self.okonomiSkrivUtFakturaer)
 
         topplinje = self.gui.fakturaVareliste.horizontalHeader()
         topplinje.setResizeMode(0, QtGui.QHeaderView.Stretch)
@@ -174,12 +181,8 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         finfaktura.rapport.PDFVIS = self.faktura.oppsett.vispdf
         finfaktura.fakturakomponenter.PDFVIS = self.faktura.oppsett.vispdf
 
-        #if not self.faktura.oppsett.skrivutpdf:
-        #    self.faktura.oppsett.skrivutpdf = PDFUTSKRIFT
-        #finfaktura.fakturakomponenter.PDFUTSKRIFT = self.faktura.oppsett.skrivutpdf
-        #f60.PDFUTSKRIFT = self.faktura.oppsett.skrivutpdf
-
         self.skiftTab(0)
+        self.resize(880, 600)
 
     def avslutt(self):
         logging.debug("sikkerhetskopierer databasen: %s ", finnDatabasenavn())
@@ -199,10 +202,6 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         elif i is 2: self.visVarer()
         elif i is 3: self.visOkonomi()
         elif i is 4: self.visFirma()
-        elif i is 5: self.visEpost()
-        elif i is 6: self.visOppsett()
-        elif i is 7: self.visSikkerhetskopi()
-        elif i is 8: self.visMyndigheter()
         self.gammelTab = i
 
 ################## FAKTURA ########################
@@ -406,7 +405,7 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         #Antall.setMinimumSize(85, 10)
         Antall.show()
         Antall.setToolTip(u'Antall varer levert')
-        self.connect(Antall, QtCore.SIGNAL("valueChanged(double)"),
+        QtCore.QObject.connect(Antall, QtCore.SIGNAL("valueChanged(double)"),
             lambda x: self.fakturaVarelisteSynk(rad, 1))
 
         Pris = QtGui.QDoubleSpinBox(self.gui.fakturaVareliste)
@@ -417,7 +416,7 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         #Pris.setMinimumSize(90, 10)
         Pris.show()
         Pris.setToolTip(u'Varens pris (uten MVA)')
-        self.connect(Pris, QtCore.SIGNAL("valueChanged(double)"),
+        QtCore.QObject.connect(Pris, QtCore.SIGNAL("valueChanged(double)"),
             lambda x: self.fakturaVarelisteSynk(rad, 2))
 
         Mva = QtGui.QDoubleSpinBox(self.gui.fakturaVareliste)
@@ -427,7 +426,7 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         #Mva.setMinimumSize(85, 10)
         Mva.show()
         Mva.setToolTip(u'MVA-sats som skal beregnes på varen')
-        self.connect(Mva, QtCore.SIGNAL("valueChanged(double)"),
+        QtCore.QObject.connect(Mva, QtCore.SIGNAL("valueChanged(double)"),
             lambda x: self.fakturaVarelisteSynk(rad, 3))
 
         Vare = QtGui.QComboBox(self.gui.fakturaVareliste)
@@ -438,7 +437,7 @@ class FinFaktura(QtGui.QMainWindow): ## leser gui fra faktura_ui.py
         #Vare.setMinimumSize(472, 10)
         Vare.show()
         Vare.setToolTip(u'Velg vare; eller skriv inn nytt varenavn og trykk <em>enter</em> for å legge til en ny vare')
-        self.connect(Vare, QtCore.SIGNAL("activated(int)"),
+        QtCore.QObject.connect(Vare, QtCore.SIGNAL("activated(int)"),
             lambda x: self.fakturaVarelisteSynk(rad, 0))
 
 
@@ -1261,8 +1260,10 @@ class tekstVindu(object):
 
 def start():
     app = QtGui.QApplication(sys.argv)
-    ff = FinFaktura()
-    ff.gui.show()
+    #MainWindow = QtGui.QMainWindow()
+    #ui = Ui_MainWindow()
+    #ui.setupUi(MainWindow)
+    ff = FinFaktura()#ui, MainWindow)
     QtCore.QObject.connect(app, QtCore.SIGNAL("lastWindowClosed()"), ff.avslutt)
     return app.exec_()
 

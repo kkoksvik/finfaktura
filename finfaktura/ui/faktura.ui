@@ -1,13 +1,19 @@
 <ui version="4.0" >
- <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow" >
+ <class>FinFaktura</class>
+ <widget class="QMainWindow" name="FinFaktura" >
   <property name="geometry" >
    <rect>
     <x>0</x>
     <y>0</y>
     <width>878</width>
-    <height>873</height>
+    <height>872</height>
    </rect>
+  </property>
+  <property name="sizePolicy" >
+   <sizepolicy vsizetype="Expanding" hsizetype="Preferred" >
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="font" >
    <font>
@@ -87,6 +93,9 @@
           </property>
           <property name="allColumnsShowFocus" >
            <bool>true</bool>
+          </property>
+          <property name="expandsOnDoubleClick" >
+           <bool>false</bool>
           </property>
           <column>
            <property name="text" >
@@ -250,7 +259,7 @@
                  <item>
                   <widget class="QTableWidget" name="fakturaVareliste" >
                    <property name="sizePolicy" >
-                    <sizepolicy vsizetype="MinimumExpanding" hsizetype="Expanding" >
+                    <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
                      <horstretch>0</horstretch>
                      <verstretch>3</verstretch>
                     </sizepolicy>
@@ -554,7 +563,7 @@
                   </size>
                  </property>
                  <property name="pixmap" >
-                  <pixmap resource="faktura.qrc" >:/pix/cross.svg</pixmap>
+                  <pixmap resource="../../faktura.qrc" >:/pix/cross.svg</pixmap>
                  </property>
                  <property name="scaledContents" >
                   <bool>true</bool>
@@ -605,6 +614,12 @@
         </item>
         <item row="4" column="2" >
          <widget class="QGroupBox" name="fakturaDetaljer" >
+          <property name="sizePolicy" >
+           <sizepolicy vsizetype="Expanding" hsizetype="Preferred" >
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="title" >
            <string>Detaljer</string>
           </property>
@@ -640,7 +655,7 @@
            <bool>false</bool>
           </property>
           <property name="sizePolicy" >
-           <sizepolicy vsizetype="Minimum" hsizetype="Preferred" >
+           <sizepolicy vsizetype="Expanding" hsizetype="Preferred" >
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
@@ -795,33 +810,6 @@
            <bool>true</bool>
           </property>
           <layout class="QGridLayout" name="gridLayout" >
-           <item row="1" column="0" colspan="2" >
-            <layout class="QHBoxLayout" name="horizontalLayout_6" >
-             <item>
-              <spacer name="horizontalSpacer_2" >
-               <property name="orientation" >
-                <enum>Qt::Horizontal</enum>
-               </property>
-               <property name="sizeHint" stdset="0" >
-                <size>
-                 <width>608</width>
-                 <height>20</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-             <item>
-              <widget class="QPushButton" name="kundeInfoEndre" >
-               <property name="text" >
-                <string>&amp;Lag ny kunde</string>
-               </property>
-               <property name="shortcut" >
-                <string>Alt+L</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
            <item row="0" column="0" >
             <layout class="QFormLayout" name="formLayout" >
              <property name="fieldGrowthPolicy" >
@@ -1062,7 +1050,7 @@
                 <string/>
                </property>
                <property name="pixmap" >
-                <pixmap resource="faktura.qrc" >:/pix/cross.svg</pixmap>
+                <pixmap resource="../../faktura.qrc" >:/pix/cross.svg</pixmap>
                </property>
                <property name="scaledContents" >
                 <bool>true</bool>
@@ -1081,6 +1069,33 @@
                 </size>
                </property>
               </spacer>
+             </item>
+            </layout>
+           </item>
+           <item row="1" column="0" colspan="2" >
+            <layout class="QHBoxLayout" name="horizontalLayout_6" >
+             <item>
+              <spacer name="horizontalSpacer_2" >
+               <property name="orientation" >
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0" >
+                <size>
+                 <width>608</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QPushButton" name="kundeInfoEndre" >
+               <property name="text" >
+                <string>&amp;Lag ny kunde</string>
+               </property>
+               <property name="shortcut" >
+                <string>Alt+L</string>
+               </property>
+              </widget>
              </item>
             </layout>
            </item>
@@ -1518,7 +1533,7 @@
                 <string/>
                </property>
                <property name="pixmap" >
-                <pixmap resource="faktura.qrc" >:/pix/cross.svg</pixmap>
+                <pixmap resource="../../faktura.qrc" >:/pix/cross.svg</pixmap>
                </property>
                <property name="scaledContents" >
                 <bool>true</bool>
@@ -2015,13 +2030,13 @@
   </action>
  </widget>
  <resources>
-  <include location="faktura.qrc" />
+  <include location="../../faktura.qrc" />
  </resources>
  <connections>
   <connection>
    <sender>actionAvslutt</sender>
    <signal>triggered()</signal>
-   <receiver>MainWindow</receiver>
+   <receiver>FinFaktura</receiver>
    <slot>close()</slot>
    <hints>
     <hint type="sourcelabel" >
