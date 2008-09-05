@@ -1,0 +1,21 @@
+<RCC>
+  <qresource prefix="pix" >
+    <file alias="draft.svg" >finfaktura/ui/emblem-symbolic-link.svg</file>
+    <file alias="error.svg" >finfaktura/ui/dialog-error.svg</file>
+    <file alias="warning.svg" >finfaktura/ui/dialog-warning.svg</file>
+    <file alias="favorite.svg" >finfaktura/ui/emblem-favorite.svg</file>
+    <file alias="important.svg" >finfaktura/ui/emblem-important.svg</file>
+    <file alias="lock.svg" >finfaktura/ui/emblem-readonly.svg</file>
+    <file alias="cross.svg" >finfaktura/ui/emblem-unreadable.svg</file>
+    <file alias="missing.svg" >finfaktura/ui/image-missing.svg</file>
+    <file alias="attachment.svg" >finfaktura/ui/mail-attachment.svg</file>
+    <file alias="stop.svg" >finfaktura/ui/process-stop.svg</file>
+  </qresource>
+  <qresource prefix="data" >
+    <file>README</file>
+    <file>LICENSE</file>
+  </qresource>
+  <qresource prefix="sql" >
+    <file>faktura.sql</file>
+  </qresource>
+</RCC>
