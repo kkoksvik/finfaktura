@@ -44,24 +44,17 @@ PDFVIS = "/usr/bin/kpdf" # program for å vise PDF
 class FinFaktura(QtGui.QMainWindow):#Ui_MainWindow): ## leser gui fra faktura_ui.py
     db = None
     denne_kunde = None
-    denne_faktura = None
     denne_vare = None
     gammelTab = 0
 
     def __init__(self):
         QtGui.QMainWindow.__init__(self)
-
-        #self.gui = uic.loadUi('faktura4.ui')
-        #self.gui = ui #QtGui.QMainWindow()
         self.gui = Ui_FinFaktura()
         self.gui.setupUi(self)
-        #self.mainwindow = mainwindow
         self.show()
 
         if not PRODUKSJONSVERSJON:
             self.setWindowTitle("FRYKTELIG FIN FADESE (utviklerversjon)")
-        #self.mainwindow.setMaximumSize(1024, 600)
-
 
         self.gui.actionSikkerhetskopi.setEnabled(False)
         self.gui.actionLover_og_regler.setEnabled(False)
@@ -294,8 +287,6 @@ class FinFaktura(QtGui.QMainWindow):#Ui_MainWindow): ## leser gui fra faktura_ui
                        str(e).decode("utf8"))
             self.fakturaTab.setCurrentPage(3)
             return False
-        if not kunde and not ordrelinje:
-            self.denne_faktura=None
         if kunde is not None:
             self.gui.fakturaFaktaMottaker.clear()
             self.gui.fakturaFaktaMottaker.addItem(unicode(kunde), QtCore.QVariant(kunde))
@@ -327,7 +318,7 @@ class FinFaktura(QtGui.QMainWindow):#Ui_MainWindow): ## leser gui fra faktura_ui
         if self.gui.fakturaFaktaDato.date() > self.gui.fakturaFaktaForfall.date():
             self.gui.fakturaAlternativer.show()
             self.gui.fakturaFaktaForfall.setFocus()
-            self.alert(u"Forfallsdato kan ikke være før fakturadato")
+            self.alert(u"Forfallsdato kan ikke være tidligere enn fakturadato")
             return False
         kunde = self.gui.fakturaFaktaMottaker.itemData(self.gui.fakturaFaktaMottaker.currentIndex()).toPyObject()
         d = self.gui.fakturaFaktaDato.date()
@@ -372,7 +363,7 @@ class FinFaktura(QtGui.QMainWindow):#Ui_MainWindow): ## leser gui fra faktura_ui
         self.gui.fakturaFakta.hide()
         self.visFaktura() # oppdater listen slik at den nye fakturaen blir med
         try:
-            # velg den nye fakturaen
+            # velg den nye fakturaen - søk etter den nye fakturaens ID i lista
             nylinje = self.gui.fakturaFakturaliste.findItems("%06d" % f.ID, QtCore.Qt.MatchExactly, 0)[0]
             self.gui.fakturaFakturaliste.setCurrentItem(nylinje)
         except IndexError:
@@ -385,7 +376,6 @@ class FinFaktura(QtGui.QMainWindow):#Ui_MainWindow): ## leser gui fra faktura_ui
         elif knapp == 1: self.lagFaktura(Type='papir')
 
 #   def redigerFaktura(self, rad, koord, kolonne):
-#     self.denne_faktura = rad.ordre
 #     linje = {}
 #     for (ant, vare) in map(lambda x:(x.kvantum, x.vare), rad.ordre.linje):
 #       linje[vare] = ant
@@ -405,7 +395,6 @@ class FinFaktura(QtGui.QMainWindow):#Ui_MainWindow): ## leser gui fra faktura_ui
         Antall.setMaximum(100000.0)
         Antall.setValue(0.0)
         Antall.setDecimals(1)
-        #Antall.setMinimumSize(85, 10)
         Antall.show()
         Antall.setToolTip(u'Antall varer levert')
         QtCore.QObject.connect(Antall, QtCore.SIGNAL("valueChanged(double)"),
@@ -416,7 +405,6 @@ class FinFaktura(QtGui.QMainWindow):#Ui_MainWindow): ## leser gui fra faktura_ui
         Pris.setMaximum(999999999.0)
         Pris.setDecimals(2)
         Pris.setSuffix(' kr')
-        #Pris.setMinimumSize(90, 10)
         Pris.show()
         Pris.setToolTip(u'Varens pris (uten MVA)')
         QtCore.QObject.connect(Pris, QtCore.SIGNAL("valueChanged(double)"),
@@ -426,7 +414,6 @@ class FinFaktura(QtGui.QMainWindow):#Ui_MainWindow): ## leser gui fra faktura_ui
         Mva.setButtonSymbols(QtGui.QDoubleSpinBox.UpDownArrows)
         Mva.setValue(25)
         Mva.setSuffix(' %')
-        #Mva.setMinimumSize(85, 10)
         Mva.show()
         Mva.setToolTip(u'MVA-sats som skal beregnes på varen')
         QtCore.QObject.connect(Mva, QtCore.SIGNAL("valueChanged(double)"),
@@ -437,7 +424,6 @@ class FinFaktura(QtGui.QMainWindow):#Ui_MainWindow): ## leser gui fra faktura_ui
             Vare.addItem(unicode(v.navn), QtCore.QVariant(v))
         Vare.setEditable(True)
         Vare.setAutoCompletion(True)
-        #Vare.setMinimumSize(472, 10)
         Vare.show()
         Vare.setToolTip(u'Velg vare; eller skriv inn nytt varenavn og trykk <em>enter</em> for å legge til en ny vare')
         QtCore.QObject.connect(Vare, QtCore.SIGNAL("activated(int)"),
@@ -468,7 +454,6 @@ class FinFaktura(QtGui.QMainWindow):#Ui_MainWindow): ## leser gui fra faktura_ui
             self.gui.fakturaVareliste.cellWidget(rad, 1).setSuffix(' '+str(vare.enhet))
             self.gui.fakturaVareliste.cellWidget(rad, 2).setValue(float(vare.pris))
             self.gui.fakturaVareliste.cellWidget(rad, 3).setValue(float(vare.mva))
-            #self.gui.fakturaVareliste.resizeColumnsToContents()
         else:
             # endret på antall, mva eller pris -> oppdater sum
             p = mva = 0.0
@@ -683,12 +668,10 @@ class FinFaktura(QtGui.QMainWindow):#Ui_MainWindow): ## leser gui fra faktura_ui
                                    tekst,
                                    TRANSPORT_METODER[self.faktura.epostoppsett.transport]
                                    )
-            #self.fakturaSendepostBoks.ordre.sendt = time() # XXX TODO: logg tid for sending
-
         except:
             f = sys.exc_info()[1]
             self.alert(u'Feil ved sending av faktura. Prøv å sende med en annen epostmetode.\n\nDetaljer:\n%s' % f)
-            #historikk.epostSendt(ordre, 0, f)
+            #historikk.epostSendt(ordre, 0, f) ## TODO: logg feilmelding
             raise
         else:
             historikk.epostSendt(ordre, True, "Tid: %s, transport: %s" % (time(), trans[self.faktura.epostoppsett.transport]))
@@ -719,7 +702,7 @@ class FinFaktura(QtGui.QMainWindow):#Ui_MainWindow): ## leser gui fra faktura_ui
         i = self.gui.kundeKundeliste.addTopLevelItem
         self.gui.kundeKundeliste.clear()
         for kunde in self.faktura.hentKunder(inkluderSlettede=visFjernede):
-            l = QtGui.QTreeWidgetItem([ #self.kundeKundeliste,
+            l = QtGui.QTreeWidgetItem([
                               "%03d" % kunde.ID,
                               '%s' % kunde.navn,
                               '%s' % kunde.epost,
@@ -789,7 +772,7 @@ class FinFaktura(QtGui.QMainWindow):#Ui_MainWindow): ## leser gui fra faktura_ui
                 return False
 
         if k is None:
-            #logging.debug("registrerer ny kunde")
+            logging.debug("registrerer ny kunde")
             k = self.faktura.nyKunde()
         else:
             logging.debug("oppdaterer kunde, som var " + unicode(k))
@@ -1263,10 +1246,7 @@ class tekstVindu(object):
 
 def start():
     app = QtGui.QApplication(sys.argv)
-    #MainWindow = QtGui.QMainWindow()
-    #ui = Ui_MainWindow()
-    #ui.setupUi(MainWindow)
-    ff = FinFaktura()#ui, MainWindow)
+    ff = FinFaktura()
     QtCore.QObject.connect(app, QtCore.SIGNAL("lastWindowClosed()"), ff.avslutt)
     return app.exec_()
 
