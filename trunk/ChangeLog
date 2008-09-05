@@ -1,3 +1,275 @@
+2008-08-27 22:55  havard.gulldahl
+
+	* faktura4.ui, finfaktura/gui.py, finfaktura/gui_epost.py,
+	  finfaktura/gui_firma.py, testdata.db: fikser qt3-ismer
+
+2008-08-26 23:11  havard.gulldahl
+
+	* faktura.py, finfaktura/ekstra.py, finfaktura/ui/sendepost_ui.py,
+	  setup.py: flytter og forbedrer ressurs-rutiner
+
+2008-08-26 22:36  havard.gulldahl
+
+	* faktura.py, finfaktura/fakturafeil.py, finfaktura/gui.py,
+	  setup.py: Gir bedre feilmelding dersom .ui og .qrc-filer ikke er
+	  pythonifisert
+
+2008-08-26 22:21  havard.gulldahl
+
+	* scripts/forbered_ressurser.sh: legger til skript for å lage .ui
+	  og .qrc-filer til .py
+
+2008-08-23 13:35  havard.gulldahl
+
+	* finfaktura/gui.py, finfaktura/gui_firma.py,
+	  finfaktura/ui/firmainfo.ui: porterer firmainfo til QT4
+
+2008-08-23 12:35  havard.gulldahl
+
+	* finfaktura/gui_dittfirma.py, finfaktura/gui_firma.py: endrer navn
+
+2008-08-23 12:35  havard.gulldahl
+
+	* finfaktura/gui_dittfirma.py: porterer og flytter kode
+
+2008-08-23 11:47  havard.gulldahl
+
+	* finfaktura/gui.py, finfaktura/gui_finfaktura_oppsett.py,
+	  finfaktura/ui/finfaktura_oppsett.ui: Porterer oppsetts-dialog til
+	  QT4
+
+2008-08-23 11:46  havard.gulldahl
+
+	* finfaktura/gui_epost.py: typo
+
+2008-08-20 22:33  havard.gulldahl
+
+	* finfaktura/gui_finfaktura_oppsett.py,
+	  finfaktura/gui_programmer.py: bedre navn
+
+2008-08-20 22:32  havard.gulldahl
+
+	* finfaktura/gui_programmer.py: flytter metoder fra gui.py
+
+2008-08-20 22:32  havard.gulldahl
+
+	* finfaktura/ui/finfaktura_oppsett.ui, finfaktura/ui/programmer.ui:
+	  bytter til bedre navn
+
+2008-08-20 22:31  havard.gulldahl
+
+	* finfaktura/ui/programmer.ui: gjør til qt4
+
+2008-08-20 22:26  havard.gulldahl
+
+	* finfaktura/epost.py, finfaktura/gui.py, finfaktura/gui_epost.py,
+	  finfaktura/ui/epost.ui: Nesten ferdig med epost-oppsett
+
+2008-08-19 23:43  havard.gulldahl
+
+	* finfaktura/ui/epost.ui: fjerner qt3-skorper
+
+2008-08-19 23:26  havard.gulldahl
+
+	* finfaktura/gui.py: flytter dialog-kode, og fjerner død kode
+
+2008-08-19 23:19  havard.gulldahl
+
+	* finfaktura/gui.py, finfaktura/ui/sendepost.ui,
+	  finfaktura/ui/sendepost_ui.py: kan vise sendEpost-vinduet
+
+2008-08-19 23:15  havard.gulldahl
+
+	* finfaktura/gui_dittfirma.py, finfaktura/gui_ekstra.py,
+	  finfaktura/gui_epost.py, finfaktura/gui_programmer.py,
+	  finfaktura/gui_sendepost.py, finfaktura/gui_sikkerhetskopi.py:
+	  flytter noe av gui-koden til egne filer
+
+2008-08-19 22:50  havard.gulldahl
+
+	* finfaktura/ui/sendepost.ui: konverterer til qt4
+
+2008-08-19 22:42  havard.gulldahl
+
+	* finfaktura/__init__.py: skjuler interne moduler
+
+2008-08-19 22:42  havard.gulldahl
+
+	* epost.ui, firmainfo.ui, programmer.ui, sendepost.ui,
+	  sikkerhetskopi.ui: flytter UI-filer
+
+2008-08-19 22:41  havard.gulldahl
+
+	* finfaktura/ui/epost.ui, finfaktura/ui/firmainfo.ui,
+	  finfaktura/ui/programmer.ui, finfaktura/ui/sendepost.ui,
+	  finfaktura/ui/sikkerhetskopi.ui: Flytter UI-filer
+
+2008-08-19 21:58  havard.gulldahl
+
+	* faktura.qrc: Legger til kladd-ikon
+
+2008-08-19 21:57  havard.gulldahl
+
+	* finfaktura/ui/emblem-symbolic-link.svg: Legger til kladd-ikon
+
+2008-08-19 21:45  havard.gulldahl
+
+	* finfaktura/ui/dialog-error.svg, finfaktura/ui/dialog-warning.svg,
+	  finfaktura/ui/emblem-favorite.svg,
+	  finfaktura/ui/emblem-important.svg,
+	  finfaktura/ui/emblem-readonly.svg,
+	  finfaktura/ui/emblem-unreadable.svg,
+	  finfaktura/ui/image-missing.svg,
+	  finfaktura/ui/mail-attachment.svg,
+	  finfaktura/ui/process-stop.svg: Legger til lisensinfo på
+	  grafikken hentet fra The Tango Desktop Project: CC-BY-SA.
+	  http://tango.freedesktop.org/Tango_Desktop_Project
+
+2008-08-19 21:39  havard.gulldahl
+
+	* faktura.qrc, faktura4.ui, finfaktura/ui/dialog-error.svg,
+	  finfaktura/ui/dialog-warning.svg,
+	  finfaktura/ui/emblem-favorite.svg,
+	  finfaktura/ui/emblem-important.svg,
+	  finfaktura/ui/emblem-readonly.svg,
+	  finfaktura/ui/emblem-unreadable.svg,
+	  finfaktura/ui/image-missing.svg,
+	  finfaktura/ui/mail-attachment.svg,
+	  finfaktura/ui/process-stop.svg: Legger til grafikk
+
+2008-08-19 21:29  havard.gulldahl
+
+	* faktura4.ui, finfaktura/gui.py: Lager litt bedre plass når "Ny
+	  faktura"-vinduet vises
+
+2008-08-19 20:49  havard.gulldahl
+
+	* faktura.sql, finfaktura/oppgradering.py: issue#31: legger til
+	  rette for 1. egendefinert tekst i ordrelinja, og 3. mulighet til
+	  å lage "kladd"-faktura (fortsette på senere)
+
+2008-08-17 02:15  havard.gulldahl
+
+	* doc/REGLER, faktura4.ui, finfaktura/gui.py, testdata.db: ny
+	  faktura vises +++
+
+2008-08-17 00:57  havard.gulldahl
+
+	* faktura.qrc, faktura4.ui, finfaktura/gui.py: Mer fiks for å komme
+	  i havn med Qt4
+
+2008-08-16 23:51  havard.gulldahl
+
+	* faktura4.ui, finfaktura/gui.py: Mer arbeid med å gjenopprette
+	  gui-funksjoner. "Kunder" og "Varer" fungerer fint igjen
+
+2008-08-16 22:48  havard.gulldahl
+
+	* faktura4.ui, finfaktura/gui.py: Basal funksjonalitet på plass
+
+2008-08-16 22:16  havard.gulldahl
+
+	* faktura.py, faktura4.ui, finfaktura/ekstra.py,
+	  finfaktura/fakturakomponenter.py, finfaktura/gui.py: Viser Qt4
+	  gui
+
+2008-08-16 21:37  havard.gulldahl
+
+	* faktura.py, finfaktura/gui.py: flytter gui-kode og cli-kode
+
+2008-08-16 21:36  havard.gulldahl
+
+	* finfaktura/__init__.py, finfaktura/faktura_ui.py,
+	  finfaktura/sendepost_ui.py, finfaktura/ui,
+	  finfaktura/ui/__init__.py, finfaktura/ui/faktura_ui.py,
+	  finfaktura/ui/sendepost_ui.py: flytter på ui-kode
+
+2008-08-16 21:35  havard.gulldahl
+
+	* finfaktura/cli.py: småfiks
+
+2008-08-16 16:21  havard.gulldahl
+
+	* faktura4.ui: fjerner gammel buddy
+
+2008-08-16 16:19  havard.gulldahl
+
+	* faktura4.ui: rydder opp i qformlayout-trøbel
+
+2008-08-16 15:50  havard.gulldahl
+
+	* epost.ui, faktura.ui, faktura4.ui, firmainfo.ui, programmer.ui,
+	  sikkerhetskopi.ui: Redesigner UI med Qt4
+
+2008-08-16 15:43  havard.gulldahl
+
+	* debian/watch: rydder opp
+
+2008-08-16 15:43  havard.gulldahl
+
+	* debian/control, debian/cron.d.ex, debian/finfaktura.doc-base.EX,
+	  debian/manpage.sgml.ex, debian/manpage.xml.ex,
+	  debian/postinst.ex, debian/postrm.ex, debian/preinst.ex,
+	  debian/prerm.ex, debian/rules: rydder opp
+
+2008-08-16 15:38  havard.gulldahl
+
+	* faktura.qrc: legger til qt-ressurser
+
+2008-08-15 22:59  havard.gulldahl
+
+	* finfaktura/f60.py: skifter navn på metode tilbake til .lagPost
+	  for å bevare bakoverkompabilitet
+
+2008-08-15 22:06  havard.gulldahl
+
+	* finfaktura/f60.py: Sammenstiller kontonr
+
+2008-08-15 19:54  havard.gulldahl
+
+	* finfaktura/f60.py: Justerer utskriftsplasseringer, og flere
+	  kommentarer
+
+2008-05-11 20:47  havard.gulldahl
+
+	* LICENSE: legger til GPL2-teksten
+
+2008-05-11 11:58  havard.gulldahl
+
+	* MANIFEST, debian/control, debian/copyright, debian/rules,
+	  doc/REGLER, setup.py: Vedlikehold av release-rutiner
+
+2008-05-11 09:18  havard.gulldahl
+
+	* finfaktura/fakturabibliotek.py: bedre måte å finne sql-fil på
+
+2008-05-11 09:02  havard.gulldahl
+
+	* ChangeLog, debian/changelog, finfaktura/__init__.py: Gjør 1.3.2
+	  klar til utgivelse
+
+2008-05-11 09:00  havard.gulldahl
+
+	* doc/REGLER, faktura.sql: oppdaterer navn, epostadresse og dato
+
+2008-05-11 08:59  havard.gulldahl
+
+	* faktura.py, finfaktura/__init__.py, finfaktura/cli.py,
+	  finfaktura/ekstra.py, finfaktura/epost.py, finfaktura/f60.py,
+	  finfaktura/fakturaSqliteDB.py, finfaktura/fakturabibliotek.py,
+	  finfaktura/fakturafeil.py, finfaktura/fakturakomponenter.py,
+	  finfaktura/historikk.py, finfaktura/myndighetene.py,
+	  finfaktura/okonomi.py, finfaktura/oppgradering.py,
+	  finfaktura/rapport.py, finfaktura/sikkerhetskopi.py,
+	  finfaktura/test.py, setup.py: oppdaterer navn, epostadresse og
+	  dato
+
+2008-05-11 08:52  havard.gulldahl
+
+	* faktura.py, finfaktura/f60.py, finfaktura/fakturabibliotek.py,
+	  finfaktura/fakturakomponenter.py: fikser fæl feil ved første
+	  gangs oppstart
+
 2008-05-09 19:03  havard.gulldahl
 
 	* debian/changelog, finfaktura/__init__.py: Gjør 1.3.1 klar til
