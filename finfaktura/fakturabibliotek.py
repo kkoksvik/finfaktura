@@ -262,8 +262,10 @@ def byggDatabase(db, sqlfile=None):
     if sqlfile is not None:
         sql = file(sqlfile).read()
     else:
-        sql = unicode(lesRessurs(':/sql/faktura.sql'))
-    db.executescript(file(sqlfile).read())
+        _sql = lesRessurs(':/sql/faktura.sql')
+        #logging.debug('fant sql: %s', _sql)
+        sql = unicode(_sql)
+    db.executescript(sql)
     db.cursor().execute("INSERT INTO Oppsett (ID, databaseversjon, fakturakatalog) VALUES (1, ?, ?)",
         (DATABASEVERSJON, '~'))
     db.commit()
