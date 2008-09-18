@@ -34,4 +34,4 @@ Gjennom ulike programopsjoner kan du styre programmets oppførsel.
   * `-h`: Skriver hjelpetekst og avslutter
   * `-i`: Starter interaktiv modus
 
-Denne lista kan være utdatert. Se i [http://code.google.com/p/finfaktura/source/browse/trunk/faktura.py SVN for en oppdatert liste]
+(Denne lista kan være utdatert. Se i [http://code.google.com/p/finfaktura/source/browse/trunk/faktura.py SVN for en oppdatert liste])
