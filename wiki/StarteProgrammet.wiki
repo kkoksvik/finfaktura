@@ -32,6 +32,6 @@ Gjennom ulike programopsjoner kan du styre programmets oppførsel.
   * `-d`: Aktiverer _debug_-modus (skriver meldinger i konsollet)
   * `-v`: Skriver versjon og avslutter
   * `-h`: Skriver hjelpetekst og avslutter
-  * `-i`: Starter interaktiv modus
+  * `-i`: Starter [FakturaFraKommandolinja konsoll-modus]
 
 (Denne lista kan være utdatert. Se i [http://code.google.com/p/finfaktura/source/browse/trunk/faktura.py SVN for en oppdatert liste])
