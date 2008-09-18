@@ -22,7 +22,6 @@ from finfaktura.fakturabibliotek import PRODUKSJONSVERSJON, \
     FakturaBibliotek, kobleTilDatabase, lagDatabase, finnDatabasenavn, \
     sikkerhetskopierFil, lesRessurs
 import finfaktura.f60 as f60
-from finfaktura.myndighetene import myndighetene
 from finfaktura.epost import TRANSPORT_METODER
 import finfaktura.okonomi as fakturaOkonomi
 import finfaktura.sikkerhetskopi as sikkerhetskopi
