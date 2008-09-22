@@ -1,0 +1,5 @@
+#summary Kjør saken på Mac OSX.
+
+* Fink
+
+http://pdb.finkproject.org/pdb/package.php/pyqt4-py25-bin
