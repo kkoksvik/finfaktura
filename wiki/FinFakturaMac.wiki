@@ -6,7 +6,9 @@ Dette dokumentet går gjennom alternativer for å bruke _Fin Faktura_ på OS X.
 
 Inntil noen lager en korrekt pakke (har du en mac og har lyst til å [mailto:havard@gulldahl.no hjelpe til?]), er dette det eneste alternativet.
 
-Fink er et prosjekt som utnytter OSX' unix-bakgrunn og pakker en rekke programmer slik at de passer inn i systemet. Ved hjelp av enkle tekstkommandoer i konsollet kan man installere et lass av nyttige hjelpemidler.
+[http://www.finkproject.org/index.php Fink er et prosjekt som frir til OSX' unix-bakgrunn] og pakker en rekke programmer slik at de passer inn i systemet. Ved hjelp av enkle tekstkommandoer i konsollet kan man installere et lass av nyttige hjelpemidler.
+
+Det er i utgangspunktet ikke grafisk styrt, og bruken forutsetter at man er komfortabel med det tekst-baserte konsollet.
 
  === Slik går du frem ===
 
