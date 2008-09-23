@@ -1,0 +1,14 @@
+#summary Formelle krav til hva en faktura må inneholde.
+
+
+Denne siden skal følge de formelle kravene til en faktura, for å sørge for at Fin Faktura kan gå juridisk tørrskodd.
+
+
+  * [http://www.lovdata.no/for/sf/fd/td-20041201-1558-005.html Bokføringsforskriften har den komplette oversikten] (på advokatspråk)
+
+  * [http://www.bedin.no/php/d_emneside/cf/hApp_101/hPKey_2151/hParent_0/hDKey_1 Bedin har en mer lesbar forklaring], med [http://www.bedin.no/CWObjekter/FakturaEksempel.pdf et eksempel (PDF)]
+
+  * Bedin har også en [http://www.bedin.no/php/d_emneside/cf/hApp_101/hPKey_2300/hDKey_1 forklaring som spesifikt gjelder _elektroniske fakturaer_]
+
+  * ... samt en [http://www.bedin.no/php/d_emneside/cf/hApp_101/hPKey_2152/hDKey_1 innføring i begrepene purring og inkasso]
+
