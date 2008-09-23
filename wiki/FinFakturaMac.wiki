@@ -1,5 +1,17 @@
-#summary Kjør saken på Mac OSX.
+#summary Dette må til for å bruke programmet på Mac OSX.
 
-* Fink
+Dette dokumentet går gjennom alternativer for å bruke _Fin Faktura_ på OS X. 
 
-http://pdb.finkproject.org/pdb/package.php/pyqt4-py25-bin
+== Fink ==
+
+Inntil noen lager en korrekt pakke (har du en mac og har lyst til å [mailto:havard@gulldahl.no hjelpe til?]), er dette det eneste alternativet.
+
+Fink er et prosjekt som utnytter OSX' unix-bakgrunn og pakker en rekke programmer slik at de passer inn i systemet. Ved hjelp av enkle tekstkommandoer i konsollet kan man installere et lass av nyttige hjelpemidler.
+
+ === Slik går du frem ===
+
+  # Sett opp Fink
+  # Installer pakken [http://pdb.finkproject.org/pdb/package.php/pyqt4-py25-bin pyqt4-py25-bin]
+  # Last ned [http://code.google.com/p/finfaktura/downloads/list _Fin Faktura_ som *python kildekode*] (slutter på .zip)
+  # I konsollet, kjør `python setup.py install`
+  # Ferdig.
