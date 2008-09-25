@@ -1,8 +1,14 @@
 # -*- coding:utf-8 -*-
 """Denne modulen lager en PDF-faktura etter norsk standard f60
 
-PDF-filen kan skrives ut på f60-skjema, eller sendes som en elektronisk
-versjon av denne.
+PDF-filen kan skrives ut på f60-skjema (GIRO F60-1), eller sendes som en
+elektronisk versjon av denne.
+
+Den krever python-modulen `reportlab'; som heter python-reportlab i linux-
+verdenen og kan lastes ned fra nettet for alle andre:
+
+http://www.reportlab.org/
+
 
 Her er et eksempel på hvordan man bruker modulen:
 
@@ -24,8 +30,20 @@ faktura.settFirmainfo({'firmanavn':'Firma Ein',
                         'organisasjonsnummer':876876,
                         'telefon':23233322,
                         'epost':'ratata@ta.no'})
+
+# kundeinfo er:
+#   o Kundenummer
+#   o Navn og fakturaadresse
 faktura.settKundeinfo(06, "Topert\nRopertgata 33\n9022 Nissedal")
+
+# ordrelinja er lister av lister, hvor hver liste har følgende elementer:
+#   o Linjenavn (fri tekst)
+#   o Antall
+#   o Pris i kroner _for en vare_
+#   o Mva-avgift for varen
 faktura.settOrdrelinje([ ["Leder", 1, 300, 25], ['Reportasje', 1, 3000, 25], ])
+
+
 if faktura.lagEpost():
     print "Kvittering laget i", filnavn
 
@@ -44,6 +62,11 @@ import time, os, types
 from string import join, split
 import logging
 
+class f60Eksisterer(Exception): pass
+class f60Feil(Exception): pass
+class f60FeilKID(Exception): pass
+class f60InstallasjonsFeil(Exception): pass
+
 try:
     import reportlab
     from reportlab.pdfgen import canvas
@@ -52,13 +75,10 @@ try:
     REPORTLAB=True
 except ImportError:
     REPORTLAB=False
+    raise f60InstallsjonsFeil("python-modulen `reportlab' mangler. Kan ikke lage PDF!")
 
-__version__ = '0.10'
+__version__ = '0.11'
 __license__ = 'GPLv2'
-
-class f60Eksisterer(Exception): pass
-class f60Feil(Exception): pass
-class f60FeilKID(Exception): pass
 
 PDFUTSKRIFT = '/usr/bin/kprinter'
 
@@ -134,26 +154,24 @@ class f60:
     def lagPost(self):
         "Ferdigstiller dokumentet for utskrift på papir (uten F60 skjemafelt)"
         self.fyll()
-        return self.settSammen()
+        return self._settSammen()
 
     def lagEpost(self):
         "Ferdigstiller dokumentet for elektronisk forsendelse (med F60 skjemafelt)"
         self.lagBakgrunn()
         self.fyll()
-        return self.settSammen()
+        return self._settSammen()
 
     def lagKvittering(self):
         "Ferdigstiller en kvittering for utskrift på papir (med F60 skjemafelt)"
         self.lagBakgrunn()
         self.fyll()
         self.lagKopimerke()
-        return self.settSammen()
+        return self._settSammen()
 
     def lagTempFilnavn(self):
         from tempfile import mkstemp
         f,filnavn = mkstemp(".pdf", "faktura-")
-        #print dir(f)
-        #f.close()
         return filnavn
 
     def skrivUt(self, program=PDFUTSKRIFT):
@@ -333,20 +351,22 @@ Epost: %(epost)s""" % (self.firma), "\n"))
         kunde.textLines(split("Kunde# %03i\n%s" % (self.kunde['nr'], self.kunde['adresse']), '\n'))
         self.canvas.drawText(kunde)
 
-        # detaljer om fakturaen
+        # detaljer om fakturaen # FIXME: løpe over flere sider
         sidenr = 1
         totalsider = 1
         fakturafakta = self.canvas.beginText()
         fakturafakta.setTextOrigin(150*mm, 260*mm)
         fakturafakta.textLines("""FAKTURA
 Fakturanr : %04i
+Leveringsdato: %s
 Fakturadato: %s
 Forfallsdato: %s
 Side: %i av %i
         """ % (self.faktura['nr'],
+               self.faktura['utstedt'], ## FIXME: Endres til leveringsdato når vi har dette!
                self.faktura['utstedt'],
                self.faktura['forfall'],
-               sidenr,
+               sidenr, # FIXME: løpe over flere sider
                totalsider)
                )
         self.canvas.drawText(fakturafakta)
@@ -426,8 +446,9 @@ Side: %i av %i
 
         #logging.debug("Nå har vi kommet til Y: %i (%i)" % (Y/mm, Y))
         #if Y < 140*mm: self.lagNySide() # vi har lagt inn for mange varer til at vi får plass på en side
+        # FIXME: løpe over flere sider
 
-        sumY = 131*mm
+        sumY = 141*mm
         self.canvas.line(90*mm, sumY, 190*mm, sumY)
 
         # legg sammen totalen
@@ -438,13 +459,12 @@ Side: %i av %i
 
         # sum mvagrunnlag
 
-
         # standard betalingsvilkår
-        if len(self.faktura['vilkaar']):
+        if len(self.faktura['vilkaar']): ## FIXME: krype oppover hvis teksten er mer enn en linje høy
             self.canvas.setFont("Helvetica", 10)
             vilkar = self.canvas.beginText()
-            vilkar.setTextOrigin(9*mm, 131*mm)
-            vilkar.textLines(self.paragraf(self.faktura['vilkaar'].upper(), 35))
+            vilkar.setTextOrigin(9*mm, 124*mm)
+            vilkar.textLines(self.paragraf(self.faktura['vilkaar'], 120))
             self.canvas.drawText(vilkar)
 
         # Nederste del av skjemaet
@@ -492,7 +512,7 @@ Side: %i av %i
         self.canvas.drawString(110*mm, 21*mm, "%02d" % ore)
         self.canvas.drawString(135*mm, 21*mm, str(self.firma['kontonummer']))
 
-    def settSammen(self):
+    def _settSammen(self):
         "Setter sammen fakturaen. Ikke for eksternt bruk. Bruk .lag*()-metodene"
         self.canvas.showPage()
         self.canvas.save()
@@ -502,7 +522,7 @@ if __name__ == '__main__':
     #test
     filnavn = '/tmp/testfaktura.pdf'
     faktura = f60(filnavn, overskriv=True)
-    faktura.settFakturainfo(03, 1145542709, 1146546709, u"Rå løk", u"Takk for handelen, kom gjerne igjen når du vil, eller ikke hvis du ikke vil.", kid='4466986711175280')
+    faktura.settFakturainfo(03, 1145542709, 1146546709, u"Rå løk", u"Takk for handelen, kom gjerne igjen. Merk at det regners 5 % rente ved for sen betaling. ", kid='4466986711175280')
     faktura.settFirmainfo({'firmanavn':'Test Firma Ein',
                            'kontaktperson':'Rattatta Hansen',
                            'adresse':u'Surdalsøyra',
