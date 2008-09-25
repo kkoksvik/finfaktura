@@ -111,6 +111,12 @@ class fakturaKomponent:
         self.db.commit()
         return self.c.lastrowid
 
+    def helstDesimal(self, d):
+        try:
+            return float(d)
+        except TypeError:
+            return 0.0
+
 class fakturaKunde(fakturaKomponent):
     _tabellnavn = "Kunde"
 
@@ -158,7 +164,7 @@ class fakturaVare(fakturaKomponent):
     _tabellnavn = "Vare"
 
     def __str__(self):
-        return unicode("%s: %.2f kr (%s %% mva)" % (self.navn, self.pris, self.mva))
+        return unicode("%s: %.2f kr (%s %% mva)" % (self.navn, self.helstDesimal(self.pris), self.mva))
 
     def __repr__(self):
         return unicode("%s, vare # %s" % (self.navn, self._id))
