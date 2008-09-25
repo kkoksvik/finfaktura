@@ -11,11 +11,11 @@
 
 import sys,types,os
 import smtplib
-from email.MIMEMultipart import MIMEMultipart
-from email.MIMEBase import MIMEBase
-from email.MIMEText import MIMEText
-from email import Encoders
-from email.Header import Header, decode_header
+from email.mime.multipart import MIMEMultipart
+from email.mime.base import MIMEBase
+from email.mime.text import MIMEText
+from email import encoders, generator
+from email.header import Header, decode_header
 import socket
 from string import join
 
@@ -69,7 +69,7 @@ class epost:
         fp = open(self.pdfFilnavn, 'rb')
         b.set_payload(fp.read()) # les inn fakturaen
         fp.close()
-        Encoders.encode_base64(b) #base64 encode subpart
+        encoders.encode_base64(b) #base64 encode subpart
         return m
 
     def auth(self, brukernavn, passord):
