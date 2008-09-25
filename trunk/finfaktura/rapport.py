@@ -13,6 +13,8 @@ import time, os, types
 from string import join, split
 import logging
 
+import fakturafeil
+
 try:
     import reportlab
     from reportlab.lib.styles import getSampleStyleSheet
@@ -30,7 +32,13 @@ class rapport:
     oppdatert = False
 
     def __init__(self, filnavn=None, rapportinfo={}):
-        self.filnavn = filnavn
+        if not REPORTLAB:
+            raise fakturafeil.InstallasjonsFeil('python-reportlab er ikke installert. Kan ikke lage PDF!')
+        if filnavn is None:
+            import tempfile
+            self.filnavn = tempfile.mkstemp(suffix='.pdf', prefix='rapport-')
+        else:
+            self.filnavn = filnavn
         self.info = rapportinfo
         self.stiler = getSampleStyleSheet()
         self.normal = self.stiler['BodyText']

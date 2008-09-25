@@ -1,7 +1,7 @@
 #!/usr/bin/python -d
 # -*-*- coding:utf8 -*-*-
 ###########################################################################
-#    Copyright (C) 2005-2008 Håvard Gulldahl 
+#    Copyright (C) 2005-2008 Håvard Gulldahl
 #    <havard@lurtgjort.no>
 #
 #    Lisens: GPL2
@@ -20,6 +20,7 @@ class FirmainfoFeil(Exception): pass
 class SikkerhetskopiFeil(Exception): pass
 class PDFFeil(Exception): pass
 class RessurserManglerFeil(Exception): pass
+class InstallasjonsFeil(Exception): pass
 
 
 
