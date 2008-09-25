@@ -810,6 +810,75 @@
            <bool>true</bool>
           </property>
           <layout class="QGridLayout" name="gridLayout" >
+           <item row="0" column="1" >
+            <layout class="QVBoxLayout" name="verticalLayout" >
+             <item>
+              <widget class="QLabel" name="kundeInfoKryss" >
+               <property name="minimumSize" >
+                <size>
+                 <width>24</width>
+                 <height>24</height>
+                </size>
+               </property>
+               <property name="maximumSize" >
+                <size>
+                 <width>24</width>
+                 <height>24</height>
+                </size>
+               </property>
+               <property name="text" >
+                <string/>
+               </property>
+               <property name="pixmap" >
+                <pixmap resource="../../faktura.qrc" >:/pix/cross.svg</pixmap>
+               </property>
+               <property name="scaledContents" >
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="verticalSpacer" >
+               <property name="orientation" >
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeHint" stdset="0" >
+                <size>
+                 <width>20</width>
+                 <height>220</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </item>
+           <item row="1" column="0" colspan="2" >
+            <layout class="QHBoxLayout" name="horizontalLayout_6" >
+             <item>
+              <spacer name="horizontalSpacer_2" >
+               <property name="orientation" >
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0" >
+                <size>
+                 <width>608</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QPushButton" name="kundeInfoEndre" >
+               <property name="text" >
+                <string>&amp;Lag ny kunde</string>
+               </property>
+               <property name="shortcut" >
+                <string>Alt+L</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
            <item row="0" column="0" >
             <layout class="QFormLayout" name="formLayout" >
              <property name="fieldGrowthPolicy" >
@@ -1025,75 +1094,6 @@
                </property>
                <property name="buddy" >
                 <cstring>kundeInfoPostnummer</cstring>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item row="0" column="1" >
-            <layout class="QVBoxLayout" name="verticalLayout" >
-             <item>
-              <widget class="QLabel" name="kundeInfoKryss" >
-               <property name="minimumSize" >
-                <size>
-                 <width>24</width>
-                 <height>24</height>
-                </size>
-               </property>
-               <property name="maximumSize" >
-                <size>
-                 <width>24</width>
-                 <height>24</height>
-                </size>
-               </property>
-               <property name="text" >
-                <string/>
-               </property>
-               <property name="pixmap" >
-                <pixmap resource="../../faktura.qrc" >:/pix/cross.svg</pixmap>
-               </property>
-               <property name="scaledContents" >
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <spacer name="verticalSpacer" >
-               <property name="orientation" >
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeHint" stdset="0" >
-                <size>
-                 <width>20</width>
-                 <height>220</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-            </layout>
-           </item>
-           <item row="1" column="0" colspan="2" >
-            <layout class="QHBoxLayout" name="horizontalLayout_6" >
-             <item>
-              <spacer name="horizontalSpacer_2" >
-               <property name="orientation" >
-                <enum>Qt::Horizontal</enum>
-               </property>
-               <property name="sizeHint" stdset="0" >
-                <size>
-                 <width>608</width>
-                 <height>20</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-             <item>
-              <widget class="QPushButton" name="kundeInfoEndre" >
-               <property name="text" >
-                <string>&amp;Lag ny kunde</string>
-               </property>
-               <property name="shortcut" >
-                <string>Alt+L</string>
                </property>
               </widget>
              </item>
@@ -1389,6 +1389,48 @@
            <bool>false</bool>
           </property>
           <layout class="QGridLayout" name="gridLayout_3" >
+           <item row="0" column="1" >
+            <layout class="QVBoxLayout" name="verticalLayout_5" >
+             <item>
+              <widget class="QLabel" name="varerInfoKryss" >
+               <property name="minimumSize" >
+                <size>
+                 <width>24</width>
+                 <height>24</height>
+                </size>
+               </property>
+               <property name="maximumSize" >
+                <size>
+                 <width>24</width>
+                 <height>24</height>
+                </size>
+               </property>
+               <property name="text" >
+                <string/>
+               </property>
+               <property name="pixmap" >
+                <pixmap resource="../../faktura.qrc" >:/pix/cross.svg</pixmap>
+               </property>
+               <property name="scaledContents" >
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="verticalSpacer" >
+               <property name="orientation" >
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeHint" stdset="0" >
+                <size>
+                 <width>20</width>
+                 <height>40</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </item>
            <item row="0" column="0" >
             <layout class="QFormLayout" name="formLayout_3" >
              <property name="fieldGrowthPolicy" >
@@ -1513,86 +1555,44 @@
              </item>
             </layout>
            </item>
-           <item row="0" column="1" >
-            <layout class="QVBoxLayout" name="verticalLayout_5" >
+           <item row="1" column="0" >
+            <layout class="QHBoxLayout" name="horizontalLayout_11" >
              <item>
-              <widget class="QLabel" name="varerInfoKryss" >
-               <property name="minimumSize" >
-                <size>
-                 <width>24</width>
-                 <height>24</height>
-                </size>
-               </property>
-               <property name="maximumSize" >
-                <size>
-                 <width>24</width>
-                 <height>24</height>
-                </size>
-               </property>
-               <property name="text" >
-                <string/>
-               </property>
-               <property name="pixmap" >
-                <pixmap resource="../../faktura.qrc" >:/pix/cross.svg</pixmap>
-               </property>
-               <property name="scaledContents" >
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <spacer name="verticalSpacer" >
+              <spacer name="horizontalSpacer_3" >
                <property name="orientation" >
-                <enum>Qt::Vertical</enum>
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeType" >
+                <enum>QSizePolicy::Expanding</enum>
                </property>
                <property name="sizeHint" stdset="0" >
                 <size>
-                 <width>20</width>
-                 <height>40</height>
+                 <width>248</width>
+                 <height>26</height>
                 </size>
                </property>
               </spacer>
+             </item>
+             <item>
+              <widget class="QPushButton" name="varerInfoLegginn" >
+               <property name="sizePolicy" >
+                <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text" >
+                <string>&amp;Lag ny vare</string>
+               </property>
+               <property name="shortcut" >
+                <string>Alt+L</string>
+               </property>
+              </widget>
              </item>
             </layout>
            </item>
           </layout>
          </widget>
-        </item>
-        <item row="4" column="0" colspan="3" >
-         <layout class="QHBoxLayout" name="horizontalLayout_11" >
-          <item>
-           <spacer name="horizontalSpacer_3" >
-            <property name="orientation" >
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeType" >
-             <enum>QSizePolicy::Expanding</enum>
-            </property>
-            <property name="sizeHint" stdset="0" >
-             <size>
-              <width>248</width>
-              <height>26</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item>
-           <widget class="QPushButton" name="varerInfoLegginn" >
-            <property name="sizePolicy" >
-             <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text" >
-             <string>&amp;Lag ny vare</string>
-            </property>
-            <property name="shortcut" >
-             <string>Alt+L</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
         </item>
         <item row="0" column="2" >
          <widget class="QPushButton" name="varerNy" >
@@ -1615,8 +1615,8 @@
        <zorder>varerVisFjernede</zorder>
        <zorder>groupBox_4</zorder>
        <zorder>varerInfo</zorder>
-       <zorder></zorder>
        <zorder>varerNy</zorder>
+       <zorder></zorder>
       </widget>
       <widget class="QWidget" name="TabPage_2" >
        <attribute name="title" >
@@ -1948,6 +1948,7 @@
      </widget>
     </item>
    </layout>
+   <zorder>fakturaTab</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar" >
    <property name="geometry" >

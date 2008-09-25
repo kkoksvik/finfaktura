@@ -921,11 +921,13 @@ class FinFaktura(QtGui.QMainWindow):#Ui_MainWindow): ## leser gui fra faktura_ui
         i = self.gui.varerVareliste.addTopLevelItem
         self.gui.varerVareliste.clear()
         for vare in self.faktura.hentVarer(inkluderSlettede=visFjernede):
+            if vare.pris is None: p = 0.0
+            else: p = vare.pris
             l = QtGui.QTreeWidgetItem([
                               "%03d" % vare.ID,
                               unicode(vare.navn),
                               unicode(vare.detaljer),
-                              "%.2f" % vare.pris,
+                              "%.2f" % p,
                               unicode(vare.enhet)
                               ]
                              )
@@ -953,7 +955,7 @@ class FinFaktura(QtGui.QMainWindow):#Ui_MainWindow): ## leser gui fra faktura_ui
 
             self.gui.varerInfoPris.setSuffix(sfx)
             self.gui.varerInfoMva.setValue(int(vare.mva))
-            self.gui.varerInfoLegginn.setText('&Oppdater')
+            self.gui.varerInfoLegginn.setText('Oppda&ter')
         else:
             self.gui.varerInfoNavn.setText("")
             self.gui.varerInfoDetaljer.setPlainText("")
@@ -967,13 +969,13 @@ class FinFaktura(QtGui.QMainWindow):#Ui_MainWindow): ## leser gui fra faktura_ui
 
     def registrerVare(self):
         v = self.denne_vare
-        if not (unicode(self.gui.varerInfoEnhet.currentText()).strip().isnumeric() and \
-            self.JaNei(u"Enhet bruker ikke å være et tall. Er du sikker på at du vil dette?")):
+        if unicode(self.gui.varerInfoEnhet.currentText()).strip().isnumeric() and not \
+            self.JaNei(u"Enhet bruker ikke å være et tall. Er du sikker på at du vil dette?"):
             self.gui.varerInfoEnhet.setFocus()
             return
         kravkart = {self.gui.varerInfoNavn:"Varenavn",
                     self.gui.varerInfoEnhet:"Enhet",
-                    self.gui.varerInfoPris:"Pris",
+                    #self.gui.varerInfoPris:"Pris",
                     }
         for obj in kravkart.keys():
             if isinstance(obj, (QtGui.QSpinBox, QtGui.QDoubleSpinBox)): test = obj.value() > 0.0
@@ -985,8 +987,10 @@ class FinFaktura(QtGui.QMainWindow):#Ui_MainWindow): ## leser gui fra faktura_ui
                 obj.setFocus()
                 return False
 
+        logging.debug("Vare er v=%s", v)
         if v is None:
             v = self.faktura.nyVare()
+            logging.debug("Ny vare: %s", v)
         else:
             logging.debug("oppdaterer vare, som var: " + unicode(v))
         v.navn = unicode(self.gui.varerInfoNavn.text()).strip()
