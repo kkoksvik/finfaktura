@@ -9,6 +9,8 @@ F60.py brukes av [SlikSerDetUt finfaktura], men kan også brukes uavhengig, i di
 
 Vil du bruke F60.py for seg selv, kan du laste modulen ned fra [http://code.google.com/p/finfaktura/downloads/list nedlastingslista].
 
+F60.py bruker [http://www.reportlab.org/downloads.html reportlab til å lage PDF-filer]. Denne pakken må du installere (den heter python-reportlab i linux).
+
 = Eksempel =
 
 {{{
