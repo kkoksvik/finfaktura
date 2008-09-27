@@ -75,7 +75,7 @@ try:
     REPORTLAB=True
 except ImportError:
     REPORTLAB=False
-    raise f60InstallsjonsFeil("python-modulen `reportlab' mangler. Kan ikke lage PDF!")
+    raise f60InstallasjonsFeil("python-modulen `reportlab' mangler. Kan ikke lage PDF!")
 
 __version__ = '0.11'
 __license__ = 'GPLv2'
@@ -154,20 +154,20 @@ class f60:
     def lagPost(self):
         "Ferdigstiller dokumentet for utskrift på papir (uten F60 skjemafelt)"
         self.fyll()
-        return self._settSammen()
+        return self.settSammen()
 
     def lagEpost(self):
         "Ferdigstiller dokumentet for elektronisk forsendelse (med F60 skjemafelt)"
         self.lagBakgrunn()
         self.fyll()
-        return self._settSammen()
+        return self.settSammen()
 
     def lagKvittering(self):
         "Ferdigstiller en kvittering for utskrift på papir (med F60 skjemafelt)"
         self.lagBakgrunn()
         self.fyll()
         self.lagKopimerke()
-        return self._settSammen()
+        return self.settSammen()
 
     def lagTempFilnavn(self):
         from tempfile import mkstemp
@@ -512,7 +512,7 @@ Side: %i av %i
         self.canvas.drawString(110*mm, 21*mm, "%02d" % ore)
         self.canvas.drawString(135*mm, 21*mm, str(self.firma['kontonummer']))
 
-    def _settSammen(self):
+    def settSammen(self):
         "Setter sammen fakturaen. Ikke for eksternt bruk. Bruk .lag*()-metodene"
         self.canvas.showPage()
         self.canvas.save()
