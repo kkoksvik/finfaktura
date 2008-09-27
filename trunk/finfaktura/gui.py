@@ -78,7 +78,7 @@ class FinFaktura(QtGui.QMainWindow):#Ui_MainWindow): ## leser gui fra faktura_ui
         #QtCore.QObject.connect(self.gui.fakturaFaktaVareFjern, QtCore.SIGNAL("clicked()"), self.fjernVareFraOrdre)
         QtCore.QObject.connect(self.gui.fakturaLagEpost, QtCore.SIGNAL("clicked()"), self.lagFakturaEpost)
         QtCore.QObject.connect(self.gui.fakturaLagPapir, QtCore.SIGNAL("clicked()"), self.lagFakturaPapir)
-        QtCore.QObject.connect(self.gui.fakturaLagKvittering, QtCore.SIGNAL("clicked()"), self.lagFakturaKvittering)
+        QtCore.QObject.connect(self.gui.fakturaLagKvittering, QtCore.SIGNAL("clicked()"), self.visFakturaKvittering)
         QtCore.QObject.connect(self.gui.fakturaBetalt, QtCore.SIGNAL("clicked()"), self.betalFaktura)
         QtCore.QObject.connect(self.gui.fakturaVisKansellerte, QtCore.SIGNAL("toggled(bool)"), self.visFaktura)
         QtCore.QObject.connect(self.gui.fakturaVisGamle, QtCore.SIGNAL("toggled(bool)"), self.visFaktura)
@@ -501,15 +501,15 @@ class FinFaktura(QtGui.QMainWindow):#Ui_MainWindow): ## leser gui fra faktura_ui
         minst, maks = localtime(linje.ordre.ordredato), localtime()
         self.gui.fakturaBetaltDato.setDateRange(QtCore.QDate(minst[0]-1, minst[1], minst[2]), QtCore.QDate(maks[0]+1, maks[1], maks[2])) # utvider rangen med ett år i hver retning slik at QtGui.QDateEdit-kontrollen skal bli brukelig
 
-    def lagFakturaKvittering(self):
-        try:
-            ordre = self.gui.fakturaFakturaliste.selectedItems()[0].ordre
-        except IndexError:
-            self.alert(u'Ingen faktura er valgt')
-            return False
-        kvitt = ordre.hentSikkerhetskopi()
-        kvitt.skrivUt(program=self.faktura.oppsett.skrivutpdf)
-
+##    def lagFakturaKvittering(self):
+##        try:
+##            ordre = self.gui.fakturaFakturaliste.selectedItems()[0].ordre
+##        except IndexError:
+##            self.alert(u'Ingen faktura er valgt')
+##            return False
+##        kvitt = ordre.hentSikkerhetskopi()
+##        kvitt.skrivUt(program=self.faktura.oppsett.skrivutpdf)
+##
     def visFakturaKvittering(self):
         try:
             ordre = self.gui.fakturaFakturaliste.selectedItems()[0].ordre
@@ -517,7 +517,7 @@ class FinFaktura(QtGui.QMainWindow):#Ui_MainWindow): ## leser gui fra faktura_ui
             self.alert(u'Ingen faktura er valgt')
             return False
         kvitt = ordre.hentSikkerhetskopi()
-        kvitt.vis()
+        kvitt.vis(program=self.faktura.oppsett.vispdf)
 
     def lagFakturaEpost(self): return self.lagFaktura(Type='epost')
     def lagFakturaPapir(self): return self.lagFaktura(Type='papir')
