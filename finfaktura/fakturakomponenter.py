@@ -514,10 +514,12 @@ class fakturaSikkerhetskopi(fakturaKomponent):
         return filnavn
 
     def skrivUt(self, program=PDFUTSKRIFT):
+        logging.debug('Skriver ut sikkerhetskopi #%i med programmet "%s"' % (self._id, program))
         import os
         os.system('"%s" "%s"' % (program, self.lagFil()))
 
     def vis(self, program=PDFVIS):
+        logging.debug('Viser sikkerhetskopi #%i med programmet "%s"' % (self._id, program))
         import os
         os.system('"%s" "%s"' % (program, self.lagFil()))
 
