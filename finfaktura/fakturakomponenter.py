@@ -55,8 +55,14 @@ class fakturaKomponent:
     def __setattr__(self, egenskap, verdi):
         #logging.debug("__setattr__: %s  " % (egenskap))
         #logging.debug("__setattr__: %s = %s " % (egenskap, verdi))
-        if type(verdi) == types.BooleanType: verdi = int(verdi) # lagrer bool som int: 0 | 1
+        origverdi = verdi
         if self._egenskaper.has_key(egenskap): # denne egenskapen skal lagres i databasen
+            if type(verdi) == bool:
+                verdi = int(verdi) # lagrer bool som int: 0 | 1
+            elif type(verdi) == buffer and len(verdi) == 0:
+                verdi = ''
+            elif type(verdi) == QtCore.QString:
+                verdi = unicode(verdi)
             self.oppdaterEgenskap(egenskap, verdi) # oppdater databasen
         self.__dict__[egenskap] = verdi # oppdater lokalt for objektet
 
@@ -64,8 +70,6 @@ class fakturaKomponent:
         try:
             self.c.execute("SELECT * FROM %s LIMIT 1" % self._tabellnavn)
         except sqlite.OperationalError:
-            #pysqlite2 klager på blobs
-            #pass
             raise
         self._egenskaperListe = map(lambda z: z[0], self.c.description)
         r = {}
@@ -85,25 +89,14 @@ class fakturaKomponent:
             try:verdi = r[self._egenskaperListe.index(z)]
             except TypeError: print self._tabellnavn, self._id, z, self._egenskaperListe.index(z),r
 
-            #if not z in self._egenskaperBlob and type(verdi) == types.StringType:
-                #try:
-                    #verdi = verdi.decode("utf8")
-                #except:
-                    #verdi = verdi.decode("latin1")
-                    #print self._tabellnavn, "feil enkdoing:", verdi[0:20]
-                    #raise
             self._egenskaper.update({z:r[self._egenskaperListe.index(z)]})
             self._egenskaper[z] = verdi
 
     def oppdaterEgenskap(self, egenskap, verdi):
-        try:
-            if type(verdi) == QtCore.QString: verdi = unicode(verdi)
-        except ImportError: pass
         _sql = "UPDATE %s SET %s=? WHERE ID=?" % (self._tabellnavn, egenskap)
-        #logging.debug(_sql, (verdi, self._id))
+        logging.debug("%s <= %s, %s", _sql, repr(verdi), self._id)
         self.c.execute(_sql, (verdi, self._id))
         self.db.commit()
-
 
     def nyId(self):
 #       logging.debug("nyId: -> %s <- %s" % (self._tabellnavn, self._IDnavn))
@@ -292,7 +285,7 @@ class fakturaOrdre(fakturaKomponent):
         return n
 
     def forfalt(self):
-        # forfalt() -> Bool. Er fakturaen forfalt (og ikke betalt)?
+        "forfalt() -> Bool. Er fakturaen forfalt (og ikke betalt)?"
         return not self.betalt and time.time() > self.forfall
 
     def hentSikkerhetskopi(self):
@@ -332,18 +325,9 @@ class fakturaFirmainfo(fakturaKomponent):
     _id         = 1
     _egenskaperAldriCache = []
 
-    def __initgammel__(self, db):
-        self._egenskaperBlob = ['logo',]
-        try:
-            fakturaKomponent.__init__(self, db, Id=self._id)
-        except DBTomFeil:
-            self.lagFirma()
-            fakturaKomponent.__init__(self, db, Id=self._id)
-
     def __init__(self, db):
         self.db = db
         self.c  = self.db.cursor()
-        #self._egenskaperAldriCache = []
 
         self._egenskaper = self.hentEgenskaperListe()
         try:
@@ -479,11 +463,7 @@ class fakturaSikkerhetskopi(fakturaKomponent):
                 raise FakturaFeil(u"Kunne ikke lage PDF! %s" % e)
 
             spdf.settOrdrelinje(ordre.hentOrdrelinje)
-            spdf.lagBakgrunn()
-            spdf.lagKopimerke()
-            spdf.fyll()
-
-            res = spdf.settSammen()
+            res = spdf.lagKvittering()
             if not res:
                 raise FakturaFeil(u"Kunne ikke lage PDF! ('%s')" % spdf.filnavn)
 
