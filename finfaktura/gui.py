@@ -22,7 +22,7 @@ from finfaktura.fakturabibliotek import PRODUKSJONSVERSJON, \
     FakturaBibliotek, kobleTilDatabase, lagDatabase, finnDatabasenavn, \
     sikkerhetskopierFil, lesRessurs
 import finfaktura.f60 as f60
-from finfaktura.epost import TRANSPORT_METODER
+from finfaktura.epost import TRANSPORTMETODER
 import finfaktura.okonomi as fakturaOkonomi
 import finfaktura.sikkerhetskopi as sikkerhetskopi
 import finfaktura.historikk as historikk
@@ -661,11 +661,11 @@ class FinFaktura(QtGui.QMainWindow):#Ui_MainWindow): ## leser gui fra faktura_ui
     def sendEpostfaktura(self, ordre, tekst, filnavn):
         try:
             logging.debug('sender epostfaktura: ordre # %i, til: %s', ordre._id, ordre.kunde.epost)
-            logging.debug('bruker transport %s' % TRANSPORT_METODER[self.faktura.epostoppsett.transport])
+            logging.debug('bruker transport %s' % TRANSPORTMETODER[self.faktura.epostoppsett.transport])
             self.faktura.sendEpost(ordre,
                                    filnavn,
                                    tekst,
-                                   TRANSPORT_METODER[self.faktura.epostoppsett.transport]
+                                   TRANSPORTMETODER[self.faktura.epostoppsett.transport]
                                    )
         except:
             f = sys.exc_info()[1]
@@ -1174,7 +1174,7 @@ class FinFaktura(QtGui.QMainWindow):#Ui_MainWindow): ## leser gui fra faktura_ui
             return False
         ordrer, beskrivelse = self.hentAktuelleOrdrer()
         beskrivelse['firma'] = self.firma
-        rapport = finfaktura.rapport.rapport('/tmp/rapport.pdf', beskrivelse)
+        rapport = finfaktura.rapport.rapport(rapportinfo=beskrivelse)
         rapport.lastOrdreliste(ordrer)
         rapport.vis(program=self.faktura.oppsett.vispdf)
 

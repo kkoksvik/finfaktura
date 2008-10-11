@@ -19,7 +19,7 @@ from email.header import Header, decode_header
 import socket
 from string import join
 
-TRANSPORT_METODER = ['auto', 'smtp', 'sendmail']
+TRANSPORTMETODER = ['auto', 'smtp', 'sendmail']
 
 class SendeFeil(Exception): pass
 class IkkeImplementert(Exception): pass
