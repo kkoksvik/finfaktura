@@ -1,0 +1,6 @@
+?package(finfaktura):needs="X11" section="Application/Office"\
+  title="Finfaktura" command="/usr/bin/faktura"\
+  hints="Small,Business"
+
+#?package(finfaktura):needs="text" section="Office"\
+#  title="Finfaktura-konsoll" command="/usr/bin/faktura -i"
