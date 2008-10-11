@@ -44,7 +44,7 @@ class epostOppsett(epost_ui.Ui_epostOppsett):
         if self.faktura.epostoppsett.bcc:
             self.sendKopi.setChecked(True)
             self.kopiAdresse.setText(self.faktura.epostoppsett.bcc)
-        self.roterAktivSeksjon(epost.TRANSPORT_METODER[self.faktura.epostoppsett.transport])
+        self.roterAktivSeksjon(epost.TRANSPORTMETODER[self.faktura.epostoppsett.transport])
         self._epostlosninger[self.faktura.epostoppsett.transport].setChecked(True)
         if self.faktura.epostoppsett.smtpserver:
             self.smtpServer.setText(self.faktura.epostoppsett.smtpserver)
@@ -92,10 +92,11 @@ class epostOppsett(epost_ui.Ui_epostOppsett):
 
     def testEpost(self):
         self.oppdaterEpost() # må lagre for å bruke de inntastede verdiene
-        trans = epost.TRANSPORT_METODER
+        trans = epost.TRANSPORTMETODER
         try:
             transport = self.faktura.testEpost(self.finnAktivTransport())
         except Exception,ex:
+            logging.debug('Fikk feil: %s', ex)
             s = u'Epostoppsettet fungerer ikke. Oppgitt feilmelding:\n %s \n\nKontroller at de oppgitte innstillingene \ner korrekte' % ex.message
             trans = getattr(ex, 'transport')
             if trans != 'auto':
@@ -112,8 +113,13 @@ class epostOppsett(epost_ui.Ui_epostOppsett):
 
     def finnAktivTransport(self):
         for i, w in enumerate(self._epostlosninger):
-            if w.isChecked(): return i
+            if w.isChecked(): return epost.TRANSPORTMETODER[i]
 
+    def alert(self, msg):
+        QtGui.QMessageBox.critical(self.gui, "Feil!", msg, QtGui.QMessageBox.Ok)
+
+    def obs(self, msg):
+        QtGui.QMessageBox.information(self.gui, "Obs!", msg, QtGui.QMessageBox.Ok)
     #def epostVisAuth(self, vis):
         ##self.epostSmtpBrukernavn.setEnabled(vis)
         #self.epostSmtpPassord.setEnabled(vis)

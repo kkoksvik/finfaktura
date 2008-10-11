@@ -199,12 +199,13 @@ class FakturaBibliotek:
 
     def testEpost(self, transport='auto'):
         import epost
+        logging.debug('skal teste transport: %s', transport)
         # finn riktig transport (gmail/smtp/sendmail)
-        if not transport in epost.transportmetoder: #ugyldig transport oppgitt
+        if not transport in epost.TRANSPORTMETODER: #ugyldig transport oppgitt
             transport = 'auto'
         if transport == 'auto':
             feil = []
-            for mt in epost.transportmetoder:
+            for mt in epost.TRANSPORTMETODER[1:]:
                 try:
                     if self.testEpost(mt):
                         return mt
@@ -212,9 +213,9 @@ class FakturaBibliotek:
                     feil += E
             ex = epost.SendeFeil()
             ex.transport = transport
-            ex.transportmetoder = epost.transportmetoder[:]
+            ex.transportmetoder = epost.TRANSPORTMETODER[:]
             ex.message = ', '.join(feil)
-            #return (False, transport, epost.transportmetoder)
+            #return (False, transport, epost.TRANSPORTMETODER)
             raise ex
         logging.debug('tester epost. transport: %s' % transport)
         m = getattr(epost,transport)() # laster riktig transport
@@ -234,7 +235,7 @@ class FakturaBibliotek:
             logging.debug("%s gikk %s" % (transport, inst.__str__()))
             ex = epost.SendeFeil()
             ex.transport = transport
-            ex.transportmetoder = epost.transportmetoder[:]
+            ex.transportmetoder = epost.TRANSPORTMETODER[:]
             ex.message = inst.__str__()
             raise ex
         else:
