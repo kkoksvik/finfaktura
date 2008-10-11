@@ -1,5 +1,0 @@
-?package(finfaktura):needs="X11" section="Office"\
-  title="Fryktelig Fin Faktura" command="/usr/bin/faktura"
-
-?package(finfaktura):needs="text" section="Office"\
-  title="Fryktelig Fin Faktura" command="/usr/bin/faktura -i"
