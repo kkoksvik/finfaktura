@@ -154,20 +154,20 @@ class f60:
     def lagPost(self):
         "Ferdigstiller dokumentet for utskrift på papir (uten F60 skjemafelt)"
         self.fyll()
-        return self.settSammen()
+        return self._settSammen()
 
     def lagEpost(self):
         "Ferdigstiller dokumentet for elektronisk forsendelse (med F60 skjemafelt)"
         self.lagBakgrunn()
         self.fyll()
-        return self.settSammen()
+        return self._settSammen()
 
     def lagKvittering(self):
         "Ferdigstiller en kvittering for utskrift på papir (med F60 skjemafelt)"
         self.lagBakgrunn()
         self.fyll()
         self.lagKopimerke()
-        return self.settSammen()
+        return self._settSammen()
 
     def lagTempFilnavn(self):
         from tempfile import mkstemp
@@ -512,7 +512,7 @@ Side: %i av %i
         self.canvas.drawString(110*mm, 21*mm, "%02d" % ore)
         self.canvas.drawString(135*mm, 21*mm, str(self.firma['kontonummer']))
 
-    def settSammen(self):
+    def _settSammen(self):
         "Setter sammen fakturaen. Ikke for eksternt bruk. Bruk .lag*()-metodene"
         self.canvas.showPage()
         self.canvas.save()
