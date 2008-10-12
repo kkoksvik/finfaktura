@@ -2,24 +2,27 @@ Source: finfaktura
 Section: office
 Priority: optional
 Maintainer: Håvard Gulldahl <havard@lurtgjort.no>
-Build-Depends: debhelper (>= 4.0.0), python (>= 2.3), python-dev, python-qt3, pyqt-tools
+Build-Depends: debhelper (>= 4.0.0), python (>= 2.3), python-qt4, pyqt4-dev-tools
 Standards-Version: 3.6.2
+Homepage: http://finfaktura.googlecode.com/
 
 Package: finfaktura
 Architecture: all
-Depends: ${shlibs:Depends}, ${misc:Depends}, ${python:Depends}, python-qt3, python-reportlab
-Recommends: python-pysqlite2, qt3-qtconfig
-Suggests: python-psyco, python-beautifulsoup
+Depends: ${shlibs:Depends}, ${misc:Depends}, ${python:Depends}, python-qt4, python-reportlab
+Recommends: qt4-qtconfig, python-imaging
+Suggests: python-psyco, python-pysqlite2
 Description: Create and manage invoices (Norwegian specs)
  Invoices, customers, products. Creates PDF invoices.
  Automatic email submission and backup.
  .
- Requires python, python-qt3 and the reportlab extension.
- Extra value added with the beautifulsoup and libgmail python modules.
+ Requires python, python-qt4 and the reportlab extension.
+ Extra value added with the python-imaging module (adds icon ability for PDF invoice).
  .
  If you have python2.5, you don't need python-pysqlite2 (as python2.5
- already's got it). If you're not running KDE, get and run qt3-qtconfig,
+ already has it). If you're not running KDE, get and run qt4-qtconfig,
  else the interface will appear horrid!
+ .
+ Project pages: http://finfaktura.googlecode.com/
 
 #Package: finfaktura-doc
 #Architecture: all
