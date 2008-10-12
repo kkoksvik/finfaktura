@@ -309,7 +309,8 @@ class f60:
         if self.firma.has_key('logo') and self.firma['logo']:
             logging.debug("Har logo!")
             try: import Image
-            except ImportError: pass
+            except ImportError:
+                logging.error('Kunne ikke importere PIL. Kan ikke skrive logo')
             else:
                 import StringIO
                 l = StringIO.StringIO(self.firma['logo'])
