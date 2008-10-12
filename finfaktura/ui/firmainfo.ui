@@ -43,10 +43,13 @@
         <item row="0" column="0" >
          <widget class="QLabel" name="textLabel1_2_4" >
           <property name="text" >
-           <string>Kontaktperson</string>
+           <string>&amp;Kontaktperson</string>
           </property>
           <property name="wordWrap" >
            <bool>false</bool>
+          </property>
+          <property name="buddy" >
+           <cstring>Kontaktperson</cstring>
           </property>
          </widget>
         </item>
@@ -56,10 +59,13 @@
         <item row="1" column="0" >
          <widget class="QLabel" name="textLabel1_2" >
           <property name="text" >
-           <string>Epost</string>
+           <string>&amp;Epost</string>
           </property>
           <property name="wordWrap" >
            <bool>false</bool>
+          </property>
+          <property name="buddy" >
+           <cstring>Epost</cstring>
           </property>
          </widget>
         </item>
@@ -69,10 +75,13 @@
         <item row="2" column="0" >
          <widget class="QLabel" name="textLabel1_3" >
           <property name="text" >
-           <string>Adresse</string>
+           <string>&amp;Adresse</string>
           </property>
           <property name="wordWrap" >
            <bool>false</bool>
+          </property>
+          <property name="buddy" >
+           <cstring>Adresse</cstring>
           </property>
          </widget>
         </item>
@@ -92,10 +101,13 @@
         <item row="3" column="0" >
          <widget class="QLabel" name="textLabel1_3_3" >
           <property name="text" >
-           <string>Postnummer</string>
+           <string>Postn&amp;ummer</string>
           </property>
           <property name="wordWrap" >
            <bool>false</bool>
+          </property>
+          <property name="buddy" >
+           <cstring>Postnummer</cstring>
           </property>
          </widget>
         </item>
@@ -109,10 +121,13 @@
         <item row="4" column="0" >
          <widget class="QLabel" name="textLabel1_3_4" >
           <property name="text" >
-           <string>Poststed</string>
+           <string>Postste&amp;d</string>
           </property>
           <property name="wordWrap" >
            <bool>false</bool>
+          </property>
+          <property name="buddy" >
+           <cstring>Poststed</cstring>
           </property>
          </widget>
         </item>
@@ -122,10 +137,13 @@
         <item row="5" column="0" >
          <widget class="QLabel" name="textLabel1_3_3_2" >
           <property name="text" >
-           <string>Telefon</string>
+           <string>&amp;Telefon</string>
           </property>
           <property name="wordWrap" >
            <bool>false</bool>
+          </property>
+          <property name="buddy" >
+           <cstring>Telefon</cstring>
           </property>
          </widget>
         </item>
@@ -139,10 +157,13 @@
         <item row="6" column="0" >
          <widget class="QLabel" name="textLabel1_3_3_3" >
           <property name="text" >
-           <string>Mobiltelefon</string>
+           <string>Mo&amp;biltelefon</string>
           </property>
           <property name="wordWrap" >
            <bool>false</bool>
+          </property>
+          <property name="buddy" >
+           <cstring>Mobil</cstring>
           </property>
          </widget>
         </item>
@@ -156,10 +177,13 @@
         <item row="7" column="0" >
          <widget class="QLabel" name="textLabel1_3_3_4" >
           <property name="text" >
-           <string>Telefaks</string>
+           <string>Telefak&amp;s</string>
           </property>
           <property name="wordWrap" >
            <bool>false</bool>
+          </property>
+          <property name="buddy" >
+           <cstring>Telefaks</cstring>
           </property>
          </widget>
         </item>
@@ -173,10 +197,13 @@
         <item row="8" column="0" >
          <widget class="QLabel" name="textLabel1_2_3" >
           <property name="text" >
-           <string>Kontonummer</string>
+           <string>Kontonumme&amp;r</string>
           </property>
           <property name="wordWrap" >
            <bool>false</bool>
+          </property>
+          <property name="buddy" >
+           <cstring>Kontonummer</cstring>
           </property>
          </widget>
         </item>
@@ -206,10 +233,13 @@
         <item row="0" column="0" >
          <widget class="QLabel" name="textLabel1" >
           <property name="text" >
-           <string>Firmanavn</string>
+           <string>Firma&amp;navn</string>
           </property>
           <property name="wordWrap" >
            <bool>false</bool>
+          </property>
+          <property name="buddy" >
+           <cstring>Firmanavn</cstring>
           </property>
          </widget>
         </item>
@@ -219,10 +249,13 @@
         <item row="1" column="0" >
          <widget class="QLabel" name="textLabel1_5" >
           <property name="text" >
-           <string>Organisasjonsnummer</string>
+           <string>Or&amp;ganisasjonsnummer</string>
           </property>
           <property name="wordWrap" >
            <bool>false</bool>
+          </property>
+          <property name="buddy" >
+           <cstring>Organisasjonsnummer</cstring>
           </property>
          </widget>
         </item>
@@ -233,10 +266,13 @@
          <widget class="QLabel" name="textLabel1_3_5" >
           <property name="text" >
            <string>Standard
-betalingsvilkår</string>
+betalings&amp;vilkår</string>
           </property>
           <property name="wordWrap" >
            <bool>false</bool>
+          </property>
+          <property name="buddy" >
+           <cstring>Vilkar</cstring>
           </property>
          </widget>
         </item>
@@ -256,10 +292,13 @@ betalingsvilkår</string>
         <item row="3" column="0" >
          <widget class="QLabel" name="textLabel7" >
           <property name="text" >
-           <string>MVA-sats</string>
+           <string>&amp;MVA-sats</string>
           </property>
           <property name="wordWrap" >
            <bool>false</bool>
+          </property>
+          <property name="buddy" >
+           <cstring>Mva</cstring>
           </property>
          </widget>
         </item>
@@ -276,10 +315,13 @@ betalingsvilkår</string>
         <item row="4" column="0" >
          <widget class="QLabel" name="textLabel7_2" >
           <property name="text" >
-           <string>Forfall</string>
+           <string>Forfa&amp;ll</string>
           </property>
           <property name="wordWrap" >
            <bool>false</bool>
+          </property>
+          <property name="buddy" >
+           <cstring>Forfall</cstring>
           </property>
          </widget>
         </item>
@@ -343,7 +385,7 @@ betalingsvilkår</string>
         <item>
          <widget class="QPushButton" name="lagreLogo" >
           <property name="text" >
-           <string>Finn logo</string>
+           <string>&amp;Finn logo</string>
           </property>
          </widget>
         </item>
@@ -367,6 +409,24 @@ betalingsvilkår</string>
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>Firmanavn</tabstop>
+  <tabstop>Organisasjonsnummer</tabstop>
+  <tabstop>Vilkar</tabstop>
+  <tabstop>Mva</tabstop>
+  <tabstop>Forfall</tabstop>
+  <tabstop>lagreLogo</tabstop>
+  <tabstop>Kontaktperson</tabstop>
+  <tabstop>Epost</tabstop>
+  <tabstop>Adresse</tabstop>
+  <tabstop>Postnummer</tabstop>
+  <tabstop>Poststed</tabstop>
+  <tabstop>Telefon</tabstop>
+  <tabstop>Mobil</tabstop>
+  <tabstop>Telefaks</tabstop>
+  <tabstop>Kontonummer</tabstop>
+  <tabstop>buttonBox</tabstop>
+ </tabstops>
  <resources>
   <include location="../../faktura.qrc" />
  </resources>
