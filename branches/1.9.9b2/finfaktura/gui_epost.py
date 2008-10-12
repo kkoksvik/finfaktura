@@ -44,8 +44,8 @@ class epostOppsett(epost_ui.Ui_epostOppsett):
         if self.faktura.epostoppsett.bcc:
             self.sendKopi.setChecked(True)
             self.kopiAdresse.setText(self.faktura.epostoppsett.bcc)
-        self.roterAktivSeksjon(epost.TRANSPORTMETODER[self.faktura.epostoppsett.transport])
-        self._epostlosninger[self.faktura.epostoppsett.transport].setChecked(True)
+        self.roterAktivSeksjon(self.faktura.epostoppsett.transport)
+        self._epostlosninger[epost.TRANSPORTMETODER.index(self.faktura.epostoppsett.transport)].setChecked(True)
         if self.faktura.epostoppsett.smtpserver:
             self.smtpServer.setText(self.faktura.epostoppsett.smtpserver)
         if self.faktura.epostoppsett.smtpport:
@@ -92,7 +92,6 @@ class epostOppsett(epost_ui.Ui_epostOppsett):
 
     def testEpost(self):
         self.oppdaterEpost() # må lagre for å bruke de inntastede verdiene
-        trans = epost.TRANSPORTMETODER
         try:
             transport = self.faktura.testEpost(self.finnAktivTransport())
         except Exception,ex:
@@ -106,8 +105,8 @@ class epostOppsett(epost_ui.Ui_epostOppsett):
         else:
             self.obs("Epostoppsettet fungerer. Bruker %s" % transport)
             try:
-                self.epostLosning.setButton(trans.index(transport))
-                self.roterAktivSeksjon(trans.index(transport))
+                self.epostLosning.setButton(epost.TRANSPORTMETODER.index(transport))
+                self.roterAktivSeksjon(transport)
             except:pass
             self.oppdaterEpost() # må lagre for å bruke den aktive løsningen
 
