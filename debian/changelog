@@ -1,3 +1,13 @@
+finfaktura (1.9.9b2) intrepid; urgency=low
+
+  * Bugfiks: epostsending, firmainfo/logo, ny vare, eposttest ++
+  * Eksterne programmer startes på en universell måte som funker på alle
+    plattformer
+  * Logoer og dokumenter installeres
+  * Installeres med meny-oppføring (issue#1)
+
+ -- Håvard Gulldahl <havard@gulldahl.no>  Mon, 13 Oct 2008 00:21:39 +0200
+
 finfaktura (1.9.9b) intrepid; urgency=low
 
   * Grensesnittet er portert til PyQt4 (issue#3) og redesignet
