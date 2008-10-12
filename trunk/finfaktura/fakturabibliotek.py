@@ -127,7 +127,7 @@ class FakturaBibliotek:
         self.c.execute(sql)
         ordrer = []
         for z in self.c.fetchall():
-            logging.debug("Ordre #%i har ingen gyldig sikkerhetskopi!" % z[0])
+            logging.debug("Ordre #%i har ingen gyldig sikkerhetskopi!", z[0])
             o = fakturaOrdre(self.db, Id=z[0], firma=self.firmainfo())
             if lagNyAutomatisk:
                 # merk evt. gammel sikkerhetskopi som ugyldig
@@ -218,7 +218,7 @@ class FakturaBibliotek:
             ex.message = ', '.join(feil)
             #return (False, transport, epost.TRANSPORTMETODER)
             raise ex
-        logging.debug('tester epost. transport: %s' % transport)
+        logging.debug('tester epost. transport: %s', transport)
         m = getattr(epost,transport)() # laster riktig transport
         assert(m, epost.epost)
         set = self.epostoppsett
@@ -233,7 +233,7 @@ class FakturaBibliotek:
         try:
             t = m.test()
         except Exception,inst:
-            logging.debug("%s gikk %s" % (transport, inst.__str__()))
+            logging.debug("%s gikk %s", transport, inst.__str__())
             ex = epost.SendeFeil()
             ex.transport = transport
             ex.transportmetoder = epost.TRANSPORTMETODER[:]
@@ -241,7 +241,7 @@ class FakturaBibliotek:
             raise ex
         else:
             if t:
-                logging.debug("%s gikk %s" % (transport, t))
+                logging.debug("%s gikk %s", transport, t)
                 return transport
             else:
                 return None
@@ -302,11 +302,11 @@ def kobleTilDatabase(dbnavn=None, loggfil=None):
     enc = "utf-8"
     try:
         db = sqlite.connect(database=dbnavn, isolation_level=None)
-        logging.debug("Koblet til databasen", dbnavn)
+        logging.debug("Koblet til databasen %s", dbnavn)
     except sqlite.DatabaseError, (E):
-        logging.debug("Vi bruker sqlite %s" % sqlite.apilevel)
+        logging.debug("Vi bruker sqlite %s", sqlite.apilevel)
         dbver = sjekkDatabaseVersjon(dbnavn)
-        logging.debug("Databasen er sqlite %s" % dbver)
+        logging.debug("Databasen er sqlite %s", dbver)
         if sqlite.apilevel != dbver:
             raise DBVersjonFeil("Databasen er versjon %s, men biblioteket er versjon %s" % (dbver, sqlite.apilevel))
     return db
