@@ -9,7 +9,7 @@
 # $Id$
 ###########################################################################
 
-import os.path, glob
+import os.path, glob, subprocess
 
 def forbered_ressurser():
     """Kjører pyrcc4 og pyuic4 på de nødvendige filene"""
@@ -17,11 +17,11 @@ def forbered_ressurser():
     rc_files = ['faktura.qrc',]
 
     for f in ui_files:
-        ret = os.system('pyuic4 -x -o "%s" "%s"' % (os.path.splitext(f)[0] + '_ui.py', f))
+        ret = subprocess.call('pyuic4 -x -o "%s" "%s"' % (os.path.splitext(f)[0] + '_ui.py', f))
         print "%s: %s" % (f, ok(ret))
     for f in rc_files:
         plassering = os.path.splitext(f)[0] + '_rc.py'
-        ret = os.system('pyrcc4 -o "%s" "%s"' % (plassering, f))
+        ret = subprocess.call('pyrcc4 -o "%s" "%s"' % (plassering, f))
         print "%s -> %s: %s" % (f, plassering, ok(ret))
 
 def ok(status):
