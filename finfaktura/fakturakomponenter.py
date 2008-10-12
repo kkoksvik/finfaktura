@@ -93,7 +93,7 @@ class fakturaKomponent:
 
     def oppdaterEgenskap(self, egenskap, verdi):
         _sql = "UPDATE %s SET %s=? WHERE ID=?" % (self._tabellnavn, egenskap)
-        logging.debug("%s <= %s, %s", _sql, repr(verdi), self._id)
+        #logging.debug("%s <= %s, %s", _sql, repr(verdi), self._id)
         self.c.execute(_sql, (verdi, self._id))
         self.db.commit()
 
@@ -141,7 +141,7 @@ class fakturaKunde(fakturaKomponent):
         return '"%s" <%s>' % (self.navn, self.epost)
 
     def settSlettet(self, erSlettet=True):
-        logging.debug("sletter kunde %s: %s" % (self._id, str(erSlettet)))
+        logging.debug("sletter kunde %s: %s", self._id, str(erSlettet))
         if erSlettet: self.slettet = time.time()
         else: self.slettet = False
 
@@ -162,7 +162,7 @@ class fakturaVare(fakturaKomponent):
         return unicode("%s, vare # %s" % (self.navn, self._id))
 
     def settSlettet(self, erSlettet=True):
-        logging.debug("sletter vare? %s" % self._id)
+        logging.debug("sletter vare? %s", self._id)
         if erSlettet: self.slettet = time.time()
         else: self.slettet = False
 
@@ -260,14 +260,14 @@ class fakturaOrdre(fakturaKomponent):
         return mva
 
     def settKansellert(self, kansellert=True):
-        logging.debug("Ordre #%s er kansellert: %s" % (self._id, str(kansellert)))
+        logging.debug("Ordre #%s er kansellert: %s", self._id, str(kansellert))
         if kansellert:
             self.kansellert = time.time()
         else:
             self.kansellert = False
 
     def betal(self, dato = False):
-        logging.debug("Betaler faktura #%s" % self._id)
+        logging.debug("Betaler faktura #%s", self._id)
         if not dato:
             dato = time.time()
         self.betalt = dato
@@ -420,7 +420,7 @@ class fakturaOppsett(fakturaKomponent):
         if not versjonsjekk: return
 
         logging.debug("sjekker versjon")
-        logging.debug("arkivet er %s, siste er %s" % (self.databaseversjon, self.apiversjon))
+        logging.debug("arkivet er %s, siste er %s", self.databaseversjon, self.apiversjon)
         if self.databaseversjon != self.apiversjon:
             raise DBGammelFeil(u"Databasen er versjon %s og må oppgraderes til %s" % (self.databaseversjon, self.apiversjon))
 
@@ -493,7 +493,7 @@ class fakturaSikkerhetskopi(fakturaKomponent):
         return filnavn
 
     def vis(self, program=PDFVIS):
-        logging.debug(u'Åpner sikkerhetskopi #%i med programmet "%s"' % (self._id, program))
+        logging.debug(u'Åpner sikkerhetskopi #%i med programmet "%s"', self._id, program)
         subprocess.call((program, self.lagFil()))
 
 class fakturaEpost(fakturaKomponent):
