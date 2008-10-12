@@ -656,11 +656,11 @@ class FinFaktura(QtGui.QMainWindow):#Ui_MainWindow): ## leser gui fra faktura_ui
     def sendEpostfaktura(self, ordre, tekst, filnavn):
         try:
             logging.debug('sender epostfaktura: ordre # %i, til: %s', ordre._id, ordre.kunde.epost)
-            logging.debug('bruker transport %s',  TRANSPORTMETODER[self.faktura.epostoppsett.transport])
+            logging.debug('bruker transport %s',  self.faktura.epostoppsett.transport)
             self.faktura.sendEpost(ordre,
                                    filnavn,
                                    tekst,
-                                   TRANSPORTMETODER[self.faktura.epostoppsett.transport]
+                                   self.faktura.epostoppsett.transport
                                    )
         except:
             f = sys.exc_info()[1]
@@ -668,7 +668,7 @@ class FinFaktura(QtGui.QMainWindow):#Ui_MainWindow): ## leser gui fra faktura_ui
             #historikk.epostSendt(ordre, 0, f) ## TODO: logg feilmelding
             raise
         else:
-            historikk.epostSendt(ordre, True, "Tid: %s, transport: %s" % (time(), trans[self.faktura.epostoppsett.transport]))
+            historikk.epostSendt(ordre, True, "Tid: %s, transport: %s" % (time(), self.faktura.epostoppsett.transport))
             self.obs('Fakturaen er sendt')
 
 ################## KUNDER ###########################

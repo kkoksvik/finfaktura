@@ -180,9 +180,15 @@ class FakturaBibliotek:
 
     def sendEpost(self, ordre, pdf, tekst=None, transport='sendmail'):
         import epost
-        t = epost.dump()
-        t.faktura(ordre, pdf, tekst, testmelding=True)
-        t.send()
+        #t = epost.dump()
+        #t.faktura(ordre, pdf, tekst, testmelding=True)
+        #t.send()
+        if transport == 'auto':
+            transport = self.testEpost()
+            if transport is None:
+                return False
+            self.epostoppsett.transport = transport
+            
         m = getattr(epost,transport)() # laster riktig transport (gmail/smtp/sendmail)
         set = self.epostoppsett
         if transport == 'gmail':
