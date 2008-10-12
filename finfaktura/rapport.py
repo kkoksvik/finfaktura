@@ -11,7 +11,7 @@
 
 import time, os, types
 from string import join, split
-import logging
+import logging, subprocess
 
 import fakturafeil
 
@@ -74,7 +74,7 @@ class rapport:
 
     def vis(self, program=PDFVIS):
         if not self.oppdatert: self.lag()
-        os.system('"%s" "%s"' % (program, self.filnavn))
+        subprocess.call((program, self.filnavn))
 
     def lastOrdreliste(self, ordreliste):
         for o in ordreliste: self.leggTilOrdre(o)

@@ -284,14 +284,24 @@ class FinFaktura(QtGui.QMainWindow):#Ui_MainWindow): ## leser gui fra faktura_ui
             self.alert(u'Informasjonen om firmaet ditt må være fullstendig'+\
                        u'før du kan fylle inn fakturaen.\n'+
                        str(e).decode("utf8"))
-            self.fakturaTab.setCurrentPage(3)
+            self.visFirmaOppsett()
             return False
         if kunde is not None:
             self.gui.fakturaFaktaMottaker.clear()
             self.gui.fakturaFaktaMottaker.addItem(unicode(kunde), QtCore.QVariant(kunde))
             self.gui.fakturaVareliste.setFocus()
         else:
-            self.fyllFakturaMottaker()
+            self.gui.fakturaFaktaMottaker.setEnabled(True)
+            self.gui.fakturaFaktaMottaker.clear()
+            kunder = 0
+            for k in self.faktura.hentKunder():
+                self.gui.fakturaFaktaMottaker.addItem(unicode(k), QtCore.QVariant(k))
+                kunder += 1
+            if kunder == 0: # ingen kunder registrert
+                self.gui.fakturaTab.setCurrentIndex(1)
+                self.lastKunde()
+                self.alert(u'Du må registrere minst én kunde før du fyller inn fakturaen')
+                return
             self.gui.fakturaFaktaMottaker.setFocus()
         self.gui.fakturaFaktaTekst.setPlainText("")
         self.gui.fakturaVareliste.clearContents()
@@ -380,12 +390,6 @@ class FinFaktura(QtGui.QMainWindow):#Ui_MainWindow): ## leser gui fra faktura_ui
 #       linje[vare] = ant
 # #     self.nyFaktura(kunde = rad.ordre.kunde, ordrelinje = linje)
 #     self.nyFaktura(ordre = rad.ordre, ordrelinje = linje)
-
-    def fyllFakturaMottaker(self):
-        self.gui.fakturaFaktaMottaker.setEnabled(True)
-        self.gui.fakturaFaktaMottaker.clear()
-        for k in self.faktura.hentKunder():
-            self.gui.fakturaFaktaMottaker.addItem(unicode(k), QtCore.QVariant(k))
 
     def leggVareTilOrdre(self, rad=None):
         if rad is None:
@@ -501,15 +505,6 @@ class FinFaktura(QtGui.QMainWindow):#Ui_MainWindow): ## leser gui fra faktura_ui
         minst, maks = localtime(linje.ordre.ordredato), localtime()
         self.gui.fakturaBetaltDato.setDateRange(QtCore.QDate(minst[0]-1, minst[1], minst[2]), QtCore.QDate(maks[0]+1, maks[1], maks[2])) # utvider rangen med ett år i hver retning slik at QtGui.QDateEdit-kontrollen skal bli brukelig
 
-##    def lagFakturaKvittering(self):
-##        try:
-##            ordre = self.gui.fakturaFakturaliste.selectedItems()[0].ordre
-##        except IndexError:
-##            self.alert(u'Ingen faktura er valgt')
-##            return False
-##        kvitt = ordre.hentSikkerhetskopi()
-##        kvitt.skrivUt(program=self.faktura.oppsett.skrivutpdf)
-##
     def visFakturaKvittering(self):
         try:
             ordre = self.gui.fakturaFakturaliste.selectedItems()[0].ordre
@@ -542,38 +537,38 @@ class FinFaktura(QtGui.QMainWindow):#Ui_MainWindow): ## leser gui fra faktura_ui
                 self.visEpostfaktura(ordre, unicode(E))
             elif Type == "papir":
                 if self.JaNei(u"Blanketten er laget fra før av. Vil du skrive den ut nå?"):
-                    self.faktura.skrivUt(unicode(E), program=self.faktura.oppsett.skrivutpdf)
+                    self.faktura.skrivUt(unicode(E), program=self.faktura.oppsett.vispdf)
             return None
-        if Type == "epost":
-            pdf.lagBakgrunn()
-        elif Type == "kvittering":
-            pdf.lagBakgrunn()
-            pdf.lagKopimerke()
-
         try:
             pdf.fyll()
         except FirmainfoFeil,(E):
             historikk.pdfEpost(ordre, False, "firmainfofeil: %s" % E)
             self.alert(u"Du må fylle ut firmainfo først:\n%s" % E)
-            self.gui.fakturaTab.setCurrentPage(3)
+            self.visFirmaOppsett()
+            return
         except KundeFeil,(E):
             self.alert(u"Kan ikke lage PDF!\nÅrsak: %s" % E)
             historikk.pdfEpost(ordre, False, "kundefeil: %s" % E)
+            return
+        if Type == "epost":
+            res = pdf.lagEpost()
+        elif Type == "kvittering":
+            res = pdf.lagKvittering()
         else:
-            res = pdf.settSammen()
-            if not res:
-                historikk.pdfEpost(ordre, False, "ukjent grunn")
-                self.alert("Kunne ikke lage PDF! ('%s')" % pdf.filnavn)
-            else:
-                if Type == "epost":
-                    historikk.pdfEpost(ordre, True, "interaktivt")
-                    self.visEpostfaktura(ordre, pdf.filnavn)
-                elif Type == "papir":
-                    historikk.pdfPapir(ordre, True, "interaktivt")
-                    if self.JaNei(u"Blanketten er laget. Vil du skrive den ut nå?"):
-                        suksess = pdf.skrivUt(program=self.faktura.oppsett.skrivutpdf)
-                        historikk.utskrift(ordre, suksess, "interaktivt")
-                    else: self.obs(u"Blanketten er lagret med filnavn: %s" % pdf.filnavn)
+            res = pdf.lagPost()
+        if not res:
+            historikk.pdfEpost(ordre, False, "ukjent grunn")
+            self.alert("Kunne ikke lage PDF! ('%s')" % pdf.filnavn)
+        else:
+            if Type == "epost":
+                historikk.pdfEpost(ordre, True, "interaktivt")
+                self.visEpostfaktura(ordre, pdf.filnavn)
+            elif Type == "papir":
+                historikk.pdfPapir(ordre, True, "interaktivt")
+                if self.JaNei(u"Blanketten er laget. Vil du skrive den ut nå?"):
+                    suksess = pdf.skrivUt(program=self.faktura.oppsett.vispdf)
+                    historikk.utskrift(ordre, suksess, "interaktivt")
+                else: self.obs(u"Blanketten er lagret med filnavn: %s" % pdf.filnavn)
 
     def betalFaktura(self):
         try:
@@ -1191,6 +1186,9 @@ class FinFaktura(QtGui.QMainWindow):#Ui_MainWindow): ## leser gui fra faktura_ui
     def visFirmaOppsett(self):
         dialog = gui_firma.firmaOppsett(self.firma)
         res = dialog.exec_()
+        logging.debug('visFirmaOppsett.exec: %s, %s', type(self.firma.logo), len(self.firma.logo))
+        self.db.commit()
+        logging.debug('visFirmaOppsett.exec: %s, %s', type(self.firma.logo), len(self.firma.logo))
         #if res == QtGui.QDialog.Accepted:
           #return self.sendEpostfaktura(ordre, tekst, pdfFilnavn)
 

@@ -12,7 +12,7 @@
 import types, os, sys, os.path, shutil
 from string import join
 from time import time, strftime, localtime
-import logging
+import logging, subprocess
 try:
     import sqlite3 as sqlite # python2.5 har sqlite3 innebygget
 except ImportError:
@@ -171,11 +171,12 @@ class FakturaBibliotek:
 
         return pdf
 
-    def skrivUt(self, filnavn, program='/usr/bin/kprinter'):
+    def skrivUt(self, filnavn, program='/usr/bin/kpdf'):
         if not os.path.exists(filnavn):
-            raise "Feil filnavn"
+            raise Exception("Ugyldig filnavn: '%s'" % filnavn)
         ## XXX: TODO: Skrive ut for alle os ## QPrint() ?
-        os.system('"%s" "%s"' % (program, filnavn))
+        logging.debug("skriver ut '%s' vha programmet '%s'", filnavn, program)
+        subprocess.call((program, filnavn))
 
     def sendEpost(self, ordre, pdf, tekst=None, transport='sendmail'):
         import epost
@@ -346,4 +347,15 @@ def lesRessurs(ressurs):
     s = QtCore.QString(t.readAll())
     f.close()
     return s
+
+def typeofqt(obj):
+  from PyQt4 import QtGui
+  if isinstance(obj, QtGui.QSpinBox): return 'QSpinBox'
+  elif isinstance(obj, QtGui.QDoubleSpinBox): return 'QDoubleSpinBox'
+  elif isinstance(obj, QtGui.QLineEdit): return 'QLineEdit'
+  elif isinstance(obj, QtGui.QTextEdit): return 'QTextEdit'
+  elif isinstance(obj, QtGui.QPlainTextEdit): return 'QPlainTextEdit'
+  elif isinstance(obj, QtGui.QHtmlTextEdit): return 'QHtmlTextEdit'
+  elif isinstance(obj, QtGui.QComboBox): return 'QComboBox'
+  return "QWidget"
 

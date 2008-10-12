@@ -13,6 +13,7 @@
 import logging
 from PyQt4 import QtCore, QtGui
 from ui import firmainfo_ui
+from fakturabibliotek import typeofqt
 
 class firmaOppsett(firmainfo_ui.Ui_firmaOppsett):
     def __init__(self, firma):
@@ -44,6 +45,7 @@ class firmaOppsett(firmainfo_ui.Ui_firmaOppsett):
         if res == QtGui.QDialog.Accepted:
             logging.debug('oppdaterer')
             self.oppdater()
+            #logging.debug('logo: %s %s %s', type(self.firma.logo), len(self.firma.logo), repr(self.firma.logo))
         return res
 
 ############## FIRMAINFO ###################
@@ -87,22 +89,14 @@ class firmaOppsett(firmainfo_ui.Ui_firmaOppsett):
 
     def visLogo(self):
         if not self.firma.logo:
-            self.lagreLogo.setText('Finn logo')
+            self.lagreLogo.setText('&Finn logo')
             self.LogoPixmap.setPixmap(QtGui.QPixmap())
         else:
+            logging.debug('visLogo: %s, %s', type(self.firma.logo), len(self.firma.logo))
             logo = QtGui.QPixmap()
             logo.loadFromData(self.firma.logo)
             self.LogoPixmap.setPixmap(logo)
-            self.lagreLogo.setText('Fjern logo')
-
-    def oppdaterFirmainfo(self, fraObj):
-        kart = firmaWidgetKart()
-        if isinstance(fraObj, QtGui.QSpinBox): fun = int(fraObj.value)
-        elif isinstance(fraObj, QtGui.QComboBox): fun = unicode(fraObj.currentText)
-        elif isinstance(fraObj, (QtGui.QLineEdit,QtGui.QTextEdit,)): fun = unicode(fraObj.text)
-
-        debug(u'oppdatere %s til %s' % (fraObj, kart[fraObj]))
-        kart[fraObj] = fun() # finner riktig lagringssted og kjører riktig funksjon
+            self.lagreLogo.setText('&Fjern logo')
 
     def kanskjetall(self, obj):
         try:
@@ -125,83 +119,70 @@ class firmaOppsett(firmainfo_ui.Ui_firmaOppsett):
         self.firma.vilkar     = unicode(self.Vilkar.toPlainText())
         self.firma.mva        = int(self.Mva.value())
         self.firma.forfall    = int(self.Forfall.value())
-
         mangler = self.sjekkFirmaMangler()
         if mangler:
-            mangel = u'Ufullstendige opplysninger. Du er nødt til å oppgi:\n%s' % ([ mangler[obj].lower() for obj in mangler.keys() ])
+            mangel = u'Du er nødt til å oppgi:\n%s' % ([ mangler[obj].lower() for obj in mangler.keys() ])
             logging.debug (mangel)
-            #self.fakturaTab.showPage(self.fakturaTab.page(3))
-            obj.setFocus()
-            #self.gammelTab = 3
+            QtGui.QMessageBox.critical(self.gui, 'Ufullstendige opplysninger', mangel)
+            mangler.keys()[0].setFocus()
             return False
-        #self.LagreInfo.setText('<font color=green><b>Opplysningene er lagret</b></font>')
-        #logging.debug self.faktura.firmainfo()
 
     def sjekkFirmaMangler(self):
         kravkart = {}
         kravkart.update(self._kontrollkart)
+        test = None
         for obj in kravkart.keys():
             if isinstance(obj, QtGui.QSpinBox): test = obj.value() > 0
             elif isinstance(obj, QtGui.QComboBox): test = obj.currentText()
             elif isinstance(obj, (QtGui.QLineEdit,QtGui.QTextEdit,)): test = obj.text()
-            if test: kravkart.pop(obj)
+            if test is None:
+                logging.error('sjekkFirmaMangler: mangler test for % obj')
+            elif test: kravkart.pop(obj)
         return kravkart
 
     def firmaSjekk(self, event=None):
-        mangler = 0
-        s = u"<b><font color=red>Følgende felter må fylles ut:</font></b><ol>"
         ok = QtGui.QColor('white')
         tom = QtGui.QColor('red')
+        widget = 'QWidget'
         for obj in self._kontrollkart.keys():
-            if isinstance(obj, QtGui.QSpinBox): test = obj.value() > 0
+            if isinstance(obj, (QtGui.QSpinBox, QtGui.QDoubleSpinBox)): test = obj.value() > 0
             elif isinstance(obj, QtGui.QComboBox): test = obj.currentText()
             elif isinstance(obj, (QtGui.QLineEdit,QtGui.QTextEdit,)): test = obj.text()
             elif isinstance(obj, (QtGui.QPlainTextEdit,)): test = obj.toPlainText()
             else:
-                logging.debug(obj, type(obj))
+                logging.error('mangler test for %s (%s)' % (obj, type(obj)))
             if test:
                 #obj.setPaletteBackgroundColor(ok)
-                obj.setStyleSheet("QWidget { background-color: white; }")
-                #self.oppdaterFirmainfo(obj) # lagrer informasjonen
+                #logging.debug('firmaSjekk: ok for %s', obj.typeName())
+                obj.setStyleSheet("%s { background-color: white; }" % typeofqt(obj))
             else:
-                s += u"<li>%s" % self._kontrollkart[obj]
-                obj.setStyleSheet("QWidget { background-color: red; }")
+                obj.setStyleSheet("%s { background-color: red; }" % typeofqt(obj))
                 #obj.setPaletteBackgroundColor(tom)
-                mangler += 1
-        if not mangler:
-            #self.LagreInfo.setText('')
-            #self.Lagre.setEnabled(True)
-            return True
-        else:
-            s += "</ol>"
-            #self.LagreInfo.setText(s)
-            #self.Lagre.setEnabled(False)
 
     def finnFjernLogo(self):
         if self.firma.logo:
-            self.firma.logo = ""
+            self.firma.logo = buffer('')
             self.visLogo()
         else:
             startdir = ""
-            logo = QtGui.QFileDialog.getOpenFileName(self.gui,
+            logofile = QtGui.QFileDialog.getOpenFileName(self.gui,
                 "Velg bildefil for firmaets logo",
                 startdir,
                 'Bildefiler (*.png *.xpm *.jpg *.jpeg *.gif *.bmp *.ppm *.pgm *.pbm)',
                 )
-            if len(unicode(logo)) > 0:
-                logging.debug ("Setter ny logo: %s" % logo)
+            if len(unicode(logofile)) > 0:
+                logging.debug ("Setter ny logo: %s" % logofile)
 
-                l = QtGui.QPixmap()
-                l.loadFromData(open(unicode(logo)).read())
+                logo = QtGui.QPixmap(logofile)
+                if logo.isNull(): # kunne ikke åpne logo
+                    return False
 
                 stream = QtCore.QBuffer()
-                l.toImage().save(stream, 'PNG')
-                #l.convertToImage().smoothScale(360,360, QtGui.QImage.ScaleMax).save(stream, 'PNG')
-
-                #import sqlite
-
-                #self.firma.logo = sqlite.encode(stream.getData())
+                scaledlogo = logo.scaled(QtCore.QSize(360,360), QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation)
+                scaledlogo.save(stream, 'PNG')
                 self.firma.logo = buffer(stream.data())
+                logging.debug('logo: %s %s %s', type(self.firma.logo), len(self.firma.logo), repr(self.firma.logo))
                 self.visLogo()
 
-
+                #self.firma.hentEgenskaper()
+                #logging.debug('hentet egenskaper. logo: %s, %s', type(self.firma.logo), len(self.firma.logo))

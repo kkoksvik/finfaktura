@@ -60,7 +60,7 @@ Se forøvrig http://code.google.com/p/finfaktura/wiki/PythonF60
 
 import time, os, types
 from string import join, split
-import logging
+import logging, subprocess
 
 class f60Eksisterer(Exception): pass
 class f60Feil(Exception): pass
@@ -80,7 +80,7 @@ except ImportError:
 __version__ = '0.11'
 __license__ = 'GPLv2'
 
-PDFUTSKRIFT = '/usr/bin/kprinter'
+PDFUTSKRIFT = '/usr/bin/kpdf'
 
 class f60:
     standardskrift = "Helvetica"
@@ -177,8 +177,8 @@ class f60:
     def skrivUt(self, program=PDFUTSKRIFT):
         "Skriver ut den produserte PDF-filen"
         if not os.path.exists(self.filnavn):
-            raise "Feil filnavn"
-        os.system('"%s" "%s"' % (program, self.filnavn)) ### XXX: fiks dette
+            raise Exception("Ugyldig filnavn: %s" % self.filnavn)
+        subprocess.call((program, self.filnavn)) ### XXX: fiks dette
 
     def sjekkKid(self, kid):
         "Kontrollerer et kid-nr etter mod10/luhner-algoritmen. Returnerer True/False"

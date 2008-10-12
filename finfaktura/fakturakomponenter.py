@@ -15,13 +15,12 @@ except ImportError:
     from pysqlite2 import dbapi2 as sqlite # prøv bruker/system-installert modul
 import types, time, os.path
 from string import join
-import logging
+import logging, subprocess
 
 from fakturafeil import *
 
 from PyQt4 import QtCore
 
-PDFUTSKRIFT = "/usr/bin/kprinter"
 PDFVIS = "/usr/bin/kpdf"
 
 class fakturaKomponent:
@@ -493,16 +492,9 @@ class fakturaSikkerhetskopi(fakturaKomponent):
         fil.close()
         return filnavn
 
-    def skrivUt(self, program=PDFUTSKRIFT):
-        logging.debug('Skriver ut sikkerhetskopi #%i med programmet "%s"' % (self._id, program))
-        import os
-        os.system('"%s" "%s"' % (program, self.lagFil()))
-
     def vis(self, program=PDFVIS):
-        logging.debug('Viser sikkerhetskopi #%i med programmet "%s"' % (self._id, program))
-        import os
-        os.system('"%s" "%s"' % (program, self.lagFil()))
-
+        logging.debug(u'Åpner sikkerhetskopi #%i med programmet "%s"' % (self._id, program))
+        subprocess.call((program, self.lagFil()))
 
 class fakturaEpost(fakturaKomponent):
     _tabellnavn = "Epost"

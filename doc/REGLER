@@ -13,7 +13,7 @@
     -> skrive inn hva som har skjedd siden $VERSJON-1
 
 * Laste ned svn-logg
-    svn2cl.sh # finnes på http://ch.tudelft.nl/~arthur/svn2cl/downloads.html
+    svn2cl # finnes på http://ch.tudelft.nl/~arthur/svn2cl/downloads.html
 
 * Commite endringer til svn
     svn commit ChangeLog finfaktura/__init__.py debian/changelog -m "Gjør $VERSJON klar til utgivelse"
@@ -33,8 +33,11 @@
     scripts/forbered_ressurser.sh
 
 * Prøvestarte programmet og se at alt ser greit ut
-    FAKTURADIR=. ./faktura.py
-    FAKTURADIR=. FAKTURADB=testdata.db ./faktura.py
+    FAKTURADIR=. ./faktura.py -d
+    FAKTURADIR=. FAKTURADB=testdata.db ./faktura.py -d
+
+* Test setup.py
+    python setup.py sdist --format=zip
 
 * Lage .deb
     #fakeroot debian/rules binary
@@ -69,7 +72,6 @@
     googlecode-upload.py -s "Fryktelig fin faktura (fedora/suse), versjon $VERSJON" -p finfaktura -u havard.gulldahl -l "Featured,Type-Package,OpSys-Linux" ../finfaktura-${VERSJON}*noarch.rpm
 
     -> source
-    python setup.py sdist --format=zip
     googlecode-upload.py -s "Fryktelig fin faktura (python kildekode), versjon $VERSJON" -p finfaktura -u havard.gulldahl -l "Featured,Type-Package,OpSys-All" dist/finfaktura-${VERSJON}.zip
 
 
