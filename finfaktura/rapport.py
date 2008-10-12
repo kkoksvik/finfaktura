@@ -36,7 +36,7 @@ class rapport:
             raise fakturafeil.InstallasjonsFeil('python-reportlab er ikke installert. Kan ikke lage PDF!')
         if filnavn is None:
             import tempfile
-            self.filnavn = tempfile.mkstemp(suffix='.pdf', prefix='rapport-')
+            self.filnavn = tempfile.mkstemp(suffix='.pdf', prefix='rapport-')[1]
         else:
             self.filnavn = filnavn
         self.info = rapportinfo
@@ -73,7 +73,9 @@ class rapport:
         self.oppdatert = True
 
     def vis(self, program=PDFVIS):
-        if not self.oppdatert: self.lag()
+        logging.debug("viser rapport '%s' med programmet '%s'", self.filnavn, program)
+        if not self.oppdatert:
+            self.lag()
         subprocess.call((program, self.filnavn))
 
     def lastOrdreliste(self, ordreliste):
