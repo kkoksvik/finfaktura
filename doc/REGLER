@@ -46,6 +46,9 @@
 * Installer programmet og prøv å starte det
    sudo dpkg -i /tmp/finfaktura_${VERSJON}_*.deb
 
+* Sjekk ut wiki-sider for å installere dem i pakken
+    svn checkout http://finfaktura.googlecode.com/svn/wiki
+
 * Committe endringer til svn dersom .deb gikk smertefritt
     svn commit -m "pakker og klargjør $VERSJON til produksjon"
 
