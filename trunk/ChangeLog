@@ -1,3 +1,239 @@
+2008-10-11 23:37  havard.gulldahl
+
+	* finfaktura/f60.py, finfaktura/fakturakomponenter.py: fjerner
+	  gammel og unødvendig kode
+
+2008-10-11 16:21  havard.gulldahl
+
+	* finfaktura/epost.py, finfaktura/fakturabibliotek.py,
+	  finfaktura/gui.py, finfaktura/gui_epost.py: fikser feil ved test
+	  av epostløsning
+
+2008-10-11 15:23  havard.gulldahl
+
+	* debian/docs, debian/finfaktura.docs: oppdaterer info om
+	  dokumentasjon
+
+2008-10-11 15:18  havard.gulldahl
+
+	* README, debian/README: oppdaterer README
+
+2008-10-11 14:46  havard.gulldahl
+
+	* debian/finfaktura.menu, debian/menu: Gir nytt navn for at
+	  dh_installmenu skal finne den
+
+2008-09-27 22:18  havard.gulldahl
+
+	* finfaktura/fakturakomponenter.py, finfaktura/gui.py: fjerner
+	  skrivutpdf til fordel for vispdf
+
+2008-09-27 22:18  havard.gulldahl
+
+	* finfaktura/f60.py: går til bake på settSammen-endringa: er ikke
+	  privat metode likevel..
+
+2008-09-25 18:47  havard.gulldahl
+
+	* finfaktura/f60.py: bedre plass til betalingsvilkår
+
+2008-09-25 18:12  havard.gulldahl
+
+	* finfaktura/fakturafeil.py, finfaktura/rapport.py: bedre på alle
+	  plattformer
+
+2008-09-25 17:51  havard.gulldahl
+
+	* finfaktura/fakturakomponenter.py, finfaktura/gui.py,
+	  finfaktura/ui/faktura.ui: tetter hull i ny-vare-koden
+
+2008-09-25 17:20  havard.gulldahl
+
+	* finfaktura/ui/epost.ui: fikser felt som er disabled
+
+2008-09-25 17:17  havard.gulldahl
+
+	* finfaktura/epost.py: endrer til nye navn på moduler
+
+2008-09-05 08:23  havard.gulldahl
+
+	* MANIFEST: Flere filflyttinger
+
+2008-09-05 00:41  havard.gulldahl
+
+	* finfaktura/fakturabibliotek.py: fikser skrivebug
+
+2008-09-05 00:41  havard.gulldahl
+
+	* finfaktura/gui.py: fjerner gammel import
+
+2008-09-05 00:35  havard.gulldahl
+
+	* finfaktura/ui/firmainfo.ui: småfiks på ui
+
+2008-09-05 00:18  havard.gulldahl
+
+	* finfaktura/ekstra.py, scripts/forbered_ressurser.sh: flytter
+	  faktura_rc
+
+2008-09-05 00:14  havard.gulldahl
+
+	* ChangeLog, debian/changelog: Gjør 1.9.9b klar til utgivelse
+
+2008-09-05 00:13  havard.gulldahl
+
+	* finfaktura/gui.py: rydder opp i tekststrenger og fjerner gammel
+	  kode
+
+2008-09-05 00:04  havard.gulldahl
+
+	* finfaktura/fakturaSqliteDB.py: Fjerner overflødig fil
+
+2008-09-04 23:43  havard.gulldahl
+
+	* finfaktura/gui.py: tilpasser kolonnebredden i fakturalista til
+	  kolonnens innhold.
+
+2008-09-04 23:34  havard.gulldahl
+
+	* MANIFEST: Oppdaterer til ny situasjon
+
+2008-09-04 23:29  havard.gulldahl
+
+	* scripts/forbered_ressurser.sh: fikser filnavn
+
+2008-09-04 23:28  havard.gulldahl
+
+	* finfaktura/ui/faktura_ui.py, finfaktura/ui/sendepost_ui.py:
+	  fjerner genererte filer fra svn
+
+2008-09-04 23:27  havard.gulldahl
+
+	* faktura4.ui, finfaktura/gui.py, finfaktura/ui/faktura.ui: Laster
+	  ikke direkte fra .ui-fil, men fra pyuic4's utputt.
+
+2008-09-03 23:14  havard.gulldahl
+
+	* finfaktura/fakturabibliotek.py, finfaktura/gui.py: flytter
+	  funksjonen som leser ressurser, og bruker den til å hente sql
+
+2008-09-01 22:45  havard.gulldahl
+
+	* finfaktura/gui.py: Eksplisitt melding når enhet skrives inn som
+	  tall
+
+2008-09-01 22:33  havard.gulldahl
+
+	* finfaktura/gui.py: småplukk
+
+2008-09-01 22:32  havard.gulldahl
+
+	* finfaktura/rapport.py: litt finere tittel
+
+2008-09-01 22:16  havard.gulldahl
+
+	* finfaktura/__init__.py: vi holde rpå med en beta
+
+2008-09-01 22:15  havard.gulldahl
+
+	* faktura.py: bedre feilmelding og rapportering
+
+2008-09-01 22:15  havard.gulldahl
+
+	* faktura4.ui: bytter ut vilkårlig MVA-felt med leveringsdato
+
+2008-09-01 22:14  havard.gulldahl
+
+	* finfaktura/gui.py: vilkårlig forfallsdato, og sikkerhetskopierer
+	  ved avslutning
+
+2008-09-01 22:13  havard.gulldahl
+
+	* finfaktura/fakturabibliotek.py, finfaktura/fakturakomponenter.py:
+	  kan legge inn vilkårlig forfallsdato
+
+2008-09-01 22:12  havard.gulldahl
+
+	* README: legger inn punkt om diskusjonslista
+
+2008-09-01 22:12  havard.gulldahl
+
+	* doc/REGLER: oppdaterer om ressurser
+
+2008-08-31 15:36  havard.gulldahl
+
+	* finfaktura/gui.py: småfiks
+
+2008-08-31 14:39  havard.gulldahl
+
+	* finfaktura/gui.py: ny funksjon les_ressurs
+
+2008-08-31 14:31  havard.gulldahl
+
+	* README: småplukk i teksten
+
+2008-08-31 14:30  havard.gulldahl
+
+	* finfaktura/ekstra.py, scripts/forbered_ressurser.sh: samkjører
+	  filplassering
+
+2008-08-31 14:21  havard.gulldahl
+
+	* README: Oppdaterer teksten til å gjelde PyQt4 og for å forbedre
+	  generell feeling
+
+2008-08-31 14:11  havard.gulldahl
+
+	* scripts/forbered_ressurser.sh: fikser og kommenterer
+
+2008-08-31 14:08  havard.gulldahl
+
+	* scripts/forbered_ressurser.sh: gjør fila kjørbar
+
+2008-08-31 14:06  havard.gulldahl
+
+	* MANIFEST, finfaktura/gui.py: kan åpne enkelt tekstvindu -> "Om.."
+	  og "Lisens.."
+
+2008-08-31 13:06  havard.gulldahl
+
+	* faktura.py, finfaktura/okonomi.py, finfaktura/rapport.py: mer
+	  logging
+
+2008-08-31 09:08  havard.gulldahl
+
+	* finfaktura/gui_epost.py: ops
+
+2008-08-31 09:07  havard.gulldahl
+
+	* finfaktura/f60.py, finfaktura/fakturabibliotek.py,
+	  finfaktura/fakturakomponenter.py, finfaktura/gui.py,
+	  finfaktura/gui_epost.py, finfaktura/gui_finfaktura_oppsett.py,
+	  finfaktura/gui_firma.py, finfaktura/historikk.py: skriver
+	  debug-meldinger med logging-modulen i stedet for hjemmemekk
+
+2008-08-31 03:57  havard.gulldahl
+
+	* finfaktura/gui.py: et par bugfikser ved ferdigstillelse av
+	  faktura
+
+2008-08-31 03:31  havard.gulldahl
+
+	* finfaktura/gui.py: helt riktige kolonnebredder i varelista
+
+2008-08-31 03:27  havard.gulldahl
+
+	* finfaktura/gui.py: riktige kolonnebredder i varelista
+
+2008-08-31 03:26  havard.gulldahl
+
+	* faktura4.ui: navn
+
+2008-08-28 23:08  havard.gulldahl
+
+	* finfaktura/gui.py: bruker ny funksjonalitet i qt4 til å gjøre "Ny
+	  faktura"-koden mer robust og mindre hackete
+
 2008-08-27 22:55  havard.gulldahl
 
 	* faktura4.ui, finfaktura/gui.py, finfaktura/gui_epost.py,
