@@ -36,17 +36,15 @@ class firmaOppsett(firmainfo_ui.Ui_firmaOppsett):
             #self.Mva:'Momssats',
             self.Forfall:'Forfallsperiode',
         }
-        self.vis()
         self.gui.show()
+        self.vis()
+        #self.visLogo()
 
 
     def exec_(self):
         res = self.gui.exec_()
         if res == QtGui.QDialog.Accepted:
             return self.samleInfo()
-            #logging.debug('oppdaterer')
-            #self.oppdater()
-            #logging.debug('logo: %s %s %s', type(self.firma.logo), len(self.firma.logo), repr(self.firma.logo))
         return {}
 
 ############## FIRMAINFO ###################
@@ -70,7 +68,7 @@ class firmaOppsett(firmainfo_ui.Ui_firmaOppsett):
             }
 
     def vis(self):
-        format = { self.Postnummer: "%04i", }
+        format = { self.Postnummer: "%04i", } # må formateres spesielt dersom det begynner med 0, eks. 0921
         for til, fra in self.firmaWidgetKart().iteritems():
             #debug("fra", fra, type(fra))
             #debug("til", til, type(til))
@@ -91,9 +89,11 @@ class firmaOppsett(firmainfo_ui.Ui_firmaOppsett):
     def visLogo(self):
         if not self.firma.logo:
             self.lagreLogo.setText('&Finn logo')
-            self.LogoPixmap.setPixmap(QtGui.QPixmap())
+            #self.LogoPixmap.setPixmap(QtGui.QPixmap())
+            self.LogoPixmap.clear()
         else:
-            logging.debug('visLogo: %s, %s', type(self.firma.logo), len(self.firma.logo))
+            #pass
+            logging.debug('visLogo: %s, %s', repr(self.firma.logo), len(self.firma.logo))
             logo = QtGui.QPixmap()
             logo.loadFromData(self.firma.logo)
             self.LogoPixmap.setPixmap(logo)
@@ -179,8 +179,11 @@ class firmaOppsett(firmainfo_ui.Ui_firmaOppsett):
                 #obj.setPaletteBackgroundColor(tom)
 
     def finnFjernLogo(self):
-        if self.firma.logo:
-            self.firma.logo = buffer('')
+        logging.debug('finnFjernLogo %s', repr(self.firma.logo))
+        logging.debug('finnFjern lengde %s', len(str(self.firma.logo)))
+        if (self.firma.logo):
+            logging.debug('fjerner logo %s', repr(self.firma.logo))
+            self.firma.logo = ''
             self.visLogo()
         else:
             startdir = ""
@@ -199,7 +202,8 @@ class firmaOppsett(firmainfo_ui.Ui_firmaOppsett):
                 stream = QtCore.QBuffer()
                 scaledlogo = logo.scaled(QtCore.QSize(360,360), QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation)
                 scaledlogo.save(stream, 'PNG')
-                self.firma.logo = buffer(stream.data())
+                #self.firma.logo = buffer(stream.data())
+                self.firma.logo = buffer(str(stream.data()))
                 logging.debug('logo: %s %s %s', type(self.firma.logo), len(self.firma.logo), repr(self.firma.logo))
                 self.visLogo()
 

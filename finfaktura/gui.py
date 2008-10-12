@@ -1190,10 +1190,6 @@ class FinFaktura(QtGui.QMainWindow):#Ui_MainWindow): ## leser gui fra faktura_ui
         for egenskap, verdi in res.iteritems():
             logging.debug('setter %s = %s', egenskap, repr(verdi))
             setattr(self.firma, egenskap, verdi)
-        #self.db.commit()
-        #logging.debug('visFirmaOppsett.exec: %s, %s', type(self.firma.logo), len(self.firma.logo))
-        #if res == QtGui.QDialog.Accepted:
-          #return self.sendEpostfaktura(ordre, tekst, pdfFilnavn)
 
     def visTekstVindu(self, ressurs):
         if ressurs == 'om':
