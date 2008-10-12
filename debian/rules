@@ -41,6 +41,7 @@ build-stamp: configure-stamp
 	#(pyuic -x faktura.ui > finfaktura/faktura_ui.py)
 	touch build-stamp
 
+	svn checkout http://finfaktura.googlecode.com/svn/wiki
 
 clean:
 	dh_testdir
