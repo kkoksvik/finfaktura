@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=finfaktura
+Name[no]=finfaktura
+GenericName=Fakturaprogram for norske forhold
+Exec=finfaktura.py
+Icon=finfaktura
+Terminal=false
+Categories=Qt;Office;Finance;
+
