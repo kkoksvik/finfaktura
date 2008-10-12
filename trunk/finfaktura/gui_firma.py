@@ -43,10 +43,11 @@ class firmaOppsett(firmainfo_ui.Ui_firmaOppsett):
     def exec_(self):
         res = self.gui.exec_()
         if res == QtGui.QDialog.Accepted:
-            logging.debug('oppdaterer')
-            self.oppdater()
+            return self.samleInfo()
+            #logging.debug('oppdaterer')
+            #self.oppdater()
             #logging.debug('logo: %s %s %s', type(self.firma.logo), len(self.firma.logo), repr(self.firma.logo))
-        return res
+        return {}
 
 ############## FIRMAINFO ###################
 
@@ -103,6 +104,24 @@ class firmaOppsett(firmainfo_ui.Ui_firmaOppsett):
             return int(obj.text())
         except ValueError:
             return None
+
+    def samleInfo(self):
+        r = {}
+        r['firmanavn'] = unicode(self.Firmanavn.text())
+        r['organisasjonsnummer'] = unicode(self.Organisasjonsnummer.text())
+        r['kontaktperson'] = unicode(self.Kontaktperson.text())
+        r['epost'] = unicode(self.Epost.text())
+        r['adresse'] = unicode(self.Adresse.toPlainText())
+        r['postnummer'] = self.kanskjetall(self.Postnummer)
+        r['poststed'] = unicode(self.Poststed.text())
+        r['telefon'] = self.kanskjetall(self.Telefon)
+        r['mobil'] = self.kanskjetall(self.Mobil)
+        r['telefaks'] = self.kanskjetall(self.Telefaks)
+        r['kontonummer'] = self.kanskjetall(self.Kontonummer)
+        r['vilkar'] = unicode(self.Vilkar.toPlainText())
+        r['mva'] = int(self.Mva.value())
+        r['forfall'] = int(self.Forfall.value())
+        return r
 
     def oppdater(self):
         self.firma.firmanavn  = unicode(self.Firmanavn.text())
