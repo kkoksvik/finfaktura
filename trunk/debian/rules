@@ -79,10 +79,10 @@ binary-common:
 	dh_installchangelogs ChangeLog
 	dh_installchangelogs
 	dh_installdocs
-#	dh_install desktop_file usr/share/applications/kde
-	dh_installmenu
 	dh_install finfaktura.png usr/share/icons
 	dh_desktop faktura.desktop
+	dh_install finfaktura.desktop usr/share/applications/kde
+	dh_installmenu
 #	dh_installemacsen
 #	dh_installpam
 #	dh_installmime
