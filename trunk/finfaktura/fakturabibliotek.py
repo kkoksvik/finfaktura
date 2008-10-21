@@ -178,34 +178,33 @@ class FakturaBibliotek:
         logging.debug("skriver ut '%s' vha programmet '%s'", filnavn, program)
         subprocess.call((program, filnavn))
 
-    def sendEpost(self, ordre, pdf, tekst=None, transport='sendmail'):
+    def sendEpost(self, ordre, pdf, tekst=None, transport='auto'):
         import epost
-        #t = epost.dump()
-        #t.faktura(ordre, pdf, tekst, testmelding=True)
-        #t.send()
+        if type(transport) == int:
+            transport = epost.TRANSPORTMETODER[transport]
         if transport == 'auto':
             transport = self.testEpost()
             if transport is None:
                 return False
             self.epostoppsett.transport = transport
-            
-        m = getattr(epost,transport)() # laster riktig transport (gmail/smtp/sendmail)
-        set = self.epostoppsett
-        if transport == 'gmail':
-            m.auth(set.gmailbruker, set.gmailpassord)
-        elif transport == 'smtp':
-            m.tls(bool(set.smtptls))
-            m.settServer(set.smtpserver, set.smtpport)
-            if set.smtpbruker: m.auth(set.smtpbruker, set.smtppassord)
+
+        m = getattr(epost,transport)() # laster riktig transport (smtp/sendmail)
+        oppsett = self.epostoppsett
+        if transport == 'smtp':
+            m.tls(bool(oppsett.smtptls))
+            m.settServer(oppsett.smtpserver, oppsett.smtpport)
+            if oppsett.smtpbruker: m.auth(oppsett.smtpbruker, oppsett.smtppassord)
         elif transport == 'sendmail':
-            m.settSti(set.sendmailsti)
-        if set.bcc is not None and len(set.bcc) > 0:
-            m.settKopi(set.bcc)
+            m.settSti(oppsett.sendmailsti)
+        if oppsett.bcc is not None and len(oppsett.bcc) > 0:
+            m.settKopi(oppsett.bcc)
         m.faktura(ordre, pdf, tekst, testmelding=self.produksjonsversjon==False)
         return m.send()
 
     def testEpost(self, transport='auto'):
         import epost
+        if type(transport) == int:
+            transport = epost.TRANSPORTMETODER[transport]
         logging.debug('skal teste transport: %s', transport)
         # finn riktig transport (gmail/smtp/sendmail)
         if not transport in epost.TRANSPORTMETODER: #ugyldig transport oppgitt
@@ -227,15 +226,13 @@ class FakturaBibliotek:
         logging.debug('tester epost. transport: %s', transport)
         m = getattr(epost,transport)() # laster riktig transport
         assert(m, epost.epost)
-        set = self.epostoppsett
-        if transport == 'gmail':
-            m.auth(set.gmailbruker, set.gmailpassord)
-        elif transport == 'smtp':
-            m.tls(bool(set.smtptls))
-            m.settServer(set.smtpserver, set.smtpport)
-            if set.smtpbruker: m.auth(set.smtpbruker, set.smtppassord)
+        oppsett = self.epostoppsett
+        if transport == 'smtp':
+            m.tls(bool(oppsett.smtptls))
+            m.settServer(oppsett.smtpserver, oppsett.smtpport)
+            if oppsett.smtpbruker: m.auth(oppsett.smtpbruker, oppsett.smtppassord)
         elif transport == 'sendmail':
-            m.settSti(set.sendmailsti)
+            m.settSti(oppsett.sendmailsti)
         try:
             t = m.test()
         except Exception,inst:
