@@ -27,4 +27,5 @@ finfaktura/ui/firmainfo_ui.py
 finfaktura/ui/sendepost_ui.py
 README
 LICENSE
+finfaktura.png
 scripts/oppgrader-databasen-til-1.0.sh
