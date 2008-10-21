@@ -93,7 +93,7 @@ class fakturaKomponent:
 
     def oppdaterEgenskap(self, egenskap, verdi):
         _sql = "UPDATE %s SET %s=? WHERE ID=?" % (self._tabellnavn, egenskap)
-        #logging.debug("%s <= %s, %s", _sql, repr(verdi), self._id)
+        logging.debug("%s <= %s, %s", _sql, repr(verdi), self._id)
         self.c.execute(_sql, (verdi, self._id))
         self.db.commit()
 

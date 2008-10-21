@@ -105,7 +105,7 @@
     -- Versjon 2.7
     CREATE TABLE Epost (ID INTEGER PRIMARY KEY,
         bcc UNICODE,
-        transport UNICODE, --INT DEFAULT 0,
+        transport INT DEFAULT 0,
         gmailbruker UNICODE,
         gmailpassord UNICODE,
         smtpserver UNICODE,
