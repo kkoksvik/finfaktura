@@ -22,7 +22,6 @@ from finfaktura.fakturabibliotek import PRODUKSJONSVERSJON, \
     FakturaBibliotek, kobleTilDatabase, lagDatabase, finnDatabasenavn, \
     sikkerhetskopierFil, lesRessurs
 import finfaktura.f60 as f60
-from finfaktura.epost import TRANSPORTMETODER
 import finfaktura.okonomi as fakturaOkonomi
 import finfaktura.sikkerhetskopi as sikkerhetskopi
 import finfaktura.historikk as historikk
@@ -177,10 +176,10 @@ class FinFaktura(QtGui.QMainWindow):#Ui_MainWindow): ## leser gui fra faktura_ui
         self.resize(880, 600)
 
     def avslutt(self):
+        self.db.commit()
         logging.debug("sikkerhetskopierer databasen: %s ", finnDatabasenavn())
         sikkerhetskopierFil(finnDatabasenavn())
-        self.db.commit()
-        #self.c.close()
+        self.c.close()
         #self.db.close()
 
     def databaseTilkobler(self):
@@ -1121,7 +1120,6 @@ class FinFaktura(QtGui.QMainWindow):#Ui_MainWindow): ## leser gui fra faktura_ui
             else:
                 u += 1
         s += "</ul>"
-        #self.myndigheteneRegnskapHittil.setText("%d kr (derav MVA %d kr)" % (inn+mva, mva))
         self.gui.okonomiRegnskapTotalUMva.setText("%.2f kr" % inn)
         self.gui.okonomiRegnskapTotalMMva.setText("%.2f kr" % (inn+mva))
         self.gui.okonomiRegnskapMoms.setText("%.2f kr" % mva)
