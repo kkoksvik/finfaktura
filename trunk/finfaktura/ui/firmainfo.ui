@@ -13,7 +13,7 @@
    </rect>
   </property>
   <property name="windowTitle" >
-   <string>Dialog</string>
+   <string>Informasjon om firmaet</string>
   </property>
   <property name="sizeGripEnabled" >
    <bool>false</bool>
