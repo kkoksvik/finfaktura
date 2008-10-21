@@ -106,9 +106,11 @@ class epostOppsett(epost_ui.Ui_epostOppsett):
         else:
             self.obs("Epostoppsettet fungerer. Bruker %s" % transport)
             try:
-                self.epostLosning.setButton(transport)
-                self.roterAktivSeksjon(transport)
-            except:pass
+                idx = epost.TRANSPORTMETODER.index(transport)
+                self._epostlosninger[idx].setChecked(True)
+                #self.roterAktivSeksjon(transport)
+            except:
+                raise
             self.oppdaterEpost() # må lagre for å bruke den aktive løsningen
 
     def finnAktivTransport(self):
