@@ -13,34 +13,3 @@
 
 ############## SIKKERHETSKOPI ###################
 
-    def visSikkerhetskopi(self):
-
-        if sikkerhetskopi.BRUK_GMAIL:
-            self.sikkerhetskopiGmailUbrukelig.hide()
-            self.sikkerhetskopiGmailLastopp.setEnabled(True)
-            if len(self.faktura.epostoppsett.gmailbruker):
-                self.sikkerhetskopiGmailHuskEpost.setChecked(True)
-            if len(self.faktura.epostoppsett.gmailpassord):
-                self.sikkerhetskopiGmailHuskPassord.setChecked(True)
-            self.sikkerhetskopiGmailEpost.setText(self.faktura.epostoppsett.gmailbruker)
-            self.sikkerhetskopiGmailPassord.setText(self.faktura.epostoppsett.gmailpassord)
-        else:
-            self.sikkerhetskopiGmailUbrukelig.show()
-            self.sikkerhetskopiGmailLastopp.setEnabled(False)
-
-
-    def sikkerhetskopiGmail(self):
-        bruker = self.sikkerhetskopiGmailEpost.text()
-        passord = self.sikkerhetskopiGmailPassord.text()
-        if not (bruker and passord):
-            self.alert(u'Du har ikke oppgitt brukernavn og passord i Gmail')
-            return False
-        if PRODUKSJONSVERSJON: label = "finfaktura"
-        else: label = "fakturatest"
-        sikker = sikkerhetskopi.gmailkopi(finnDatabasenavn(), bruker, passord, label)
-        r = sikker.lagre()
-        if self.sikkerhetskopiGmailHuskEpost.isChecked():
-            self.faktura.epostoppsett.gmailbruker = self.sikkerhetskopiGmailEpost.text()
-        if self.sikkerhetskopiGmailHuskPassord.isChecked():
-            self.faktura.epostoppsett.gmailpassord = self.sikkerhetskopiGmailPassord.text()
-        return r
