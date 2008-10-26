@@ -2,7 +2,7 @@
 
 = Introduksjon =
 
-Skal du lage fakturaer for flere firma? _Fryktelig Fin Faktura_ har ikke støtte for å bytte mens programmet kjører, men det er [MiljøVariabler fullt støttet ved å sette miljøvariabler]
+Skal du lage fakturaer for flere firma? _Fryktelig Fin Faktura_ har ikke støtte for å bytte mens programmet kjører, men det er [StarteProgrammet fullt støttet ved å sette miljøvariabler]
 
 = Hvordan? =
 
