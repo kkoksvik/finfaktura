@@ -1,3 +1,9 @@
+finfaktura (1.9.9b3-2) intrepid; urgency=low
+
+  * Fikser gui_sikkerhetspkopi.py (issue#36) - takk, Johan!
+
+ -- Håvard Gulldahl <havard@gulldahl.no>  Sun, 26 Oct 2008 02:31:49 +0200
+
 finfaktura (1.9.9b3) intrepid; urgency=low
 
   * Mer bugfiksing på epostsending
