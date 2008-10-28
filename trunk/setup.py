@@ -23,7 +23,7 @@ setup(name="finfaktura",
       author="Håvard Gulldahl",
       author_email="havard@gulldahl.no",
       url="http://finfaktura.googlecode.com/",
-      packages=['finfaktura',],
+      packages=['finfaktura', 'finfaktura.ui'],
       data_files=[
             ('share/finfaktura/scripts', glob.glob('scripts/*')),
            ],
