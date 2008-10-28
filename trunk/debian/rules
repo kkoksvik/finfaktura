@@ -37,8 +37,6 @@ build-stamp: configure-stamp
 
 	$(DH_PY_INTERPRETER) setup.py build
 
-	# always regenerate from ui files
-	#(pyuic -x faktura.ui > finfaktura/faktura_ui.py)
 	touch build-stamp
 
 
@@ -63,9 +61,10 @@ install: build
 
 	# Add here commands to install the arch part of the package into
 	# debian/tmp.
+	scripts/forbered_ressurser.sh 
 	$(DH_PY_INTERPRETER) setup.py install --prefix=$(CURDIR)/debian/tmp/usr
 
-        # Nuke *.pyc files that shouldn't be packaged
+    # Nuke *.pyc files that shouldn't be packaged
 	find debian/tmp -name "*.pyc" -exec rm {} \;
 
 	dh_install -s
