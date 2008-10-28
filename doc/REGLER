@@ -39,15 +39,19 @@
 * Test setup.py
     python setup.py sdist --format=zip
 
+* Sjekk ut wiki-sider for å installere dem i pakken
+    svn checkout http://finfaktura.googlecode.com/svn/wiki
+
 * Lage .deb
     #fakeroot debian/rules binary
     debuild -khavard@lurtgjort.no
 
+* Sjekk deb-fila
+    dpkg-deb -c ../finfaktura_${VERSJON}*.deb # sjekk innholdet i pakken
+    dpkg-deb -I ../finfaktura_${VERSJON}*.deb # sjekk innholdet i pakken
+
 * Installer programmet og prøv å starte det
    sudo dpkg -i /tmp/finfaktura_${VERSJON}_*.deb
-
-* Sjekk ut wiki-sider for å installere dem i pakken
-    svn checkout http://finfaktura.googlecode.com/svn/wiki
 
 * Committe endringer til svn dersom .deb gikk smertefritt
     svn commit -m "pakker og klargjør $VERSJON til produksjon"
