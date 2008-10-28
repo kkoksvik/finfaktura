@@ -1,5 +1,5 @@
 Source: finfaktura
-Section: office
+Section: utils
 Priority: optional
 Maintainer: Håvard Gulldahl <havard@lurtgjort.no>
 Build-Depends: debhelper (>= 4.0.0), python (>= 2.3), python-qt4, pyqt4-dev-tools
@@ -15,8 +15,9 @@ Description: Create and manage invoices (Norwegian specs)
  Invoices, customers, products. Creates PDF invoices.
  Automatic email submission and backup.
  .
- Requires python, python-qt4 and the reportlab extension.
- Extra value added with the python-imaging module (adds icon ability for PDF invoice).
+ Requires python, python-qt4 and the python-reportlab extension.
+ Extra value added with the python-imaging module (adds
+ icon ability for PDF invoice).
  .
  If you have python2.5, you don't need python-pysqlite2 (as python2.5
  already has it). If you're not running KDE, get and run qt4-qtconfig,

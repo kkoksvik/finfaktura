@@ -1,3 +1,10 @@
+finfaktura (1.9.9b3-3) intrepid; urgency=low
+
+  * Sørger for at scripts/forbered_ressurser.sh blir kjørt, og 
+    .ui- og .qrc-filer blir med i .deb-pakken
+
+ -- Håvard Gulldahl <havard@gulldahl.no>  Tue, 28 Oct 2008 16:15:25 +0100
+
 finfaktura (1.9.9b3-2) intrepid; urgency=low
 
   * Fikser gui_sikkerhetspkopi.py (issue#36) - takk, Johan!

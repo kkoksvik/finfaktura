@@ -1,5 +1,5 @@
-?package(finfaktura):needs="X11" section="Application/Office"\
-  title="Finfaktura" command="/usr/bin/faktura"\
+?package(finfaktura):needs="X11" section="Apps/Office"\
+  title="Finfaktura" command="/usr/bin/faktura.py"\
   hints="Small,Business"
 
 #?package(finfaktura):needs="text" section="Office"\
