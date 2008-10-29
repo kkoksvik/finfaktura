@@ -32,7 +32,7 @@ from finfaktura.fakturafeil import *
 from PyQt4 import QtCore, QtGui, uic
 try:
     from finfaktura.ui.faktura_ui import Ui_FinFaktura
-    import faktura_rc
+    import finfaktura.ui.faktura_rc # last inn logoer
     import gui_sendepost, gui_epost, gui_finfaktura_oppsett, gui_firma
 except ImportError, (e):
     raise RessurserManglerFeil(e)
