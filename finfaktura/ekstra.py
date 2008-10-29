@@ -20,7 +20,7 @@ def forbered_ressurser():
         ret = subprocess.call('pyuic4 -x -o "%s" "%s"' % (os.path.splitext(f)[0] + '_ui.py', f))
         print "%s: %s" % (f, ok(ret))
     for f in rc_files:
-        plassering = os.path.splitext(f)[0] + '_rc.py'
+        plassering = os.path.join('finfakura', 'ui', os.path.splitext(f)[0] + '_rc.py')
         ret = subprocess.call('pyrcc4 -o "%s" "%s"' % (plassering, f))
         print "%s -> %s: %s" % (f, plassering, ok(ret))
 
