@@ -1,6 +1,5 @@
 setup.py
 faktura.py
-faktura_rc.py
 finfaktura/__init__.py
 finfaktura/cli.py
 finfaktura/epost.py
@@ -25,6 +24,7 @@ finfaktura/ui/faktura_ui.py
 finfaktura/ui/finfaktura_oppsett_ui.py
 finfaktura/ui/firmainfo_ui.py
 finfaktura/ui/sendepost_ui.py
+finfaktura/ui/faktura_rc.py
 README
 LICENSE
 finfaktura.png
