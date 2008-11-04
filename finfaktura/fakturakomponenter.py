@@ -9,19 +9,21 @@
 # $Id$
 ###########################################################################
 
+import sys, re, types, time, os.path
+from string import join
+import logging, subprocess
+
+
 try:
     import sqlite3 as sqlite # python2.5 har sqlite3 innebygget
 except ImportError:
     from pysqlite2 import dbapi2 as sqlite # prøv bruker/system-installert modul
-import types, time, os.path
-from string import join
-import logging, subprocess
-
-from fakturafeil import *
 
 from PyQt4 import QtCore
 
-PDFVIS = "/usr/bin/kpdf"
+from fakturafeil import *
+
+PDFVIS = "/usr/bin/okular"
 
 class fakturaKomponent:
     _egenskaper = {}
@@ -278,11 +280,23 @@ class fakturaOrdre(fakturaKomponent):
         self.betalt = None
 
     def lagFilnavn(self, katalog, fakturatype):
-        n = "%s/faktura-%06d-%s-%s-%s.pdf" % (os.path.expanduser(katalog),
-                                              self.ID,
-                                              fakturatype,
-                                              self.kunde.navn.replace(" ", "_"),
-                                              time.strftime("%Y-%m-%d"))
+        logging.debug('lagFilnavn: %s <- %s', katalog, fakturatype)
+        # o.p.expanduser tar ikke unicode-stier (bug i python)
+        # prøv å komme seg rundt det ved å dele opp stien
+        if not '~' in katalog:
+            fullkat = katalog # trenger ikke expanduser
+        else:
+            _brukersti, sti = re.search(r'(~[^/\\ ]*)(.*)', katalog).groups()
+            brukersti = os.path.expanduser(str(_brukersti)).decode(sys.getfilesystemencoding())
+            fullkat = os.path.join(brukersti, sti)
+        if not os.path.isdir(fullkat):
+            logging.debug('lagFilnavn: %s er ikke en gyldig katalog', fullkat)
+            raise FakturaFeil('%s er ikke en gyldig katalog' % fullkat)
+        n = os.path.join(fullkat, "faktura-%06d-%s-%s-%s.pdf" % (self.ID,
+                                                                 fakturatype,
+                                                                 self.kunde.navn.replace(" ", "_"),
+                                                                 time.strftime("%Y-%m-%d")))
+        logging.debug('lagFilnavn ble til %s', n)
         return n
 
     def forfalt(self):
