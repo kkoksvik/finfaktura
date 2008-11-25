@@ -30,307 +30,579 @@
   <widget class="QWidget" name="centralwidget" >
    <layout class="QGridLayout" name="gridLayout_9" >
     <item row="0" column="0" >
-     <widget class="QTabWidget" name="fakturaTab" >
-      <property name="sizePolicy" >
-       <sizepolicy vsizetype="Expanding" hsizetype="MinimumExpanding" >
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
+     <widget class="QScrollArea" name="scrollArea" >
+      <property name="frameShape" >
+       <enum>QFrame::NoFrame</enum>
       </property>
-      <property name="minimumSize" >
-       <size>
-        <width>200</width>
-        <height>0</height>
-       </size>
-      </property>
-      <property name="font" >
-       <font>
-        <pointsize>8</pointsize>
-       </font>
-      </property>
-      <property name="styleSheet" >
-       <string notr="true" >QTabWidget ::tab {
-  min-height: 4em;
-
-}</string>
-      </property>
-      <property name="tabPosition" >
-       <enum>QTabWidget::West</enum>
-      </property>
-      <property name="currentIndex" >
+      <property name="lineWidth" >
        <number>0</number>
       </property>
-      <property name="usesScrollButtons" >
+      <property name="widgetResizable" >
        <bool>true</bool>
       </property>
-      <widget class="QWidget" name="tab" >
-       <attribute name="title" >
-        <string>&amp;Faktura</string>
-       </attribute>
-       <layout class="QGridLayout" name="gridLayout_8" >
-        <item rowspan="6" row="0" column="0" colspan="2" >
-         <widget class="QTreeWidget" name="fakturaFakturaliste" >
+      <widget class="QWidget" name="scrollAreaWidgetContents" >
+       <property name="geometry" >
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>870</width>
+         <height>818</height>
+        </rect>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_10" >
+        <item row="0" column="0" >
+         <widget class="QTabWidget" name="fakturaTab" >
           <property name="sizePolicy" >
-           <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
-            <horstretch>1</horstretch>
+           <sizepolicy vsizetype="Expanding" hsizetype="MinimumExpanding" >
+            <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
-          <property name="showDropIndicator" stdset="0" >
-           <bool>false</bool>
+          <property name="minimumSize" >
+           <size>
+            <width>200</width>
+            <height>0</height>
+           </size>
           </property>
-          <property name="alternatingRowColors" >
+          <property name="font" >
+           <font>
+            <pointsize>8</pointsize>
+           </font>
+          </property>
+          <property name="styleSheet" >
+           <string notr="true" >QTabWidget ::tab {
+  min-height: 4em;
+
+}</string>
+          </property>
+          <property name="tabPosition" >
+           <enum>QTabWidget::West</enum>
+          </property>
+          <property name="currentIndex" >
+           <number>0</number>
+          </property>
+          <property name="usesScrollButtons" >
            <bool>true</bool>
           </property>
-          <property name="rootIsDecorated" >
-           <bool>false</bool>
-          </property>
-          <property name="sortingEnabled" >
-           <bool>true</bool>
-          </property>
-          <property name="animated" >
-           <bool>true</bool>
-          </property>
-          <property name="allColumnsShowFocus" >
-           <bool>true</bool>
-          </property>
-          <property name="expandsOnDoubleClick" >
-           <bool>false</bool>
-          </property>
-          <column>
-           <property name="text" >
-            <string>#</string>
-           </property>
-          </column>
-          <column>
-           <property name="text" >
-            <string>Tekst</string>
-           </property>
-          </column>
-          <column>
-           <property name="text" >
-            <string>Mottaker</string>
-           </property>
-          </column>
-          <column>
-           <property name="text" >
-            <string>Beløp</string>
-           </property>
-          </column>
-          <column>
-           <property name="text" >
-            <string>Forfall</string>
-           </property>
-          </column>
-          <column>
-           <property name="text" >
-            <string>Betalt</string>
-           </property>
-          </column>
-         </widget>
-        </item>
-        <item row="1" column="2" >
-         <widget class="QCheckBox" name="fakturaVisKansellerte" >
-          <property name="toolTip" >
-           <string>Angir om kansellerte fakturaer skal vises</string>
-          </property>
-          <property name="text" >
-           <string>vis kan&amp;sellerte</string>
-          </property>
-          <property name="shortcut" >
-           <string>Alt+S</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="2" >
-         <widget class="QCheckBox" name="fakturaVisGamle" >
-          <property name="toolTip" >
-           <string>Skjul fakturaer som er eldre enn seks måneder og allerede betalt</string>
-          </property>
-          <property name="text" >
-           <string>vis &amp;gamle</string>
-          </property>
-          <property name="shortcut" >
-           <string>Alt+G</string>
-          </property>
-          <property name="checked" >
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="6" column="0" colspan="3" >
-         <widget class="QGroupBox" name="fakturaFakta" >
-          <property name="title" >
-           <string/>
-          </property>
-          <property name="flat" >
-           <bool>true</bool>
-          </property>
-          <layout class="QGridLayout" name="gridLayout_6" >
-           <item rowspan="2" row="0" column="0" colspan="2" >
-            <layout class="QHBoxLayout" name="horizontalLayout_3" >
-             <item>
-              <layout class="QVBoxLayout" name="verticalLayout_3" >
-               <item>
-                <layout class="QFormLayout" name="formLayout_2" >
-                 <property name="fieldGrowthPolicy" >
-                  <enum>QFormLayout::ExpandingFieldsGrow</enum>
-                 </property>
-                 <item row="1" column="0" >
-                  <widget class="QLabel" name="textLabel5" >
-                   <property name="text" >
-                    <string>Mottake&amp;r</string>
-                   </property>
-                   <property name="wordWrap" >
-                    <bool>false</bool>
-                   </property>
-                   <property name="buddy" >
-                    <cstring>fakturaFaktaMottaker</cstring>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="1" column="1" >
-                  <widget class="QComboBox" name="fakturaFaktaMottaker" >
-                   <property name="sizePolicy" >
-                    <sizepolicy vsizetype="Fixed" hsizetype="MinimumExpanding" >
-                     <horstretch>1</horstretch>
-                     <verstretch>0</verstretch>
-                    </sizepolicy>
-                   </property>
-                   <property name="toolTip" >
-                    <string>Fakturaens mottaker (kunden)</string>
-                   </property>
-                   <property name="editable" >
-                    <bool>false</bool>
-                   </property>
-                   <property name="insertPolicy" >
-                    <enum>QComboBox::InsertAtCurrent</enum>
-                   </property>
-                   <property name="sizeAdjustPolicy" >
-                    <enum>QComboBox::AdjustToContents</enum>
-                   </property>
-                   <property name="minimumContentsLength" >
-                    <number>15</number>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="2" column="0" >
-                  <widget class="QLabel" name="textLabel8" >
-                   <property name="text" >
-                    <string>&amp;Tekst</string>
-                   </property>
-                   <property name="wordWrap" >
-                    <bool>false</bool>
-                   </property>
-                   <property name="buddy" >
-                    <cstring>fakturaFaktaTekst</cstring>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="2" column="1" >
-                  <widget class="QPlainTextEdit" name="fakturaFaktaTekst" >
-                   <property name="sizePolicy" >
-                    <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
-                     <horstretch>0</horstretch>
-                     <verstretch>1</verstretch>
-                    </sizepolicy>
-                   </property>
-                   <property name="minimumSize" >
-                    <size>
-                     <width>0</width>
-                     <height>60</height>
-                    </size>
-                   </property>
-                   <property name="maximumSize" >
-                    <size>
-                     <width>16777215</width>
-                     <height>90</height>
-                    </size>
-                   </property>
-                   <property name="tabChangesFocus" >
-                    <bool>true</bool>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
-               </item>
-               <item>
-                <layout class="QVBoxLayout" name="verticalLayout_2" >
+          <widget class="QWidget" name="tab" >
+           <attribute name="title" >
+            <string>&amp;Faktura</string>
+           </attribute>
+           <layout class="QGridLayout" name="gridLayout_8" >
+            <item rowspan="6" row="0" column="0" colspan="2" >
+             <widget class="QTreeWidget" name="fakturaFakturaliste" >
+              <property name="sizePolicy" >
+               <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
+                <horstretch>1</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="showDropIndicator" stdset="0" >
+               <bool>false</bool>
+              </property>
+              <property name="alternatingRowColors" >
+               <bool>true</bool>
+              </property>
+              <property name="rootIsDecorated" >
+               <bool>false</bool>
+              </property>
+              <property name="sortingEnabled" >
+               <bool>true</bool>
+              </property>
+              <property name="animated" >
+               <bool>true</bool>
+              </property>
+              <property name="allColumnsShowFocus" >
+               <bool>true</bool>
+              </property>
+              <property name="expandsOnDoubleClick" >
+               <bool>false</bool>
+              </property>
+              <column>
+               <property name="text" >
+                <string>#</string>
+               </property>
+              </column>
+              <column>
+               <property name="text" >
+                <string>Tekst</string>
+               </property>
+              </column>
+              <column>
+               <property name="text" >
+                <string>Mottaker</string>
+               </property>
+              </column>
+              <column>
+               <property name="text" >
+                <string>Beløp</string>
+               </property>
+              </column>
+              <column>
+               <property name="text" >
+                <string>Forfall</string>
+               </property>
+              </column>
+              <column>
+               <property name="text" >
+                <string>Betalt</string>
+               </property>
+              </column>
+             </widget>
+            </item>
+            <item row="1" column="2" >
+             <widget class="QCheckBox" name="fakturaVisKansellerte" >
+              <property name="toolTip" >
+               <string>Angir om kansellerte fakturaer skal vises</string>
+              </property>
+              <property name="text" >
+               <string>vis kan&amp;sellerte</string>
+              </property>
+              <property name="shortcut" >
+               <string>Alt+S</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="2" >
+             <widget class="QCheckBox" name="fakturaVisGamle" >
+              <property name="toolTip" >
+               <string>Skjul fakturaer som er eldre enn seks måneder og allerede betalt</string>
+              </property>
+              <property name="text" >
+               <string>vis &amp;gamle</string>
+              </property>
+              <property name="shortcut" >
+               <string>Alt+G</string>
+              </property>
+              <property name="checked" >
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="6" column="0" colspan="3" >
+             <widget class="QGroupBox" name="fakturaFakta" >
+              <property name="title" >
+               <string/>
+              </property>
+              <property name="flat" >
+               <bool>true</bool>
+              </property>
+              <layout class="QGridLayout" name="gridLayout_6" >
+               <item rowspan="2" row="0" column="0" colspan="2" >
+                <layout class="QHBoxLayout" name="horizontalLayout_3" >
                  <item>
-                  <widget class="QTableWidget" name="fakturaVareliste" >
-                   <property name="sizePolicy" >
-                    <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
-                     <horstretch>0</horstretch>
-                     <verstretch>3</verstretch>
-                    </sizepolicy>
-                   </property>
-                   <property name="toolTip" >
-                    <string>Varene som hører med fakturaen. Velg tidligerere definerte varer, eller legg til nye ved å skrive inn tekst, pris og MVA</string>
-                   </property>
-                   <property name="dragDropOverwriteMode" >
-                    <bool>false</bool>
-                   </property>
-                   <property name="selectionMode" >
-                    <enum>QAbstractItemView::SingleSelection</enum>
-                   </property>
-                   <property name="selectionBehavior" >
-                    <enum>QAbstractItemView::SelectRows</enum>
-                   </property>
-                   <property name="showGrid" >
-                    <bool>false</bool>
-                   </property>
-                   <column>
-                    <property name="text" >
-                     <string>Varebeskrivelse</string>
-                    </property>
-                   </column>
-                   <column>
-                    <property name="text" >
-                     <string>Antall</string>
-                    </property>
-                   </column>
-                   <column>
-                    <property name="text" >
-                     <string>Pris</string>
-                    </property>
-                   </column>
-                   <column>
-                    <property name="text" >
-                     <string>MVA</string>
-                    </property>
-                   </column>
-                  </widget>
-                 </item>
-                 <item>
-                  <layout class="QHBoxLayout" name="horizontalLayout_4" >
+                  <layout class="QVBoxLayout" name="verticalLayout_3" >
                    <item>
-                    <widget class="QPushButton" name="fakturaFaktaVareLeggtil" >
-                     <property name="sizePolicy" >
-                      <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
+                    <layout class="QFormLayout" name="formLayout_2" >
+                     <property name="fieldGrowthPolicy" >
+                      <enum>QFormLayout::ExpandingFieldsGrow</enum>
                      </property>
-                     <property name="toolTip" >
-                      <string>Legger til en ny rad i varelisten</string>
+                     <item row="1" column="0" >
+                      <widget class="QLabel" name="textLabel5" >
+                       <property name="text" >
+                        <string>Mottake&amp;r</string>
+                       </property>
+                       <property name="wordWrap" >
+                        <bool>false</bool>
+                       </property>
+                       <property name="buddy" >
+                        <cstring>fakturaFaktaMottaker</cstring>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="1" column="1" >
+                      <widget class="QComboBox" name="fakturaFaktaMottaker" >
+                       <property name="sizePolicy" >
+                        <sizepolicy vsizetype="Fixed" hsizetype="MinimumExpanding" >
+                         <horstretch>1</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
+                       </property>
+                       <property name="toolTip" >
+                        <string>Fakturaens mottaker (kunden)</string>
+                       </property>
+                       <property name="editable" >
+                        <bool>false</bool>
+                       </property>
+                       <property name="insertPolicy" >
+                        <enum>QComboBox::InsertAtCurrent</enum>
+                       </property>
+                       <property name="sizeAdjustPolicy" >
+                        <enum>QComboBox::AdjustToContents</enum>
+                       </property>
+                       <property name="minimumContentsLength" >
+                        <number>15</number>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="2" column="0" >
+                      <widget class="QLabel" name="textLabel8" >
+                       <property name="text" >
+                        <string>&amp;Tekst</string>
+                       </property>
+                       <property name="wordWrap" >
+                        <bool>false</bool>
+                       </property>
+                       <property name="buddy" >
+                        <cstring>fakturaFaktaTekst</cstring>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="2" column="1" >
+                      <widget class="QPlainTextEdit" name="fakturaFaktaTekst" >
+                       <property name="sizePolicy" >
+                        <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
+                         <horstretch>0</horstretch>
+                         <verstretch>1</verstretch>
+                        </sizepolicy>
+                       </property>
+                       <property name="minimumSize" >
+                        <size>
+                         <width>0</width>
+                         <height>60</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize" >
+                        <size>
+                         <width>16777215</width>
+                         <height>90</height>
+                        </size>
+                       </property>
+                       <property name="tabChangesFocus" >
+                        <bool>true</bool>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </item>
+                   <item>
+                    <layout class="QVBoxLayout" name="verticalLayout_2" >
+                     <item>
+                      <widget class="QTableWidget" name="fakturaVareliste" >
+                       <property name="sizePolicy" >
+                        <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
+                         <horstretch>0</horstretch>
+                         <verstretch>3</verstretch>
+                        </sizepolicy>
+                       </property>
+                       <property name="toolTip" >
+                        <string>Varene som hører med fakturaen. Velg tidligerere definerte varer, eller legg til nye ved å skrive inn tekst, pris og MVA</string>
+                       </property>
+                       <property name="dragDropOverwriteMode" >
+                        <bool>false</bool>
+                       </property>
+                       <property name="selectionMode" >
+                        <enum>QAbstractItemView::SingleSelection</enum>
+                       </property>
+                       <property name="selectionBehavior" >
+                        <enum>QAbstractItemView::SelectRows</enum>
+                       </property>
+                       <property name="showGrid" >
+                        <bool>false</bool>
+                       </property>
+                       <column>
+                        <property name="text" >
+                         <string>Varebeskrivelse</string>
+                        </property>
+                       </column>
+                       <column>
+                        <property name="text" >
+                         <string>Antall</string>
+                        </property>
+                       </column>
+                       <column>
+                        <property name="text" >
+                         <string>Pris</string>
+                        </property>
+                       </column>
+                       <column>
+                        <property name="text" >
+                         <string>MVA</string>
+                        </property>
+                       </column>
+                      </widget>
+                     </item>
+                     <item>
+                      <layout class="QHBoxLayout" name="horizontalLayout_4" >
+                       <item>
+                        <widget class="QPushButton" name="fakturaFaktaVareLeggtil" >
+                         <property name="sizePolicy" >
+                          <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+                           <horstretch>0</horstretch>
+                           <verstretch>0</verstretch>
+                          </sizepolicy>
+                         </property>
+                         <property name="toolTip" >
+                          <string>Legger til en ny rad i varelisten</string>
+                         </property>
+                         <property name="text" >
+                          <string>Legg t&amp;il ny vare</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <spacer name="spacer1" >
+                         <property name="orientation" >
+                          <enum>Qt::Horizontal</enum>
+                         </property>
+                         <property name="sizeType" >
+                          <enum>QSizePolicy::MinimumExpanding</enum>
+                         </property>
+                         <property name="sizeHint" stdset="0" >
+                          <size>
+                           <width>560</width>
+                           <height>20</height>
+                          </size>
+                         </property>
+                        </spacer>
+                       </item>
+                      </layout>
+                     </item>
+                    </layout>
+                   </item>
+                   <item>
+                    <widget class="QGroupBox" name="fakturaFaktaOverstyr" >
+                     <property name="title" >
+                      <string>Flere faktura&amp;detaljer...</string>
                      </property>
-                     <property name="text" >
-                      <string>Legg t&amp;il ny vare</string>
+                     <property name="flat" >
+                      <bool>true</bool>
+                     </property>
+                     <property name="checkable" >
+                      <bool>true</bool>
+                     </property>
+                     <property name="checked" >
+                      <bool>false</bool>
+                     </property>
+                     <layout class="QGridLayout" name="gridLayout_7" >
+                      <item row="0" column="0" >
+                       <widget class="QFrame" name="fakturaAlternativer" >
+                        <property name="frameShape" >
+                         <enum>QFrame::NoFrame</enum>
+                        </property>
+                        <property name="frameShadow" >
+                         <enum>QFrame::Plain</enum>
+                        </property>
+                        <property name="lineWidth" >
+                         <number>-1</number>
+                        </property>
+                        <layout class="QGridLayout" name="gridLayout_16" >
+                         <property name="margin" >
+                          <number>0</number>
+                         </property>
+                         <property name="spacing" >
+                          <number>0</number>
+                         </property>
+                         <item row="0" column="0" >
+                          <layout class="QHBoxLayout" name="horizontalLayout_7" >
+                           <item>
+                            <widget class="QLabel" name="textLabel1_11" >
+                             <property name="text" >
+                              <string>Fakturadato:</string>
+                             </property>
+                             <property name="wordWrap" >
+                              <bool>false</bool>
+                             </property>
+                             <property name="buddy" >
+                              <cstring>fakturaFaktaDato</cstring>
+                             </property>
+                            </widget>
+                           </item>
+                           <item>
+                            <widget class="QDateEdit" name="fakturaFaktaDato" >
+                             <property name="focusPolicy" >
+                              <enum>Qt::TabFocus</enum>
+                             </property>
+                             <property name="toolTip" >
+                              <string>Sett eksplisitt dato for faktura (DD.MM.ÅÅÅÅ)</string>
+                             </property>
+                             <property name="displayFormat" >
+                              <string>dd.MM.yyyy</string>
+                             </property>
+                             <property name="calendarPopup" >
+                              <bool>true</bool>
+                             </property>
+                            </widget>
+                           </item>
+                           <item>
+                            <widget class="QLabel" name="textLabel1_13" >
+                             <property name="text" >
+                              <string>Forfallsdato:</string>
+                             </property>
+                             <property name="wordWrap" >
+                              <bool>false</bool>
+                             </property>
+                             <property name="buddy" >
+                              <cstring>fakturaFaktaForfall</cstring>
+                             </property>
+                            </widget>
+                           </item>
+                           <item>
+                            <widget class="QDateEdit" name="fakturaFaktaForfall" >
+                             <property name="focusPolicy" >
+                              <enum>Qt::TabFocus</enum>
+                             </property>
+                             <property name="toolTip" >
+                              <string>Sett eksplisitt dato for forfall (DD.MM.ÅÅÅÅ)</string>
+                             </property>
+                             <property name="displayFormat" >
+                              <string>dd.MM.yyyy</string>
+                             </property>
+                             <property name="calendarPopup" >
+                              <bool>true</bool>
+                             </property>
+                            </widget>
+                           </item>
+                           <item>
+                            <widget class="QLabel" name="label" >
+                             <property name="font" >
+                              <font>
+                               <pointsize>8</pointsize>
+                              </font>
+                             </property>
+                             <property name="text" >
+                              <string>Leveringsdato:</string>
+                             </property>
+                             <property name="buddy" >
+                              <cstring>fakturaFaktaLeveringsdato</cstring>
+                             </property>
+                            </widget>
+                           </item>
+                           <item>
+                            <widget class="QDateEdit" name="fakturaFaktaLeveringsdato" >
+                             <property name="font" >
+                              <font>
+                               <pointsize>8</pointsize>
+                              </font>
+                             </property>
+                             <property name="accelerated" >
+                              <bool>true</bool>
+                             </property>
+                             <property name="displayFormat" >
+                              <string>dd.MM.yyyy</string>
+                             </property>
+                             <property name="calendarPopup" >
+                              <bool>true</bool>
+                             </property>
+                            </widget>
+                           </item>
+                          </layout>
+                         </item>
+                        </layout>
+                        <zorder></zorder>
+                       </widget>
+                      </item>
+                     </layout>
+                    </widget>
+                   </item>
+                   <item>
+                    <layout class="QHBoxLayout" name="horizontalLayout_8" >
+                     <item>
+                      <spacer name="horizontalSpacer" >
+                       <property name="orientation" >
+                        <enum>Qt::Horizontal</enum>
+                       </property>
+                       <property name="sizeHint" stdset="0" >
+                        <size>
+                         <width>40</width>
+                         <height>20</height>
+                        </size>
+                       </property>
+                      </spacer>
+                     </item>
+                     <item>
+                      <widget class="QLabel" name="textLabel1_8" >
+                       <property name="text" >
+                        <string>Sum:</string>
+                       </property>
+                       <property name="wordWrap" >
+                        <bool>false</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QLabel" name="fakturaFaktaSum" >
+                       <property name="sizePolicy" >
+                        <sizepolicy vsizetype="Preferred" hsizetype="MinimumExpanding" >
+                         <horstretch>1</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
+                       </property>
+                       <property name="font" >
+                        <font>
+                         <pointsize>9</pointsize>
+                        </font>
+                       </property>
+                       <property name="toolTip" >
+                        <string>Fakturaens verdi hittil</string>
+                       </property>
+                       <property name="text" >
+                        <string>0 kr</string>
+                       </property>
+                       <property name="alignment" >
+                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                       </property>
+                       <property name="wordWrap" >
+                        <bool>false</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QPushButton" name="fakturaFaktaLegginn" >
+                       <property name="toolTip" >
+                        <string>Oppretter en ny faktura med innholdet som er gitt her</string>
+                       </property>
+                       <property name="text" >
+                        <string>&amp;Lag faktura</string>
+                       </property>
+                       <property name="shortcut" >
+                        <string>Alt+L</string>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <layout class="QVBoxLayout" name="verticalLayout_4" >
+                   <item>
+                    <widget class="QLabel" name="fakturaFaktaKryss" >
+                     <property name="enabled" >
+                      <bool>true</bool>
+                     </property>
+                     <property name="minimumSize" >
+                      <size>
+                       <width>24</width>
+                       <height>24</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize" >
+                      <size>
+                       <width>24</width>
+                       <height>24</height>
+                      </size>
+                     </property>
+                     <property name="pixmap" >
+                      <pixmap resource="../../faktura.qrc" >:/pix/cross.svg</pixmap>
+                     </property>
+                     <property name="scaledContents" >
+                      <bool>true</bool>
+                     </property>
+                     <property name="wordWrap" >
+                      <bool>false</bool>
                      </property>
                     </widget>
                    </item>
                    <item>
-                    <spacer name="spacer1" >
+                    <spacer name="verticalSpacer" >
                      <property name="orientation" >
-                      <enum>Qt::Horizontal</enum>
-                     </property>
-                     <property name="sizeType" >
-                      <enum>QSizePolicy::MinimumExpanding</enum>
+                      <enum>Qt::Vertical</enum>
                      </property>
                      <property name="sizeHint" stdset="0" >
                       <size>
-                       <width>560</width>
-                       <height>20</height>
+                       <width>20</width>
+                       <height>40</height>
                       </size>
                      </property>
                     </spacer>
@@ -339,200 +611,999 @@
                  </item>
                 </layout>
                </item>
-               <item>
-                <widget class="QGroupBox" name="fakturaFaktaOverstyr" >
-                 <property name="title" >
-                  <string>Flere faktura&amp;detaljer...</string>
+              </layout>
+             </widget>
+            </item>
+            <item row="0" column="2" >
+             <widget class="QPushButton" name="fakturaNy" >
+              <property name="sizePolicy" >
+               <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="toolTip" >
+               <string>Viser skjema hvor du kan legge inn en ny faktura</string>
+              </property>
+              <property name="text" >
+               <string>&amp;Ny faktura</string>
+              </property>
+              <property name="shortcut" >
+               <string>Alt+N</string>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="2" >
+             <widget class="QGroupBox" name="fakturaDetaljer" >
+              <property name="sizePolicy" >
+               <sizepolicy vsizetype="Expanding" hsizetype="Preferred" >
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="title" >
+               <string>Detaljer</string>
+              </property>
+              <layout class="QGridLayout" name="gridLayout_11" >
+               <item row="0" column="0" >
+                <widget class="QLabel" name="fakturaDetaljerTekst" >
+                 <property name="minimumSize" >
+                  <size>
+                   <width>200</width>
+                   <height>0</height>
+                  </size>
                  </property>
-                 <property name="flat" >
+                 <property name="text" >
+                  <string/>
+                 </property>
+                 <property name="textFormat" >
+                  <enum>Qt::RichText</enum>
+                 </property>
+                 <property name="alignment" >
+                  <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+                 </property>
+                 <property name="wordWrap" >
                   <bool>true</bool>
                  </property>
-                 <property name="checkable" >
-                  <bool>true</bool>
-                 </property>
-                 <property name="checked" >
-                  <bool>false</bool>
-                 </property>
-                 <layout class="QGridLayout" name="gridLayout_7" >
-                  <item row="0" column="0" >
-                   <widget class="QFrame" name="fakturaAlternativer" >
-                    <property name="frameShape" >
-                     <enum>QFrame::NoFrame</enum>
-                    </property>
-                    <property name="frameShadow" >
-                     <enum>QFrame::Plain</enum>
-                    </property>
-                    <property name="lineWidth" >
-                     <number>-1</number>
-                    </property>
-                    <layout class="QGridLayout" name="gridLayout_16" >
-                     <property name="margin" >
-                      <number>0</number>
-                     </property>
-                     <property name="spacing" >
-                      <number>0</number>
-                     </property>
-                     <item row="0" column="0" >
-                      <layout class="QHBoxLayout" name="horizontalLayout_7" >
-                       <item>
-                        <widget class="QLabel" name="textLabel1_11" >
-                         <property name="text" >
-                          <string>Fakturadato:</string>
-                         </property>
-                         <property name="wordWrap" >
-                          <bool>false</bool>
-                         </property>
-                         <property name="buddy" >
-                          <cstring>fakturaFaktaDato</cstring>
-                         </property>
-                        </widget>
-                       </item>
-                       <item>
-                        <widget class="QDateEdit" name="fakturaFaktaDato" >
-                         <property name="focusPolicy" >
-                          <enum>Qt::TabFocus</enum>
-                         </property>
-                         <property name="toolTip" >
-                          <string>Sett eksplisitt dato for faktura (DD.MM.ÅÅÅÅ)</string>
-                         </property>
-                         <property name="displayFormat" >
-                          <string>dd.MM.yyyy</string>
-                         </property>
-                         <property name="calendarPopup" >
-                          <bool>true</bool>
-                         </property>
-                        </widget>
-                       </item>
-                       <item>
-                        <widget class="QLabel" name="textLabel1_13" >
-                         <property name="text" >
-                          <string>Forfallsdato:</string>
-                         </property>
-                         <property name="wordWrap" >
-                          <bool>false</bool>
-                         </property>
-                         <property name="buddy" >
-                          <cstring>fakturaFaktaForfall</cstring>
-                         </property>
-                        </widget>
-                       </item>
-                       <item>
-                        <widget class="QDateEdit" name="fakturaFaktaForfall" >
-                         <property name="focusPolicy" >
-                          <enum>Qt::TabFocus</enum>
-                         </property>
-                         <property name="toolTip" >
-                          <string>Sett eksplisitt dato for forfall (DD.MM.ÅÅÅÅ)</string>
-                         </property>
-                         <property name="displayFormat" >
-                          <string>dd.MM.yyyy</string>
-                         </property>
-                         <property name="calendarPopup" >
-                          <bool>true</bool>
-                         </property>
-                        </widget>
-                       </item>
-                       <item>
-                        <widget class="QLabel" name="label" >
-                         <property name="font" >
-                          <font>
-                           <pointsize>8</pointsize>
-                          </font>
-                         </property>
-                         <property name="text" >
-                          <string>Leveringsdato:</string>
-                         </property>
-                         <property name="buddy" >
-                          <cstring>fakturaFaktaLeveringsdato</cstring>
-                         </property>
-                        </widget>
-                       </item>
-                       <item>
-                        <widget class="QDateEdit" name="fakturaFaktaLeveringsdato" >
-                         <property name="font" >
-                          <font>
-                           <pointsize>8</pointsize>
-                          </font>
-                         </property>
-                         <property name="accelerated" >
-                          <bool>true</bool>
-                         </property>
-                         <property name="displayFormat" >
-                          <string>dd.MM.yyyy</string>
-                         </property>
-                         <property name="calendarPopup" >
-                          <bool>true</bool>
-                         </property>
-                        </widget>
-                       </item>
-                      </layout>
-                     </item>
-                    </layout>
-                    <zorder></zorder>
-                   </widget>
-                  </item>
-                 </layout>
                 </widget>
                </item>
-               <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_8" >
+              </layout>
+             </widget>
+            </item>
+            <item row="3" column="2" >
+             <widget class="QGroupBox" name="fakturaHandlinger" >
+              <property name="enabled" >
+               <bool>false</bool>
+              </property>
+              <property name="sizePolicy" >
+               <sizepolicy vsizetype="Expanding" hsizetype="Preferred" >
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="title" >
+               <string>Handlinger</string>
+              </property>
+              <layout class="QGridLayout" name="gridLayout_12" >
+               <item row="0" column="0" colspan="3" >
+                <widget class="QLabel" name="textLabel2_2" >
+                 <property name="font" >
+                  <font>
+                   <pointsize>9</pointsize>
+                  </font>
+                 </property>
+                 <property name="text" >
+                  <string>Du skal sende fakturaen:</string>
+                 </property>
+                 <property name="wordWrap" >
+                  <bool>false</bool>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="0" >
+                <widget class="QPushButton" name="fakturaLagEpost" >
+                 <property name="toolTip" >
+                  <string>Lager en efaktura for sending per epost</string>
+                 </property>
+                 <property name="text" >
+                  <string>Ep&amp;ost</string>
+                 </property>
+                 <property name="shortcut" >
+                  <string>Alt+O</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="2" >
+                <widget class="QPushButton" name="fakturaLagPapir" >
+                 <property name="toolTip" >
+                  <string>Lager en papirfaktura for utskrift på skjema F60 (gul faktura)</string>
+                 </property>
+                 <property name="text" >
+                  <string>P&amp;apir</string>
+                 </property>
+                 <property name="shortcut" >
+                  <string/>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="0" colspan="3" >
+                <widget class="Line" name="line1_2" >
+                 <property name="frameShape" >
+                  <enum>QFrame::HLine</enum>
+                 </property>
+                 <property name="frameShadow" >
+                  <enum>QFrame::Sunken</enum>
+                 </property>
+                </widget>
+               </item>
+               <item row="3" column="0" colspan="3" >
+                <widget class="QLabel" name="textLabel4_2" >
+                 <property name="font" >
+                  <font>
+                   <pointsize>9</pointsize>
+                  </font>
+                 </property>
+                 <property name="text" >
+                  <string>Du trenger en kvittering:</string>
+                 </property>
+                 <property name="wordWrap" >
+                  <bool>false</bool>
+                 </property>
+                </widget>
+               </item>
+               <item row="4" column="0" colspan="3" >
+                <widget class="QPushButton" name="fakturaLagKvittering" >
+                 <property name="toolTip" >
+                  <string>Skriver ut en kvittering på skriveren</string>
+                 </property>
+                 <property name="text" >
+                  <string>Skriv &amp;ut</string>
+                 </property>
+                 <property name="shortcut" >
+                  <string>Alt+U</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="5" column="0" colspan="3" >
+                <widget class="Line" name="line1" >
+                 <property name="frameShape" >
+                  <enum>QFrame::HLine</enum>
+                 </property>
+                 <property name="frameShadow" >
+                  <enum>QFrame::Sunken</enum>
+                 </property>
+                </widget>
+               </item>
+               <item row="6" column="0" colspan="3" >
+                <widget class="QLabel" name="textLabel3_2" >
+                 <property name="font" >
+                  <font>
+                   <pointsize>9</pointsize>
+                  </font>
+                 </property>
+                 <property name="text" >
+                  <string>Fakturaen er betalt:</string>
+                 </property>
+                 <property name="wordWrap" >
+                  <bool>false</bool>
+                 </property>
+                </widget>
+               </item>
+               <item row="7" column="2" >
+                <widget class="QPushButton" name="fakturaBetalt" >
+                 <property name="toolTip" >
+                  <string>Markerer fakturaen som betalt (på angitt dato)</string>
+                 </property>
+                 <property name="text" >
+                  <string>Betalt</string>
+                 </property>
+                 <property name="shortcut" >
+                  <string/>
+                 </property>
+                </widget>
+               </item>
+               <item row="7" column="0" colspan="2" >
+                <widget class="QDateEdit" name="fakturaBetaltDato" >
+                 <property name="displayFormat" >
+                  <string>dd.MM.yyyy</string>
+                 </property>
+                 <property name="calendarPopup" >
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="tab_2" >
+           <attribute name="title" >
+            <string>&amp;Kunder</string>
+           </attribute>
+           <layout class="QGridLayout" name="gridLayout_2" >
+            <item row="4" column="0" colspan="3" >
+             <widget class="QGroupBox" name="kundeInfo" >
+              <property name="title" >
+               <string/>
+              </property>
+              <property name="flat" >
+               <bool>true</bool>
+              </property>
+              <layout class="QGridLayout" name="gridLayout" >
+               <item row="1" column="0" colspan="2" >
+                <layout class="QHBoxLayout" name="horizontalLayout_6" >
                  <item>
-                  <spacer name="horizontalSpacer" >
+                  <spacer name="horizontalSpacer_2" >
                    <property name="orientation" >
                     <enum>Qt::Horizontal</enum>
                    </property>
                    <property name="sizeHint" stdset="0" >
                     <size>
-                     <width>40</width>
+                     <width>608</width>
                      <height>20</height>
                     </size>
                    </property>
                   </spacer>
                  </item>
                  <item>
-                  <widget class="QLabel" name="textLabel1_8" >
+                  <widget class="QPushButton" name="kundeInfoEndre" >
                    <property name="text" >
-                    <string>Sum:</string>
+                    <string>&amp;Lag ny kunde</string>
+                   </property>
+                   <property name="shortcut" >
+                    <string>Alt+L</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item row="0" column="0" >
+                <layout class="QFormLayout" name="formLayout" >
+                 <property name="fieldGrowthPolicy" >
+                  <enum>QFormLayout::ExpandingFieldsGrow</enum>
+                 </property>
+                 <item row="1" column="0" >
+                  <widget class="QLabel" name="textLabel2" >
+                   <property name="text" >
+                    <string>N&amp;avn</string>
                    </property>
                    <property name="wordWrap" >
                     <bool>false</bool>
                    </property>
+                   <property name="buddy" >
+                    <cstring>kundeInfoNavn</cstring>
+                   </property>
                   </widget>
                  </item>
-                 <item>
-                  <widget class="QLabel" name="fakturaFaktaSum" >
+                 <item row="1" column="1" >
+                  <widget class="QLineEdit" name="kundeInfoNavn" />
+                 </item>
+                 <item row="2" column="0" >
+                  <widget class="QLabel" name="textLabel2_3_2" >
+                   <property name="text" >
+                    <string>K&amp;ontakt</string>
+                   </property>
+                   <property name="textFormat" >
+                    <enum>Qt::PlainText</enum>
+                   </property>
+                   <property name="wordWrap" >
+                    <bool>false</bool>
+                   </property>
+                   <property name="buddy" >
+                    <cstring>kundeInfoKontaktperson</cstring>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="1" >
+                  <widget class="QLineEdit" name="kundeInfoKontaktperson" />
+                 </item>
+                 <item row="3" column="0" >
+                  <widget class="QLabel" name="textLabel2_3" >
+                   <property name="text" >
+                    <string>&amp;Epost</string>
+                   </property>
+                   <property name="wordWrap" >
+                    <bool>false</bool>
+                   </property>
+                   <property name="buddy" >
+                    <cstring>kundeInfoEpost</cstring>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="3" column="1" >
+                  <widget class="QLineEdit" name="kundeInfoEpost" />
+                 </item>
+                 <item row="4" column="0" >
+                  <widget class="QLabel" name="textLabel3" >
+                   <property name="text" >
+                    <string>A&amp;dresse</string>
+                   </property>
+                   <property name="wordWrap" >
+                    <bool>false</bool>
+                   </property>
+                   <property name="buddy" >
+                    <cstring>kundeInfoAdresse</cstring>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="4" column="1" >
+                  <widget class="QPlainTextEdit" name="kundeInfoAdresse" >
+                   <property name="maximumSize" >
+                    <size>
+                     <width>16777215</width>
+                     <height>96</height>
+                    </size>
+                   </property>
+                   <property name="tabChangesFocus" >
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="7" column="1" >
+                  <widget class="QLineEdit" name="kundeInfoPostnummer" >
                    <property name="sizePolicy" >
-                    <sizepolicy vsizetype="Preferred" hsizetype="MinimumExpanding" >
+                    <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+                     <horstretch>4</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="toolTip" >
+                    <string>Sett inn norsk postnummer</string>
+                   </property>
+                   <property name="inputMask" >
+                    <string comment="Kommentar: Sett inn norsk postnummer" >0000; </string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="9" column="0" >
+                  <widget class="QLabel" name="textLabel1_3_3_2_4" >
+                   <property name="text" >
+                    <string>Telefon</string>
+                   </property>
+                   <property name="wordWrap" >
+                    <bool>false</bool>
+                   </property>
+                   <property name="buddy" >
+                    <cstring>kundeInfoTelefon</cstring>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="9" column="1" >
+                  <widget class="QLineEdit" name="kundeInfoTelefon" >
+                   <property name="sizePolicy" >
+                    <sizepolicy vsizetype="Fixed" hsizetype="MinimumExpanding" >
                      <horstretch>1</horstretch>
                      <verstretch>0</verstretch>
                     </sizepolicy>
                    </property>
-                   <property name="font" >
-                    <font>
-                     <pointsize>9</pointsize>
-                    </font>
+                   <property name="inputMask" >
+                    <string>00000000; </string>
                    </property>
-                   <property name="toolTip" >
-                    <string>Fakturaens verdi hittil</string>
-                   </property>
+                  </widget>
+                 </item>
+                 <item row="11" column="0" >
+                  <widget class="QLabel" name="textLabel1_3_3_3_4" >
                    <property name="text" >
-                    <string>0 kr</string>
-                   </property>
-                   <property name="alignment" >
-                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                    <string>Telefaks</string>
                    </property>
                    <property name="wordWrap" >
                     <bool>false</bool>
                    </property>
+                   <property name="buddy" >
+                    <cstring>kundeInfoTelefaks</cstring>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="11" column="1" >
+                  <widget class="QLineEdit" name="kundeInfoTelefaks" >
+                   <property name="sizePolicy" >
+                    <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+                     <horstretch>1</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="inputMask" >
+                    <string>00000000; </string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="12" column="0" >
+                  <widget class="QLabel" name="textLabel4" >
+                   <property name="text" >
+                    <string>&amp;Status</string>
+                   </property>
+                   <property name="wordWrap" >
+                    <bool>false</bool>
+                   </property>
+                   <property name="buddy" >
+                    <cstring>kundeInfoStatus</cstring>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="12" column="1" >
+                  <widget class="QComboBox" name="kundeInfoStatus" >
+                   <property name="sizePolicy" >
+                    <sizepolicy vsizetype="Fixed" hsizetype="MinimumExpanding" >
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="editable" >
+                    <bool>true</bool>
+                   </property>
+                   <property name="insertPolicy" >
+                    <enum>QComboBox::InsertAtCurrent</enum>
+                   </property>
+                   <property name="sizeAdjustPolicy" >
+                    <enum>QComboBox::AdjustToContents</enum>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="8" column="1" >
+                  <widget class="QLineEdit" name="kundeInfoPoststed" >
+                   <property name="sizePolicy" >
+                    <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="8" column="0" >
+                  <widget class="QLabel" name="textLabel1_3_4_2" >
+                   <property name="text" >
+                    <string>Pos&amp;tsted</string>
+                   </property>
+                   <property name="wordWrap" >
+                    <bool>false</bool>
+                   </property>
+                   <property name="buddy" >
+                    <cstring>kundeInfoPoststed</cstring>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="7" column="0" >
+                  <widget class="QLabel" name="textLabel1_3_3_5" >
+                   <property name="text" >
+                    <string>Postnr</string>
+                   </property>
+                   <property name="wordWrap" >
+                    <bool>false</bool>
+                   </property>
+                   <property name="buddy" >
+                    <cstring>kundeInfoPostnummer</cstring>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item row="0" column="1" >
+                <layout class="QVBoxLayout" name="verticalLayout" >
+                 <item>
+                  <widget class="QLabel" name="kundeInfoKryss" >
+                   <property name="minimumSize" >
+                    <size>
+                     <width>24</width>
+                     <height>24</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize" >
+                    <size>
+                     <width>24</width>
+                     <height>24</height>
+                    </size>
+                   </property>
+                   <property name="text" >
+                    <string/>
+                   </property>
+                   <property name="pixmap" >
+                    <pixmap resource="../../faktura.qrc" >:/pix/cross.svg</pixmap>
+                   </property>
+                   <property name="scaledContents" >
+                    <bool>true</bool>
+                   </property>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QPushButton" name="fakturaFaktaLegginn" >
-                   <property name="toolTip" >
-                    <string>Oppretter en ny faktura med innholdet som er gitt her</string>
+                  <spacer name="verticalSpacer" >
+                   <property name="orientation" >
+                    <enum>Qt::Vertical</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0" >
+                    <size>
+                     <width>20</width>
+                     <height>220</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+              <zorder></zorder>
+             </widget>
+            </item>
+            <item rowspan="4" row="0" column="0" colspan="2" >
+             <widget class="QTreeWidget" name="kundeKundeliste" >
+              <property name="sizePolicy" >
+               <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
+                <horstretch>2</horstretch>
+                <verstretch>1</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="editTriggers" >
+               <set>QAbstractItemView::NoEditTriggers</set>
+              </property>
+              <property name="showDropIndicator" stdset="0" >
+               <bool>false</bool>
+              </property>
+              <property name="alternatingRowColors" >
+               <bool>true</bool>
+              </property>
+              <property name="rootIsDecorated" >
+               <bool>false</bool>
+              </property>
+              <property name="uniformRowHeights" >
+               <bool>true</bool>
+              </property>
+              <property name="itemsExpandable" >
+               <bool>false</bool>
+              </property>
+              <property name="sortingEnabled" >
+               <bool>true</bool>
+              </property>
+              <property name="animated" >
+               <bool>true</bool>
+              </property>
+              <property name="allColumnsShowFocus" >
+               <bool>true</bool>
+              </property>
+              <property name="expandsOnDoubleClick" >
+               <bool>false</bool>
+              </property>
+              <column>
+               <property name="text" >
+                <string>#</string>
+               </property>
+              </column>
+              <column>
+               <property name="text" >
+                <string>Navn</string>
+               </property>
+              </column>
+              <column>
+               <property name="text" >
+                <string>Epost</string>
+               </property>
+              </column>
+              <column>
+               <property name="text" >
+                <string>Status</string>
+               </property>
+              </column>
+              <column>
+               <property name="text" >
+                <string>Adresse</string>
+               </property>
+              </column>
+              <column>
+               <property name="text" >
+                <string>Telefon</string>
+               </property>
+              </column>
+             </widget>
+            </item>
+            <item row="1" column="2" >
+             <widget class="QCheckBox" name="kundeVisFjernede" >
+              <property name="sizePolicy" >
+               <sizepolicy vsizetype="Fixed" hsizetype="Maximum" >
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text" >
+               <string>vis f&amp;jernede</string>
+              </property>
+              <property name="shortcut" >
+               <string>Alt+J</string>
+              </property>
+             </widget>
+            </item>
+            <item rowspan="2" row="2" column="2" >
+             <widget class="QGroupBox" name="groupBox" >
+              <property name="title" >
+               <string>Detaljer</string>
+              </property>
+              <layout class="QGridLayout" name="gridLayout_14" >
+               <item row="0" column="0" >
+                <widget class="QLabel" name="kundeDetaljerTekst" >
+                 <property name="sizePolicy" >
+                  <sizepolicy vsizetype="MinimumExpanding" hsizetype="Minimum" >
+                   <horstretch>0</horstretch>
+                   <verstretch>1</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize" >
+                  <size>
+                   <width>200</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <property name="textFormat" >
+                  <enum>Qt::RichText</enum>
+                 </property>
+                 <property name="alignment" >
+                  <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+                 </property>
+                 <property name="wordWrap" >
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="0" >
+                <widget class="QPushButton" name="kundeNyFaktura" >
+                 <property name="toolTip" >
+                  <string>Oppretter en ny faktura til denne kunden</string>
+                 </property>
+                 <property name="text" >
+                  <string>Lag n&amp;y faktura</string>
+                 </property>
+                 <property name="shortcut" >
+                  <string>Alt+Y</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item row="0" column="2" >
+             <widget class="QPushButton" name="kundeNy" >
+              <property name="sizePolicy" >
+               <sizepolicy vsizetype="Fixed" hsizetype="Maximum" >
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text" >
+               <string>&amp;Ny kunde</string>
+              </property>
+              <property name="shortcut" >
+               <string>Alt+N</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="TabPage" >
+           <attribute name="title" >
+            <string>&amp;Varer</string>
+           </attribute>
+           <layout class="QGridLayout" name="gridLayout_4" >
+            <item rowspan="3" row="0" column="0" colspan="2" >
+             <widget class="QTreeWidget" name="varerVareliste" >
+              <property name="sizePolicy" >
+               <sizepolicy vsizetype="Expanding" hsizetype="MinimumExpanding" >
+                <horstretch>1</horstretch>
+                <verstretch>1</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="editTriggers" >
+               <set>QAbstractItemView::NoEditTriggers</set>
+              </property>
+              <property name="alternatingRowColors" >
+               <bool>true</bool>
+              </property>
+              <property name="rootIsDecorated" >
+               <bool>false</bool>
+              </property>
+              <property name="uniformRowHeights" >
+               <bool>true</bool>
+              </property>
+              <property name="itemsExpandable" >
+               <bool>false</bool>
+              </property>
+              <property name="sortingEnabled" >
+               <bool>true</bool>
+              </property>
+              <property name="animated" >
+               <bool>true</bool>
+              </property>
+              <property name="allColumnsShowFocus" >
+               <bool>true</bool>
+              </property>
+              <property name="expandsOnDoubleClick" >
+               <bool>false</bool>
+              </property>
+              <column>
+               <property name="text" >
+                <string>#</string>
+               </property>
+              </column>
+              <column>
+               <property name="text" >
+                <string>Navn</string>
+               </property>
+              </column>
+              <column>
+               <property name="text" >
+                <string>Detaljer</string>
+               </property>
+              </column>
+              <column>
+               <property name="text" >
+                <string>Pris</string>
+               </property>
+              </column>
+              <column>
+               <property name="text" >
+                <string>Enhet</string>
+               </property>
+              </column>
+             </widget>
+            </item>
+            <item row="1" column="2" >
+             <widget class="QCheckBox" name="varerVisFjernede" >
+              <property name="sizePolicy" >
+               <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text" >
+               <string>vis f&amp;jernede</string>
+              </property>
+              <property name="shortcut" >
+               <string>Alt+J</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="2" >
+             <widget class="QGroupBox" name="groupBox_4" >
+              <property name="sizePolicy" >
+               <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="title" >
+               <string>Detaljer</string>
+              </property>
+              <layout class="QGridLayout" name="gridLayout_13" >
+               <item row="2" column="0" >
+                <widget class="QLabel" name="varerDetaljerTekst" >
+                 <property name="sizePolicy" >
+                  <sizepolicy vsizetype="MinimumExpanding" hsizetype="Minimum" >
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize" >
+                  <size>
+                   <width>200</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <property name="textFormat" >
+                  <enum>Qt::RichText</enum>
+                 </property>
+                 <property name="alignment" >
+                  <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+                 </property>
+                 <property name="wordWrap" >
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item row="3" column="0" colspan="3" >
+             <widget class="QGroupBox" name="varerInfo" >
+              <property name="title" >
+               <string/>
+              </property>
+              <property name="flat" >
+               <bool>true</bool>
+              </property>
+              <property name="checkable" >
+               <bool>false</bool>
+              </property>
+              <layout class="QGridLayout" name="gridLayout_3" >
+               <item row="0" column="1" >
+                <layout class="QVBoxLayout" name="verticalLayout_5" >
+                 <item>
+                  <widget class="QLabel" name="varerInfoKryss" >
+                   <property name="minimumSize" >
+                    <size>
+                     <width>24</width>
+                     <height>24</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize" >
+                    <size>
+                     <width>24</width>
+                     <height>24</height>
+                    </size>
                    </property>
                    <property name="text" >
-                    <string>&amp;Lag faktura</string>
+                    <string/>
+                   </property>
+                   <property name="pixmap" >
+                    <pixmap resource="../../faktura.qrc" >:/pix/cross.svg</pixmap>
+                   </property>
+                   <property name="scaledContents" >
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <spacer name="verticalSpacer" >
+                   <property name="orientation" >
+                    <enum>Qt::Vertical</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0" >
+                    <size>
+                     <width>20</width>
+                     <height>40</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                </layout>
+               </item>
+               <item row="0" column="0" >
+                <layout class="QFormLayout" name="formLayout_3" >
+                 <property name="fieldGrowthPolicy" >
+                  <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+                 </property>
+                 <item row="0" column="0" >
+                  <widget class="QLabel" name="textLabel10" >
+                   <property name="text" >
+                    <string>N&amp;avn</string>
+                   </property>
+                   <property name="wordWrap" >
+                    <bool>false</bool>
+                   </property>
+                   <property name="buddy" >
+                    <cstring>varerInfoNavn</cstring>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="1" >
+                  <widget class="QLineEdit" name="varerInfoNavn" />
+                 </item>
+                 <item row="1" column="0" >
+                  <widget class="QLabel" name="textLabel10_2" >
+                   <property name="text" >
+                    <string>&amp;Enhet</string>
+                   </property>
+                   <property name="wordWrap" >
+                    <bool>false</bool>
+                   </property>
+                   <property name="buddy" >
+                    <cstring>varerInfoEnhet</cstring>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="1" >
+                  <widget class="QComboBox" name="varerInfoEnhet" >
+                   <property name="sizePolicy" >
+                    <sizepolicy vsizetype="Fixed" hsizetype="MinimumExpanding" >
+                     <horstretch>1</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="editable" >
+                    <bool>true</bool>
+                   </property>
+                   <property name="insertPolicy" >
+                    <enum>QComboBox::InsertAtCurrent</enum>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="0" >
+                  <widget class="QLabel" name="textLabel10_4" >
+                   <property name="text" >
+                    <string>&amp;Pris</string>
+                   </property>
+                   <property name="wordWrap" >
+                    <bool>false</bool>
+                   </property>
+                   <property name="buddy" >
+                    <cstring>varerInfoPris</cstring>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="1" >
+                  <widget class="QDoubleSpinBox" name="varerInfoPris" >
+                   <property name="sizePolicy" >
+                    <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+                     <horstretch>7</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="maximum" >
+                    <double>999999999.990000009536743</double>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="3" column="0" >
+                  <widget class="QLabel" name="textLabel10_3" >
+                   <property name="text" >
+                    <string>&amp;Detaljer</string>
+                   </property>
+                   <property name="wordWrap" >
+                    <bool>false</bool>
+                   </property>
+                   <property name="buddy" >
+                    <cstring>varerInfoDetaljer</cstring>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="3" column="1" >
+                  <widget class="QPlainTextEdit" name="varerInfoDetaljer" >
+                   <property name="maximumSize" >
+                    <size>
+                     <width>16777215</width>
+                     <height>96</height>
+                    </size>
+                   </property>
+                   <property name="tabChangesFocus" >
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="4" column="0" >
+                  <widget class="QLabel" name="textLabel7_3" >
+                   <property name="text" >
+                    <string>&amp;MVA-sats</string>
+                   </property>
+                   <property name="wordWrap" >
+                    <bool>false</bool>
+                   </property>
+                   <property name="buddy" >
+                    <cstring>varerInfoMva</cstring>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="4" column="1" >
+                  <widget class="QSpinBox" name="varerInfoMva" >
+                   <property name="value" >
+                    <number>25</number>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item row="1" column="0" >
+                <layout class="QHBoxLayout" name="horizontalLayout_11" >
+                 <item>
+                  <spacer name="horizontalSpacer_3" >
+                   <property name="orientation" >
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                   <property name="sizeType" >
+                    <enum>QSizePolicy::Expanding</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0" >
+                    <size>
+                     <width>248</width>
+                     <height>26</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="varerInfoLegginn" >
+                   <property name="sizePolicy" >
+                    <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="text" >
+                    <string>&amp;Lag ny vare</string>
                    </property>
                    <property name="shortcut" >
                     <string>Alt+L</string>
@@ -542,1413 +1613,360 @@
                 </layout>
                </item>
               </layout>
-             </item>
-             <item>
-              <layout class="QVBoxLayout" name="verticalLayout_4" >
-               <item>
-                <widget class="QLabel" name="fakturaFaktaKryss" >
-                 <property name="enabled" >
-                  <bool>true</bool>
-                 </property>
-                 <property name="minimumSize" >
-                  <size>
-                   <width>24</width>
-                   <height>24</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize" >
-                  <size>
-                   <width>24</width>
-                   <height>24</height>
-                  </size>
-                 </property>
-                 <property name="pixmap" >
-                  <pixmap resource="../../faktura.qrc" >:/pix/cross.svg</pixmap>
-                 </property>
-                 <property name="scaledContents" >
-                  <bool>true</bool>
-                 </property>
-                 <property name="wordWrap" >
-                  <bool>false</bool>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <spacer name="verticalSpacer" >
-                 <property name="orientation" >
-                  <enum>Qt::Vertical</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0" >
-                  <size>
-                   <width>20</width>
-                   <height>40</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-              </layout>
-             </item>
-            </layout>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item row="0" column="2" >
-         <widget class="QPushButton" name="fakturaNy" >
-          <property name="sizePolicy" >
-           <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="toolTip" >
-           <string>Viser skjema hvor du kan legge inn en ny faktura</string>
-          </property>
-          <property name="text" >
-           <string>&amp;Ny faktura</string>
-          </property>
-          <property name="shortcut" >
-           <string>Alt+N</string>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="2" >
-         <widget class="QGroupBox" name="fakturaDetaljer" >
-          <property name="sizePolicy" >
-           <sizepolicy vsizetype="Expanding" hsizetype="Preferred" >
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="title" >
-           <string>Detaljer</string>
-          </property>
-          <layout class="QGridLayout" name="gridLayout_11" >
-           <item row="0" column="0" >
-            <widget class="QLabel" name="fakturaDetaljerTekst" >
-             <property name="minimumSize" >
-              <size>
-               <width>200</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="text" >
-              <string/>
-             </property>
-             <property name="textFormat" >
-              <enum>Qt::RichText</enum>
-             </property>
-             <property name="alignment" >
-              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-             </property>
-             <property name="wordWrap" >
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item row="3" column="2" >
-         <widget class="QGroupBox" name="fakturaHandlinger" >
-          <property name="enabled" >
-           <bool>false</bool>
-          </property>
-          <property name="sizePolicy" >
-           <sizepolicy vsizetype="Expanding" hsizetype="Preferred" >
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="title" >
-           <string>Handlinger</string>
-          </property>
-          <layout class="QGridLayout" name="gridLayout_12" >
-           <item row="0" column="0" colspan="3" >
-            <widget class="QLabel" name="textLabel2_2" >
-             <property name="font" >
-              <font>
-               <pointsize>9</pointsize>
-              </font>
-             </property>
-             <property name="text" >
-              <string>Du skal sende fakturaen:</string>
-             </property>
-             <property name="wordWrap" >
-              <bool>false</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0" >
-            <widget class="QPushButton" name="fakturaLagEpost" >
-             <property name="toolTip" >
-              <string>Lager en efaktura for sending per epost</string>
-             </property>
-             <property name="text" >
-              <string>Ep&amp;ost</string>
-             </property>
-             <property name="shortcut" >
-              <string>Alt+O</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="2" >
-            <widget class="QPushButton" name="fakturaLagPapir" >
-             <property name="toolTip" >
-              <string>Lager en papirfaktura for utskrift på skjema F60 (gul faktura)</string>
-             </property>
-             <property name="text" >
-              <string>P&amp;apir</string>
-             </property>
-             <property name="shortcut" >
-              <string/>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="0" colspan="3" >
-            <widget class="Line" name="line1_2" >
-             <property name="frameShape" >
-              <enum>QFrame::HLine</enum>
-             </property>
-             <property name="frameShadow" >
-              <enum>QFrame::Sunken</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="0" colspan="3" >
-            <widget class="QLabel" name="textLabel4_2" >
-             <property name="font" >
-              <font>
-               <pointsize>9</pointsize>
-              </font>
-             </property>
-             <property name="text" >
-              <string>Du trenger en kvittering:</string>
-             </property>
-             <property name="wordWrap" >
-              <bool>false</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="0" colspan="3" >
-            <widget class="QPushButton" name="fakturaLagKvittering" >
-             <property name="toolTip" >
-              <string>Skriver ut en kvittering på skriveren</string>
-             </property>
-             <property name="text" >
-              <string>Skriv &amp;ut</string>
-             </property>
-             <property name="shortcut" >
-              <string>Alt+U</string>
-             </property>
-            </widget>
-           </item>
-           <item row="5" column="0" colspan="3" >
-            <widget class="Line" name="line1" >
-             <property name="frameShape" >
-              <enum>QFrame::HLine</enum>
-             </property>
-             <property name="frameShadow" >
-              <enum>QFrame::Sunken</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="6" column="0" colspan="3" >
-            <widget class="QLabel" name="textLabel3_2" >
-             <property name="font" >
-              <font>
-               <pointsize>9</pointsize>
-              </font>
-             </property>
-             <property name="text" >
-              <string>Fakturaen er betalt:</string>
-             </property>
-             <property name="wordWrap" >
-              <bool>false</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="7" column="2" >
-            <widget class="QPushButton" name="fakturaBetalt" >
-             <property name="toolTip" >
-              <string>Markerer fakturaen som betalt (på angitt dato)</string>
-             </property>
-             <property name="text" >
-              <string>Betalt</string>
-             </property>
-             <property name="shortcut" >
-              <string/>
-             </property>
-            </widget>
-           </item>
-           <item row="7" column="0" colspan="2" >
-            <widget class="QDateEdit" name="fakturaBetaltDato" >
-             <property name="displayFormat" >
-              <string>dd.MM.yyyy</string>
-             </property>
-             <property name="calendarPopup" >
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-      <widget class="QWidget" name="tab_2" >
-       <attribute name="title" >
-        <string>&amp;Kunder</string>
-       </attribute>
-       <layout class="QGridLayout" name="gridLayout_2" >
-        <item row="4" column="0" colspan="3" >
-         <widget class="QGroupBox" name="kundeInfo" >
-          <property name="title" >
-           <string/>
-          </property>
-          <property name="flat" >
-           <bool>true</bool>
-          </property>
-          <layout class="QGridLayout" name="gridLayout" >
-           <item row="0" column="1" >
-            <layout class="QVBoxLayout" name="verticalLayout" >
-             <item>
-              <widget class="QLabel" name="kundeInfoKryss" >
-               <property name="minimumSize" >
-                <size>
-                 <width>24</width>
-                 <height>24</height>
-                </size>
-               </property>
-               <property name="maximumSize" >
-                <size>
-                 <width>24</width>
-                 <height>24</height>
-                </size>
-               </property>
-               <property name="text" >
-                <string/>
-               </property>
-               <property name="pixmap" >
-                <pixmap resource="../../faktura.qrc" >:/pix/cross.svg</pixmap>
-               </property>
-               <property name="scaledContents" >
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <spacer name="verticalSpacer" >
-               <property name="orientation" >
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeHint" stdset="0" >
-                <size>
-                 <width>20</width>
-                 <height>220</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-            </layout>
-           </item>
-           <item row="1" column="0" colspan="2" >
-            <layout class="QHBoxLayout" name="horizontalLayout_6" >
-             <item>
-              <spacer name="horizontalSpacer_2" >
-               <property name="orientation" >
-                <enum>Qt::Horizontal</enum>
-               </property>
-               <property name="sizeHint" stdset="0" >
-                <size>
-                 <width>608</width>
-                 <height>20</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-             <item>
-              <widget class="QPushButton" name="kundeInfoEndre" >
-               <property name="text" >
-                <string>&amp;Lag ny kunde</string>
-               </property>
-               <property name="shortcut" >
-                <string>Alt+L</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item row="0" column="0" >
-            <layout class="QFormLayout" name="formLayout" >
-             <property name="fieldGrowthPolicy" >
-              <enum>QFormLayout::ExpandingFieldsGrow</enum>
-             </property>
-             <item row="1" column="0" >
-              <widget class="QLabel" name="textLabel2" >
-               <property name="text" >
-                <string>N&amp;avn</string>
-               </property>
-               <property name="wordWrap" >
-                <bool>false</bool>
-               </property>
-               <property name="buddy" >
-                <cstring>kundeInfoNavn</cstring>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="1" >
-              <widget class="QLineEdit" name="kundeInfoNavn" />
-             </item>
-             <item row="2" column="0" >
-              <widget class="QLabel" name="textLabel2_3_2" >
-               <property name="text" >
-                <string>K&amp;ontakt</string>
-               </property>
-               <property name="textFormat" >
-                <enum>Qt::PlainText</enum>
-               </property>
-               <property name="wordWrap" >
-                <bool>false</bool>
-               </property>
-               <property name="buddy" >
-                <cstring>kundeInfoKontaktperson</cstring>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="1" >
-              <widget class="QLineEdit" name="kundeInfoKontaktperson" />
-             </item>
-             <item row="3" column="0" >
-              <widget class="QLabel" name="textLabel2_3" >
-               <property name="text" >
-                <string>&amp;Epost</string>
-               </property>
-               <property name="wordWrap" >
-                <bool>false</bool>
-               </property>
-               <property name="buddy" >
-                <cstring>kundeInfoEpost</cstring>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="1" >
-              <widget class="QLineEdit" name="kundeInfoEpost" />
-             </item>
-             <item row="4" column="0" >
-              <widget class="QLabel" name="textLabel3" >
-               <property name="text" >
-                <string>A&amp;dresse</string>
-               </property>
-               <property name="wordWrap" >
-                <bool>false</bool>
-               </property>
-               <property name="buddy" >
-                <cstring>kundeInfoAdresse</cstring>
-               </property>
-              </widget>
-             </item>
-             <item row="4" column="1" >
-              <widget class="QPlainTextEdit" name="kundeInfoAdresse" >
-               <property name="maximumSize" >
-                <size>
-                 <width>16777215</width>
-                 <height>96</height>
-                </size>
-               </property>
-               <property name="tabChangesFocus" >
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
-             <item row="7" column="1" >
-              <widget class="QLineEdit" name="kundeInfoPostnummer" >
-               <property name="sizePolicy" >
-                <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
-                 <horstretch>4</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="toolTip" >
-                <string>Sett inn norsk postnummer</string>
-               </property>
-               <property name="inputMask" >
-                <string comment="Kommentar: Sett inn norsk postnummer" >0000; </string>
-               </property>
-              </widget>
-             </item>
-             <item row="9" column="0" >
-              <widget class="QLabel" name="textLabel1_3_3_2_4" >
-               <property name="text" >
-                <string>Telefon</string>
-               </property>
-               <property name="wordWrap" >
-                <bool>false</bool>
-               </property>
-               <property name="buddy" >
-                <cstring>kundeInfoTelefon</cstring>
-               </property>
-              </widget>
-             </item>
-             <item row="9" column="1" >
-              <widget class="QLineEdit" name="kundeInfoTelefon" >
-               <property name="sizePolicy" >
-                <sizepolicy vsizetype="Fixed" hsizetype="MinimumExpanding" >
-                 <horstretch>1</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="inputMask" >
-                <string>00000000; </string>
-               </property>
-              </widget>
-             </item>
-             <item row="11" column="0" >
-              <widget class="QLabel" name="textLabel1_3_3_3_4" >
-               <property name="text" >
-                <string>Telefaks</string>
-               </property>
-               <property name="wordWrap" >
-                <bool>false</bool>
-               </property>
-               <property name="buddy" >
-                <cstring>kundeInfoTelefaks</cstring>
-               </property>
-              </widget>
-             </item>
-             <item row="11" column="1" >
-              <widget class="QLineEdit" name="kundeInfoTelefaks" >
-               <property name="sizePolicy" >
-                <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
-                 <horstretch>1</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="inputMask" >
-                <string>00000000; </string>
-               </property>
-              </widget>
-             </item>
-             <item row="12" column="0" >
-              <widget class="QLabel" name="textLabel4" >
-               <property name="text" >
-                <string>&amp;Status</string>
-               </property>
-               <property name="wordWrap" >
-                <bool>false</bool>
-               </property>
-               <property name="buddy" >
-                <cstring>kundeInfoStatus</cstring>
-               </property>
-              </widget>
-             </item>
-             <item row="12" column="1" >
-              <widget class="QComboBox" name="kundeInfoStatus" >
-               <property name="sizePolicy" >
-                <sizepolicy vsizetype="Fixed" hsizetype="MinimumExpanding" >
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="editable" >
-                <bool>true</bool>
-               </property>
-               <property name="insertPolicy" >
-                <enum>QComboBox::InsertAtCurrent</enum>
-               </property>
-               <property name="sizeAdjustPolicy" >
-                <enum>QComboBox::AdjustToContents</enum>
-               </property>
-              </widget>
-             </item>
-             <item row="8" column="1" >
-              <widget class="QLineEdit" name="kundeInfoPoststed" >
-               <property name="sizePolicy" >
-                <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-              </widget>
-             </item>
-             <item row="8" column="0" >
-              <widget class="QLabel" name="textLabel1_3_4_2" >
-               <property name="text" >
-                <string>Pos&amp;tsted</string>
-               </property>
-               <property name="wordWrap" >
-                <bool>false</bool>
-               </property>
-               <property name="buddy" >
-                <cstring>kundeInfoPoststed</cstring>
-               </property>
-              </widget>
-             </item>
-             <item row="7" column="0" >
-              <widget class="QLabel" name="textLabel1_3_3_5" >
-               <property name="text" >
-                <string>Postnr</string>
-               </property>
-               <property name="wordWrap" >
-                <bool>false</bool>
-               </property>
-               <property name="buddy" >
-                <cstring>kundeInfoPostnummer</cstring>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-          </layout>
-          <zorder></zorder>
-         </widget>
-        </item>
-        <item rowspan="4" row="0" column="0" colspan="2" >
-         <widget class="QTreeWidget" name="kundeKundeliste" >
-          <property name="sizePolicy" >
-           <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
-            <horstretch>2</horstretch>
-            <verstretch>1</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="editTriggers" >
-           <set>QAbstractItemView::NoEditTriggers</set>
-          </property>
-          <property name="showDropIndicator" stdset="0" >
-           <bool>false</bool>
-          </property>
-          <property name="alternatingRowColors" >
-           <bool>true</bool>
-          </property>
-          <property name="rootIsDecorated" >
-           <bool>false</bool>
-          </property>
-          <property name="uniformRowHeights" >
-           <bool>true</bool>
-          </property>
-          <property name="itemsExpandable" >
-           <bool>false</bool>
-          </property>
-          <property name="sortingEnabled" >
-           <bool>true</bool>
-          </property>
-          <property name="animated" >
-           <bool>true</bool>
-          </property>
-          <property name="allColumnsShowFocus" >
-           <bool>true</bool>
-          </property>
-          <property name="expandsOnDoubleClick" >
-           <bool>false</bool>
-          </property>
-          <column>
-           <property name="text" >
-            <string>#</string>
-           </property>
-          </column>
-          <column>
-           <property name="text" >
-            <string>Navn</string>
-           </property>
-          </column>
-          <column>
-           <property name="text" >
-            <string>Epost</string>
-           </property>
-          </column>
-          <column>
-           <property name="text" >
-            <string>Status</string>
-           </property>
-          </column>
-          <column>
-           <property name="text" >
-            <string>Adresse</string>
-           </property>
-          </column>
-          <column>
-           <property name="text" >
-            <string>Telefon</string>
-           </property>
-          </column>
-         </widget>
-        </item>
-        <item row="1" column="2" >
-         <widget class="QCheckBox" name="kundeVisFjernede" >
-          <property name="sizePolicy" >
-           <sizepolicy vsizetype="Fixed" hsizetype="Maximum" >
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text" >
-           <string>vis f&amp;jernede</string>
-          </property>
-          <property name="shortcut" >
-           <string>Alt+J</string>
-          </property>
-         </widget>
-        </item>
-        <item rowspan="2" row="2" column="2" >
-         <widget class="QGroupBox" name="groupBox" >
-          <property name="title" >
-           <string>Detaljer</string>
-          </property>
-          <layout class="QGridLayout" name="gridLayout_14" >
-           <item row="0" column="0" >
-            <widget class="QLabel" name="kundeDetaljerTekst" >
-             <property name="sizePolicy" >
-              <sizepolicy vsizetype="MinimumExpanding" hsizetype="Minimum" >
-               <horstretch>0</horstretch>
-               <verstretch>1</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize" >
-              <size>
-               <width>200</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="textFormat" >
-              <enum>Qt::RichText</enum>
-             </property>
-             <property name="alignment" >
-              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-             </property>
-             <property name="wordWrap" >
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0" >
-            <widget class="QPushButton" name="kundeNyFaktura" >
-             <property name="toolTip" >
-              <string>Oppretter en ny faktura til denne kunden</string>
-             </property>
-             <property name="text" >
-              <string>Lag n&amp;y faktura</string>
-             </property>
-             <property name="shortcut" >
-              <string>Alt+Y</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item row="0" column="2" >
-         <widget class="QPushButton" name="kundeNy" >
-          <property name="sizePolicy" >
-           <sizepolicy vsizetype="Fixed" hsizetype="Maximum" >
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text" >
-           <string>&amp;Ny kunde</string>
-          </property>
-          <property name="shortcut" >
-           <string>Alt+N</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-      <widget class="QWidget" name="TabPage" >
-       <attribute name="title" >
-        <string>&amp;Varer</string>
-       </attribute>
-       <layout class="QGridLayout" name="gridLayout_4" >
-        <item rowspan="3" row="0" column="0" colspan="2" >
-         <widget class="QTreeWidget" name="varerVareliste" >
-          <property name="sizePolicy" >
-           <sizepolicy vsizetype="Expanding" hsizetype="MinimumExpanding" >
-            <horstretch>1</horstretch>
-            <verstretch>1</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="editTriggers" >
-           <set>QAbstractItemView::NoEditTriggers</set>
-          </property>
-          <property name="alternatingRowColors" >
-           <bool>true</bool>
-          </property>
-          <property name="rootIsDecorated" >
-           <bool>false</bool>
-          </property>
-          <property name="uniformRowHeights" >
-           <bool>true</bool>
-          </property>
-          <property name="itemsExpandable" >
-           <bool>false</bool>
-          </property>
-          <property name="sortingEnabled" >
-           <bool>true</bool>
-          </property>
-          <property name="animated" >
-           <bool>true</bool>
-          </property>
-          <property name="allColumnsShowFocus" >
-           <bool>true</bool>
-          </property>
-          <property name="expandsOnDoubleClick" >
-           <bool>false</bool>
-          </property>
-          <column>
-           <property name="text" >
-            <string>#</string>
-           </property>
-          </column>
-          <column>
-           <property name="text" >
-            <string>Navn</string>
-           </property>
-          </column>
-          <column>
-           <property name="text" >
-            <string>Detaljer</string>
-           </property>
-          </column>
-          <column>
-           <property name="text" >
-            <string>Pris</string>
-           </property>
-          </column>
-          <column>
-           <property name="text" >
-            <string>Enhet</string>
-           </property>
-          </column>
-         </widget>
-        </item>
-        <item row="1" column="2" >
-         <widget class="QCheckBox" name="varerVisFjernede" >
-          <property name="sizePolicy" >
-           <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text" >
-           <string>vis f&amp;jernede</string>
-          </property>
-          <property name="shortcut" >
-           <string>Alt+J</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="2" >
-         <widget class="QGroupBox" name="groupBox_4" >
-          <property name="sizePolicy" >
-           <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="title" >
-           <string>Detaljer</string>
-          </property>
-          <layout class="QGridLayout" name="gridLayout_13" >
-           <item row="2" column="0" >
-            <widget class="QLabel" name="varerDetaljerTekst" >
-             <property name="sizePolicy" >
-              <sizepolicy vsizetype="MinimumExpanding" hsizetype="Minimum" >
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize" >
-              <size>
-               <width>200</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="textFormat" >
-              <enum>Qt::RichText</enum>
-             </property>
-             <property name="alignment" >
-              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-             </property>
-             <property name="wordWrap" >
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item row="3" column="0" colspan="3" >
-         <widget class="QGroupBox" name="varerInfo" >
-          <property name="title" >
-           <string/>
-          </property>
-          <property name="flat" >
-           <bool>true</bool>
-          </property>
-          <property name="checkable" >
-           <bool>false</bool>
-          </property>
-          <layout class="QGridLayout" name="gridLayout_3" >
-           <item row="0" column="1" >
-            <layout class="QVBoxLayout" name="verticalLayout_5" >
-             <item>
-              <widget class="QLabel" name="varerInfoKryss" >
-               <property name="minimumSize" >
-                <size>
-                 <width>24</width>
-                 <height>24</height>
-                </size>
-               </property>
-               <property name="maximumSize" >
-                <size>
-                 <width>24</width>
-                 <height>24</height>
-                </size>
-               </property>
-               <property name="text" >
-                <string/>
-               </property>
-               <property name="pixmap" >
-                <pixmap resource="../../faktura.qrc" >:/pix/cross.svg</pixmap>
-               </property>
-               <property name="scaledContents" >
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <spacer name="verticalSpacer" >
-               <property name="orientation" >
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeHint" stdset="0" >
-                <size>
-                 <width>20</width>
-                 <height>40</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-            </layout>
-           </item>
-           <item row="0" column="0" >
-            <layout class="QFormLayout" name="formLayout_3" >
-             <property name="fieldGrowthPolicy" >
-              <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-             </property>
-             <item row="0" column="0" >
-              <widget class="QLabel" name="textLabel10" >
-               <property name="text" >
-                <string>N&amp;avn</string>
-               </property>
-               <property name="wordWrap" >
-                <bool>false</bool>
-               </property>
-               <property name="buddy" >
-                <cstring>varerInfoNavn</cstring>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="1" >
-              <widget class="QLineEdit" name="varerInfoNavn" />
-             </item>
-             <item row="1" column="0" >
-              <widget class="QLabel" name="textLabel10_2" >
-               <property name="text" >
-                <string>&amp;Enhet</string>
-               </property>
-               <property name="wordWrap" >
-                <bool>false</bool>
-               </property>
-               <property name="buddy" >
-                <cstring>varerInfoEnhet</cstring>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="1" >
-              <widget class="QComboBox" name="varerInfoEnhet" >
-               <property name="sizePolicy" >
-                <sizepolicy vsizetype="Fixed" hsizetype="MinimumExpanding" >
-                 <horstretch>1</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="editable" >
-                <bool>true</bool>
-               </property>
-               <property name="insertPolicy" >
-                <enum>QComboBox::InsertAtCurrent</enum>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="0" >
-              <widget class="QLabel" name="textLabel10_4" >
-               <property name="text" >
-                <string>&amp;Pris</string>
-               </property>
-               <property name="wordWrap" >
-                <bool>false</bool>
-               </property>
-               <property name="buddy" >
-                <cstring>varerInfoPris</cstring>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="1" >
-              <widget class="QDoubleSpinBox" name="varerInfoPris" >
-               <property name="sizePolicy" >
-                <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
-                 <horstretch>7</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="maximum" >
-                <double>999999999.990000009536743</double>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="0" >
-              <widget class="QLabel" name="textLabel10_3" >
-               <property name="text" >
-                <string>&amp;Detaljer</string>
-               </property>
-               <property name="wordWrap" >
-                <bool>false</bool>
-               </property>
-               <property name="buddy" >
-                <cstring>varerInfoDetaljer</cstring>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="1" >
-              <widget class="QPlainTextEdit" name="varerInfoDetaljer" >
-               <property name="maximumSize" >
-                <size>
-                 <width>16777215</width>
-                 <height>96</height>
-                </size>
-               </property>
-               <property name="tabChangesFocus" >
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
-             <item row="4" column="0" >
-              <widget class="QLabel" name="textLabel7_3" >
-               <property name="text" >
-                <string>&amp;MVA-sats</string>
-               </property>
-               <property name="wordWrap" >
-                <bool>false</bool>
-               </property>
-               <property name="buddy" >
-                <cstring>varerInfoMva</cstring>
-               </property>
-              </widget>
-             </item>
-             <item row="4" column="1" >
-              <widget class="QSpinBox" name="varerInfoMva" >
-               <property name="value" >
-                <number>25</number>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item row="1" column="0" >
-            <layout class="QHBoxLayout" name="horizontalLayout_11" >
-             <item>
-              <spacer name="horizontalSpacer_3" >
-               <property name="orientation" >
-                <enum>Qt::Horizontal</enum>
-               </property>
-               <property name="sizeType" >
-                <enum>QSizePolicy::Expanding</enum>
-               </property>
-               <property name="sizeHint" stdset="0" >
-                <size>
-                 <width>248</width>
-                 <height>26</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-             <item>
-              <widget class="QPushButton" name="varerInfoLegginn" >
-               <property name="sizePolicy" >
-                <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="text" >
-                <string>&amp;Lag ny vare</string>
-               </property>
-               <property name="shortcut" >
-                <string>Alt+L</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item row="0" column="2" >
-         <widget class="QPushButton" name="varerNy" >
-          <property name="sizePolicy" >
-           <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text" >
-           <string>&amp;Ny vare</string>
-          </property>
-          <property name="shortcut" >
-           <string>Alt+N</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-       <zorder>varerVareliste</zorder>
-       <zorder>varerVisFjernede</zorder>
-       <zorder>groupBox_4</zorder>
-       <zorder>varerInfo</zorder>
-       <zorder>varerNy</zorder>
-       <zorder></zorder>
-      </widget>
-      <widget class="QWidget" name="TabPage_2" >
-       <attribute name="title" >
-        <string>&amp;Økonomi</string>
-       </attribute>
-       <layout class="QGridLayout" name="gridLayout_5" >
-        <item row="0" column="0" >
-         <layout class="QHBoxLayout" name="horizontalLayout_12" >
-          <item>
-           <layout class="QVBoxLayout" name="verticalLayout_6" >
-            <item>
-             <layout class="QHBoxLayout" name="_12" >
-              <item>
-               <widget class="QLabel" name="myndigheteneRegistrertTekst_2_4" >
-                <property name="text" >
-                 <string>Totalt u/mva:</string>
-                </property>
-                <property name="wordWrap" >
-                 <bool>false</bool>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLabel" name="okonomiRegnskapTotalUMva" >
-                <property name="text" >
-                 <string>ikke regnet ut</string>
-                </property>
-                <property name="textFormat" >
-                 <enum>Qt::RichText</enum>
-                </property>
-                <property name="wordWrap" >
-                 <bool>false</bool>
-                </property>
-               </widget>
-              </item>
-             </layout>
+             </widget>
             </item>
-            <item>
-             <layout class="QHBoxLayout" name="_15" >
-              <item>
-               <widget class="QLabel" name="myndigheteneRegistrertTekst_2_4_3" >
-                <property name="text" >
-                 <string>Totalt m/mva:</string>
-                </property>
-                <property name="wordWrap" >
-                 <bool>false</bool>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLabel" name="okonomiRegnskapTotalMMva" >
-                <property name="text" >
-                 <string>ikke regnet ut</string>
-                </property>
-                <property name="textFormat" >
-                 <enum>Qt::RichText</enum>
-                </property>
-                <property name="wordWrap" >
-                 <bool>false</bool>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <layout class="QHBoxLayout" name="_13" >
-              <item>
-               <widget class="QLabel" name="textLabel1_9" >
-                <property name="text" >
-                 <string>MVA:</string>
-                </property>
-                <property name="wordWrap" >
-                 <bool>false</bool>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLabel" name="okonomiRegnskapMoms" >
-                <property name="text" >
-                 <string>ikke regnet ut</string>
-                </property>
-                <property name="textFormat" >
-                 <enum>Qt::RichText</enum>
-                </property>
-                <property name="wordWrap" >
-                 <bool>false</bool>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <layout class="QHBoxLayout" name="_14" >
-              <item>
-               <widget class="QLabel" name="textLabel1_9_2" >
-                <property name="text" >
-                 <string>Antall fakturaer:</string>
-                </property>
-                <property name="wordWrap" >
-                 <bool>false</bool>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLabel" name="okonomiRegnskapAntallFakturaer" >
-                <property name="text" >
-                 <string>ikke regnet ut</string>
-                </property>
-                <property name="wordWrap" >
-                 <bool>false</bool>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <widget class="QPushButton" name="okonomiRegnskapRegnut" >
+            <item row="0" column="2" >
+             <widget class="QPushButton" name="varerNy" >
+              <property name="sizePolicy" >
+               <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
               <property name="text" >
-               <string>&amp;Regn ut</string>
+               <string>&amp;Ny vare</string>
               </property>
               <property name="shortcut" >
-               <string>Alt+R</string>
+               <string>Alt+N</string>
               </property>
              </widget>
             </item>
            </layout>
-          </item>
-          <item>
-           <widget class="Line" name="line4" >
-            <property name="frameShape" >
-             <enum>QFrame::VLine</enum>
-            </property>
-            <property name="frameShadow" >
-             <enum>QFrame::Sunken</enum>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <layout class="QVBoxLayout" name="verticalLayout_7" >
-            <item>
-             <layout class="QHBoxLayout" name="_7" >
+          </widget>
+          <widget class="QWidget" name="TabPage_2" >
+           <attribute name="title" >
+            <string>&amp;Økonomi</string>
+           </attribute>
+           <layout class="QGridLayout" name="gridLayout_5" >
+            <item row="0" column="0" >
+             <layout class="QHBoxLayout" name="horizontalLayout_12" >
               <item>
-               <widget class="QCheckBox" name="okonomiAvgrensningerDato" >
-                <property name="text" >
-                 <string>Dato:</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QSpinBox" name="okonomiAvgrensningerDatoAr" >
-                <property name="enabled" >
-                 <bool>false</bool>
-                </property>
-                <property name="minimum" >
-                 <number>1900</number>
-                </property>
-                <property name="maximum" >
-                 <number>3000</number>
-                </property>
-                <property name="value" >
-                 <number>2006</number>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QComboBox" name="okonomiAvgrensningerDatoManed" >
-                <property name="enabled" >
-                 <bool>false</bool>
-                </property>
-                <property name="duplicatesEnabled" >
-                 <bool>false</bool>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QComboBox" name="okonomiAvgrensningerDatoPeriode" >
-                <property name="enabled" >
-                 <bool>false</bool>
-                </property>
-                <property name="duplicatesEnabled" >
-                 <bool>false</bool>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <layout class="QHBoxLayout" name="_8" >
-              <item>
-               <widget class="QCheckBox" name="okonomiAvgrensningerKunde" >
-                <property name="text" >
-                 <string>Kunde:</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QComboBox" name="okonomiAvgrensningerKundeliste" >
-                <property name="enabled" >
-                 <bool>false</bool>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <layout class="QHBoxLayout" name="_9" >
-              <item>
-               <widget class="QCheckBox" name="okonomiSorter" >
-                <property name="text" >
-                 <string>Sorter:</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QComboBox" name="okonomiSorterListe" >
-                <property name="enabled" >
-                 <bool>false</bool>
-                </property>
+               <layout class="QVBoxLayout" name="verticalLayout_6" >
                 <item>
-                 <property name="text" >
-                  <string>Dato</string>
-                 </property>
+                 <layout class="QHBoxLayout" name="_12" >
+                  <item>
+                   <widget class="QLabel" name="myndigheteneRegistrertTekst_2_4" >
+                    <property name="text" >
+                     <string>Totalt u/mva:</string>
+                    </property>
+                    <property name="wordWrap" >
+                     <bool>false</bool>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="okonomiRegnskapTotalUMva" >
+                    <property name="text" >
+                     <string>ikke regnet ut</string>
+                    </property>
+                    <property name="textFormat" >
+                     <enum>Qt::RichText</enum>
+                    </property>
+                    <property name="wordWrap" >
+                     <bool>false</bool>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
                 </item>
                 <item>
-                 <property name="text" >
-                  <string>Kunde</string>
-                 </property>
+                 <layout class="QHBoxLayout" name="_15" >
+                  <item>
+                   <widget class="QLabel" name="myndigheteneRegistrertTekst_2_4_3" >
+                    <property name="text" >
+                     <string>Totalt m/mva:</string>
+                    </property>
+                    <property name="wordWrap" >
+                     <bool>false</bool>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="okonomiRegnskapTotalMMva" >
+                    <property name="text" >
+                     <string>ikke regnet ut</string>
+                    </property>
+                    <property name="textFormat" >
+                     <enum>Qt::RichText</enum>
+                    </property>
+                    <property name="wordWrap" >
+                     <bool>false</bool>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
                 </item>
                 <item>
-                 <property name="text" >
-                  <string>Vare</string>
-                 </property>
+                 <layout class="QHBoxLayout" name="_13" >
+                  <item>
+                   <widget class="QLabel" name="textLabel1_9" >
+                    <property name="text" >
+                     <string>MVA:</string>
+                    </property>
+                    <property name="wordWrap" >
+                     <bool>false</bool>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="okonomiRegnskapMoms" >
+                    <property name="text" >
+                     <string>ikke regnet ut</string>
+                    </property>
+                    <property name="textFormat" >
+                     <enum>Qt::RichText</enum>
+                    </property>
+                    <property name="wordWrap" >
+                     <bool>false</bool>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
                 </item>
+                <item>
+                 <layout class="QHBoxLayout" name="_14" >
+                  <item>
+                   <widget class="QLabel" name="textLabel1_9_2" >
+                    <property name="text" >
+                     <string>Antall fakturaer:</string>
+                    </property>
+                    <property name="wordWrap" >
+                     <bool>false</bool>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="okonomiRegnskapAntallFakturaer" >
+                    <property name="text" >
+                     <string>ikke regnet ut</string>
+                    </property>
+                    <property name="wordWrap" >
+                     <bool>false</bool>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="okonomiRegnskapRegnut" >
+                  <property name="text" >
+                   <string>&amp;Regn ut</string>
+                  </property>
+                  <property name="shortcut" >
+                   <string>Alt+R</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <widget class="Line" name="line4" >
+                <property name="frameShape" >
+                 <enum>QFrame::VLine</enum>
+                </property>
+                <property name="frameShadow" >
+                 <enum>QFrame::Sunken</enum>
+                </property>
                </widget>
+              </item>
+              <item>
+               <layout class="QVBoxLayout" name="verticalLayout_7" >
+                <item>
+                 <layout class="QHBoxLayout" name="_7" >
+                  <item>
+                   <widget class="QCheckBox" name="okonomiAvgrensningerDato" >
+                    <property name="text" >
+                     <string>Dato:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QSpinBox" name="okonomiAvgrensningerDatoAr" >
+                    <property name="enabled" >
+                     <bool>false</bool>
+                    </property>
+                    <property name="minimum" >
+                     <number>1900</number>
+                    </property>
+                    <property name="maximum" >
+                     <number>3000</number>
+                    </property>
+                    <property name="value" >
+                     <number>2006</number>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QComboBox" name="okonomiAvgrensningerDatoManed" >
+                    <property name="enabled" >
+                     <bool>false</bool>
+                    </property>
+                    <property name="duplicatesEnabled" >
+                     <bool>false</bool>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QComboBox" name="okonomiAvgrensningerDatoPeriode" >
+                    <property name="enabled" >
+                     <bool>false</bool>
+                    </property>
+                    <property name="duplicatesEnabled" >
+                     <bool>false</bool>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="_8" >
+                  <item>
+                   <widget class="QCheckBox" name="okonomiAvgrensningerKunde" >
+                    <property name="text" >
+                     <string>Kunde:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QComboBox" name="okonomiAvgrensningerKundeliste" >
+                    <property name="enabled" >
+                     <bool>false</bool>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="_9" >
+                  <item>
+                   <widget class="QCheckBox" name="okonomiSorter" >
+                    <property name="text" >
+                     <string>Sorter:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QComboBox" name="okonomiSorterListe" >
+                    <property name="enabled" >
+                     <bool>false</bool>
+                    </property>
+                    <item>
+                     <property name="text" >
+                      <string>Dato</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text" >
+                      <string>Kunde</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text" >
+                      <string>Vare</string>
+                     </property>
+                    </item>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="_10" >
+                  <item>
+                   <widget class="QCheckBox" name="okonomiAvgrensningerVare" >
+                    <property name="text" >
+                     <string>Vare:</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QComboBox" name="okonomiAvgrensningerVareliste" >
+                    <property name="enabled" >
+                     <bool>false</bool>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_2" >
+                  <item>
+                   <widget class="QCheckBox" name="okonomiAvgrensningerSkjulUbetalte" >
+                    <property name="text" >
+                     <string>skjul ubetalte</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QCheckBox" name="okonomiAvgrensningerVisKansellerte" >
+                    <property name="text" >
+                     <string>vis kansellerte</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+               </layout>
               </item>
              </layout>
             </item>
-            <item>
-             <layout class="QHBoxLayout" name="_10" >
-              <item>
-               <widget class="QCheckBox" name="okonomiAvgrensningerVare" >
-                <property name="text" >
-                 <string>Vare:</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QComboBox" name="okonomiAvgrensningerVareliste" >
-                <property name="enabled" >
-                 <bool>false</bool>
-                </property>
-               </widget>
-              </item>
-             </layout>
+            <item row="1" column="0" >
+             <widget class="QTextBrowser" name="okonomiDetaljregnskap" >
+              <property name="sizePolicy" >
+               <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
+                <horstretch>0</horstretch>
+                <verstretch>1</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="acceptDrops" >
+               <bool>false</bool>
+              </property>
+              <property name="horizontalScrollBarPolicy" >
+               <enum>Qt::ScrollBarAlwaysOff</enum>
+              </property>
+              <property name="openLinks" >
+               <bool>false</bool>
+              </property>
+             </widget>
             </item>
-            <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_2" >
+            <item row="2" column="0" >
+             <layout class="QHBoxLayout" name="horizontalLayout_13" >
               <item>
-               <widget class="QCheckBox" name="okonomiAvgrensningerSkjulUbetalte" >
+               <widget class="QPushButton" name="okonomiFakturaerSkrivut" >
                 <property name="text" >
-                 <string>skjul ubetalte</string>
+                 <string>Vis r&amp;apport</string>
+                </property>
+                <property name="shortcut" >
+                 <string>Alt+A</string>
                 </property>
                </widget>
               </item>
               <item>
-               <widget class="QCheckBox" name="okonomiAvgrensningerVisKansellerte" >
-                <property name="text" >
-                 <string>vis kansellerte</string>
+               <spacer name="spacer15" >
+                <property name="orientation" >
+                 <enum>Qt::Horizontal</enum>
                 </property>
-               </widget>
+                <property name="sizeType" >
+                 <enum>QSizePolicy::Expanding</enum>
+                </property>
+                <property name="sizeHint" stdset="0" >
+                 <size>
+                  <width>608</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
               </item>
              </layout>
             </item>
            </layout>
-          </item>
-         </layout>
-        </item>
-        <item row="1" column="0" >
-         <widget class="QTextBrowser" name="okonomiDetaljregnskap" >
-          <property name="sizePolicy" >
-           <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
-            <horstretch>0</horstretch>
-            <verstretch>1</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="acceptDrops" >
-           <bool>false</bool>
-          </property>
-          <property name="horizontalScrollBarPolicy" >
-           <enum>Qt::ScrollBarAlwaysOff</enum>
-          </property>
-          <property name="openLinks" >
-           <bool>false</bool>
-          </property>
+          </widget>
          </widget>
-        </item>
-        <item row="2" column="0" >
-         <layout class="QHBoxLayout" name="horizontalLayout_13" >
-          <item>
-           <widget class="QPushButton" name="okonomiFakturaerSkrivut" >
-            <property name="text" >
-             <string>Vis r&amp;apport</string>
-            </property>
-            <property name="shortcut" >
-             <string>Alt+A</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <spacer name="spacer15" >
-            <property name="orientation" >
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeType" >
-             <enum>QSizePolicy::Expanding</enum>
-            </property>
-            <property name="sizeHint" stdset="0" >
-             <size>
-              <width>608</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-         </layout>
         </item>
        </layout>
       </widget>
      </widget>
     </item>
    </layout>
-   <zorder>fakturaTab</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar" >
    <property name="geometry" >
@@ -1956,7 +1974,7 @@
      <x>0</x>
      <y>0</y>
      <width>878</width>
-     <height>27</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuOppsett" >
