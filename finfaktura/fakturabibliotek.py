@@ -176,7 +176,12 @@ class FakturaBibliotek:
             raise Exception("Ugyldig filnavn: '%s'" % filnavn)
         ## XXX: TODO: Skrive ut for alle os ## QPrint() ?
         logging.debug("skriver ut '%s' vha programmet '%s'", filnavn, program)
-        subprocess.call((program, filnavn))
+        if '%s' in program:
+            command = program % filnavn
+        else:
+            command = program + " " + filnavn
+        #subprocess.call((program, filnavn))
+        subprocess.call((command,  ))
 
     def sendEpost(self, ordre, pdf, tekst=None, transport='auto'):
         import epost

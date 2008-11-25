@@ -58,7 +58,7 @@ Se forøvrig http://code.google.com/p/finfaktura/wiki/PythonF60
 # $Id$
 ###########################################################################
 
-import time, os, types
+import sys,  time, os, types
 from string import join, split
 import logging, subprocess
 
@@ -77,10 +77,16 @@ except ImportError:
     REPORTLAB=False
     raise f60InstallasjonsFeil("python-modulen `reportlab' mangler. Kan ikke lage PDF!")
 
-__version__ = '0.11'
+__version__ = '0.12'
 __license__ = 'GPLv2'
 
-PDFUTSKRIFT = '/usr/bin/kpdf'
+try:
+    REPORTLAB2 = (reportlab.Version[0] == '2')
+except AttributeError, IndexError:
+    raise
+    REPORTLAB2 = False
+
+PDFUTSKRIFT = '/usr/bin/okular'
 
 class f60:
     standardskrift = "Helvetica"
@@ -96,7 +102,9 @@ class f60:
             self.filnavn = self.lagTempFilnavn()
         else:
             self.filnavn = self.sjekkFilnavn(filnavn)
-        self.canvas = canvas.Canvas(filename=self.filnavn)
+        self.buffer = file(self.filnavn, 'wb') # lager en buffer for reportlab, siden den har problemer med utf8-stier
+        from reportlab.lib.pagesizes import A4
+        self.canvas = canvas.Canvas(filename=self.buffer, pagesize=A4)
 
     def data(self):
         f = open(self.filnavn)
@@ -175,10 +183,21 @@ class f60:
         return filnavn
 
     def skrivUt(self, program=PDFUTSKRIFT):
-        "Skriver ut den produserte PDF-filen"
+        """Skriver ut den produserte PDF-filen.
+        'program' er stien til et program som kan åpne eller vise PDF-filer.
+        Dersom 'program' inneholder den spesielle strengen '%s', vil den bli erstattet
+        med filnavnet til PDF-en, ellers vil filnavnet bli føyd til sist."""
+        logging.debug('konverterer til mbcs: %s',  self.filnavn.encode('mbcs'))
         if not os.path.exists(self.filnavn):
             raise Exception("Ugyldig filnavn: %s" % self.filnavn)
-        subprocess.call((program, self.filnavn)) ### XXX: fiks dette
+        p = program.encode(sys.getfilesystemencoding()) # subprocess.call på windows takler ikke unicode!
+        f = self.filnavn.encode(sys.getfilesystemencoding())
+        if '%s' in program:
+            command = (p % f).split(' ')
+        else:
+            command = (p,  f)
+        logging.debug('kjører kommando: %s',  command)
+        subprocess.call(command)
 
     def sjekkKid(self, kid):
         "Kontrollerer et kid-nr etter mod10/luhner-algoritmen. Returnerer True/False"
@@ -207,17 +226,20 @@ class f60:
 
     # ==================== INTERNE FUNKSJONER ================ #
 
-    def sjekkFilnavn(self, filnavnUtf8):
-        filnavn = ''
-        for b in filnavnUtf8: # XXX: reportlab støtter ikke utf8-filnavn...
-            if ord(b) < 128: filnavn += b
-            else: filnavn += '_'
-        (katalog, fil) = os.path.split(os.path.expanduser(filnavn))
+    def sjekkFilnavn(self, filnavn):
+        if not REPORTLAB2: # XXX: reportlab < 2.0 støtter ikke utf8-filnavn...
+            _filnavn = ''
+            for b in filnavn:
+                if ord(b) < 128: _filnavn += b
+                else: _filnavn += '_'
+            filnavn = _filnavn
+        (katalog, fil) = os.path.split(filnavn)
         if not os.path.exists(katalog):
             os.mkdir(katalog)
         filnavn = os.path.join(katalog, fil)
         if not self.overskriv and os.path.exists(filnavn):
             raise f60Eksisterer(filnavn)
+        logging.debug('sjekkFilnavn: returnerer %s (%s)', repr(filnavn), type(filnavn))
         return filnavn
 
     def paragraf(self, t, par_bredde = 80):
@@ -246,13 +268,12 @@ class f60:
         """Sørger for at tekst er i riktig kodesett (encoding)"""
         if not type(t) in (types.StringType,types.UnicodeType): return t
         # Reportlab 2.x vil ha unicode
-        if reportlab.Version[0] == '2':
+        if REPORTLAB2:
             try:
                 return unicode(t)
             except UnicodeDecodeError:
                 return unicode(t, 'latin1')
-        #elif reportlab.Version[0] == '1':
-        else: # Reportlab 1.x vil ha latin1
+        else: # Reportlab 1.x vil ha latin1/iso-8859-1
             try:
                 return unicode(t).encode('latin1')
             except UnicodeDecodeError:
@@ -265,8 +286,8 @@ class f60:
         # http://www.cl.cam.ac.uk/~mgk25/iso-paper.html
         # 210 x 297
         # faktura spek:
-        # Norsk Standard f60
-        # url: ?
+        # Norsk Standard Skjema F60-1
+        # url: http://code.google.com/p/finfaktura/issues/detail?id=38
         self.canvas.saveState()
         self.canvas.setFillColor(yellow)
         # Lag de gule feltene
@@ -517,6 +538,7 @@ Side: %i av %i
         "Setter sammen fakturaen. Ikke for eksternt bruk. Bruk .lag*()-metodene"
         self.canvas.showPage()
         self.canvas.save()
+        self.buffer.close()
         return True
 
 if __name__ == '__main__':
