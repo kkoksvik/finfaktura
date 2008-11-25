@@ -296,8 +296,8 @@ class fakturaOrdre(fakturaKomponent):
                                                                  fakturatype,
                                                                  self.kunde.navn.replace(" ", "_"),
                                                                  time.strftime("%Y-%m-%d")))
-        logging.debug('lagFilnavn ble til %s', n)
-        return n
+        logging.debug('lagFilnavn ble til %s', unicode(n))
+        return unicode(n)
 
     def forfalt(self):
         "forfalt() -> Bool. Er fakturaen forfalt (og ikke betalt)?"
@@ -509,8 +509,16 @@ class fakturaSikkerhetskopi(fakturaKomponent):
         return filnavn
 
     def vis(self, program=PDFVIS):
+        "Dersom program inneholder %s vil den bli erstattet med filnavnet, ellers lagt til etter program"
         logging.debug(u'Åpner sikkerhetskopi #%i med programmet "%s"', self._id, program)
-        subprocess.call((program, self.lagFil()))
+        p = program.encode(sys.getfilesystemencoding()) # subprocess.call på windows takler ikke unicode!
+        f = self.lagFil().encode(sys.getfilesystemencoding())
+        if '%s' in program:
+            command = (p % f).split(' ')
+        else:
+            command = (p,  f)
+        logging.debug('kjører kommando: %s',  command)
+        subprocess.call(command)
 
 class fakturaEpost(fakturaKomponent):
     _tabellnavn = "Epost"
