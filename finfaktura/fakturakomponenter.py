@@ -503,9 +503,11 @@ class fakturaSikkerhetskopi(fakturaKomponent):
     def lagFil(self):
         from tempfile import mkstemp
         f,filnavn = mkstemp('.pdf', 'sikkerhetsfaktura')
-        fil = file(filnavn, "wb")
-        fil.write(str(self.data))
-        fil.close()
+        #fil = open(filnavn, "wb")
+        #fil.write(str(self.data))
+        #fil.close()
+        os.write(f, str(self.data))
+        os.close(f)
         return filnavn
 
     def vis(self, program=PDFVIS):
