@@ -77,7 +77,7 @@ except ImportError:
     REPORTLAB=False
     raise f60InstallasjonsFeil("python-modulen `reportlab' mangler. Kan ikke lage PDF!")
 
-__version__ = '0.12'
+__version__ = '0.13'
 __license__ = 'GPLv2'
 
 try:
@@ -102,7 +102,7 @@ class f60:
             self.filnavn = self.lagTempFilnavn()
         else:
             self.filnavn = self.sjekkFilnavn(filnavn)
-        self.buffer = file(self.filnavn, 'wb') # lager en buffer for reportlab, siden den har problemer med utf8-stier
+        self.buffer = open(self.filnavn, 'wb') # lager en buffer for reportlab, siden den har problemer med utf8-stier
         from reportlab.lib.pagesizes import A4
         self.canvas = canvas.Canvas(filename=self.buffer, pagesize=A4)
 
@@ -180,6 +180,7 @@ class f60:
     def lagTempFilnavn(self):
         from tempfile import mkstemp
         f,filnavn = mkstemp(".pdf", "faktura-")
+        os.close(f)
         return filnavn
 
     def skrivUt(self, program=PDFUTSKRIFT):
