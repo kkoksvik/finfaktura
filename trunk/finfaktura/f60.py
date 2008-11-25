@@ -239,7 +239,9 @@ class f60:
             os.mkdir(katalog)
         filnavn = os.path.join(katalog, fil)
         if not self.overskriv and os.path.exists(filnavn):
-            raise f60Eksisterer(filnavn)
+            feil = f60Eksisterer("Stien finnes allerede")
+            feil.filnavn = filnavn
+            raise feil
         logging.debug('sjekkFilnavn: returnerer %s (%s)', repr(filnavn), type(filnavn))
         return filnavn
 
