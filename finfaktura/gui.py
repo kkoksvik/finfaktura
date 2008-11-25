@@ -531,12 +531,12 @@ class FinFaktura(QtGui.QMainWindow):#Ui_MainWindow): ## leser gui fra faktura_ui
             pdf.settFakturainfo(ordre._id, ordre.ordredato, ordre.forfall, ordre.tekst)
             pdf.settOrdrelinje(ordre.hentOrdrelinje)
         except f60.f60Eksisterer, (E):
-            # HACK XXX: E er nå filnavnet
+            # filnavnet finnes som E.filnavn
             if Type == "epost":
-                self.visEpostfaktura(ordre, unicode(E))
+                self.visEpostfaktura(ordre, E.filnavn)
             elif Type == "papir":
                 if self.JaNei(u"Blanketten er laget fra før av. Vil du skrive den ut nå?"):
-                    self.faktura.skrivUt(unicode(E), program=self.faktura.oppsett.vispdf)
+                    self.faktura.skrivUt(E.filnavn, program=self.faktura.oppsett.vispdf)
             return None
         try:
             pdf.fyll()
