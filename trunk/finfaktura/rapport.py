@@ -9,7 +9,7 @@
 # $Id: oppgradering.py 217 2007-05-02 23:25:16Z havard.dahle $
 ###########################################################################
 
-import time, os, types
+import sys, time, os, types
 from string import join, split
 import logging, subprocess
 
@@ -48,7 +48,7 @@ class rapport:
         #print dir(self.seksjonover)
         self.tittel = self.stiler['Heading1']
         self.flow = []
-        self.flow.append(Paragraph(u'Fakturaer hos %s' % self.info['firma'].firmanavn, self.tittel))
+        self.flow.append(Paragraph(u'Fakturaer hos %s' % self.tryggXml(self.info['firma'].firmanavn), self.tittel))
         self.flow.append(Paragraph(u'Generert av <i>Fryktelig Fin Faktura</i> den %s' % time.strftime("%Y-%m-%d", time.localtime()), self.normal))
         det = u'Viser fakturaer '
         if self.info['visubetalte']: det += u'(også ubetalte) '
@@ -114,3 +114,6 @@ class rapport:
         if ordre.linje:
             for vare in ordre.linje:
                 self.flow.append(Paragraph("<li> #%i: %s </li>" % (vare._id, unicode(vare)), self.liste))
+
+    def tryggXml(self, s):
+      return s.replace('&', '&amp;').replace('<', '&lt;')
