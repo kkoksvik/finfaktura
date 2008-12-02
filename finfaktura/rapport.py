@@ -76,7 +76,15 @@ class rapport:
         logging.debug("viser rapport '%s' med programmet '%s'", self.filnavn, program)
         if not self.oppdatert:
             self.lag()
-        subprocess.call((program, self.filnavn))
+        p = program.encode(sys.getfilesystemencoding())
+        # subprocess.call på windows takler ikke unicode!
+        f = self.filnavn.encode(sys.getfilesystemencoding())
+        if '%s' in program:
+            command = (p % f).split(' ')
+        else:
+            command = (p,  f)
+        logging.debug('kjører kommando: %s',  command)
+        subprocess.call(command)
 
     def lastOrdreliste(self, ordreliste):
         for o in ordreliste: self.leggTilOrdre(o)
