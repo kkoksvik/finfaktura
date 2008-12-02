@@ -188,7 +188,6 @@ class f60:
         'program' er stien til et program som kan åpne eller vise PDF-filer.
         Dersom 'program' inneholder den spesielle strengen '%s', vil den bli erstattet
         med filnavnet til PDF-en, ellers vil filnavnet bli føyd til sist."""
-        logging.debug('konverterer til mbcs: %s',  self.filnavn.encode('mbcs'))
         if not os.path.exists(self.filnavn):
             raise Exception("Ugyldig filnavn: %s" % self.filnavn)
         p = program.encode(sys.getfilesystemencoding()) # subprocess.call på windows takler ikke unicode!

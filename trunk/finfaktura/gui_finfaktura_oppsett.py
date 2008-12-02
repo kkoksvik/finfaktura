@@ -36,6 +36,13 @@ class finfakturaOppsett(finfaktura_oppsett_ui.Ui_FinFakturaOppsett):
         self.oppsettFakturakatalog.setText(self.faktura.oppsett.fakturakatalog)
         self.oppsettProgramVisPDF.setText(self.faktura.oppsett.vispdf)
 
+    def visningsProgrammer(self):
+        p = {'kpdf (KDE3)': '/usr/bin/kpdf',
+             'okular (KDE4)': '/usr/bin/okular',
+             'Acrobat reader (win)': '',
+             'Vis i Utforsker (win)': '',
+            }
+
     def endreFakturakatalog(self):
         nu = self.oppsettFakturakatalog.text()
         startdir = nu
