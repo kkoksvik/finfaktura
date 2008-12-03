@@ -1,3 +1,14 @@
+finfaktura (2.0) intrepid; urgency=low
+
+  * Fikser rapport.py: utskrift av pdf og rapport fra firma med '&' i
+    firmanavnet (issue#43) -- takk, Eivind!
+  * Fikser scrollelinjer dersom skjermen/vinduet er mindre enn informasjonen
+    som skal vises -- takk, Johan!
+  * Bedre installasjon på Debian/Ubuntu
+  * Fikser vising av PDF på windows
+
+ -- Håvard Gulldahl <havard@gulldahl.no>  Wed, 03 Dec 2008 01:33:38 +0100
+
 finfaktura (1.9.9b3-3) intrepid; urgency=low
 
   * Sørger for at scripts/forbered_ressurser.sh blir kjørt, og 

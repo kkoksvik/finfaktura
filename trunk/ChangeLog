@@ -1,3 +1,220 @@
+2008-11-25 23:36  havard.gulldahl
+
+	* finfaktura/f60.py, finfaktura/fakturabibliotek.py,
+	  finfaktura/gui.py, testdata.db: kan åpne pdf-er som er laget før
+
+2008-11-25 23:25  havard.gulldahl
+
+	* finfaktura/f60.py: lukker tempfilnavn riktig
+
+2008-11-25 23:23  havard.gulldahl
+
+	* finfaktura/fakturakomponenter.py: fikser bug hvor
+	  sikkerhetskopifaktura ikke ble skrevet til riktig
+
+2008-11-25 23:05  havard.gulldahl
+
+	* faktura.py, finfaktura/f60.py, finfaktura/fakturabibliotek.py,
+	  finfaktura/fakturakomponenter.py, finfaktura/gui.py, setup.py,
+	  testdata.db: kan vise utf8-filer på windows med subprocess.call +
+	  whitespace-strip
+
+2008-11-25 05:50  havard.gulldahl
+
+	* finfaktura/ui/faktura.ui: bruker qscrollarea for å gi
+	  scrollefunksjon på små skjermer
+
+2008-11-04 23:51  havard.gulldahl
+
+	* finfaktura/fakturakomponenter.py: Fikser feil på windows med
+	  ikke-ascii lagringssti
+
+2008-10-29 21:47  havard.gulldahl
+
+	* finfaktura/gui.py: _rc.py-fil er flyttet
+
+2008-10-29 21:39  havard.gulldahl
+
+	* MANIFEST: flytter _rc.py-fil dit den skal være
+
+2008-10-29 21:36  havard.gulldahl
+
+	* finfaktura/ekstra.py, scripts/forbered_ressurser.sh: flytter
+	  _rc.py-fil dit den skal være
+
+2008-10-28 19:18  havard.gulldahl
+
+	* doc/f60.jpg: eksempel på skjema F60-1
+
+2008-10-28 19:16  havard.gulldahl
+
+	* scripts/forbered_ressurser.sh: valgfri sti
+
+2008-10-28 19:15  havard.gulldahl
+
+	* setup.py: fikser pakkefeil
+
+2008-10-28 19:14  havard.gulldahl
+
+	* doc/REGLER: oppdaterer
+
+2008-10-28 19:14  havard.gulldahl
+
+	* finfaktura.desktop: fikser pakkefeil
+
+2008-10-28 19:14  havard.gulldahl
+
+	* debian/changelog, debian/control, debian/finfaktura.menu,
+	  debian/rules: fikser pakkefeil
+
+2008-10-26 00:33  havard.gulldahl
+
+	* debian/changelog: Lager ny pakke pga tidligere pakkefeil
+
+2008-10-26 00:15  havard.gulldahl
+
+	* finfaktura/gui_sikkerhetskopi.py: fjerner gammel kode
+
+2008-10-21 22:28  havard.gulldahl
+
+	* debian/changelog: Info om b3
+
+2008-10-21 22:15  havard.gulldahl
+
+	* finfaktura/fakturabibliotek.py: mer epostfikx
+
+2008-10-21 22:06  havard.gulldahl
+
+	* finfaktura/ui/finfaktura_oppsett.ui, finfaktura/ui/firmainfo.ui:
+	  gir navn på vinduer
+
+2008-10-21 22:04  havard.gulldahl
+
+	* finfaktura/gui_epost.py, finfaktura/ui/epost.ui, testdata.db:
+	  fikser autovalg av epost
+
+2008-10-21 21:53  havard.gulldahl
+
+	* finfaktura/fakturakomponenter.py: bruker dagens dato dersom ingen
+	  oppgitt for ny ordre
+
+2008-10-21 21:50  havard.gulldahl
+
+	* lag_testdata.py: lager kjedelige og korrekte testdata
+
+2008-10-21 21:48  havard.gulldahl
+
+	* testdata.db: nye testdata
+
+2008-10-21 21:13  havard.gulldahl
+
+	* lag_testdata.py: første forsøk på å lage ordentlige testdata
+
+2008-10-21 20:52  havard.gulldahl
+
+	* finfaktura/__init__.py: gjør klar beta3 av 1.9.9
+
+2008-10-21 20:48  havard.gulldahl
+
+	* faktura.sql, finfaktura/fakturakomponenter.py, finfaktura/gui.py,
+	  finfaktura/gui_epost.py: rydder opp i bug i vis epost-opplegget
+
+2008-10-21 20:47  havard.gulldahl
+
+	* MANIFEST: legger til logo
+
+2008-10-20 23:06  havard.gulldahl
+
+	* debian/rules: installerer .desktop-fil på ordentlig
+
+2008-10-12 23:46  havard.gulldahl
+
+	* finfaktura/myndighetene.py: fjerner myndighetene.py - den er ikke
+	  en del av finfaktura
+
+2008-10-12 23:42  havard.gulldahl
+
+	* doc/REGLER, faktura.sql: få med info om wiki
+
+2008-10-12 23:42  havard.gulldahl
+
+	* finfaktura/fakturabibliotek.py, finfaktura/gui.py,
+	  finfaktura/gui_epost.py: importerer r414 fra 1.9.9b2: løser
+	  epostkrøll
+
+2008-10-12 23:41  havard.gulldahl
+
+	* setup.py: fjerner unødvendig kode
+
+2008-10-12 22:31  havard.gulldahl
+
+	* ChangeLog, debian/changelog, finfaktura/__init__.py: Gjør 1.9.9b2
+	  klar til utgivelse
+
+2008-10-12 22:20  havard.gulldahl
+
+	* finfaktura/fakturabibliotek.py, finfaktura/fakturakomponenter.py,
+	  finfaktura/gui.py: fikser logging
+
+2008-10-12 22:10  havard.gulldahl
+
+	* debian/finfaktura.docs, finfaktura/rapport.py: fikser
+	  tempfile-bug
+
+2008-10-12 21:57  havard.gulldahl
+
+	* debian/rules: opdpaterer til å installere dokumenter, logo og
+	  .desktop-fil
+
+2008-10-12 21:57  havard.gulldahl
+
+	* finfaktura.desktop: legger til .desktop-fil for fin meny
+
+2008-10-12 21:45  havard.gulldahl
+
+	* finfaktura.png, finfaktura.xpm: legger til flere logoer
+
+2008-10-12 21:25  havard.gulldahl
+
+	* logo.png: legger til logo
+
+2008-10-12 21:24  havard.gulldahl
+
+	* finfaktura/gui.py, finfaktura/gui_firma.py: fjerner logofeil
+
+2008-10-12 21:23  havard.gulldahl
+
+	* debian/control: oppdaterer til qt4. fjerner beautifulsoup. legger
+	  til python-imaging
+
+2008-10-12 21:10  havard.gulldahl
+
+	* finfaktura/f60.py: skriver feilmelding når PIL ikke kan lastes
+
+2008-10-12 20:29  havard.gulldahl
+
+	* finfaktura/ui/firmainfo.ui: fikser tastatursnarveier og
+	  tab-rekkefølge
+
+2008-10-12 20:24  havard.gulldahl
+
+	* finfaktura/gui.py, finfaktura/gui_firma.py: et steg nærmere en
+	  løsning på logotrøbbelet. ikke les data som er borte
+
+2008-10-12 09:48  havard.gulldahl
+
+	* debian/finfaktura.1: bedre og oppdatert man-tekst
+
+2008-10-12 00:16  havard.gulldahl
+
+	* doc/REGLER, finfaktura/ekstra.py, finfaktura/f60.py,
+	  finfaktura/fakturabibliotek.py, finfaktura/fakturakomponenter.py,
+	  finfaktura/gui.py, finfaktura/gui_firma.py,
+	  finfaktura/gui_sikkerhetskopi.py, finfaktura/rapport.py,
+	  testdata.db: bruker subprocess istf os.system; rydder opp i
+	  gammel kode; mer logging; fikser hjørnebugs; rydder opp i
+	  utskriftsalternativene
+
 2008-10-11 23:37  havard.gulldahl
 
 	* finfaktura/f60.py, finfaktura/fakturakomponenter.py: fjerner
