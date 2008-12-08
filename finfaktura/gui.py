@@ -37,7 +37,7 @@ try:
 except ImportError, (e):
     raise RessurserManglerFeil(e)
 
-PDFVIS = "/usr/bin/kpdf" # program for å vise PDF
+PDFVIS = "/usr/bin/okular" # program for å vise PDF
 
 class FinFaktura(QtGui.QMainWindow):#Ui_MainWindow): ## leser gui fra faktura_ui.py
     db = None
@@ -511,7 +511,11 @@ class FinFaktura(QtGui.QMainWindow):#Ui_MainWindow): ## leser gui fra faktura_ui
             self.alert(u'Ingen faktura er valgt')
             return False
         kvitt = ordre.hentSikkerhetskopi()
-        kvitt.vis(program=self.faktura.oppsett.vispdf)
+        try:
+            kvitt.vis(program=self.faktura.oppsett.vispdf)
+        except Exception, e:
+            logging.debug(e)
+            self.alert(str(e))
 
     def lagFakturaEpost(self): return self.lagFaktura(Type='epost')
     def lagFakturaPapir(self): return self.lagFaktura(Type='papir')
@@ -536,7 +540,11 @@ class FinFaktura(QtGui.QMainWindow):#Ui_MainWindow): ## leser gui fra faktura_ui
                 self.visEpostfaktura(ordre, E.filnavn)
             elif Type == "papir":
                 if self.JaNei(u"Blanketten er laget fra før av. Vil du skrive den ut nå?"):
-                    self.faktura.skrivUt(E.filnavn, program=self.faktura.oppsett.vispdf)
+                    try:
+                        self.faktura.skrivUt(E.filnavn, program=self.faktura.oppsett.vispdf)
+                    except Exception, e:
+                        logging.debug(e)
+                        self.alert(str(e))
             return None
         try:
             pdf.fyll()
@@ -565,7 +573,12 @@ class FinFaktura(QtGui.QMainWindow):#Ui_MainWindow): ## leser gui fra faktura_ui
             elif Type == "papir":
                 historikk.pdfPapir(ordre, True, "interaktivt")
                 if self.JaNei(u"Blanketten er laget. Vil du skrive den ut nå?"):
-                    suksess = pdf.skrivUt(program=self.faktura.oppsett.vispdf)
+                    try:
+                        suksess = pdf.skrivUt(program=self.faktura.oppsett.vispdf)
+                    except Exception, e:
+                        logging.debug(e)
+                        self.alert(str(e))
+                        suksess = False
                     historikk.utskrift(ordre, suksess, "interaktivt")
                 else: self.obs(u"Blanketten er lagret med filnavn: %s" % pdf.filnavn)
 
@@ -1169,7 +1182,12 @@ class FinFaktura(QtGui.QMainWindow):#Ui_MainWindow): ## leser gui fra faktura_ui
         beskrivelse['firma'] = self.firma
         rapport = finfaktura.rapport.rapport(rapportinfo=beskrivelse)
         rapport.lastOrdreliste(ordrer)
-        rapport.vis(program=self.faktura.oppsett.vispdf)
+
+        try:
+            rapport.vis(program=self.faktura.oppsett.vispdf)
+        except Exception, e:
+            logging.debug(e)
+            self.alert(str(e))
 
 ############## INTERNE DIALOGER ###################
 
