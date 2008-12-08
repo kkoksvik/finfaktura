@@ -3,45 +3,46 @@
 
 = Hovedvisning: fakturaer =
 
+_Ubetalte fakturaer, samt fakturaer fra de siste 6 måneder vises i listen. (Eldre og betalte fakturaer kan selvfølgelig også vises):_
+
 http://finfaktura.googlecode.com/svn/screenshots/fakturaoversikt.png
 
-_Ubetalte fakturaer, samt fakturaer fra de siste 6 måneder vises i listen. (Eldre og betalte fakturaer kan selvfølgelig også vises)._
+== Ny faktura ==
 
+_Legg inn en ny faktura:_
+
+http://finfaktura.googlecode.com/svn/screenshots/nyfaktura.png
 
 = Kundene dine =
 
-http://finfaktura.googlecode.com/svn/screenshots/kundeoversikt.png
+_Kundene dine legges inn i denne listen:_
 
-_Kundene dine legges inn i denne listen_
-
+http://finfaktura.googlecode.com/svn/screenshots/nykunde.png
 
 = Varer =
 
-
-http://finfaktura.googlecode.com/svn/screenshots/vareoversikt.png
-
 _Varer blir automatisk lagt inn når du legger dem inn i ordrene, og du kan også opprette dem manuelt. Du kan legge inn enhet og relevant informasjon_
 
+http://finfaktura.googlecode.com/svn/screenshots/nyvare.png
 
 = Efaktura =
 
-http://finfaktura.googlecode.com/svn/screenshots/sendepost.png
-
 _Når en faktura er opprettet, kan den sendes per epost, rett fra programmet_
 
+http://finfaktura.googlecode.com/svn/screenshots/epost.png
 
 = Rapporter =
 
-http://finfaktura.googlecode.com/svn/screenshots/okonomi.png
-
 _Du kan enkelt få en oversikt over hva, hvem, og når du har fakturert tidligere_
+
+http://finfaktura.googlecode.com/svn/screenshots/okonomi.png
 
 
 = Firmainformasjon =
 
-http://finfaktura.googlecode.com/svn/screenshots/firmainfo-1.0.png
-
 _All informasjon om firmaet ditt brukes til å utforme fakturaen. Det er også plass til logo_
+
+http://finfaktura.googlecode.com/svn/screenshots/firmainfo.png
 
 
 = F60 =
