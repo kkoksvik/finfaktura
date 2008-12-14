@@ -262,7 +262,7 @@ def lagDatabase(database, sqlfile=None):
     "lager databasestruktur. 'database' er filnavn (unicode)"
     try:
         db = sqlite.connect(os.path.normpath(database.encode('utf8')), isolation_level=None)
-        return _byggDatabase(db, sqlfile)
+        return byggDatabase(db, sqlfile)
     except sqlite.DatabaseError:
         raise
         # hmm, kanskje gammel database?
@@ -272,8 +272,8 @@ def lagDatabase(database, sqlfile=None):
             print "FEIL!",e
             raise DBVersjonFeil(e)
 
-def _byggDatabase(db, sqlfile=None):
-    "lager databasestruktur (privat funksjon). 'db' er et sqlite3.Connection-objekt"
+def byggDatabase(db, sqlfile=None):
+    "lager databasestruktur. 'db' er et sqlite3.Connection-objekt"
     if sqlfile is not None:
         sql = file(sqlfile).read()
     else:
