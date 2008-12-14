@@ -285,6 +285,16 @@ def _byggDatabase(db, sqlfile=None):
     return db
 
 def finnDatabasenavn(databasenavn=DATABASENAVN):
+    """finner et egnet sted for databasefila, enten fra miljøvariabler eller i standard plassering.
+
+    følgende miljøvariabler påvirker denne funksjonen:
+    FAKTURADB=navnet eller hele stien til databasefila (eks. firma2.db)
+    FAKTURADIR=stien til en katalog databasene skal lagres i (eks. ~/.mittandrefirma)
+
+    også verdien av den interne konstanten PRODUKSJONSVERSJON påvirker returverdien.
+
+    returnerer filnavn som unicode-streng
+    """
     db = os.getenv('FAKTURADB')
     if db is not None and (not PRODUKSJONSVERSJON or os.path.exists(db)):
         return db.decode(sys.getfilesystemencoding()) # returnerer miljøvariabelen $FAKTURADB
