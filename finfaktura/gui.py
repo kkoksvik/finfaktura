@@ -157,7 +157,7 @@ class FinFaktura(QtGui.QMainWindow):#Ui_MainWindow): ## leser gui fra faktura_ui
             except OppgraderingsFeil:
                 raise
             except SikkerhetskopiFeil, e:
-                self.alert('Databasen er oppgradert, men kunne ikke lage sikkerhetskopier fordi:\n %s' % e) # str(e).decode('utf8'))
+                self.alert('Databasen er oppgradert, men kunne ikke lage sikkerhetskopier fordi:\n %s' % e.message) # str(e).decode('utf8'))
             self.databaseTilkobler()
             self.faktura = FakturaBibliotek(self.db)
             self.firma   = self.faktura.firmainfo()
@@ -280,9 +280,9 @@ class FinFaktura(QtGui.QMainWindow):#Ui_MainWindow): ## leser gui fra faktura_ui
         # sjekk at firmainfo er fullstendig utfylt (så feiler vi ikke senere)
         try: self.firma.sjekkData()
         except FirmainfoFeil,e:
-            self.alert(u'Informasjonen om firmaet ditt må være fullstendig'+\
-                       u'før du kan fylle inn fakturaen.\n'+
-                       str(e).decode("utf8"))
+            self.alert(u'Informasjonen om firmaet ditt må være fullstendig '+\
+                       u'før du fyller ut fakturaer.\n'+
+                       e.message)
             self.visFirmaOppsett()
             return False
         if kunde is not None:
@@ -453,7 +453,7 @@ class FinFaktura(QtGui.QMainWindow):#Ui_MainWindow): ## leser gui fra faktura_ui
                 self.gui.fakturaVareliste.cellWidget(rad, 2).setValue(0.0)
                 self.gui.fakturaVareliste.cellWidget(rad, 3).setValue(float(self.firma.mva))
                 return
-            self.gui.fakturaVareliste.cellWidget(rad, 1).setSuffix(' '+str(vare.enhet))
+            self.gui.fakturaVareliste.cellWidget(rad, 1).setSuffix(' '+unicode(vare.enhet))
             self.gui.fakturaVareliste.cellWidget(rad, 2).setValue(float(vare.pris))
             self.gui.fakturaVareliste.cellWidget(rad, 3).setValue(float(vare.mva))
         else:
@@ -515,7 +515,7 @@ class FinFaktura(QtGui.QMainWindow):#Ui_MainWindow): ## leser gui fra faktura_ui
             kvitt.vis(program=self.faktura.oppsett.vispdf)
         except Exception, e:
             logging.debug(e)
-            self.alert(str(e))
+            self.alert(unicode(e))
 
     def lagFakturaEpost(self): return self.lagFaktura(Type='epost')
     def lagFakturaPapir(self): return self.lagFaktura(Type='papir')
@@ -544,7 +544,7 @@ class FinFaktura(QtGui.QMainWindow):#Ui_MainWindow): ## leser gui fra faktura_ui
                         self.faktura.skrivUt(E.filnavn, program=self.faktura.oppsett.vispdf)
                     except Exception, e:
                         logging.debug(e)
-                        self.alert(str(e))
+                        self.alert(unicode(e))
             return None
         try:
             pdf.fyll()
@@ -577,7 +577,7 @@ class FinFaktura(QtGui.QMainWindow):#Ui_MainWindow): ## leser gui fra faktura_ui
                         suksess = pdf.skrivUt(program=self.faktura.oppsett.vispdf)
                     except Exception, e:
                         logging.debug(e)
-                        self.alert(str(e))
+                        self.alert(unicode(e))
                         suksess = False
                     historikk.utskrift(ordre, suksess, "interaktivt")
                 else: self.obs(u"Blanketten er lagret med filnavn: %s" % pdf.filnavn)
@@ -1187,7 +1187,7 @@ class FinFaktura(QtGui.QMainWindow):#Ui_MainWindow): ## leser gui fra faktura_ui
             rapport.vis(program=self.faktura.oppsett.vispdf)
         except Exception, e:
             logging.debug(e)
-            self.alert(str(e))
+            self.alert(unicode(e))
 
 ############## INTERNE DIALOGER ###################
 
