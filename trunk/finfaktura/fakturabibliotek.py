@@ -259,9 +259,10 @@ class FakturaBibliotek:
 
 
 def lagDatabase(database, sqlfile=None):
+    "lager databasestruktur. 'database' er filnavn (unicode)"
     try:
-        db = sqlite.connect(database, isolation_level=None)
-        return byggDatabase(db, sqlfile)
+        db = sqlite.connect(os.path.normpath(database.encode('utf8')), isolation_level=None)
+        return _byggDatabase(db, sqlfile)
     except sqlite.DatabaseError:
         raise
         # hmm, kanskje gammel database?
@@ -271,7 +272,8 @@ def lagDatabase(database, sqlfile=None):
             print "FEIL!",e
             raise DBVersjonFeil(e)
 
-def byggDatabase(db, sqlfile=None):
+def _byggDatabase(db, sqlfile=None):
+    "lager databasestruktur (privat funksjon). 'db' er et sqlite3.Connection-objekt"
     if sqlfile is not None:
         sql = file(sqlfile).read()
     else:
@@ -285,7 +287,7 @@ def byggDatabase(db, sqlfile=None):
 def finnDatabasenavn(databasenavn=DATABASENAVN):
     db = os.getenv('FAKTURADB')
     if db is not None and (not PRODUKSJONSVERSJON or os.path.exists(db)):
-        return db # returnerer miljøvariabelen $FAKTURADB
+        return db.decode(sys.getfilesystemencoding()) # returnerer miljøvariabelen $FAKTURADB
     fdir = os.getenv('FAKTURADIR')
     if not fdir:
         #sjekk for utviklermodus
@@ -300,17 +302,16 @@ def finnDatabasenavn(databasenavn=DATABASENAVN):
             #sjekk for linux
             pdir = os.getenv('HOME')
             fdir = os.path.join(pdir, ".finfaktura")
+    fdir = fdir.decode(sys.getfilesystemencoding())
     if not os.path.exists(fdir):
         os.mkdir(fdir, 0700)
     return os.path.join(fdir, databasenavn)
 
-def finnDatabaseSQL():
-    top = os.path.realpath(__file__)
-
-def kobleTilDatabase(dbnavn=None, loggfil=None):
+def kobleTilDatabase(dbnavn=None):
     if dbnavn is None:
         dbnavn = finnDatabasenavn()
-    dbfil = os.path.normpath(os.path.realpath(dbnavn))
+    logging.debug('skal koble til %s (%s/%s)', dbnavn, repr(dbnavn), type(dbnavn))
+    dbfil = os.path.normpath(os.path.realpath(dbnavn.encode('utf-8')))
     try:
         db = sqlite.connect(database=os.path.abspath(dbfil), isolation_level=None) # isolation_level = None gir autocommit-modus
         logging.debug("Koblet til databasen %s", os.path.abspath(dbfil))
@@ -323,7 +324,7 @@ def kobleTilDatabase(dbnavn=None, loggfil=None):
     return db
 
 def sjekkDatabaseVersjon(dbnavn):
-    # skiller melllom sqlite 2 og 3
+    """ skiller melllom sqlite 2 og 3. Forventer dbnavn i unicode"""
     #http://marc.10east.com/?l=sqlite-users&m=109382344409938&w=2
     #> It is safe to read the first N bytes in a db file ... ?
     #Yes.  As far as I know, that's the only sure way to determine
@@ -332,7 +333,7 @@ def sjekkDatabaseVersjon(dbnavn):
     #array that you can search for "SQLite 2" or "SQLite format 3".
 
     try:
-        f=open(dbnavn)
+        f=open(dbnavn.encode(sys.getfilesystemencoding()))
         magic=f.read(33)
     except IOError:
         return False
@@ -342,10 +343,15 @@ def sjekkDatabaseVersjon(dbnavn):
     else: return False
 
 def sikkerhetskopierFil(filnavn):
-    #lager sikkerhetskopi av filnavn -> filnavn~
-    assert os.path.exists(filnavn)
-    bkpfil = "%s-%s~" % (filnavn, int(time()))
-    return shutil.copyfile(filnavn, bkpfil)
+    """lager sikkerhetskopi av filnavn -> filnavn~
+
+    Forventer filnavn i unicode"""
+    f = filnavn.encode(sys.getfilesystemencoding())
+    logging.debug('skal sikkerhetskopiere %s (altså %s)',
+                  repr(filnavn), repr(f))
+    assert os.path.exists(f)
+    bkpfil = "%s-%s~" % (f, int(time()))
+    return shutil.copyfile(f, bkpfil)
 
 def lesRessurs(ressurs):
     """Leser en intern QT4-ressurs (qrc) og returnerer den som en QString.
