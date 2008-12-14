@@ -206,8 +206,8 @@ class fakturaOrdre(fakturaKomponent):
         self.linje = []
         if dato is not None:
             self.ordredato = dato
-        else:
-            self.ordredato = int(time.time())
+        #else: ##XXX: TRENGS DETTE?
+            #self.ordredato = int(time.time()) 
         self.kunde = kunde
         self.firma = firma
         self.ordreforfall = forfall
