@@ -63,7 +63,8 @@
     doc/skjermdump.sh
     <tilpasse navn og innhold etter skjermdump.sh>
     svn co https://finfaktura.googlecode.com/svn/screenshots
-    for b in skjermbilder-finfaktura-${VERSJON}*/*.png; do convert -resize 75% $z screenshots/$z;done
+    #for b in skjermbilder-finfaktura-${VERSJON}*/*.png; do cp $z screenshots/$z;done
+    for z in skjermbilder-finfaktura-${VERSJON}*/*.png; do Z=$(basename "$z"); cp -f "$z" screenshots/"$Z";done
     svn commit screenshots -m "Skjermbilder for ${VERSJON}"
 
 
@@ -71,16 +72,26 @@
     #http://support.googlecode.com/svn/trunk/scripts/googlecode-upload.py
 
     -> .deb
-    googlecode-upload.py -s "Fryktelig fin faktura (debian/ubuntu), versjon $VERSJON" -p finfaktura -u havard.gulldahl -l "Featured,Type-Package,OpSys-Linux" ../finfaktura_${VERSJON}_all.deb
+    googlecode-upload.py -s "Fryktelig Fin Faktura (debian/ubuntu), versjon $VERSJON" -p finfaktura -u havard.gulldahl -l "Featured,Type-Package,OpSys-Linux,Versjon-Ferdig" ../finfaktura_${VERSJON}_all.deb
 
     -> .rpm
-    fakeroot alien --to-rpm --scripts --keep-version finfaktura_${VERSJON}_*.deb
+    fakeroot alien --to-rpm --scripts --keep-version ../finfaktura_${VERSJON}_all.deb
 
-    googlecode-upload.py -s "Fryktelig fin faktura (fedora/suse), versjon $VERSJON" -p finfaktura -u havard.gulldahl -l "Featured,Type-Package,OpSys-Linux" ../finfaktura-${VERSJON}*noarch.rpm
+    googlecode-upload.py -s "Fryktelig Fin Faktura (fedora/suse), versjon $VERSJON" -p finfaktura -u havard.gulldahl -l "Featured,Type-Package,OpSys-Linux,Versjon-Ferdig" ../finfaktura-${VERSJON}*noarch.rpm
 
     -> source
-    googlecode-upload.py -s "Fryktelig fin faktura (python kildekode), versjon $VERSJON" -p finfaktura -u havard.gulldahl -l "Featured,Type-Package,OpSys-All" dist/finfaktura-${VERSJON}.zip
+    googlecode-upload.py -s "Fryktelig Fin Faktura (python kildekode), versjon $VERSJON" -p finfaktura -u havard.gulldahl -l "Featured,Type-Package,OpSys-All,Versjon-Ferdig" dist/finfaktura-${VERSJON}.zip
 
+    -> win
+    googlecode-upload.py -s "Fryktelig Fin Faktura (win), versjon $VERSJON" -p finfaktura -u havard.gulldahl -l "Featured,Type-Installer,OpSys-Windows,Versjon-Ferdig" dist/finfaktura-${VERSJON}.zip
+
+    -> f60.py
+    F60VER=$(grep __version__ finfaktura/f60.py | sed -e 's/[^.0-9]//g'); echo $F60VER;
+    cp finfaktura/f60.py /tmp/f60-${F60VER}.py;
+    googlecode-upload.py -s "Python-modul for å lage faktura på GIRO F60-1 (versjon $F60VER)" -p finfaktura -u havard.gulldahl -l "Featured,OpSys-All,Versjon-Ferdig" /tmp/f60-${F60VER}.py;
+
+    
+    
 
 * Hurra!
 
