@@ -310,10 +310,10 @@ def finnDatabaseSQL():
 def kobleTilDatabase(dbnavn=None, loggfil=None):
     if dbnavn is None:
         dbnavn = finnDatabasenavn()
-    enc = "utf-8"
+    dbfil = os.path.normpath(os.path.realpath(dbnavn))
     try:
-        db = sqlite.connect(database=dbnavn, isolation_level=None)
-        logging.debug("Koblet til databasen %s", dbnavn)
+        db = sqlite.connect(database=os.path.abspath(dbfil), isolation_level=None) # isolation_level = None gir autocommit-modus
+        logging.debug("Koblet til databasen %s", os.path.abspath(dbfil))
     except sqlite.DatabaseError, (E):
         logging.debug("Vi bruker sqlite %s", sqlite.apilevel)
         dbver = sjekkDatabaseVersjon(dbnavn)
@@ -331,8 +331,11 @@ def sjekkDatabaseVersjon(dbnavn):
     #version 3, but if you read the first 33 bytes, you'll have an
     #array that you can search for "SQLite 2" or "SQLite format 3".
 
-    f=open(dbnavn)
-    magic=f.read(33)
+    try:
+        f=open(dbnavn)
+        magic=f.read(33)
+    except IOError:
+        return False
     f.close()
     if 'SQLite 2' in magic: return 2
     elif 'SQLite format 3' in magic: return 3
