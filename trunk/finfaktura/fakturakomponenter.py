@@ -206,8 +206,6 @@ class fakturaOrdre(fakturaKomponent):
         self.linje = []
         if dato is not None:
             self.ordredato = dato
-        #else: ##XXX: TRENGS DETTE?
-            #self.ordredato = int(time.time()) 
         self.kunde = kunde
         self.firma = firma
         self.ordreforfall = forfall
@@ -226,6 +224,8 @@ class fakturaOrdre(fakturaKomponent):
         return unicode(s)
 
     def nyId(self):
+        if not hasattr(self, 'ordredato'):
+            self.ordredato = int(time.time())
         if self.ordreforfall is None:
             self.ordreforfall = int(self.ordredato+3600*24*self.firma.forfall) # .firma.forfall er hele dager - ganger opp til sekunder
         self.c.execute("INSERT INTO %s (ID, kundeID, ordredato, forfall) VALUES (NULL, ?, ?, ?)" % self._tabellnavn, (self.kunde._id, self.ordredato, self.ordreforfall,))
