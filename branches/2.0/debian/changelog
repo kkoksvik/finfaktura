@@ -1,3 +1,12 @@
+finfaktura (2.0.1) jaunty; urgency=low
+
+  * Fikser feil som intrer når ny faktura skal lages, og noe av informasjonen
+    om firmaet mangler (issue#45) -- takk, Audun!
+  * Fikser feil som gir alle fakturaer dagens dato
+  * Fikser feil på windows når brukernavnet inneholder æøå (ikke-ascii tegn)
+
+ -- Håvard Gulldahl <havard@gulldahl.no>  Thu, 01 Jan 2009 23:33:30 +0100
+
 finfaktura (2.0) intrepid; urgency=low
 
   * Fikser rapport.py: utskrift av pdf og rapport fra firma med '&' i
