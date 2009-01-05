@@ -14,7 +14,8 @@ import sys
 from fakturabibliotek import FakturaBibliotek, kobleTilDatabase
 
 def cli_faktura():
-    db = kobleTilDatabase()
+    #logg = open("faktura-interactive.sql.log", "a+")
+    db = kobleTilDatabase()#loggfil=logg)
     bib = FakturaBibliotek(db)
     kunder = bib.hentKunder()
     kunde = CLIListe(kunder, "velg kunde: ")

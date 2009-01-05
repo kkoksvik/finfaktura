@@ -1,1765 +1,1568 @@
+2008-12-14 23:48  havard.gulldahl
+
+	* finfaktura/fakturakomponenter.py: henter r470 fra trunk: fikser
+	  alvorlig feil hvor alle fakturaer får dagens dato når de vises
+
+2008-12-14 23:22  havard.gulldahl
+
+	* finfaktura/fakturabibliotek.py, finfaktura/gui.py: henter inn
+	  r464 og r465 fra trunk: fikser feil på windows
+
+2008-12-08 15:12  havard.gulldahl
+
+	* finfaktura/fakturabibliotek.py, finfaktura/gui.py,
+	  finfaktura/ui/epost.ui, finfaktura/ui/firmainfo.ui, testdata.db:
+	  pakker og klargjør 2.0 til produksjon
+
+2008-12-03 00:38  havard.gulldahl
+
+	* .: Kopierer 2.0 til egen gren
+
+2008-12-03 00:38  havard.gulldahl
+
+	* Gjør 2.0 klar til utgivelse
+
+2008-12-02 23:53  havard.gulldahl
+
+	* fixer import-bug og issue#43: håndterer ikke & i firmanavn
+
+2008-12-02 23:48  havard.gulldahl
+
+	* Fikser småbugs
+
 2008-11-25 23:36  havard.gulldahl
 
-	* finfaktura/f60.py, finfaktura/fakturabibliotek.py,
-	  finfaktura/gui.py, testdata.db: kan åpne pdf-er som er laget før
+	* kan åpne pdf-er som er laget før
 
 2008-11-25 23:25  havard.gulldahl
 
-	* finfaktura/f60.py: lukker tempfilnavn riktig
+	* lukker tempfilnavn riktig
 
 2008-11-25 23:23  havard.gulldahl
 
-	* finfaktura/fakturakomponenter.py: fikser bug hvor
-	  sikkerhetskopifaktura ikke ble skrevet til riktig
+	* fikser bug hvor sikkerhetskopifaktura ikke ble skrevet til riktig
 
 2008-11-25 23:05  havard.gulldahl
 
-	* faktura.py, finfaktura/f60.py, finfaktura/fakturabibliotek.py,
-	  finfaktura/fakturakomponenter.py, finfaktura/gui.py, setup.py,
-	  testdata.db: kan vise utf8-filer på windows med subprocess.call +
+	* kan vise utf8-filer på windows med subprocess.call +
 	  whitespace-strip
 
 2008-11-25 05:50  havard.gulldahl
 
-	* finfaktura/ui/faktura.ui: bruker qscrollarea for å gi
-	  scrollefunksjon på små skjermer
+	* bruker qscrollarea for å gi scrollefunksjon på små skjermer
 
 2008-11-04 23:51  havard.gulldahl
 
-	* finfaktura/fakturakomponenter.py: Fikser feil på windows med
-	  ikke-ascii lagringssti
+	* Fikser feil på windows med ikke-ascii lagringssti
 
 2008-10-29 21:47  havard.gulldahl
 
-	* finfaktura/gui.py: _rc.py-fil er flyttet
+	* _rc.py-fil er flyttet
 
 2008-10-29 21:39  havard.gulldahl
 
-	* MANIFEST: flytter _rc.py-fil dit den skal være
+	* flytter _rc.py-fil dit den skal være
 
 2008-10-29 21:36  havard.gulldahl
 
-	* finfaktura/ekstra.py, scripts/forbered_ressurser.sh: flytter
-	  _rc.py-fil dit den skal være
+	* flytter _rc.py-fil dit den skal være
 
 2008-10-28 19:18  havard.gulldahl
 
-	* doc/f60.jpg: eksempel på skjema F60-1
+	* eksempel på skjema F60-1
 
 2008-10-28 19:16  havard.gulldahl
 
-	* scripts/forbered_ressurser.sh: valgfri sti
+	* valgfri sti
 
 2008-10-28 19:15  havard.gulldahl
 
-	* setup.py: fikser pakkefeil
+	* fikser pakkefeil
 
 2008-10-28 19:14  havard.gulldahl
 
-	* doc/REGLER: oppdaterer
+	* oppdaterer
 
 2008-10-28 19:14  havard.gulldahl
 
-	* finfaktura.desktop: fikser pakkefeil
+	* fikser pakkefeil
 
 2008-10-28 19:14  havard.gulldahl
 
-	* debian/changelog, debian/control, debian/finfaktura.menu,
-	  debian/rules: fikser pakkefeil
+	* fikser pakkefeil
 
 2008-10-26 00:33  havard.gulldahl
 
-	* debian/changelog: Lager ny pakke pga tidligere pakkefeil
+	* Lager ny pakke pga tidligere pakkefeil
 
 2008-10-26 00:15  havard.gulldahl
 
-	* finfaktura/gui_sikkerhetskopi.py: fjerner gammel kode
+	* fjerner gammel kode
 
 2008-10-21 22:28  havard.gulldahl
 
-	* debian/changelog: Info om b3
+	* Info om b3
 
 2008-10-21 22:15  havard.gulldahl
 
-	* finfaktura/fakturabibliotek.py: mer epostfikx
+	* mer epostfikx
 
 2008-10-21 22:06  havard.gulldahl
 
-	* finfaktura/ui/finfaktura_oppsett.ui, finfaktura/ui/firmainfo.ui:
-	  gir navn på vinduer
+	* gir navn på vinduer
 
 2008-10-21 22:04  havard.gulldahl
 
-	* finfaktura/gui_epost.py, finfaktura/ui/epost.ui, testdata.db:
-	  fikser autovalg av epost
+	* fikser autovalg av epost
 
 2008-10-21 21:53  havard.gulldahl
 
-	* finfaktura/fakturakomponenter.py: bruker dagens dato dersom ingen
-	  oppgitt for ny ordre
+	* bruker dagens dato dersom ingen oppgitt for ny ordre
 
 2008-10-21 21:50  havard.gulldahl
 
-	* lag_testdata.py: lager kjedelige og korrekte testdata
+	* lager kjedelige og korrekte testdata
 
 2008-10-21 21:48  havard.gulldahl
 
-	* testdata.db: nye testdata
+	* nye testdata
 
 2008-10-21 21:13  havard.gulldahl
 
-	* lag_testdata.py: første forsøk på å lage ordentlige testdata
+	* første forsøk på å lage ordentlige testdata
 
 2008-10-21 20:52  havard.gulldahl
 
-	* finfaktura/__init__.py: gjør klar beta3 av 1.9.9
+	* gjør klar beta3 av 1.9.9
 
 2008-10-21 20:48  havard.gulldahl
 
-	* faktura.sql, finfaktura/fakturakomponenter.py, finfaktura/gui.py,
-	  finfaktura/gui_epost.py: rydder opp i bug i vis epost-opplegget
+	* rydder opp i bug i vis epost-opplegget
 
 2008-10-21 20:47  havard.gulldahl
 
-	* MANIFEST: legger til logo
+	* legger til logo
 
 2008-10-20 23:06  havard.gulldahl
 
-	* debian/rules: installerer .desktop-fil på ordentlig
+	* installerer .desktop-fil på ordentlig
 
 2008-10-12 23:46  havard.gulldahl
 
-	* finfaktura/myndighetene.py: fjerner myndighetene.py - den er ikke
-	  en del av finfaktura
+	* fjerner myndighetene.py - den er ikke en del av finfaktura
 
 2008-10-12 23:42  havard.gulldahl
 
-	* doc/REGLER, faktura.sql: få med info om wiki
+	* få med info om wiki
 
 2008-10-12 23:42  havard.gulldahl
 
-	* finfaktura/fakturabibliotek.py, finfaktura/gui.py,
-	  finfaktura/gui_epost.py: importerer r414 fra 1.9.9b2: løser
-	  epostkrøll
+	* importerer r414 fra 1.9.9b2: løser epostkrøll
 
 2008-10-12 23:41  havard.gulldahl
 
-	* setup.py: fjerner unødvendig kode
+	* fjerner unødvendig kode
 
 2008-10-12 22:31  havard.gulldahl
 
-	* ChangeLog, debian/changelog, finfaktura/__init__.py: Gjør 1.9.9b2
-	  klar til utgivelse
+	* Gjør 1.9.9b2 klar til utgivelse
 
 2008-10-12 22:20  havard.gulldahl
 
-	* finfaktura/fakturabibliotek.py, finfaktura/fakturakomponenter.py,
-	  finfaktura/gui.py: fikser logging
+	* fikser logging
 
 2008-10-12 22:10  havard.gulldahl
 
-	* debian/finfaktura.docs, finfaktura/rapport.py: fikser
-	  tempfile-bug
+	* fikser tempfile-bug
 
 2008-10-12 21:57  havard.gulldahl
 
-	* debian/rules: opdpaterer til å installere dokumenter, logo og
-	  .desktop-fil
+	* opdpaterer til å installere dokumenter, logo og .desktop-fil
 
 2008-10-12 21:57  havard.gulldahl
 
-	* finfaktura.desktop: legger til .desktop-fil for fin meny
+	* legger til .desktop-fil for fin meny
 
 2008-10-12 21:45  havard.gulldahl
 
-	* finfaktura.png, finfaktura.xpm: legger til flere logoer
+	* legger til flere logoer
 
 2008-10-12 21:25  havard.gulldahl
 
-	* logo.png: legger til logo
+	* legger til logo
 
 2008-10-12 21:24  havard.gulldahl
 
-	* finfaktura/gui.py, finfaktura/gui_firma.py: fjerner logofeil
+	* fjerner logofeil
 
 2008-10-12 21:23  havard.gulldahl
 
-	* debian/control: oppdaterer til qt4. fjerner beautifulsoup. legger
-	  til python-imaging
+	* oppdaterer til qt4. fjerner beautifulsoup. legger til
+	  python-imaging
 
 2008-10-12 21:10  havard.gulldahl
 
-	* finfaktura/f60.py: skriver feilmelding når PIL ikke kan lastes
+	* skriver feilmelding når PIL ikke kan lastes
 
 2008-10-12 20:29  havard.gulldahl
 
-	* finfaktura/ui/firmainfo.ui: fikser tastatursnarveier og
-	  tab-rekkefølge
+	* fikser tastatursnarveier og tab-rekkefølge
 
 2008-10-12 20:24  havard.gulldahl
 
-	* finfaktura/gui.py, finfaktura/gui_firma.py: et steg nærmere en
-	  løsning på logotrøbbelet. ikke les data som er borte
+	* et steg nærmere en løsning på logotrøbbelet. ikke les data som er
+	  borte
 
 2008-10-12 09:48  havard.gulldahl
 
-	* debian/finfaktura.1: bedre og oppdatert man-tekst
+	* bedre og oppdatert man-tekst
 
 2008-10-12 00:16  havard.gulldahl
 
-	* doc/REGLER, finfaktura/ekstra.py, finfaktura/f60.py,
-	  finfaktura/fakturabibliotek.py, finfaktura/fakturakomponenter.py,
-	  finfaktura/gui.py, finfaktura/gui_firma.py,
-	  finfaktura/gui_sikkerhetskopi.py, finfaktura/rapport.py,
-	  testdata.db: bruker subprocess istf os.system; rydder opp i
-	  gammel kode; mer logging; fikser hjørnebugs; rydder opp i
-	  utskriftsalternativene
+	* bruker subprocess istf os.system; rydder opp i gammel kode; mer
+	  logging; fikser hjørnebugs; rydder opp i utskriftsalternativene
 
 2008-10-11 23:37  havard.gulldahl
 
-	* finfaktura/f60.py, finfaktura/fakturakomponenter.py: fjerner
-	  gammel og unødvendig kode
+	* fjerner gammel og unødvendig kode
 
 2008-10-11 16:21  havard.gulldahl
 
-	* finfaktura/epost.py, finfaktura/fakturabibliotek.py,
-	  finfaktura/gui.py, finfaktura/gui_epost.py: fikser feil ved test
-	  av epostløsning
+	* fikser feil ved test av epostløsning
 
 2008-10-11 15:23  havard.gulldahl
 
-	* debian/docs, debian/finfaktura.docs: oppdaterer info om
-	  dokumentasjon
+	* oppdaterer info om dokumentasjon
 
 2008-10-11 15:18  havard.gulldahl
 
-	* README, debian/README: oppdaterer README
+	* oppdaterer README
 
 2008-10-11 14:46  havard.gulldahl
 
-	* debian/finfaktura.menu, debian/menu: Gir nytt navn for at
-	  dh_installmenu skal finne den
+	* Gir nytt navn for at dh_installmenu skal finne den
 
 2008-09-27 22:18  havard.gulldahl
 
-	* finfaktura/fakturakomponenter.py, finfaktura/gui.py: fjerner
-	  skrivutpdf til fordel for vispdf
+	* fjerner skrivutpdf til fordel for vispdf
 
 2008-09-27 22:18  havard.gulldahl
 
-	* finfaktura/f60.py: går til bake på settSammen-endringa: er ikke
-	  privat metode likevel..
+	* går til bake på settSammen-endringa: er ikke privat metode
+	  likevel..
 
 2008-09-25 18:47  havard.gulldahl
 
-	* finfaktura/f60.py: bedre plass til betalingsvilkår
+	* bedre plass til betalingsvilkår
 
 2008-09-25 18:12  havard.gulldahl
 
-	* finfaktura/fakturafeil.py, finfaktura/rapport.py: bedre på alle
-	  plattformer
+	* bedre på alle plattformer
 
 2008-09-25 17:51  havard.gulldahl
 
-	* finfaktura/fakturakomponenter.py, finfaktura/gui.py,
-	  finfaktura/ui/faktura.ui: tetter hull i ny-vare-koden
+	* tetter hull i ny-vare-koden
 
 2008-09-25 17:20  havard.gulldahl
 
-	* finfaktura/ui/epost.ui: fikser felt som er disabled
+	* fikser felt som er disabled
 
 2008-09-25 17:17  havard.gulldahl
 
-	* finfaktura/epost.py: endrer til nye navn på moduler
+	* endrer til nye navn på moduler
 
 2008-09-05 08:23  havard.gulldahl
 
-	* MANIFEST: Flere filflyttinger
+	* Flere filflyttinger
 
 2008-09-05 00:41  havard.gulldahl
 
-	* finfaktura/fakturabibliotek.py: fikser skrivebug
+	* fikser skrivebug
 
 2008-09-05 00:41  havard.gulldahl
 
-	* finfaktura/gui.py: fjerner gammel import
+	* fjerner gammel import
 
 2008-09-05 00:35  havard.gulldahl
 
-	* finfaktura/ui/firmainfo.ui: småfiks på ui
+	* småfiks på ui
 
 2008-09-05 00:18  havard.gulldahl
 
-	* finfaktura/ekstra.py, scripts/forbered_ressurser.sh: flytter
-	  faktura_rc
+	* flytter faktura_rc
 
 2008-09-05 00:14  havard.gulldahl
 
-	* ChangeLog, debian/changelog: Gjør 1.9.9b klar til utgivelse
+	* Gjør 1.9.9b klar til utgivelse
 
 2008-09-05 00:13  havard.gulldahl
 
-	* finfaktura/gui.py: rydder opp i tekststrenger og fjerner gammel
-	  kode
+	* rydder opp i tekststrenger og fjerner gammel kode
 
 2008-09-05 00:04  havard.gulldahl
 
-	* finfaktura/fakturaSqliteDB.py: Fjerner overflødig fil
+	* Fjerner overflødig fil
 
 2008-09-04 23:43  havard.gulldahl
 
-	* finfaktura/gui.py: tilpasser kolonnebredden i fakturalista til
-	  kolonnens innhold.
+	* tilpasser kolonnebredden i fakturalista til kolonnens innhold.
 
 2008-09-04 23:34  havard.gulldahl
 
-	* MANIFEST: Oppdaterer til ny situasjon
+	* Oppdaterer til ny situasjon
 
 2008-09-04 23:29  havard.gulldahl
 
-	* scripts/forbered_ressurser.sh: fikser filnavn
+	* fikser filnavn
 
 2008-09-04 23:28  havard.gulldahl
 
-	* finfaktura/ui/faktura_ui.py, finfaktura/ui/sendepost_ui.py:
-	  fjerner genererte filer fra svn
+	* fjerner genererte filer fra svn
 
 2008-09-04 23:27  havard.gulldahl
 
-	* faktura4.ui, finfaktura/gui.py, finfaktura/ui/faktura.ui: Laster
-	  ikke direkte fra .ui-fil, men fra pyuic4's utputt.
+	* Laster ikke direkte fra .ui-fil, men fra pyuic4's utputt.
 
 2008-09-03 23:14  havard.gulldahl
 
-	* finfaktura/fakturabibliotek.py, finfaktura/gui.py: flytter
-	  funksjonen som leser ressurser, og bruker den til å hente sql
+	* flytter funksjonen som leser ressurser, og bruker den til å hente
+	  sql
 
 2008-09-01 22:45  havard.gulldahl
 
-	* finfaktura/gui.py: Eksplisitt melding når enhet skrives inn som
-	  tall
+	* Eksplisitt melding når enhet skrives inn som tall
 
 2008-09-01 22:33  havard.gulldahl
 
-	* finfaktura/gui.py: småplukk
+	* småplukk
 
 2008-09-01 22:32  havard.gulldahl
 
-	* finfaktura/rapport.py: litt finere tittel
+	* litt finere tittel
 
 2008-09-01 22:16  havard.gulldahl
 
-	* finfaktura/__init__.py: vi holde rpå med en beta
+	* vi holde rpå med en beta
 
 2008-09-01 22:15  havard.gulldahl
 
-	* faktura.py: bedre feilmelding og rapportering
+	* bedre feilmelding og rapportering
 
 2008-09-01 22:15  havard.gulldahl
 
-	* faktura4.ui: bytter ut vilkårlig MVA-felt med leveringsdato
+	* bytter ut vilkårlig MVA-felt med leveringsdato
 
 2008-09-01 22:14  havard.gulldahl
 
-	* finfaktura/gui.py: vilkårlig forfallsdato, og sikkerhetskopierer
-	  ved avslutning
+	* vilkårlig forfallsdato, og sikkerhetskopierer ved avslutning
 
 2008-09-01 22:13  havard.gulldahl
 
-	* finfaktura/fakturabibliotek.py, finfaktura/fakturakomponenter.py:
-	  kan legge inn vilkårlig forfallsdato
+	* kan legge inn vilkårlig forfallsdato
 
 2008-09-01 22:12  havard.gulldahl
 
-	* README: legger inn punkt om diskusjonslista
+	* legger inn punkt om diskusjonslista
 
 2008-09-01 22:12  havard.gulldahl
 
-	* doc/REGLER: oppdaterer om ressurser
+	* oppdaterer om ressurser
 
 2008-08-31 15:36  havard.gulldahl
 
-	* finfaktura/gui.py: småfiks
+	* småfiks
 
 2008-08-31 14:39  havard.gulldahl
 
-	* finfaktura/gui.py: ny funksjon les_ressurs
+	* ny funksjon les_ressurs
 
 2008-08-31 14:31  havard.gulldahl
 
-	* README: småplukk i teksten
+	* småplukk i teksten
 
 2008-08-31 14:30  havard.gulldahl
 
-	* finfaktura/ekstra.py, scripts/forbered_ressurser.sh: samkjører
-	  filplassering
+	* samkjører filplassering
 
 2008-08-31 14:21  havard.gulldahl
 
-	* README: Oppdaterer teksten til å gjelde PyQt4 og for å forbedre
-	  generell feeling
+	* Oppdaterer teksten til å gjelde PyQt4 og for å forbedre generell
+	  feeling
 
 2008-08-31 14:11  havard.gulldahl
 
-	* scripts/forbered_ressurser.sh: fikser og kommenterer
+	* fikser og kommenterer
 
 2008-08-31 14:08  havard.gulldahl
 
-	* scripts/forbered_ressurser.sh: gjør fila kjørbar
+	* gjør fila kjørbar
 
 2008-08-31 14:06  havard.gulldahl
 
-	* MANIFEST, finfaktura/gui.py: kan åpne enkelt tekstvindu -> "Om.."
-	  og "Lisens.."
+	* kan åpne enkelt tekstvindu -> "Om.." og "Lisens.."
 
 2008-08-31 13:06  havard.gulldahl
 
-	* faktura.py, finfaktura/okonomi.py, finfaktura/rapport.py: mer
-	  logging
+	* mer logging
 
 2008-08-31 09:08  havard.gulldahl
 
-	* finfaktura/gui_epost.py: ops
+	* ops
 
 2008-08-31 09:07  havard.gulldahl
 
-	* finfaktura/f60.py, finfaktura/fakturabibliotek.py,
-	  finfaktura/fakturakomponenter.py, finfaktura/gui.py,
-	  finfaktura/gui_epost.py, finfaktura/gui_finfaktura_oppsett.py,
-	  finfaktura/gui_firma.py, finfaktura/historikk.py: skriver
-	  debug-meldinger med logging-modulen i stedet for hjemmemekk
+	* skriver debug-meldinger med logging-modulen i stedet for
+	  hjemmemekk
 
 2008-08-31 03:57  havard.gulldahl
 
-	* finfaktura/gui.py: et par bugfikser ved ferdigstillelse av
-	  faktura
+	* et par bugfikser ved ferdigstillelse av faktura
 
 2008-08-31 03:31  havard.gulldahl
 
-	* finfaktura/gui.py: helt riktige kolonnebredder i varelista
+	* helt riktige kolonnebredder i varelista
 
 2008-08-31 03:27  havard.gulldahl
 
-	* finfaktura/gui.py: riktige kolonnebredder i varelista
+	* riktige kolonnebredder i varelista
 
 2008-08-31 03:26  havard.gulldahl
 
-	* faktura4.ui: navn
+	* navn
 
 2008-08-28 23:08  havard.gulldahl
 
-	* finfaktura/gui.py: bruker ny funksjonalitet i qt4 til å gjøre "Ny
-	  faktura"-koden mer robust og mindre hackete
+	* bruker ny funksjonalitet i qt4 til å gjøre "Ny faktura"-koden mer
+	  robust og mindre hackete
 
 2008-08-27 22:55  havard.gulldahl
 
-	* faktura4.ui, finfaktura/gui.py, finfaktura/gui_epost.py,
-	  finfaktura/gui_firma.py, testdata.db: fikser qt3-ismer
+	* fikser qt3-ismer
 
 2008-08-26 23:11  havard.gulldahl
 
-	* faktura.py, finfaktura/ekstra.py, finfaktura/ui/sendepost_ui.py,
-	  setup.py: flytter og forbedrer ressurs-rutiner
+	* flytter og forbedrer ressurs-rutiner
 
 2008-08-26 22:36  havard.gulldahl
 
-	* faktura.py, finfaktura/fakturafeil.py, finfaktura/gui.py,
-	  setup.py: Gir bedre feilmelding dersom .ui og .qrc-filer ikke er
+	* Gir bedre feilmelding dersom .ui og .qrc-filer ikke er
 	  pythonifisert
 
 2008-08-26 22:21  havard.gulldahl
 
-	* scripts/forbered_ressurser.sh: legger til skript for å lage .ui
-	  og .qrc-filer til .py
+	* legger til skript for å lage .ui og .qrc-filer til .py
 
 2008-08-23 13:35  havard.gulldahl
 
-	* finfaktura/gui.py, finfaktura/gui_firma.py,
-	  finfaktura/ui/firmainfo.ui: porterer firmainfo til QT4
+	* porterer firmainfo til QT4
 
 2008-08-23 12:35  havard.gulldahl
 
-	* finfaktura/gui_dittfirma.py, finfaktura/gui_firma.py: endrer navn
+	* endrer navn
 
 2008-08-23 12:35  havard.gulldahl
 
-	* finfaktura/gui_dittfirma.py: porterer og flytter kode
+	* porterer og flytter kode
 
 2008-08-23 11:47  havard.gulldahl
 
-	* finfaktura/gui.py, finfaktura/gui_finfaktura_oppsett.py,
-	  finfaktura/ui/finfaktura_oppsett.ui: Porterer oppsetts-dialog til
-	  QT4
+	* Porterer oppsetts-dialog til QT4
 
 2008-08-23 11:46  havard.gulldahl
 
-	* finfaktura/gui_epost.py: typo
+	* typo
 
 2008-08-20 22:33  havard.gulldahl
 
-	* finfaktura/gui_finfaktura_oppsett.py,
-	  finfaktura/gui_programmer.py: bedre navn
+	* bedre navn
 
 2008-08-20 22:32  havard.gulldahl
 
-	* finfaktura/gui_programmer.py: flytter metoder fra gui.py
+	* flytter metoder fra gui.py
 
 2008-08-20 22:32  havard.gulldahl
 
-	* finfaktura/ui/finfaktura_oppsett.ui, finfaktura/ui/programmer.ui:
-	  bytter til bedre navn
+	* bytter til bedre navn
 
 2008-08-20 22:31  havard.gulldahl
 
-	* finfaktura/ui/programmer.ui: gjør til qt4
+	* gjør til qt4
 
 2008-08-20 22:26  havard.gulldahl
 
-	* finfaktura/epost.py, finfaktura/gui.py, finfaktura/gui_epost.py,
-	  finfaktura/ui/epost.ui: Nesten ferdig med epost-oppsett
+	* Nesten ferdig med epost-oppsett
 
 2008-08-19 23:43  havard.gulldahl
 
-	* finfaktura/ui/epost.ui: fjerner qt3-skorper
+	* fjerner qt3-skorper
 
 2008-08-19 23:26  havard.gulldahl
 
-	* finfaktura/gui.py: flytter dialog-kode, og fjerner død kode
+	* flytter dialog-kode, og fjerner død kode
 
 2008-08-19 23:19  havard.gulldahl
 
-	* finfaktura/gui.py, finfaktura/ui/sendepost.ui,
-	  finfaktura/ui/sendepost_ui.py: kan vise sendEpost-vinduet
+	* kan vise sendEpost-vinduet
 
 2008-08-19 23:15  havard.gulldahl
 
-	* finfaktura/gui_dittfirma.py, finfaktura/gui_ekstra.py,
-	  finfaktura/gui_epost.py, finfaktura/gui_programmer.py,
-	  finfaktura/gui_sendepost.py, finfaktura/gui_sikkerhetskopi.py:
-	  flytter noe av gui-koden til egne filer
+	* flytter noe av gui-koden til egne filer
 
 2008-08-19 22:50  havard.gulldahl
 
-	* finfaktura/ui/sendepost.ui: konverterer til qt4
+	* konverterer til qt4
 
 2008-08-19 22:42  havard.gulldahl
 
-	* finfaktura/__init__.py: skjuler interne moduler
+	* skjuler interne moduler
 
 2008-08-19 22:42  havard.gulldahl
 
-	* epost.ui, firmainfo.ui, programmer.ui, sendepost.ui,
-	  sikkerhetskopi.ui: flytter UI-filer
+	* flytter UI-filer
 
 2008-08-19 22:41  havard.gulldahl
 
-	* finfaktura/ui/epost.ui, finfaktura/ui/firmainfo.ui,
-	  finfaktura/ui/programmer.ui, finfaktura/ui/sendepost.ui,
-	  finfaktura/ui/sikkerhetskopi.ui: Flytter UI-filer
+	* Flytter UI-filer
 
 2008-08-19 21:58  havard.gulldahl
 
-	* faktura.qrc: Legger til kladd-ikon
+	* Legger til kladd-ikon
 
 2008-08-19 21:57  havard.gulldahl
 
-	* finfaktura/ui/emblem-symbolic-link.svg: Legger til kladd-ikon
+	* Legger til kladd-ikon
 
 2008-08-19 21:45  havard.gulldahl
 
-	* finfaktura/ui/dialog-error.svg, finfaktura/ui/dialog-warning.svg,
-	  finfaktura/ui/emblem-favorite.svg,
-	  finfaktura/ui/emblem-important.svg,
-	  finfaktura/ui/emblem-readonly.svg,
-	  finfaktura/ui/emblem-unreadable.svg,
-	  finfaktura/ui/image-missing.svg,
-	  finfaktura/ui/mail-attachment.svg,
-	  finfaktura/ui/process-stop.svg: Legger til lisensinfo på
-	  grafikken hentet fra The Tango Desktop Project: CC-BY-SA.
+	* Legger til lisensinfo på grafikken hentet fra The Tango Desktop
+	  Project: CC-BY-SA.
 	  http://tango.freedesktop.org/Tango_Desktop_Project
 
 2008-08-19 21:39  havard.gulldahl
 
-	* faktura.qrc, faktura4.ui, finfaktura/ui/dialog-error.svg,
-	  finfaktura/ui/dialog-warning.svg,
-	  finfaktura/ui/emblem-favorite.svg,
-	  finfaktura/ui/emblem-important.svg,
-	  finfaktura/ui/emblem-readonly.svg,
-	  finfaktura/ui/emblem-unreadable.svg,
-	  finfaktura/ui/image-missing.svg,
-	  finfaktura/ui/mail-attachment.svg,
-	  finfaktura/ui/process-stop.svg: Legger til grafikk
+	* Legger til grafikk
 
 2008-08-19 21:29  havard.gulldahl
 
-	* faktura4.ui, finfaktura/gui.py: Lager litt bedre plass når "Ny
-	  faktura"-vinduet vises
+	* Lager litt bedre plass når "Ny faktura"-vinduet vises
 
 2008-08-19 20:49  havard.gulldahl
 
-	* faktura.sql, finfaktura/oppgradering.py: issue#31: legger til
-	  rette for 1. egendefinert tekst i ordrelinja, og 3. mulighet til
-	  å lage "kladd"-faktura (fortsette på senere)
+	* issue#31: legger til rette for 1. egendefinert tekst i
+	  ordrelinja, og 3. mulighet til å lage "kladd"-faktura (fortsette
+	  på senere)
 
 2008-08-17 02:15  havard.gulldahl
 
-	* doc/REGLER, faktura4.ui, finfaktura/gui.py, testdata.db: ny
-	  faktura vises +++
+	* ny faktura vises +++
 
 2008-08-17 00:57  havard.gulldahl
 
-	* faktura.qrc, faktura4.ui, finfaktura/gui.py: Mer fiks for å komme
-	  i havn med Qt4
+	* Mer fiks for å komme i havn med Qt4
 
 2008-08-16 23:51  havard.gulldahl
 
-	* faktura4.ui, finfaktura/gui.py: Mer arbeid med å gjenopprette
-	  gui-funksjoner. "Kunder" og "Varer" fungerer fint igjen
+	* Mer arbeid med å gjenopprette gui-funksjoner. "Kunder" og "Varer"
+	  fungerer fint igjen
 
 2008-08-16 22:48  havard.gulldahl
 
-	* faktura4.ui, finfaktura/gui.py: Basal funksjonalitet på plass
+	* Basal funksjonalitet på plass
 
 2008-08-16 22:16  havard.gulldahl
 
-	* faktura.py, faktura4.ui, finfaktura/ekstra.py,
-	  finfaktura/fakturakomponenter.py, finfaktura/gui.py: Viser Qt4
-	  gui
+	* Viser Qt4 gui
 
 2008-08-16 21:37  havard.gulldahl
 
-	* faktura.py, finfaktura/gui.py: flytter gui-kode og cli-kode
+	* flytter gui-kode og cli-kode
 
 2008-08-16 21:36  havard.gulldahl
 
-	* finfaktura/__init__.py, finfaktura/faktura_ui.py,
-	  finfaktura/sendepost_ui.py, finfaktura/ui,
-	  finfaktura/ui/__init__.py, finfaktura/ui/faktura_ui.py,
-	  finfaktura/ui/sendepost_ui.py: flytter på ui-kode
+	* flytter på ui-kode
 
 2008-08-16 21:35  havard.gulldahl
 
-	* finfaktura/cli.py: småfiks
+	* småfiks
 
 2008-08-16 16:21  havard.gulldahl
 
-	* faktura4.ui: fjerner gammel buddy
+	* fjerner gammel buddy
 
 2008-08-16 16:19  havard.gulldahl
 
-	* faktura4.ui: rydder opp i qformlayout-trøbel
+	* rydder opp i qformlayout-trøbel
 
 2008-08-16 15:50  havard.gulldahl
 
-	* epost.ui, faktura.ui, faktura4.ui, firmainfo.ui, programmer.ui,
-	  sikkerhetskopi.ui: Redesigner UI med Qt4
+	* Redesigner UI med Qt4
 
 2008-08-16 15:43  havard.gulldahl
 
-	* debian/watch: rydder opp
+	* rydder opp
 
 2008-08-16 15:43  havard.gulldahl
 
-	* debian/control, debian/cron.d.ex, debian/finfaktura.doc-base.EX,
-	  debian/manpage.sgml.ex, debian/manpage.xml.ex,
-	  debian/postinst.ex, debian/postrm.ex, debian/preinst.ex,
-	  debian/prerm.ex, debian/rules: rydder opp
+	* rydder opp
 
 2008-08-16 15:38  havard.gulldahl
 
-	* faktura.qrc: legger til qt-ressurser
+	* legger til qt-ressurser
 
 2008-08-15 22:59  havard.gulldahl
 
-	* finfaktura/f60.py: skifter navn på metode tilbake til .lagPost
-	  for å bevare bakoverkompabilitet
+	* skifter navn på metode tilbake til .lagPost for å bevare
+	  bakoverkompabilitet
 
 2008-08-15 22:06  havard.gulldahl
 
-	* finfaktura/f60.py: Sammenstiller kontonr
+	* Sammenstiller kontonr
 
 2008-08-15 19:54  havard.gulldahl
 
-	* finfaktura/f60.py: Justerer utskriftsplasseringer, og flere
-	  kommentarer
+	* Justerer utskriftsplasseringer, og flere kommentarer
 
 2008-05-11 20:47  havard.gulldahl
 
-	* LICENSE: legger til GPL2-teksten
+	* legger til GPL2-teksten
 
 2008-05-11 11:58  havard.gulldahl
 
-	* MANIFEST, debian/control, debian/copyright, debian/rules,
-	  doc/REGLER, setup.py: Vedlikehold av release-rutiner
+	* Vedlikehold av release-rutiner
 
 2008-05-11 09:18  havard.gulldahl
 
-	* finfaktura/fakturabibliotek.py: bedre måte å finne sql-fil på
+	* bedre måte å finne sql-fil på
 
 2008-05-11 09:02  havard.gulldahl
 
-	* ChangeLog, debian/changelog, finfaktura/__init__.py: Gjør 1.3.2
-	  klar til utgivelse
+	* Gjør 1.3.2 klar til utgivelse
 
 2008-05-11 09:00  havard.gulldahl
 
-	* doc/REGLER, faktura.sql: oppdaterer navn, epostadresse og dato
+	* oppdaterer navn, epostadresse og dato
 
 2008-05-11 08:59  havard.gulldahl
 
-	* faktura.py, finfaktura/__init__.py, finfaktura/cli.py,
-	  finfaktura/ekstra.py, finfaktura/epost.py, finfaktura/f60.py,
-	  finfaktura/fakturaSqliteDB.py, finfaktura/fakturabibliotek.py,
-	  finfaktura/fakturafeil.py, finfaktura/fakturakomponenter.py,
-	  finfaktura/historikk.py, finfaktura/myndighetene.py,
-	  finfaktura/okonomi.py, finfaktura/oppgradering.py,
-	  finfaktura/rapport.py, finfaktura/sikkerhetskopi.py,
-	  finfaktura/test.py, setup.py: oppdaterer navn, epostadresse og
-	  dato
+	* oppdaterer navn, epostadresse og dato
 
 2008-05-11 08:52  havard.gulldahl
 
-	* faktura.py, finfaktura/f60.py, finfaktura/fakturabibliotek.py,
-	  finfaktura/fakturakomponenter.py: fikser fæl feil ved første
-	  gangs oppstart
+	* fikser fæl feil ved første gangs oppstart
 
 2008-05-09 19:03  havard.gulldahl
 
-	* debian/changelog, finfaktura/__init__.py: Gjør 1.3.1 klar til
-	  utgivelse
+	* Gjør 1.3.1 klar til utgivelse
 
 2008-05-09 19:01  havard.gulldahl
 
-	* faktura.py: viktig bugfiks ved rar inputt
+	* viktig bugfiks ved rar inputt
 
 2008-05-09 18:29  havard.dahle
 
-	* ChangeLog, debian/changelog, finfaktura/__init__.py: Gjør 1.3
-	  klar til utgivelse
+	* Gjør 1.3 klar til utgivelse
 
 2008-05-09 18:11  havard.dahle
 
-	* faktura.py, faktura.sql, faktura.ui, finfaktura/ekstra.py,
-	  finfaktura/f60.py, finfaktura/faktura_ui.py,
-	  finfaktura/fakturabibliotek.py, finfaktura/fakturakomponenter.py,
-	  finfaktura/oppgradering.py, finfaktura/rapport.py, testdata.db:
-	  konfigurerbar utskrift/pdf-viser
+	* konfigurerbar utskrift/pdf-viser
 
 2008-05-09 18:10  havard.dahle
 
-	* doc/REGLER: opprom
+	* opprom
 
 2008-05-09 18:09  havard.dahle
 
-	* finfaktura/sendepost_ui.py: connects
+	* connects
 
 2008-05-09 18:08  havard.dahle
 
-	* sendepost.ui: connects
+	* connects
 
 2008-05-09 16:47  havard.dahle
 
-	* finfaktura/historikk.py: bugfiks
+	* bugfiks
 
 2008-05-09 15:51  havard.dahle
 
-	* setup.py: oppdaterer navn og adresser
+	* oppdaterer navn og adresser
 
 2008-05-09 15:51  havard.dahle
 
-	* MANIFEST: legger til nye filer
+	* legger til nye filer
 
 2008-04-23 10:39  havard.dahle
 
-	* faktura.py: fikser sendepost-vinduet, tomromskontroll
+	* fikser sendepost-vinduet, tomromskontroll
 
 2008-04-23 10:37  havard.dahle
 
-	* finfaktura/fakturakomponenter.py, finfaktura/rapport.py: path of
-	  pdf viewer binary, whitespace fixuups
+	* path of pdf viewer binary, whitespace fixuups
 
 2008-04-23 10:36  havard.dahle
 
-	* finfaktura/oppgradering.py: quoting table name, whitespace
-	  cleanup
+	* quoting table name, whitespace cleanup
 
 2008-04-23 10:35  havard.dahle
 
-	* finfaktura/faktura_ui.py, finfaktura/sendepost_ui.py,
-	  sendepost.ui: uui issues
+	* uui issues
 	  æ
 
 2008-04-23 10:05  havard.dahle
 
-	* finfaktura/sendepost_ui.py, sendepost.ui: Send email dialog
+	* Send email dialog
 
 2008-04-23 09:55  havard.dahle
 
-	* faktura.ui: last grid/layout issues fixed
+	* last grid/layout issues fixed
 
 2008-04-23 09:50  havard.dahle
 
-	* faktura.ui, sendepost.ui: Fixing grid layout for resizability
+	* Fixing grid layout for resizability
 
 2007-05-08 23:30  havard.dahle
 
-	* doc/skjermdump.sh, faktura.py, finfaktura/rapport.py: Rapportene
-	  viser nå info om hva de egentlig lister opp
+	* Rapportene viser nå info om hva de egentlig lister opp
 
 2007-05-08 23:30  havard.dahle
 
-	* testdata.db: mer testdata
+	* mer testdata
 
 2007-05-06 14:51  havard.dahle
 
-	* faktura.py, faktura.ui, finfaktura/faktura_ui.py,
-	  finfaktura/okonomi.py: Sortering av økonomiske rapporter
+	* Sortering av økonomiske rapporter
 
 2007-05-06 01:36  havard.dahle
 
-	* doc/REGLER: legger til mer husketriks
+	* legger til mer husketriks
 
 2007-05-06 01:35  havard.dahle
 
-	* finfaktura/__init__.py, finfaktura/rapport.py: legger til
-	  pdf-rapport-modul, bruker reportlab/platypus
+	* legger til pdf-rapport-modul, bruker reportlab/platypus
 
 2007-05-06 01:34  havard.dahle
 
-	* faktura.py: Bedre feilsjekk på epostinfo-siden, og begynnelsen på
-	  PDF-rapport
+	* Bedre feilsjekk på epostinfo-siden, og begynnelsen på PDF-rapport
 
 2007-05-06 01:33  havard.dahle
 
-	* finfaktura/oppgradering.py: sørger for å også oppgradere Epost,
-	  Historikk og Handling
+	* sørger for å også oppgradere Epost, Historikk og Handling
 
 2007-05-06 01:32  havard.dahle
 
-	* setup.py: endrer pakkenavn til finfaktura (fra
-	  fryktelig-fin-faktura)
+	* endrer pakkenavn til finfaktura (fra fryktelig-fin-faktura)
 
 2007-05-06 01:32  havard.dahle
 
-	* faktura.sql: vennlig påminnelse om oppgradering.py
+	* vennlig påminnelse om oppgradering.py
 
 2007-05-03 00:09  havard.dahle
 
-	* debian/changelog, finfaktura/__init__.py: Gjør 1.1 klar til
-	  utgivelse
+	* Gjør 1.1 klar til utgivelse
 
 2007-05-03 00:05  havard.dahle
 
-	* doc/REGLER: fjerner linnjenummer
+	* fjerner linnjenummer
 
 2007-05-02 23:59  havard.dahle
 
-	* doc/REGLER: keywords + smått
+	* keywords + smått
 
 2007-05-02 23:57  havard.dahle
 
-	* testdata.db: oppdatert testdata
+	* oppdatert testdata
 
 2007-05-02 23:57  havard.dahle
 
-	* faktura.py: forenkler kode
+	* forenkler kode
 
 2007-05-02 23:29  havard.dahle
 
-	* finfaktura/fakturabibliotek.py: bumper databaseversjon og legger
-	  den inn i nye databaser
+	* bumper databaseversjon og legger den inn i nye databaser
 
 2007-05-02 23:28  havard.dahle
 
-	* faktura.sql: fjerner fjern logikk
+	* fjerner fjern logikk
 
 2007-05-02 23:25  havard.dahle
 
-	* finfaktura/oppgradering.py: sqlite3-fiks og kodeblooper
+	* sqlite3-fiks og kodeblooper
 
 2007-05-02 23:02  havard.dahle
 
-	* faktura.sql, finfaktura/fakturabibliotek.py,
-	  finfaktura/historikk.py: databaselayout 2.10: legger til
-	  handlingen "avBetalt" :P
+	* databaselayout 2.10: legger til handlingen "avBetalt" :P
 
 2007-05-02 22:54  havard.dahle
 
-	* faktura.py: fikser dum bug som forhindret nye varer fra å bli
-	  lagt inn
+	* fikser dum bug som forhindret nye varer fra å bli lagt inn
 
 2007-05-02 22:54  havard.dahle
 
-	* finfaktura/fakturabibliotek.py: fikser avhengigheter og flytter
-	  pdftype, som ikke hører til her
+	* fikser avhengigheter og flytter pdftype, som ikke hører til her
 
 2007-05-02 22:51  havard.dahle
 
-	* finfaktura/fakturakomponenter.py: fikser avhengigheter og flytter
-	  pdftype, som hører med her
+	* fikser avhengigheter og flytter pdftype, som hører med her
 
 2007-05-02 22:50  havard.dahle
 
-	* faktura.ui, finfaktura/faktura_ui.py: enda mer hjelpetekst
+	* enda mer hjelpetekst
 
 2007-05-02 22:42  havard.dahle
 
-	* faktura.ui: mer hjelpetekst
+	* mer hjelpetekst
 
 2007-05-02 22:42  havard.dahle
 
-	* faktura.ui: mange hjelpetekster
+	* mange hjelpetekster
 
 2007-05-02 21:21  havard.dahle
 
-	* finfaktura/fakturafeil.py, finfaktura/fakturakomponenter.py:
-	  svn:keywords
+	* svn:keywords
 
 2007-05-02 21:20  havard.dahle
 
-	* faktura.py, finfaktura/__init__.py, finfaktura/ekstra.py,
-	  finfaktura/fakturabibliotek.py, finfaktura/fakturafeil.py,
-	  finfaktura/fakturakomponenter.py, finfaktura/historikk.py,
-	  finfaktura/okonomi.py: restrukturerer kode til nye moduler
+	* restrukturerer kode til nye moduler
 
 2007-05-02 20:50  havard.dahle
 
-	* finfaktura/historikk.py: fjerner død kode
+	* fjerner død kode
 
 2007-05-02 19:27  havard.dahle
 
-	* finfaktura/fakturabibliotek.py: fjerner hvitrom rundt varenavn og
-	  -enhet når den legges til fra ny-faktura-vinduet
+	* fjerner hvitrom rundt varenavn og -enhet når den legges til fra
+	  ny-faktura-vinduet
 
 2007-05-02 17:09  havard.dahle
 
-	* finfaktura/fakturabibliotek.py: fikser bug hvor 'test
-	  epostoppsett' ikke funket pga type(0) ikke er bool
+	* fikser bug hvor 'test epostoppsett' ikke funket pga type(0) ikke
+	  er bool
 
 2007-05-02 17:03  havard.dahle
 
-	* faktura.py, finfaktura/fakturabibliotek.py,
-	  finfaktura/historikk.py: kan fjerne betalt-status + bug ved
-	  epost-bcc-setting
+	* kan fjerne betalt-status + bug ved epost-bcc-setting
 
 2007-04-30 22:17  havard.dahle
 
-	* ChangeLog: ChangeLog oppdatert med svn2cl
+	* ChangeLog oppdatert med svn2cl
 
 2007-04-29 19:56  havard.dahle
 
-	* doc/faktura-0.96-fakturadetaljer.png: flytter grafikk til egen
-	  mappe
+	* flytter grafikk til egen mappe
 
 2007-04-29 19:54  havard.dahle
 
-	* doc/faktura-0.96-epostfaktura.jpg: flytter grafikk til egen mappe
+	* flytter grafikk til egen mappe
 
 2007-04-29 19:52  havard.dahle
 
-	* finfaktura/fakturabibliotek.py: databaseversjon
+	* databaseversjon
 
 2007-04-29 19:20  havard.dahle
 
-	* faktura.testdb, testdata.db: legger inn ny database med bedre
-	  test-data og bedre navn
+	* legger inn ny database med bedre test-data og bedre navn
 
 2007-04-29 18:48  havard.dahle
 
-	* MANIFEST, setup.py: legger til scripts/*
+	* legger til scripts/*
 
 2007-04-29 17:50  havard.dahle
 
-	* debian/changelog: Gjør 1.0 klar til utgivelse
+	* Gjør 1.0 klar til utgivelse
 
 2007-04-29 17:45  havard.dahle
 
-	* finfaktura/__init__.py: bumper til 1.0!!
+	* bumper til 1.0!!
 
 2007-04-29 17:41  havard.dahle
 
-	* finfaktura/oppgradering.py: spytter ut info ved trøbbel
+	* spytter ut info ved trøbbel
 
 2007-04-29 17:35  havard.dahle
 
-	* scripts/oppgrader-databasen-til-1.0.sh: småplukk
+	* småplukk
 
 2007-04-29 17:25  havard.dahle
 
-	* scripts/oppgrader-databasen-til-1.0.sh: flytter på statement
+	* flytter på statement
 
 2007-04-29 17:24  havard.dahle
 
-	* finfaktura/test.py: sqlite3
+	* sqlite3
 
 2007-04-29 17:23  havard.dahle
 
-	* scripts/oppgrader-databasen-til-1.0.sh: behøver ikke mktemp
-	  likevel
+	* behøver ikke mktemp likevel
 
 2007-04-29 17:21  havard.dahle
 
-	* scripts/oppgrader-databasen-til-1.0.sh: svn:properties
+	* svn:properties
 
 2007-04-29 17:21  havard.dahle
 
-	* scripts/oppgrader-databasen-til-1.0.sh: lagrer pdf-data riktig
-	  nå, og mer essensiell feilsjekking undervegs
+	* lagrer pdf-data riktig nå, og mer essensiell feilsjekking
+	  undervegs
 
 2007-04-29 14:54  havard.dahle
 
-	* scripts/oppgrader-databasen-til-1.0.sh: logikken fungerer
+	* logikken fungerer
 
 2007-04-29 12:34  havard.dahle
 
-	* scripts, scripts/oppgrader-databasen-til-1.0.sh: skript for å
-	  oppgradere fra sqlite2 -> 3
+	* skript for å oppgradere fra sqlite2 -> 3
 
 2007-04-29 02:05  havard.dahle
 
-	* faktura.py, finfaktura/fakturabibliotek.py: sikkerhetskopierer
-	  databasen ved hver avslutning
+	* sikkerhetskopierer databasen ved hver avslutning
 
 2007-04-29 01:45  havard.dahle
 
-	* faktura.py, faktura.ui, finfaktura/faktura_ui.py,
-	  finfaktura/okonomi.py: penere og mer oversiktlig rapport
-	  (filtrerer bort kansellerte fakturaer)
+	* penere og mer oversiktlig rapport (filtrerer bort kansellerte
+	  fakturaer)
 
 2007-04-29 01:21  havard.dahle
 
-	* faktura.py: fikser varelisten i ny-faktura-vinduet
+	* fikser varelisten i ny-faktura-vinduet
 
 2007-04-29 01:09  havard.dahle
 
-	* faktura.ui, finfaktura/faktura_ui.py: fjerner gammelt skrot
+	* fjerner gammelt skrot
 
 2007-04-29 01:07  havard.dahle
 
-	* faktura.py: gjør 'økonomi' synlig
+	* gjør 'økonomi' synlig
 
 2007-04-29 00:55  havard.dahle
 
-	* faktura.py, faktura.ui, finfaktura/faktura_ui.py: flikking på
-	  'økonomi'
+	* flikking på 'økonomi'
 
 2007-04-29 00:37  havard.dahle
 
-	* faktura.py, faktura.ui, finfaktura/epost.py,
-	  finfaktura/faktura_ui.py, finfaktura/fakturabibliotek.py: rydder
-	  opp og fikser epost (tls og auth) og korrekt firmainfovisning
+	* rydder opp og fikser epost (tls og auth) og korrekt
+	  firmainfovisning
 
 2007-04-28 12:15  havard.dahle
 
-	* finfaktura/okonomi.py: kan avgrense på varer også nå
+	* kan avgrense på varer også nå
 
 2007-04-28 12:14  havard.dahle
 
-	* faktura.py: mer logging, og arbeid på rapporten
+	* mer logging, og arbeid på rapporten
 
 2007-04-28 11:31  havard.dahle
 
-	* faktura.py: typo
+	* typo
 
 2007-04-28 11:30  havard.dahle
 
-	* debian/control: nå bruker vi pysqlite2, ikke den gamle sqlite
+	* nå bruker vi pysqlite2, ikke den gamle sqlite
 
 2007-04-28 11:30  havard.dahle
 
-	* faktura.py: nå kan man faktisk markere som betalt igjen...
+	* nå kan man faktisk markere som betalt igjen...
 
 2007-04-28 11:19  havard.dahle
 
-	* faktura.py, finfaktura/fakturabibliotek.py: nå brukes faktisk
-	  ordredatoen ;)
+	* nå brukes faktisk ordredatoen ;)
 
 2007-04-28 10:28  havard.dahle
 
-	* finfaktura/historikk.py: skriver faktisk til databasen nå ;)
+	* skriver faktisk til databasen nå ;)
 
 2007-04-28 10:22  havard.dahle
 
-	* finfaktura/fakturabibliotek.py: mer sqlite3-opprydding, og fikser
-	  fæl bugg hvor egenskaper på fakturaKomponent ikke ble oppdatert
+	* mer sqlite3-opprydding, og fikser fæl bugg hvor egenskaper på
+	  fakturaKomponent ikke ble oppdatert
 
 2007-04-28 10:20  havard.dahle
 
-	* faktura.py: lager debug-konsoll, og begynner på å markere
-	  historikk for alt som skjer med fakturaen
+	* lager debug-konsoll, og begynner på å markere historikk for alt
+	  som skjer med fakturaen
 
 2007-04-28 00:21  havard.dahle
 
-	* faktura.sql: 2.9: legger til alle kjente historiske handlinger
-	  for intern loggføring
+	* 2.9: legger til alle kjente historiske handlinger for intern
+	  loggføring
 
 2007-04-28 00:20  havard.dahle
 
-	* finfaktura/historikk.py: desperate forsøk på åfå det til å henge
-	  sammen
+	* desperate forsøk på åfå det til å henge sammen
 
 2007-04-27 23:15  havard.dahle
 
-	* faktura.sql: bedre måte å fylle default-data på. fjerner
-	  kommentarer som kræsjet sqlite3
+	* bedre måte å fylle default-data på. fjerner kommentarer som
+	  kræsjet sqlite3
 
 2007-04-27 21:36  havard.dahle
 
-	* finfaktura/fakturabibliotek.py: fjerner død kode
+	* fjerner død kode
 
 2007-04-27 21:30  havard.dahle
 
-	* finfaktura/fakturabibliotek.py: mer sqlite3-triks
+	* mer sqlite3-triks
 
 2007-04-27 17:19  havard.dahle
 
-	* finfaktura/fakturabibliotek.py: ooops typo
+	* ooops typo
 
 2007-04-27 17:18  havard.dahle
 
-	* finfaktura/fakturabibliotek.py: konvertert til sqlite3-bruk
+	* konvertert til sqlite3-bruk
 
 2007-04-27 16:46  havard.dahle
 
-	* finfaktura/fakturabibliotek.py: ny funksjon:
-	  faktura.finnVareEllerLagNy
+	* ny funksjon: faktura.finnVareEllerLagNy
 
 2007-04-27 16:45  havard.dahle
 
-	* faktura.py: fyller inn faktura fra det nye vinduet
+	* fyller inn faktura fra det nye vinduet
 
 2007-04-27 15:55  havard.dahle
 
-	* faktura.py, faktura.ui: endelig ny og fin ny-faktura-vindu med
-	  qtable
+	* endelig ny og fin ny-faktura-vindu med qtable
 
 2007-04-25 23:28  havard.dahle
 
-	* faktura.py, faktura.ui: nytt utseende på ny-faktura-vinduet:
-	  qtable holder alle fakturaene
+	* nytt utseende på ny-faktura-vinduet: qtable holder alle
+	  fakturaene
 
 2007-04-25 21:17  havard.dahle
 
-	* faktura.ui: nytt ny-faktura-vindu
+	* nytt ny-faktura-vindu
 
 2007-04-25 21:12  havard.dahle
 
-	* faktura.py: * nytt ny-faktura-vindu
+	* * nytt ny-faktura-vindu
 	  * sqlite3-påførte endringer (logo)
 
 2007-04-25 21:11  havard.dahle
 
-	* finfaktura/fakturabibliotek.py: endringer for sqlite3
+	* endringer for sqlite3
 
 2007-01-23 23:13  havard.dahle
 
-	* finfaktura/oppgradering.py: Kan bruke både sqlite og pysqlite2
+	* Kan bruke både sqlite og pysqlite2
 
 2007-01-23 23:08  havard.dahle
 
-	* faktura.py, faktura.testdb, finfaktura/faktura_ui.py,
-	  finfaktura/fakturabibliotek.py, finfaktura/oppgradering.py:
-	  Ruller tilbake når noe går galt. Bruker shutil-modulen for
+	* Ruller tilbake når noe går galt. Bruker shutil-modulen for
 	  filbehandling. Kan bruke pysqlite2
 
 2007-01-16 00:58  havard.dahle
 
-	* faktura.testdb: pynter litt på hva den viser
+	* pynter litt på hva den viser
 
 2007-01-16 00:37  havard.dahle
 
-	* doc/faktura-0.1-fakuraliste.png, doc/faktura-0.1-kundeliste.png,
-	  doc/faktura-0.1-oppsett.png, doc/faktura-0.7-fakturaliste.png,
-	  doc/faktura-0.7-kundeliste.png, doc/faktura-0.7-nyfaktura.png,
-	  doc/faktura-0.7-nyvare.png, doc/faktura-0.7-vareliste.png:
-	  fjerner gamle skjermdumper
+	* fjerner gamle skjermdumper
 
 2007-01-16 00:36  havard.dahle
 
-	* doc/faktura-0.1-fakuraliste.png, doc/faktura-0.1-kundeliste.png,
-	  doc/faktura-0.1-oppsett.png, doc/faktura-0.7-fakturaliste.png,
-	  doc/faktura-0.7-kundeliste.png, doc/faktura-0.7-nyfaktura.png,
-	  doc/faktura-0.7-nyvare.png, doc/faktura-0.7-vareliste.png,
-	  doc/faktura-0.96-epostfaktura.jpg,
-	  doc/faktura-0.96-fakturadetaljer.png: oppdaterer skjermdumper
+	* oppdaterer skjermdumper
 
 2007-01-16 00:35  havard.dahle
 
-	* doc/REGLER: Lage RPM og laste opp til googlecode med skript
+	* Lage RPM og laste opp til googlecode med skript
 
 2007-01-15 23:50  havard.dahle
 
-	* debian/changelog, finfaktura/__init__.py: Gjør 0.96.2 klar til
-	  utgivelse
+	* Gjør 0.96.2 klar til utgivelse
 
 2007-01-15 23:47  havard.dahle
 
-	* doc/REGLER: mer kopivennlighet
+	* mer kopivennlighet
 
 2007-01-15 23:42  havard.dahle
 
-	* faktura.ui: default rekkefølge på feltene i betalt-datokontrollen
+	* default rekkefølge på feltene i betalt-datokontrollen
 
 2007-01-15 23:41  havard.dahle
 
-	* faktura.py: Fikser bug/brukbarhetstema: datokontrollen for
-	  betalt-dato var helt mongo. Nå kan man bruke den som forventet
+	* Fikser bug/brukbarhetstema: datokontrollen for betalt-dato var
+	  helt mongo. Nå kan man bruke den som forventet
 
 2007-01-15 23:40  havard.dahle
 
-	* doc/REGLER: Kopieringsvennlig tekst
+	* Kopieringsvennlig tekst
 
 2007-01-07 11:06  havard.dahle
 
-	* debian/menu, debian/rules: Forsøker å fikse meny-oppføring (ikon
-	  mangler)
+	* Forsøker å fikse meny-oppføring (ikon mangler)
 
 2007-01-04 23:49  havard.dahle
 
-	* debian/control: fikser syntaksfeil
+	* fikser syntaksfeil
 
 2007-01-04 23:49  havard.dahle
 
-	* debian/changelog: fikser syntaksfeil
+	* fikser syntaksfeil
 
 2007-01-04 23:25  havard.dahle
 
-	* debian/changelog, finfaktura/__init__.py: Gjør 0.96 klar til
-	  utgivelse
+	* Gjør 0.96 klar til utgivelse
 
 2007-01-04 23:22  havard.dahle
 
-	* doc/REGLER: må committe nytt versjonsnummer og debian/changelog
-	  til svn
+	* må committe nytt versjonsnummer og debian/changelog til svn
 
 2007-01-04 23:19  havard.dahle
 
-	* doc/REGLER: debian/changelog må oppdateres før branching, og
-	  koden pushes til code.google.com, ikke lurtgjort.no
+	* debian/changelog må oppdateres før branching, og koden pushes til
+	  code.google.com, ikke lurtgjort.no
 
 2007-01-04 23:10  havard.dahle
 
-	* faktura.ui, finfaktura/faktura_ui.py: Litt mer plass på tekstboks
-	  som var for liten og ble skjult
+	* Litt mer plass på tekstboks som var for liten og ble skjult
 
 2007-01-03 00:20  havard.dahle
 
-	* faktura.py, finfaktura/epost.py, finfaktura/f60.py,
-	  finfaktura/fakturabibliotek.py: småtweaks
+	* småtweaks
 
 2007-01-03 00:19  havard.dahle
 
-	* faktura.testdb: mer testdata
+	* mer testdata
 
 2007-01-03 00:09  havard.dahle
 
-	* finfaktura/f60.py: Seriøs oppgradering. Sjekker og legger inn
-	  KID. Legger inn standard betalingsvilkår korrekt. Regner
-	  mvagrunnlag (men viser det ikke ennå). Noen kommentarer
+	* Seriøs oppgradering. Sjekker og legger inn KID. Legger inn
+	  standard betalingsvilkår korrekt. Regner mvagrunnlag (men viser
+	  det ikke ennå). Noen kommentarer
 
 2007-01-02 20:40  havard.dahle
 
-	* finfaktura/f60.py: Bedre tekst på MVA/Netto/Totalt-kolonnene
+	* Bedre tekst på MVA/Netto/Totalt-kolonnene
 
 2006-12-25 01:58  havard.dahle
 
-	* finfaktura/f60.py: følger opp #119: typo
+	* følger opp #119: typo
 
 2006-12-25 01:55  havard.dahle
 
-	* finfaktura/f60.py: skriver også ut pris uten mva og mva. nå vises
-	  bruttopris, mva og pris m/mva, slik norsk regnskapslov krever.
-	  Takk til Frode Døving for tips
+	* skriver også ut pris uten mva og mva. nå vises bruttopris, mva og
+	  pris m/mva, slik norsk regnskapslov krever. Takk til Frode Døving
+	  for tips
 
 2006-12-25 01:54  havard.dahle
 
-	* doc/REGLER: Småoppdateringer ifm release
+	* Småoppdateringer ifm release
 
 2006-12-24 02:06  havard.dahle
 
-	* finfaktura/fakturabibliotek.py: fikser grov bug hvor stien til
-	  sqlfila ikke blir funnet i produksjonsversjonen
+	* fikser grov bug hvor stien til sqlfila ikke blir funnet i
+	  produksjonsversjonen
 
 2006-12-24 01:56  havard.dahle
 
-	* debian/rules, doc/REGLER: småting for release
+	* småting for release
 
 2006-12-24 01:38  havard.dahle
 
-	* ChangeLog, debian/changelog: legger til changelogs fra
-	  0.95-utgaven
+	* legger til changelogs fra 0.95-utgaven
 
 2006-12-24 01:24  havard.dahle
 
-	* doc/REGLER: huskeregler for utvikling av finfaktura
+	* huskeregler for utvikling av finfaktura
 
 2006-12-24 01:04  havard.dahle
 
-	* faktura.ui, finfaktura/faktura_ui.py: lager snarvei til
-	  sende-epost-knapp
+	* lager snarvei til sende-epost-knapp
 
 2006-12-24 01:00  havard.dahle
 
-	* faktura.testdb: testdata, mer
+	* testdata, mer
 
 2006-12-24 01:00  havard.dahle
 
-	* faktura.py: 1. feiler på riktig måte når pyqt mangler. 2.
-	  småendring på feilmelding ved epostsending
+	* 1. feiler på riktig måte når pyqt mangler. 2. småendring på
+	  feilmelding ved epostsending
 
 2006-12-24 00:56  havard.dahle
 
-	* finfaktura/epost.py: bug: bcc-adresser blei føkka opp, det likte
-	  ikke sendmail
+	* bug: bcc-adresser blei føkka opp, det likte ikke sendmail
 
 2006-12-24 00:20  havard.dahle
 
-	* finfaktura/epost.py: bug: typo
+	* bug: typo
 
 2006-12-24 00:18  havard.dahle
 
-	* finfaktura/epost.py: fjerner bug i påvente av korrekt
-	  implementasjon som følger rfc 2822. vi later som alle
-	  epostadresser er ascii
+	* fjerner bug i påvente av korrekt implementasjon som følger rfc
+	  2822. vi later som alle epostadresser er ascii
 
 2006-12-24 00:08  havard.dahle
 
-	* faktura.py, faktura.sql, faktura.ui, finfaktura/epost.py,
-	  finfaktura/faktura_ui.py, finfaktura/fakturabibliotek.py,
-	  finfaktura/oppgradering.py: sender bcc på en mer fornuftig måte
-	  (endringer i ui og logikk)
+	* sender bcc på en mer fornuftig måte (endringer i ui og logikk)
 
 2006-12-23 23:59  havard.dahle
 
-	* faktura.testdb: mer testdata
+	* mer testdata
 
 2006-12-23 23:34  havard.dahle
 
-	* finfaktura/fakturabibliotek.py: viskunde: Viser bare fakturaer
-	  som ikke er kansellert
+	* viskunde: Viser bare fakturaer som ikke er kansellert
 
 2006-12-20 23:35  havard.dahle
 
-	* finfaktura/epost.py, finfaktura/fakturabibliotek.py,
-	  finfaktura/test.py: eposttest og epostadresse
+	* eposttest og epostadresse
 
 2006-12-20 23:33  havard.dahle
 
-	* debian/copyright, debian/rules: bedre pakke
+	* bedre pakke
 
 2006-12-20 23:33  havard.dahle
 
-	* finfaktura/__init__.py: Bumper versjon til 0.95
+	* Bumper versjon til 0.95
 
 2006-12-20 07:35  havard.dahle
 
-	* faktura.py: fjerner gammelt skrot
+	* fjerner gammelt skrot
 
 2006-12-20 07:33  havard.dahle
 
-	* faktura.py: mer robust rutine for å fylle fakturaoversikten
+	* mer robust rutine for å fylle fakturaoversikten
 
 2006-12-20 07:05  havard.dahle
 
-	* finfaktura/epost.py: Putter fnutter rundt navnet i til- og
-	  fra-adressene (det kan inneholde komma)
+	* Putter fnutter rundt navnet i til- og fra-adressene (det kan
+	  inneholde komma)
 
 2006-12-19 20:22  havard.dahle
 
-	* debian/control: vi kan bruke python-sqlite1.1 også, legger det
-	  til som alternativ til python-sqlite i Depends
+	* vi kan bruke python-sqlite1.1 også, legger det til som alternativ
+	  til python-sqlite i Depends
 
 2006-12-11 01:30  havard.dahle
 
-	* faktura.testdb: fjerner passord fra testdata (doh!)
+	* fjerner passord fra testdata (doh!)
 
 2006-12-11 01:21  havard.dahle
 
-	* faktura.testdb: Legger inn testdata
+	* Legger inn testdata
 
 2006-12-11 00:59  havard.dahle
 
-	* faktura.py: statisk liste over objekter gir bedre responstid (?)
+	* statisk liste over objekter gir bedre responstid (?)
 	  
 	  -v for versjonsnummer
 
 2006-12-11 00:41  havard.dahle
 
-	* doc/skjermdump.sh: Bruker xautomation/xte til å ta skjermdump av
-	  de forskjellige skjermene
+	* Bruker xautomation/xte til å ta skjermdump av de forskjellige
+	  skjermene
 
 2006-12-05 00:36  havard.dahle
 
-	* finfaktura/test.py: synkroniserer med epost.py
+	* synkroniserer med epost.py
 
 2006-12-05 00:35  havard.dahle
 
-	* finfaktura/historikk.py: første forsøk på en brukbar
-	  infrastruktur for registrering av hendelser
+	* første forsøk på en brukbar infrastruktur for registrering av
+	  hendelser
 
 2006-12-05 00:34  havard.dahle
 
-	* finfaktura/epost.py: bruker string.join istf list.join
+	* bruker string.join istf list.join
 
 2006-12-04 23:52  havard.dahle
 
-	* finfaktura/__init__.py, finfaktura/historikk.py: legger til
-	  historikk.py for faktura-historikk
+	* legger til historikk.py for faktura-historikk
 
 2006-12-04 23:46  havard.dahle
 
-	* finfaktura/oppgradering.py: Fikser typo i endringskart
+	* Fikser typo i endringskart
 
 2006-12-04 23:16  havard.dahle
 
-	* finfaktura/fakturabibliotek.py: mer logikk for å finne riktig
-	  databasesti og -sql. Nå er det helt avhengig av
-	  PRODUKSJONSVERSJON-variabelen
+	* mer logikk for å finne riktig databasesti og -sql. Nå er det helt
+	  avhengig av PRODUKSJONSVERSJON-variabelen
 
 2006-12-04 23:14  havard.dahle
 
-	* finfaktura/f60.py: Fikser følgefeil (regresjon) etter #72 && #73:
-	  teksten i blokker ble forskjøvet mot høyre
+	* Fikser følgefeil (regresjon) etter #72 && #73: teksten i blokker
+	  ble forskjøvet mot høyre
 
 2006-12-04 22:37  havard.dahle
 
-	* finfaktura/epost.py: fikser BCC
+	* fikser BCC
 
 2006-12-03 15:27  havard.dahle
 
-	* finfaktura/oppgradering.py: skriver mer informasjon om
-	  sql-feilmelding til loggen for debugging
+	* skriver mer informasjon om sql-feilmelding til loggen for
+	  debugging
 
 2006-12-01 01:51  havard.dahle
 
-	* finfaktura/f60.py: Springe sirkler rundt bug i reportlab 2.0,
-	  andre forsøk
+	* Springe sirkler rundt bug i reportlab 2.0, andre forsøk
 
 2006-12-01 01:43  havard.dahle
 
-	* finfaktura/f60.py: Springe sirkler rundt bug i reportlab 2.0
+	* Springe sirkler rundt bug i reportlab 2.0
 
 2006-12-01 01:24  havard.dahle
 
-	* finfaktura/fakturabibliotek.py: Nå kan også miljøvariabelen
-	  'FAKTURADB' brukes. Den må peke rett på en database
+	* Nå kan også miljøvariabelen 'FAKTURADB' brukes. Den må peke rett
+	  på en database
 
 2006-12-01 01:23  havard.dahle
 
-	* finfaktura/test.py: småflikk for å gjøre litt korrektere å bruke
+	* småflikk for å gjøre litt korrektere å bruke
 
 2006-12-01 00:55  havard.dahle
 
-	* finfaktura/oppgradering.py: Forbedrer feilsjekking og
-	  feilmeldinger om lag 2000 %.
+	* Forbedrer feilsjekking og feilmeldinger om lag 2000 %.
 	  
 	  Se <http://code.google.com/p/finfaktura/issues/detail?id=17>
 
 2006-12-01 00:11  havard.dahle
 
-	* debian/chl.sh, debian/rules: Går bort fra hjemmesnekret
-	  changelog-program til å bruke 'dch' fra pakken devscripts
+	* Går bort fra hjemmesnekret changelog-program til å bruke 'dch'
+	  fra pakken devscripts
 
 2006-11-08 20:37  havard.dahle
 
-	* finfaktura/f60.py: Reportlab 2.0 (i Ubuntu 6.10 og Debian 4.0)
-	  bruker Unicode. Sjekk versjonen og gi riktig tegnsett
+	* Reportlab 2.0 (i Ubuntu 6.10 og Debian 4.0) bruker Unicode. Sjekk
+	  versjonen og gi riktig tegnsett
 
 2006-11-07 22:33  havard.dahle
 
-	* finfaktura/epost.py: legger til en assert
+	* legger til en assert
 
 2006-10-14 14:07  havard.dahle
 
-	* faktura.py, faktura.ui, finfaktura/faktura_ui.py,
-	  finfaktura/fakturabibliotek.py: rydder opp i sikkerhetskopi:
-	  flytter viskvittering til høyreklikkmeny i "faktura" og endrer
-	  gui: sikkerhetskopi-til-fil + gjenoppretting fra gmail eller fil
+	* rydder opp i sikkerhetskopi: flytter viskvittering til
+	  høyreklikkmeny i "faktura" og endrer gui: sikkerhetskopi-til-fil
+	  + gjenoppretting fra gmail eller fil
 
 2006-10-14 13:51  havard.dahle
 
-	* debian/rules: legger til informasjon om forfatter og endringer og
-	  $Id$
+	* legger til informasjon om forfatter og endringer og $Id$
 
 2006-10-14 13:26  havard.dahle
 
-	* debian/rules: fletter inn r61 (dh_install-endringer)
+	* fletter inn r61 (dh_install-endringer)
 
 2006-10-14 00:13  havard.dahle
 
-	* faktura.py, faktura.ui, finfaktura/faktura_ui.py: sikkerhetskopi:
-	  henter gmailbruker og -passord fra EPOST. Populerer listen over
-	  kvitteringer og gjør det mulig å se dem gjennom kpdf
+	* sikkerhetskopi: henter gmailbruker og -passord fra EPOST.
+	  Populerer listen over kvitteringer og gjør det mulig å se dem
+	  gjennom kpdf
 
 2006-10-13 23:45  havard.dahle
 
-	* finfaktura/f60.py: små omrokkeringer i koden
+	* små omrokkeringer i koden
 
 2006-10-13 23:19  havard.dahle
 
-	* MANIFEST: legger til test.py
+	* legger til test.py
 
 2006-10-13 23:18  havard.dahle
 
-	* finfaktura/fakturabibliotek.py, finfaktura/test.py: flytter
-	  test-funksjoner til test.py
+	* flytter test-funksjoner til test.py
 
 2006-10-13 23:16  havard.dahle
 
-	* faktura.py, faktura.ui, finfaktura/ekstra.py,
-	  finfaktura/epost.py, finfaktura/faktura_ui.py,
-	  finfaktura/fakturabibliotek.py: Kan teste om epostoppsettet
-	  funker. Velger beste epostoppsett ut i fra hva som funker.
+	* Kan teste om epostoppsettet funker. Velger beste epostoppsett ut
+	  i fra hva som funker.
 	  
 	  + flytter ikon-data til ekstra.py
 
 2006-10-11 18:42  havard.dahle
 
-	* faktura.py, faktura.ui, finfaktura/epost.py,
-	  finfaktura/faktura_ui.py, finfaktura/fakturabibliotek.py:
-	  Ferdigstiller epost-funksjonaliteten. Nå fullt brukbar
+	* Ferdigstiller epost-funksjonaliteten. Nå fullt brukbar
 	  gmail-støtte, sende gjennom smtp og sendmail. Gmail krever frisk
 	  python-libgmail
 
 2006-10-11 17:43  havard.dahle
 
-	* faktura.py: fjerner gammel koode
+	* fjerner gammel koode
 
 2006-10-10 14:54  havard.dahle
 
-	* debian/control, debian/rules: deb-pakke: riktigere avhengighet på
-	  python og bruker dh_python i prosessen
+	* deb-pakke: riktigere avhengighet på python og bruker dh_python i
+	  prosessen
 
 2006-10-09 23:13  havard.dahle
 
-	* debian/finfaktura.1: hmm, fin tekst.. engelsk?
+	* hmm, fin tekst.. engelsk?
 
 2006-10-09 23:11  havard.dahle
 
-	* faktura.py, finfaktura/fakturabibliotek.py: starten på fungerende
-	  epostside
+	* starten på fungerende epostside
 
 2006-10-09 23:09  havard.dahle
 
-	* faktura.ui, finfaktura/faktura_ui.py: småfiksing på epostsiden
+	* småfiksing på epostsiden
 
 2006-10-09 23:08  havard.dahle
 
-	* finfaktura/oppgradering.py: fikser syntax på nye tabeller
+	* fikser syntax på nye tabeller
 
 2006-10-09 22:30  havard.dahle
 
-	* faktura.sql, finfaktura/oppgradering.py: norskifisiering
+	* norskifisiering
 
 2006-10-09 22:05  havard.dahle
 
-	* faktura.ui, finfaktura/faktura_ui.py: flytter epost s.a. den blir
-	  brukbar i produksjon
+	* flytter epost s.a. den blir brukbar i produksjon
 
 2006-10-09 22:04  havard.dahle
 
-	* faktura.sql, finfaktura/fakturabibliotek.py,
-	  finfaktura/oppgradering.py: Legger til 'Epost'-objekt i databasen
+	* Legger til 'Epost'-objekt i databasen
 
 2006-10-09 19:06  havard.dahle
 
-	* finfaktura/fakturabibliotek.py: Typo i bib-versjonssjekk
+	* Typo i bib-versjonssjekk
 
 2006-10-09 19:04  havard.dahle
 
-	* finfaktura/fakturabibliotek.py: Riktig rekkefølge på db- og
-	  bib-versjonssjekk
+	* Riktig rekkefølge på db- og bib-versjonssjekk
 
 2006-10-09 19:02  havard.dahle
 
-	* finfaktura/fakturabibliotek.py: Sjekker om sqlite-databasen og
-	  pysqlite bruker samme api-versjon dersom vi har problemer med å
-	  koble til
+	* Sjekker om sqlite-databasen og pysqlite bruker samme api-versjon
+	  dersom vi har problemer med å koble til
 
 2006-10-09 18:40  havard.dahle
 
-	* README: flytter feil og planlagte egenskaper til code.google.com
+	* flytter feil og planlagte egenskaper til code.google.com
 
 2006-10-09 17:42  havard.dahle
 
-	* README, debian/README, debian/chl.sh, debian/conffiles.ex,
-	  debian/control, debian/copyright, debian/cron.d.ex, debian/dirs,
-	  debian/docs, debian/finfaktura-doc.docs,
-	  debian/finfaktura-doc.install, debian/finfaktura.1,
-	  debian/finfaktura.doc-base.EX, debian/manpage.1.ex,
-	  debian/manpage.sgml.ex, debian/manpage.xml.ex, debian/menu.ex,
-	  debian/postinst.ex, debian/postrm.ex, debian/preinst.ex,
-	  debian/prerm.ex, debian/rules, finfaktura/__init__.py,
-	  finfaktura/faktura_ui.py, finfaktura/fakturabibliotek.py: henter
-	  inn lærdom fra beta1 ++
+	* henter inn lærdom fra beta1 ++
 
 2006-10-06 23:12  havard.dahle
 
-	* branches, doc, trunk: idiot
+	* idiot
 
 2006-10-06 23:09  havard.dahle
 
-	* branches, doc, finfaktura/faktura_ui.py, trunk, trunk/doc:
-	  begynner på ordentlig svn-struktur
+	* begynner på ordentlig svn-struktur
 
 2006-10-06 22:35  havard.dahle
 
-	* finfaktura/f60.py: hack for å sende eksisterende filnavn tilbake
+	* hack for å sende eksisterende filnavn tilbake
 
 2006-10-06 22:25  havard.dahle
 
-	* finfaktura/fakturabibliotek.py: mer tydelig skille mellom
-	  produksjon og test-versjoner
+	* mer tydelig skille mellom produksjon og test-versjoner
 	  begynnelsen på å kunne skille mellom sqlite2 og 3
 
 2006-10-06 22:23  havard.dahle
 
-	* finfaktura/epost.py: mer tydelig skille mellom produksjon og
-	  test-versjoner
+	* mer tydelig skille mellom produksjon og test-versjoner
 
 2006-10-06 22:22  havard.dahle
 
-	* faktura.py: trygt med unicode filnavn
+	* trygt med unicode filnavn
 	  mer tydelig skille mellom produksjon og test-versjoner
 
 2006-10-06 20:44  havard.dahle
 
-	* finfaktura/fakturabibliotek.py: småendringer på testene
+	* småendringer på testene
 
 2006-10-06 20:43  havard.dahle
 
-	* finfaktura/epost.py: skrive ut epostadressene skikkelig
+	* skrive ut epostadressene skikkelig
 
 2006-10-06 20:31  havard.dahle
 
-	* debian/rules: installasjon som funker
+	* installasjon som funker
 
 2006-10-06 20:30  havard.dahle
 
-	* setup.py: installasjon som funker
+	* installasjon som funker
 
 2006-10-06 20:28  havard.dahle
 
-	* finfaktura/epost.py: syntax
+	* syntax
 
 2006-10-06 20:08  havard.dahle
 
-	* debian, debian/control, debian/copyright, debian/finfaktura.1,
-	  debian/menu, debian/rules, debian/watch: debianisering
+	* debianisering
 
 2006-10-05 21:58  havard.dahle
 
-	* finfaktura/faktura_ui.py: bedre plass til manglende firmainfo og
-	  ny default fakturakatalog
+	* bedre plass til manglende firmainfo og ny default fakturakatalog
 
 2006-10-05 21:57  havard.dahle
 
-	* finfaktura/fakturabibliotek.py: fiks regresjon: feilet ved første
-	  gangs oppstart
+	* fiks regresjon: feilet ved første gangs oppstart
 
 2006-10-05 21:55  havard.dahle
 
-	* faktura.ui: bedre plass til manglende firmainfo og ny default
-	  fakturakatalog
+	* bedre plass til manglende firmainfo og ny default fakturakatalog
 
 2006-10-05 21:55  havard.dahle
 
-	* faktura.py: rød bakgrunn på manglende firmainfo
+	* rød bakgrunn på manglende firmainfo
 
 2006-09-27 21:33  havard.dahle
 
-	* MANIFEST: legger til epost.py
+	* legger til epost.py
 
 2006-09-27 21:32  havard.dahle
 
-	* MANIFEST, README, faktura.py, faktura.sql, setup.py: setter
-	  keywords Id, URL og Rev på ordentlig denne gangen
+	* setter keywords Id, URL og Rev på ordentlig denne gangen
 
 2006-09-27 21:30  havard.dahle
 
-	* finfaktura/__init__.py, finfaktura/cli.py, finfaktura/ekstra.py,
-	  finfaktura/epost.py, finfaktura/f60.py,
-	  finfaktura/fakturaSqliteDB.py, finfaktura/faktura_ui.py,
-	  finfaktura/fakturabibliotek.py, finfaktura/myndighetene.py,
-	  finfaktura/okonomi.py, finfaktura/oppgradering.py,
-	  finfaktura/sikkerhetskopi.py: setter keywords Id, URL og Rev på
-	  ordentlig denne gangen
+	* setter keywords Id, URL og Rev på ordentlig denne gangen
 
 2006-09-27 21:28  havard.dahle
 
-	* finfaktura/__init__.py, finfaktura/cli.py, finfaktura/ekstra.py,
-	  finfaktura/epost.py, finfaktura/f60.py,
-	  finfaktura/fakturaSqliteDB.py, finfaktura/faktura_ui.py,
-	  finfaktura/fakturabibliotek.py, finfaktura/myndighetene.py,
-	  finfaktura/okonomi.py, finfaktura/oppgradering.py,
-	  finfaktura/sikkerhetskopi.py: setter keywords Id, URL og Rev
+	* setter keywords Id, URL og Rev
 
 2006-09-27 21:22  havard.dahle
 
-	* faktura.py: Legger til $ID$
+	* Legger til $ID$
 
 2006-09-27 21:06  havard.dahle
 
-	* finfaktura/epost.py: rydder opp i api: send()-metoden må være lik
-	  i alle subklasser
+	* rydder opp i api: send()-metoden må være lik i alle subklasser
 
 2006-09-27 21:05  havard.dahle
 
-	* faktura.sql: fikser bug på ordentlig!: overskriver fakturakatalog
-	  ved oppdatering
+	* fikser bug på ordentlig!: overskriver fakturakatalog ved
+	  oppdatering
 
 2006-09-27 21:03  havard.dahle
 
-	* faktura.sql: fikser bug: overskriver fakturakatalog ved
-	  oppdatering
+	* fikser bug: overskriver fakturakatalog ved oppdatering
 
 2006-09-18 00:07  havard.dahle
 
-	* faktura.py: ny og bedre(?) behandling av logo: skalerer ned til
-	  riktig størrelse før lagring i db
+	* ny og bedre(?) behandling av logo: skalerer ned til riktig
+	  størrelse før lagring i db
 
 2006-09-18 00:06  havard.dahle
 
-	* finfaktura/__init__.py: + ekstra
+	* + ekstra
 	  + versjonspuff
 
 2006-09-18 00:05  havard.dahle
 
-	* finfaktura/ekstra.py: ekstra: QBuffer
+	* ekstra: QBuffer
 
 2006-09-17 01:18  havard.dahle
 
-	* faktura.ui, finfaktura/faktura_ui.py: småjusteringer
+	* småjusteringer
 
 2006-09-17 01:18  havard.dahle
 
-	* finfaktura/epost.py, finfaktura/fakturabibliotek.py: Epost:
-	  støtte for sendmail
+	* Epost: støtte for sendmail
 
 2006-09-17 01:17  havard.dahle
 
-	* faktura.py: Ditt firma: tilbakemelding på manglende felt
+	* Ditt firma: tilbakemelding på manglende felt
 
 2006-09-16 23:40  havard.dahle
 
-	* faktura.ui, finfaktura/faktura_ui.py: nytt tekstfelt
+	* nytt tekstfelt
 
 2006-09-16 23:27  havard.dahle
 
-	* MANIFEST, README, doc, doc/faktura-0.1-fakuraliste.png,
-	  doc/faktura-0.1-kundeliste.png, doc/faktura-0.1-oppsett.png,
-	  doc/faktura-0.7-fakturaliste.png, doc/faktura-0.7-kundeliste.png,
-	  doc/faktura-0.7-nyfaktura.png, doc/faktura-0.7-nyvare.png,
-	  doc/faktura-0.7-vareliste.png, faktura.py, faktura.sql,
-	  faktura.ui, finfaktura, finfaktura/__init__.py,
-	  finfaktura/cli.py, finfaktura/epost.py, finfaktura/f60.py,
-	  finfaktura/fakturaSqliteDB.py, finfaktura/faktura_ui.py,
-	  finfaktura/fakturabibliotek.py, finfaktura/myndighetene.py,
-	  finfaktura/okonomi.py, finfaktura/oppgradering.py,
-	  finfaktura/sikkerhetskopi.py, postkort.txt, setup.py: initial
-	  import
+	* initial import
 
 2006-09-16 21:09  
 
-	* .: Initial directory structure.
+	* Initial directory structure.
 

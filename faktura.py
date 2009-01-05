@@ -46,7 +46,7 @@ if __name__ == "__main__":
         except ImportError, (e):
             print u"OOPS! Problemer med å laste moduler (bruk -d for å vise feilmelding)"
             if DEBUG:
-                print e
+                logging.exception(e)
             print u"Faller tilbake til konsollmodus ..."
             print
             from finfaktura.cli import cli_faktura
