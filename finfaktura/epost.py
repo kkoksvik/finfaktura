@@ -16,6 +16,7 @@ from email.mime.base import MIMEBase
 from email.mime.text import MIMEText
 from email import encoders, generator
 from email.header import Header, decode_header
+import email.iterators
 import socket
 from string import join
 
