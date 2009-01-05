@@ -1,0 +1,145 @@
+finfaktura (2.0.1) jaunty; urgency=low
+
+  * Fikser feil som intrer når ny faktura skal lages, og noe av informasjonen
+    om firmaet mangler (issue#45) -- takk, Audun!
+  * Fikser feil som gir alle fakturaer dagens dato
+  * Fikser feil på windows når brukernavnet inneholder æøå (ikke-ascii tegn)
+
+ -- Håvard Gulldahl <havard@gulldahl.no>  Thu, 01 Jan 2009 23:33:30 +0100
+
+finfaktura (2.0) intrepid; urgency=low
+
+  * Fikser rapport.py: utskrift av pdf og rapport fra firma med '&' i
+    firmanavnet (issue#43) -- takk, Eivind!
+  * Fikser scrollelinjer dersom skjermen/vinduet er mindre enn informasjonen
+    som skal vises -- takk, Johan!
+  * Bedre installasjon på Debian/Ubuntu
+  * Fikser vising av PDF på windows
+
+ -- Håvard Gulldahl <havard@gulldahl.no>  Wed, 03 Dec 2008 01:33:38 +0100
+
+finfaktura (1.9.9b3-3) intrepid; urgency=low
+
+  * Sørger for at scripts/forbered_ressurser.sh blir kjørt, og 
+    .ui- og .qrc-filer blir med i .deb-pakken
+
+ -- Håvard Gulldahl <havard@gulldahl.no>  Tue, 28 Oct 2008 16:15:25 +0100
+
+finfaktura (1.9.9b3-2) intrepid; urgency=low
+
+  * Fikser gui_sikkerhetspkopi.py (issue#36) - takk, Johan!
+
+ -- Håvard Gulldahl <havard@gulldahl.no>  Sun, 26 Oct 2008 02:31:49 +0200
+
+finfaktura (1.9.9b3) intrepid; urgency=low
+
+  * Mer bugfiksing på epostsending
+  * Gir navn på vinduer
+  * Meny-oppføring
+
+ -- Håvard Gulldahl <havard@gulldahl.no>  Wed, 22 Oct 2008 00:25:41 +0200
+
+finfaktura (1.9.9b2) intrepid; urgency=low
+
+  * Bugfiks: epostsending, firmainfo/logo, ny vare, eposttest ++
+  * Eksterne programmer startes på en universell måte som funker på alle
+    plattformer
+  * Logoer og dokumenter installeres
+  * Installeres med meny-oppføring (issue#1)
+
+ -- Håvard Gulldahl <havard@gulldahl.no>  Mon, 13 Oct 2008 00:21:39 +0200
+
+finfaktura (1.9.9b) intrepid; urgency=low
+
+  * Grensesnittet er portert til PyQt4 (issue#3) og redesignet
+  * Fikser justering av utskrift på skjema F60 (issue#30)
+  * Det går an å føre halve antall av varer (f.eks. timer) (issue#22)
+  * Kan sette vilkårlig forfallsdato på ny faktura (issue#25)
+  * Fikser en rekke bugs, for eksempel issue#32
+  * En rekke egne vinduer introduseres, bl.a. Om.. og Lisens.. -vinduer
+  * Har tatt ulike grep for å å gjøre programvinduet så lavt som mulig (s.a.
+    det skal funke på små skjermer/oppløsninger)
+
+ -- Håvard Gulldahl <havard@gulldahl.no>  Thu, 04 Sep 2008 01:02:39 +0200
+
+finfaktura (1.3.2) intrepid; urgency=low
+
+  * Bug-en ved første gangs oppstart var ikke helt skvist
+
+ -- Håvard Gulldahl <havard@gulldahl.no>  Sun, 11 May 2008 11:00:50 +0200
+
+finfaktura (1.3.1) intrepid; urgency=low
+
+  * Viktig bugfiks for uventet inndata
+
+ -- Håvard Gulldahl <havard@gulldahl.no>  Fri, 09 May 2008 21:02:17 +0200
+
+finfaktura (1.3) intrepid; urgency=low
+
+  * Fikset layout - den er justerbar nå
+  * Kan skrive ut rapporter
+  * Justerbare plasseringer for PDF-programmer
+
+ -- Håvard Gulldahl <havard@lurtgjort.no>  Fri, 09 May 2008 20:23:55 +0200
+
+finfaktura (1.1) stable; urgency=low
+
+  * Fikset bug hvor nye varer ikke kunne legges til på direkten
+  * Ny-faktura-vindu: Varens pris og mva blir oppdatert når man blar gjennom lista
+  * Restrukturert kode for bedre layout
+  * Kan angre på at en faktura er betalt
+  * Test epostoppsett funker igjen
+  * Mer hjelpetekst
+
+ -- Håvard Dahle <havard@lurtgjort.no>  Thu,  3 May 2007 02:01:40 +0200
+
+finfaktura (1.0) stable; urgency=low
+
+  * Ny og bedre dialog for å legge inn ny faktura
+  * Forbedret epost-funksjonalitet: kan bruke smtp.gmail.com:587
+  * Rapporter for oversikt over fordringer
+
+ -- Håvard Dahle <havard@dahle.no>  Sun, 29 Apr 2007 19:47:15 +0200
+
+finfaktura (0.96.2) 1; urgency=low
+
+  * Datofeltet for betaling av fakturaer oppfører seg nå slik man forventer
+    av det. 
+
+ -- Håvard Dahle <havard@dahle.no>  Tue, 16 Jan 2007 00:50:04 +0100
+
+finfaktura (0.96) 1; urgency=low
+
+  * PDF-fakturaen inneholder nå informasjon om prisen med og uten mva, samt
+    mva-beløpet, som forespurt av frode@ubuntu.com
+
+ -- Håvard Dahle <havard@lurtgjort.no>  Fri,  5 Jan 2007 00:22:49 +0100
+
+finfaktura (0.95) 1; urgency=low
+
+  * Fikser grov bug i BCC-kode, og fikser opp brukergrensesnittet for BCC
+  * Bug i kundeoversikten: inkluderte kansellerte fakturaer i kundedetaljer
+
+ -- Håvard Dahle <hadahl@hadahl>  Sun, 24 Dec 2006 02:33:27 +0100
+
+
+finfaktura (0.94-1) 1; urgency=low
+
+  * Støtte for python-reportlab2.0 (som edgy edge og debian etch bruker)
+  * Kan sende epost-faktura fra programmet
+  * Bedre feilmelding ved oppgradering
+
+ -- Håvard Dahle <havard@mediestasjon>  Mon, 11 Dec 2006 21:44:17 +0100
+
+finfaktura (0.7) unstable; urgency=low
+
+  * More releases
+
+ -- Havard Dahle <havard@dahle.no>  Sat, 14 Oct 2006 02:31:12 +0100
+
+finfaktura (0.6b1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Håvard Dahle <havard@dahle.no>  Sat,  7 Oct 2006 17:24:30 +0200
+
