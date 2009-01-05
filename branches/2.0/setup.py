@@ -17,10 +17,10 @@ import sys, os, os.path, glob
 
 try:
   import py2exe
-  extra = {'windows':['faktura.py'],
+  extra = {'console':['faktura.py'],
            'options': { 'py2exe' : {
                                      'optimize': 2,
-                                     'includes': ['sip', 'socket'], # list of modules to include
+                                     'includes': ['sip', 'socket', 'xml.etree.ElementTree', 'itertools'], # list of modules to include
                                      'excludes':[], #list of module names to exclude
                                      'dll_excludes':[], #list of dlls to exclude
                                      'ignores':[],# list of modules to ignore if they are not found
