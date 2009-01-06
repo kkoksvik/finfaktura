@@ -17,7 +17,7 @@ import sys, os, os.path, glob
 
 try:
   import py2exe
-  extra = {'windows':['faktura.py'],
+  extra = {'console':['faktura.py'],
            'options': { 'py2exe' : {
                                      'optimize': 2,
                                      'includes': ['sip', 'socket', 'xml.etree.ElementTree'], # list of modules to include

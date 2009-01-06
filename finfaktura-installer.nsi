@@ -88,7 +88,7 @@ SectionEnd
 
   ;Name and file
   Name "Fryktelig Fin Faktura"
-  OutFile "finfaktura-install.exe"
+  OutFile "dist\finfaktura-install.exe"
 
   ;Default installation folder
   InstallDir "$PROGRAMFILES\Fryktelig Fin Faktura"
