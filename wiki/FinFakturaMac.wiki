@@ -17,3 +17,7 @@ Det er i utgangspunktet ikke grafisk styrt, og bruken forutsetter at man er komf
   # Last ned [http://code.google.com/p/finfaktura/downloads/list _Fin Faktura_ som *python kildekode*] (slutter på .zip)
   # I konsollet, kjør `python setup.py install`
   # Ferdig.
+
+== Lenker ==
+
+http://aralbalkan.com/1675
