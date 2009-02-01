@@ -1,5 +1,5 @@
 #!/usr/bin/python -d
-# -*-*- coding:utf8 -*-*-
+# -*- coding: utf-8 -*-
 ###########################################################################
 #    Copyright (C) 2005-2008- Håvard Gulldahl
 #    <havard@lurtgjort.no>
@@ -356,8 +356,8 @@ class fakturaFirmainfo(fakturaKomponent):
         return u"""
       == FIRMA: %(firmanavn)s ==
       Kontakt: %(kontaktperson)s
-      Adresse: %(adresse)s, %(postnummer)04s %(poststed)s
-      Konto  : %(kontonummer)s
+      Adresse: %(adresse)s, %(postnummer)04i %(poststed)s
+      Konto  : %(kontonummer)011i
       Org.nr : %(organisasjonsnummer)s
       """ % (self._egenskaper)
 
