@@ -13,6 +13,7 @@ import types, os, sys, os.path, shutil
 from string import join
 from time import time, strftime, localtime
 import logging, subprocess
+import xml.etree.ElementTree # help py2exe
 try:
     import sqlite3 as sqlite # python2.5 har sqlite3 innebygget
 except ImportError:

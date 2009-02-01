@@ -15,6 +15,23 @@ from distutils.core import setup
 
 import sys, os, os.path, glob
 
+try:
+  import py2exe
+  extra = {'console':['faktura.py'],
+           'options': { 'py2exe' : {
+                                     'optimize': 2,
+                                     'includes': ['sip', 'socket', 'xml.etree.ElementTree'], # list of modules to include
+                                     'excludes':[], #list of module names to exclude
+                                     'dll_excludes':[], #list of dlls to exclude
+                                     'ignores':[],# list of modules to ignore if they are not found
+                                    }
+                       }
+           }
+except ImportError:
+  PY2EXE=False
+  extra = {}
+
+
 import finfaktura # for versjonsnummer
 
 setup(name="finfaktura",
@@ -30,6 +47,7 @@ setup(name="finfaktura",
       scripts=["faktura.py"],
       license="GPL2",
       long_description=file(os.path.split(os.path.realpath(sys.argv[0]))[0] + "/README").read(),
+      **extra
       #install_requires = ['docutils>=0.3', 'reportlab'],
       #zip_safe=True,
       #include_package_data = True,
