@@ -1,4 +1,4 @@
-# -*- coding:utf8 -*-
+# -*- coding: utf-8 -*-
 # kate: indent-width 4;
 ###########################################################################
 #    Copyright (C) 2008 Håvard Gulldahl
@@ -68,7 +68,7 @@ class firmaOppsett(firmainfo_ui.Ui_firmaOppsett):
             }
 
     def vis(self):
-        format = { self.Postnummer: "%04i", } # må formateres spesielt dersom det begynner med 0, eks. 0921
+        format = { self.Postnummer: "%04i", self.Kontonummer: "%011i", } # må formateres spesielt dersom det begynner med 0, eks. 0921
         for til, fra in self.firmaWidgetKart().iteritems():
             #debug("fra", fra, type(fra))
             #debug("til", til, type(til))

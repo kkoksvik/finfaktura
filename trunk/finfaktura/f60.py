@@ -147,7 +147,7 @@ class f60:
             %(adresse)s
             %(postnummer)04i %(poststed)s
             Telefon: %(telefon)s
-            Bankkonto: %(kontonummer)s
+            Bankkonto: %(kontonummer)011i
             Org.nr: %(organisasjonsnummer)s
             Epost: %(epost)s"""
         for k in info.keys():
@@ -359,7 +359,7 @@ class f60:
 %(adresse)s
 %(postnummer)04i %(poststed)s
 Telefon: %(telefon)s
-Bankkonto: %(kontonummer)s
+Bankkonto: %(kontonummer)011i
 Org.nr: %(organisasjonsnummer)s
 Epost: %(epost)s""" % (self.firma), "\n"))
         self.canvas.drawText(firmainfo)
