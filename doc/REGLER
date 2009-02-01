@@ -40,7 +40,7 @@
     python setup.py sdist --format=zip
 
 * Sjekk ut wiki-sider for å installere dem i pakken
-    svn checkout http://finfaktura.googlecode.com/svn/wiki
+    svn checkout https://finfaktura.googlecode.com/svn/wiki
 
 * Lage .deb
     #fakeroot debian/rules binary
@@ -83,7 +83,8 @@
     googlecode-upload.py -s "Fryktelig Fin Faktura (python kildekode), versjon $VERSJON" -p finfaktura -u havard.gulldahl -l "Featured,Type-Package,OpSys-All,Versjon-Ferdig" dist/finfaktura-${VERSJON}.zip
 
     -> win
-    googlecode-upload.py -s "Fryktelig Fin Faktura (win), versjon $VERSJON" -p finfaktura -u havard.gulldahl -l "Featured,Type-Installer,OpSys-Windows,Versjon-Ferdig" dist/finfaktura-${VERSJON}.zip
+    winepython setup.py py2exe
+    googlecode-upload.py -s "Fryktelig Fin Faktura (win), versjon $VERSJON" -p finfaktura -u havard.gulldahl -l "Featured,Type-Installer,OpSys-Windows,Versjon-Ferdig" dist/finfaktura-${VERSJON}.exe
 
     -> f60.py
     F60VER=$(grep __version__ finfaktura/f60.py | sed -e 's/[^.0-9]//g'); echo $F60VER;

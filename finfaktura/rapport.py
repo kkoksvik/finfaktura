@@ -36,7 +36,8 @@ class rapport:
             raise fakturafeil.InstallasjonsFeil('python-reportlab er ikke installert. Kan ikke lage PDF!')
         if filnavn is None:
             import tempfile
-            self.filnavn = tempfile.mkstemp(suffix='.pdf', prefix='rapport-')[1]
+            f, self.filnavn = tempfile.mkstemp(suffix='.pdf', prefix='rapport-')
+            os.close(f) # lukk fil-deskriptoren
         else:
             self.filnavn = filnavn
         self.info = rapportinfo

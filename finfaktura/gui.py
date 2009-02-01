@@ -485,6 +485,7 @@ class FinFaktura(QtGui.QMainWindow):#Ui_MainWindow): ## leser gui fra faktura_ui
             s += "<p>&nbsp;&nbsp;&nbsp;%.2f kr<br> + mva %.2f kr<br> <u>= %.2f kr</u>\n" % (pris, moms, pris+moms)
 
         s += "<p><i>Historikk</i>:<br>"
+        logging.debug('linja har verdien %s, dato: %s', linje.ordre.ordredato, localtime(linje.ordre.ordredato))
         s += "Fakturert: %s<br>" % strftime("%Y-%m-%d", localtime(linje.ordre.ordredato))
         if linje.ordre.betalt > linje.ordre.forfall or \
             ( not linje.ordre.betalt and time() > linje.ordre.forfall ):
