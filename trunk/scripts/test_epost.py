@@ -18,8 +18,10 @@ try:
     s.starttls()                         
     s.ehlo()                             
     s.login(brukernavn, passord)
+    print "HURRA"
 except Exception, (e):
     logging.exception(e)
-
+    print "HUFFDA"
+s.close()
 
 
