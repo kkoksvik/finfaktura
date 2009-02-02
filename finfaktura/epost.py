@@ -9,13 +9,14 @@
 # $Id$
 ###########################################################################
 
-import sys,types,os
+import sys, types, os, os.path, logging
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 from email.mime.text import MIMEText
 from email import encoders, generator
 from email.header import Header, decode_header
+from email.utils import parseaddr
 import email.iterators
 import socket
 from string import join
@@ -23,6 +24,7 @@ from string import join
 TRANSPORTMETODER = ['auto', 'smtp', 'sendmail']
 
 class SendeFeil(Exception): pass
+class UgyldigVerdi(Exception): pass
 class IkkeImplementert(Exception): pass
 
 class epost:
@@ -32,9 +34,11 @@ class epost:
     brukernavn = None
     passord = None
     testmelding = True
+    vedlegg = []
 
     def faktura(self, ordre, pdfFilnavn, tekst=None, fra=None, testmelding=False):
-        assert type(pdfFilnavn) in types.StringTypes
+        if not type(pdfFilnavn) in types.StringTypes:
+            raise UgyldigVerdi(u'pdfFilnavn skal være tekst (ikke "%s")' % type(pdfFilnavn))
         self.ordre = ordre
         self.pdfFilnavn = pdfFilnavn
         if fra is None: fra = ordre.firma.epost
@@ -71,11 +75,23 @@ class epost:
         b.set_payload(fp.read()) # les inn fakturaen
         fp.close()
         encoders.encode_base64(b) #base64 encode subpart
+
+        # Legg til vedlegg
+        for filnavn, vedlegg in self.vedlegg:
+            v = MIMEBase('application', 'octet-stream')
+            _filename=Header(filnavn, self.charset)
+            v.add_header('Content-Disposition', 'attachment', filename=_filename.encode()) # legg til filnavn
+            m.attach(v)
+            v.set_payload(vedlegg) 
+            encoders.encode_base64(v) #base64 encode subpart
+
         return m
 
     def auth(self, brukernavn, passord):
-        assert type(brukernavn) in types.StringTypes
-        assert type(passord) in types.StringTypes
+        if not type(brukernavn) in types.StringTypes:
+            raise UgyldigVerdi(u'Brukernavn skal være tekst (ikke "%s")' % type(brukernavn))
+        if not type(passord) in types.StringTypes:
+            raise UgyldigVerdi(u'Passord skal være tekst (ikke "%s")' % type(passord))
         self._auth = True
         self.brukernavn = brukernavn
         self.passord = passord
@@ -91,12 +107,26 @@ class epost:
 
     def settKopi(self, s):
         # setter BCC-kopi til s
-        assert(type(s) in types.StringTypes)
+        if not type(s) in types.StringTypes:
+            raise UgyldigVerdi(u'Epostadresse skal være tekst (ikke "%s")' % type(s))
         # sjekk at s er en gyldig epostadresse
-        # XXX TOODO
+        if not '@' in s:
+            raise UgyldigVerdi(u'Denne epostadressen er ikke gyldig: %s' % s)
         self.kopi = s
 
-
+    def nyttVedlegg(self, f):
+        "Legg til vedlegg. `f' kan være et filnavn eller et file()-objekt"
+        if os.path.exists(f):
+            _f = open(f, 'rb')
+            self.vedlegg.append((f, _f.read()))
+            _f.close()
+            return True
+        elif hasattr(f, 'read'):
+            self.vedlegg.append(('noname', f.read()))
+            return True
+        else:
+            return False
+            
 class smtp(epost):
     smtpserver='localhost'
     smtpport=25
@@ -104,14 +134,17 @@ class smtp(epost):
     _auth = False
 
     def settServer(self, smtpserver, port=25):
-        assert type(smtpserver) in types.StringTypes
-        assert type(port) == types.IntType
+        if not type(smtpserver) in types.StringTypes:
+            raise UgyldigVerdi(u'smtpserver skal være tekst (ikke "%s")' % type(smtpserver))
+        if not type(port) == types.IntType:
+            raise UgyldigVerdi(u'port skal være et heltall (ikke "%s")' % type(port))
         self.smtpserver=unicode(smtpserver)
         self.smtpport=int(port)
 
-    def tls(self, bool):
-        assert type(bool) == types.BooleanType
-        self._tls = bool
+    def tls(self, _bool):
+        if not type(_bool) == bool:
+            raise UgyldigVerdi(u'Verdien skal være True eller False (ikke "%s")' % type(_bool))
+        self._tls = _bool
 
     def test(self):
         s = smtplib.SMTP()
@@ -145,8 +178,8 @@ class smtp(epost):
             raise
         mottakere = [self.til,]
         if self.kopi: mottakere.append(self.kopi) # sender kopi til oss selv (BCC)
-        print "mottaker:",mottakere
-        print "fra:", self.fra, type(self.fra)
+        logging.debug("mottaker: %s", mottakere)
+        logging.debug("fra: %s (%s)", self.fra, type(self.fra))
         res = s.sendmail(self.fra, mottakere, self.mimemelding().as_string())
         s.close()
         if len(res) > 0:
@@ -168,13 +201,14 @@ class sendmail(epost):
     _auth=False
 
     def settSti(self, sti):
-        assert type(sti) in types.StringTypes
+        if not type(sti) in types.StringTypes:
+            raise UgyldigVerdi(u'sti skal være tekst (ikke "%s")' % type(sti))
         self.bin = sti
 
     def test(self):
         import os.path as p
         real = p.realpath(self.bin)
-        print real
+        logging.debug("fullstendig sti: %s", real)
         if not (p.exists(real) and p.isfile(real)): # er dette tilstrekkelig?
             raise SendeFeil(u'%s er ikke en gyldig sendmail-kommando' % self.bin)
         return True
@@ -192,7 +226,7 @@ class sendmail(epost):
         # XXX TODO: Hvordan gjøre auth uavhengig av sendmail-implementasjon?
         kmd = "%s %s" % (self.bin, self.til)
         if self.kopi: kmd += " %s" % self.kopi # kopi til oss selv (BCC)
-        print kmd
+        logging.debug("starter prosess: %s", kmd)
         inn, ut = os.popen4(kmd)
         try:
             inn.write(self.mimemelding().as_string())
@@ -201,7 +235,7 @@ class sendmail(epost):
             raise SendeFeil(u'Sendingen feilet fordi:\n' + ut.read())
         #i = inn.close()
         u = ut.close()
-        print(u'[epost.py]: sendmail er avsluttet; %s U %s' % (r,u))
+        logging.info('sendmail er avsluttet; %s U %s' % (r,u))
         return True
 
 class dump(epost):
