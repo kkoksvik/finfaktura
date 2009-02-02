@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import sys, smtplib, logging
+logging.basicConfig(level=logging.DEBUG)
 sys.path.append('../finfaktura')
 import epost
 
