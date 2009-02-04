@@ -77,7 +77,7 @@ except ImportError:
     REPORTLAB=False
     raise f60InstallasjonsFeil("python-modulen `reportlab' mangler. Kan ikke lage PDF!")
 
-__version__ = '0.13'
+__version__ = '0.15'
 __license__ = 'GPLv2'
 
 try:
@@ -95,6 +95,7 @@ class f60:
     firma = {}
     faktura = {}
     filnavn = ''
+    datoformat = "%Y-%m-%d"
 
     def __init__(self, filnavn, overskriv = False):
         self.overskriv = overskriv
@@ -117,8 +118,8 @@ class f60:
     def settFakturainfo(self, fakturanr, utstedtEpoch, forfallEpoch, fakturatekst, vilkaar = '', kid = None):
         """Sett vital info om fakturaen"""
         self.faktura['nr'] = int(fakturanr)
-        self.faktura['utstedt'] = time.strftime("%Y-%m-%d", time.localtime(utstedtEpoch))
-        self.faktura['forfall'] = time.strftime("%Y-%m-%d", time.localtime(forfallEpoch))
+        self.faktura['utstedt'] = time.strftime(datoformat, time.localtime(utstedtEpoch))
+        self.faktura['forfall'] = time.strftime(datoformat, time.localtime(forfallEpoch))
         self.faktura['tekst'] = self._s(fakturatekst)
         self.faktura['vilkaar'] = self._s(vilkaar)
         if kid and not self.sjekkKid(kid): raise f60FeilKID(u'KID-nummeret er ikke riktig')
@@ -158,6 +159,13 @@ class f60:
         self.kunde['adresse'] = self._s(adresse)
 
     # ==================== OFFENTLIGE FUNKSJONER ================ #
+
+    def settDatoformat(self, format):
+        """Angir nytt format for alle datoer.
+        Se http://www.python.org/doc/2.5.2/lib/module-time.html#l2h-2826
+        for mulige verdier"""
+        logging.debug("Setter nytt datoformat: %s, f.eks. %s", format, time.strftime(format))
+        self.datoformat = format
 
     def lagPost(self):
         "Ferdigstiller dokumentet for utskrift på papir (uten F60 skjemafelt)"
@@ -199,30 +207,35 @@ class f60:
         logging.debug('kjører kommando: %s',  command)
         subprocess.call(command)
 
+    def lagKid(self):
+        "Lager kid av kundenummer og fakturanummer, med kontrollsiffer"
+        tallrekke = "%06i%06i" % (self.kunde['nr'], self.faktura['nr'])
+        return "%s%s" % (tallrekke, self.lagKontrollsiffer(tallrekke))
+
     def sjekkKid(self, kid):
-        "Kontrollerer et kid-nr etter mod10/luhner-algoritmen. Returnerer True/False"
+        return self.sjekkKontrollsiffer(self, kid)
+
+    def sjekkKontrollsiffer(self, tallrekke):
+        "Kontrollerer kontrollsifferet til en tallrekke etter mod10/luhn-algoritmen. Returnerer True/False"
+        _tallrekke = int(tallrekke[:-1])
+        kontroll = int(tallrekke[1])
+        return self.lagSjekksum(_tallrekke) == kontroll
+
+    def lagKontrollsiffer(self, tallrekke=None):
+        "Lager mod10/luhn kontrollsiffer for en tallrekke. Returnerer et heltall"
         #http://no.wikipedia.org/wiki/KID
         #hvert andre siffer (bakfra) skal dobles og tverrsummene av alle produktene legges sammen
         #totalsummen skal så moduleres med 10, uten rest
-
-        #denne implementasjonen opprinnelig fra
-        # http://www.elifulkerson.com
-        try:
-            cc = map(int, str(kid))
-            cc.reverse() # snu rekken slik at vi jobber bakfra
-        except TypeError:
-            return False
-
-        total = 0
-        for a in range(0, len(cc)):
-            if (a % 2) == 1: # hvert andre siffer
-                assert(cc[a] >= 0 and cc[a] <= 9)
-                d = cc[a]*2 # dobles
-                if d < 10: total += d
-                else: total += d - 9 # tverrsum
-            else:
-                total += cc[a]
-        return (total % 10) == 0 # mod10 uten rest
+        # sjekk http://www.bbs-nordic.com/upload/Brukerhandbok%20OCR%20giro.pdf
+        # (kopi på http://code.google.com/p/finfaktura/issues/detail?id=38)
+        # Takk til cbratli
+        _sum = 0
+        for i, j in enumerate(map(int, reversed(kid))):
+            if (i % 2) == 1:
+                j *= 2
+                if j > 9: j -= 9
+            _sum += j
+        return _sum % 10
 
     # ==================== INTERNE FUNKSJONER ================ #
 
@@ -509,8 +522,8 @@ Side: %i av %i
         # fakturainformasjon
         t = self.canvas.beginText()
         t.setTextOrigin(15*mm, 90*mm)
-        t.textLines("Kundenr: %04i\nFakturanr: %04i\nFakturadato: %s" % \
-            (self.kunde['nr'], self.faktura['nr'], self.faktura['utstedt']))
+        t.textLines("Fakturanr: %05i\nKundenr: %04i\nFakturadato: %s" % \
+            (self.faktura['nr'], self.kunde['nr'], self.faktura['utstedt']))
         self.canvas.drawText(t)
 
         # mottakerfelt
