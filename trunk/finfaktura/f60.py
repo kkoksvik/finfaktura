@@ -116,13 +116,15 @@ class f60:
     # ============= MÅ FYLLES INN AV BRUKER =============== #
 
     def settFakturainfo(self, fakturanr, utstedtEpoch, forfallEpoch, fakturatekst, vilkaar = '', kid = None):
-        """Sett vital info om fakturaen"""
+        """Sett vital info om fakturaen. Bruk kid=True for å generere kid ut i fra kundenr og fakturanr."""
         self.faktura['nr'] = int(fakturanr)
         self.faktura['utstedt'] = time.strftime(datoformat, time.localtime(utstedtEpoch))
         self.faktura['forfall'] = time.strftime(datoformat, time.localtime(forfallEpoch))
         self.faktura['tekst'] = self._s(fakturatekst)
         self.faktura['vilkaar'] = self._s(vilkaar)
-        if kid and not self.sjekkKid(kid): raise f60FeilKID(u'KID-nummeret er ikke riktig')
+        if kid:
+            if isinstance(kid, bool): kid = self.lagKid()
+            if not self.sjekkKid(kid): raise f60FeilKID(u'KID-nummeret er ikke riktig')
         self.faktura['kid'] = kid
 
     def settOrdrelinje(self, ordrelinje):
@@ -163,7 +165,7 @@ class f60:
     def settDatoformat(self, format):
         """Angir nytt format for alle datoer.
         Se http://www.python.org/doc/2.5.2/lib/module-time.html#l2h-2826
-        for mulige verdier"""
+        for mulige verdier. Standardverdi er %Y-%m-%d."""
         logging.debug("Setter nytt datoformat: %s, f.eks. %s", format, time.strftime(format))
         self.datoformat = format
 
