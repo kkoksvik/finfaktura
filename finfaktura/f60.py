@@ -218,7 +218,7 @@ class f60:
     def sjekkKontrollsiffer(self, tallrekke):
         "Kontrollerer kontrollsifferet til en tallrekke etter mod10/luhn-algoritmen. Returnerer True/False"
         _tallrekke = int(tallrekke[:-1])
-        kontroll = int(tallrekke[1])
+        kontroll = int(tallrekke[-1])
         return self.lagSjekksum(_tallrekke) == kontroll
 
     def lagKontrollsiffer(self, tallrekke=None):
