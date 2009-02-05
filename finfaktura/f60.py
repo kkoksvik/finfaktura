@@ -83,7 +83,7 @@ __license__ = 'GPLv2'
 try:
     REPORTLAB2 = (reportlab.Version[0] == '2')
 except AttributeError, IndexError:
-    raise
+    logging.warn('Reportlab-versjon kunne ikke leses')
     REPORTLAB2 = False
 
 PDFUTSKRIFT = '/usr/bin/okular'
@@ -118,8 +118,8 @@ class f60:
     def settFakturainfo(self, fakturanr, utstedtEpoch, forfallEpoch, fakturatekst, vilkaar = '', kid = None):
         """Sett vital info om fakturaen. Bruk kid=True for å generere kid ut i fra kundenr og fakturanr."""
         self.faktura['nr'] = int(fakturanr)
-        self.faktura['utstedt'] = time.strftime(datoformat, time.localtime(utstedtEpoch))
-        self.faktura['forfall'] = time.strftime(datoformat, time.localtime(forfallEpoch))
+        self.faktura['utstedt'] = time.strftime(self.datoformat, time.localtime(utstedtEpoch))
+        self.faktura['forfall'] = time.strftime(self.datoformat, time.localtime(forfallEpoch))
         self.faktura['tekst'] = self._s(fakturatekst)
         self.faktura['vilkaar'] = self._s(vilkaar)
         if kid:
@@ -163,7 +163,7 @@ class f60:
     # ==================== OFFENTLIGE FUNKSJONER ================ #
 
     def settDatoformat(self, format):
-        """Angir nytt format for alle datoer.
+        """Angir nytt format for alle datoer som skrives på fakturaen.
         Se http://www.python.org/doc/2.5.2/lib/module-time.html#l2h-2826
         for mulige verdier. Standardverdi er %Y-%m-%d."""
         logging.debug("Setter nytt datoformat: %s, f.eks. %s", format, time.strftime(format))
@@ -188,6 +188,7 @@ class f60:
         return self._settSammen()
 
     def lagTempFilnavn(self):
+        "Lager et temporært filnavn"
         from tempfile import mkstemp
         f,filnavn = mkstemp(".pdf", "faktura-")
         os.close(f)
@@ -203,7 +204,7 @@ class f60:
         p = program.encode(sys.getfilesystemencoding()) # subprocess.call på windows takler ikke unicode!
         f = self.filnavn.encode(sys.getfilesystemencoding())
         if '%s' in program:
-            command = (p % f).split(' ')
+            command = (p % f).split(' ') # FIXME: dette blir ikke riktig hvis det er opprom i stien
         else:
             command = (p,  f)
         logging.debug('kjører kommando: %s',  command)
@@ -211,43 +212,57 @@ class f60:
 
     def lagKid(self):
         "Lager kid av kundenummer og fakturanummer, med kontrollsiffer"
+        if not self.kunde.has_key('nr'):
+            raise f60Feil(u'Kundeinfo er ikke satt. Behøves for å lage KID (bruk .settKundeinfo())')
         tallrekke = "%06i%06i" % (self.kunde['nr'], self.faktura['nr'])
-        return "%s%s" % (tallrekke, self.lagKontrollsiffer(tallrekke))
+        return "%s%s" % (tallrekke, self.lagKontrollsifferMod11(tallrekke))
 
     def sjekkKid(self, kid):
-        return self.sjekkKontrollsiffer(self, kid)
+        "Sjekk at kontrollsifferet i KID-en stemmer (alias for .sjekkKontrollsiffer())"
+        return self.sjekkKontrollsiffer(kid)
 
     def sjekkKontrollsiffer(self, tallrekke):
-        "Kontrollerer kontrollsifferet til en tallrekke etter mod10/luhn-algoritmen. Returnerer True/False"
-        _tallrekke = int(tallrekke[:-1])
-        kontroll = int(tallrekke[-1])
-        return self.lagSjekksum(_tallrekke) == kontroll
+        "Kontrollerer kontrollsifferet til en tallrekke etter mod10/luhn- og mod11-algoritmen. Returnerer True/False"
+        logging.debug('Sjekker kontrollsiffer for tallrekka: %s' % tallrekke)
+        _tallrekke = tallrekke[:-1]
+        kontroll = tallrekke[-1]
+        return self.lagKontrollsifferMod10(_tallrekke) == kontroll or \
+               self.lagKontrollsifferMod11(_tallrekke) == kontroll
 
-    def lagKontrollsiffer(self, tallrekke=None):
-        "Lager mod10/luhn kontrollsiffer for en tallrekke. Returnerer et heltall"
+    def lagKontrollsifferMod10(self, tallrekke):
+        "Lager mod10/luhn kontrollsiffer for en tallrekke. Returnerer en tekststreng"
         #http://no.wikipedia.org/wiki/KID
         #hvert andre siffer (bakfra) skal dobles og tverrsummene av alle produktene legges sammen
         #totalsummen skal så moduleres med 10, uten rest
-        # sjekk http://www.bbs-nordic.com/upload/Brukerhandbok%20OCR%20giro.pdf
+        # sjekk eksempel i BBS' systemspek for OCR, side 14
         # (kopi på http://code.google.com/p/finfaktura/issues/detail?id=38)
         # Takk til cbratli
         _sum = 0
-        for i, j in enumerate(map(int, reversed(kid))):
+        for i, j in enumerate(map(int, reversed(tallrekke))):
             if (i % 2) == 1:
                 j *= 2
                 if j > 9: j -= 9
             _sum += j
-        return _sum % 10
+        return str(_sum % 10)
+
+    def lagKontrollsifferMod11(self, tallrekke):
+        "Lager mod11 kontrollsiffer for en tallrekke. Returnerer en tekststreng"
+        # sjekk eksempel i BBS' systemspek for OCR, side 14
+        # (kopi på http://code.google.com/p/finfaktura/issues/detail?id=38)
+        # Takk til cbratli
+        _sum = 0
+        vekt = 0
+        for i, j in enumerate(map(int, reversed(tallrekke))):
+            _sum += j*(vekt+2)
+            vekt = (vekt+1) % 5
+        r = _sum % 11
+        if r == 1: return '-'
+        elif r == 0: return '0'
+        else: return str(11-r)
 
     # ==================== INTERNE FUNKSJONER ================ #
 
     def sjekkFilnavn(self, filnavn):
-        if not REPORTLAB2: # XXX: reportlab < 2.0 støtter ikke utf8-filnavn...
-            _filnavn = ''
-            for b in filnavn:
-                if ord(b) < 128: _filnavn += b
-                else: _filnavn += '_'
-            filnavn = _filnavn
         (katalog, fil) = os.path.split(filnavn)
         if not os.path.exists(katalog):
             os.mkdir(katalog)
@@ -283,7 +298,7 @@ class f60:
 
     def _s(self, t):
         """Sørger for at tekst er i riktig kodesett (encoding)"""
-        if not type(t) in (types.StringType,types.UnicodeType): return t
+        if not isinstance(t, basestring): return t
         # Reportlab 2.x vil ha unicode
         if REPORTLAB2:
             try:
@@ -548,8 +563,16 @@ Side: %i av %i
         kr = int(totalBelop)
         ore = int((totalBelop - kr) * 100)
         self.canvas.drawString(90*mm, 21*mm, str(kr))
-        self.canvas.drawString(110*mm, 21*mm, "%02d" % ore)
+        self.canvas.drawString(108*mm, 21*mm, "%02d" % ore)
         self.canvas.drawString(135*mm, 21*mm, str(self.firma['kontonummer']))
+
+        # KONTROLLSIFFER FOR SUM
+        # BBS' brukerhåndbok sier at kontrollsiffer skal utregnes for 'beløp'
+        # tolker 'beløp' som kr+ore.. er dette korrekt?
+        # Håndboka sier også at mod10 skal brukes, testing viser at mange
+        # fakturaer som er i omløp bruker mod11
+        siffer = self.lagKontrollsifferMod10("%s%s" % (kr, ore))
+        self.canvas.drawString(120*mm, 21*mm, siffer)
 
     def _settSammen(self):
         "Setter sammen fakturaen. Ikke for eksternt bruk. Bruk .lag*()-metodene"
@@ -560,9 +583,11 @@ Side: %i av %i
 
 if __name__ == '__main__':
     #test
-    filnavn = '/tmp/testfaktura.pdf'
+    logging.basicConfig(level=logging.DEBUG)
+    filnavn = './testfaktura.pdf'
     faktura = f60(filnavn, overskriv=True)
-    faktura.settFakturainfo(03, 1145542709, 1146546709, u"Rå løk", u"Takk for handelen, kom gjerne igjen. Merk at det regners 5 % rente ved for sen betaling. ", kid='4466986711175280')
+    faktura.settKundeinfo(06, "Topert\nRopertgata 33\n9022 Nissedal")
+    faktura.settFakturainfo(03, 1145542709, 1146546709, u"Rå løk", u"Takk for handelen, kom gjerne igjen. Merk at det regners 5 % rente ved for sen betaling. ", kid=True)
     faktura.settFirmainfo({'firmanavn':'Test Firma Ein',
                            'kontaktperson':'Rattatta Hansen',
                            'adresse':u'Surdalsøyra',
@@ -572,7 +597,6 @@ if __name__ == '__main__':
                            'organisasjonsnummer':876876,
                            'telefon':23233322,
                            'epost':'ratata@ta.no'})
-    faktura.settKundeinfo(06, "Topert\nRopertgata 33\n9022 Nissedal")
     faktura.settOrdrelinje([ ["Leder", 1, 300, 25], ['Reportasje', 1, 3000, 25], ])
     if faktura.lagEpost():
         print "Kvittering laget i", filnavn
