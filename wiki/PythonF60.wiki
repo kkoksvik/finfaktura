@@ -1,5 +1,5 @@
 #summary Slik bruker du f60.py til å lage PDF-faktura
-#labels Featured
+#labels Featured,Phase-Implementation
 
 = Innledning =
 
@@ -18,13 +18,14 @@ F60.py bruker [http://www.reportlab.org/downloads.html reportlab til å lage PDF
 import f60
 filnavn = '/tmp/testfaktura.pdf'
 faktura = f60(filnavn, overskriv=True)
+faktura.settKundeinfo(06, "Topert\nRopertgata 33\n9022 Nissedal")
 faktura.settFakturainfo(
   fakturanr=03,
   utstedtEpoch=1145542709,
   forfallEpoch=1146546709,
   fakturatekst=u"Produksjon i august",
   vilkaar=u"Takk for handelen, kom gjerne igjen.",
-  kid='4466986711175280')
+  kid=True)
 faktura.settFirmainfo({'firmanavn':'Firma Ein',
                         'kontaktperson':'Rattatta Hansen',
                         'adresse':u'Surdalsøyra',
@@ -34,7 +35,6 @@ faktura.settFirmainfo({'firmanavn':'Firma Ein',
                         'organisasjonsnummer':876876,
                         'telefon':23233322,
                         'epost':'ratata@ta.no'})
-faktura.settKundeinfo(06, "Topert\nRopertgata 33\n9022 Nissedal")
 faktura.settOrdrelinje([ ["Leder", 1, 300, 25], ['Reportasje', 1, 3000, 25], ])
 if faktura.lagEpost():
     print "Kvittering laget i", filnavn
@@ -56,11 +56,34 @@ http://finfaktura.googlecode.com/svn/screenshots/f60-0.10.png
 
 == Ordrelinje ==
 
+== KID ==
+
+f60 kan generere, kontrollere og sette [http://no.wikipedia.org/KID KID]. Hvis det ikke oppgis, lages den av _kundenummer_ + _fakturanummer_ + _kontrollsiffer_.
+
+Kontrollsifferet regnes ut etter mod10 eller mod11-algoritmen, slik BBS Nordic oppgir den i _Kravspek for OCR_. Se detaljer i issue#38.
+
+
+=== Kundeinfo ===
+
+Siden f60 bruker kundenummer for å generere KID, må du huske å sette kundeinfoen (`.settKundeinfo()`) *før* du setter fakturainfoen dersom du skal autogenerere KID.
+
 
 = Format =
 
+Fakturaene produseres i filformatet [http://en.wikipedia.org/PDF PDF] gjennom [http://www.reportlab.org/downloads.html hjelpebiblioteket reportlab].
+
+Videre kan fakturaene få *ulike layout*, avhengig av *hvordan de skal sendes*.
+
 == Epost ==
+
+Her imiteres en ferdig utfylt giroblankett, altså en digital kopi av et skjema F60-1 med gule felter, og betalingsinformasjon.
 
 == Papir/Utskrift ==
 
+Dette valget gir en PDF-fil som egner seg for *utskrift på et skjema F60-1*, altså bare betalingsinformasjonen. 
+
 == Kvittering ==
+
+Dette er en spesiell versjon av den imiterte giroblanketten, hvor påskriften "KVITTERING" er trykket på tvers over arket. *Dette er den kopien av fordringen du skal beholde.* 
+
+Hensikten med denne layouten er å unngå sammenblanding dersom du velger å skrive ut kvitteringen.
