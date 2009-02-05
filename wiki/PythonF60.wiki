@@ -58,7 +58,7 @@ http://finfaktura.googlecode.com/svn/screenshots/f60-0.10.png
 
 == KID ==
 
-f60 kan generere, kontrollere og sette [http://no.wikipedia.org/KID KID]. Hvis det ikke oppgis, lages den av _kundenummer_ + _fakturanummer_ + _kontrollsiffer_.
+f60 kan generere, kontrollere og sette [http://no.wikipedia.org/wiki/KID KID]. Hvis det ikke oppgis, lages den av _kundenummer_ + _fakturanummer_ + _kontrollsiffer_.
 
 Kontrollsifferet regnes ut etter mod10 eller mod11-algoritmen, slik BBS Nordic oppgir den i _Kravspek for OCR_. Se detaljer i issue#38.
 
@@ -70,7 +70,7 @@ Siden f60 bruker kundenummer for å generere KID, må du huske å sette kundeinf
 
 = Format =
 
-Fakturaene produseres i filformatet [http://en.wikipedia.org/PDF PDF] gjennom [http://www.reportlab.org/downloads.html hjelpebiblioteket reportlab].
+Fakturaene produseres i filformatet [http://en.wikipedia.org/wiki/PDF PDF] gjennom [http://www.reportlab.org/downloads.html hjelpebiblioteket reportlab].
 
 Videre kan fakturaene få *ulike layout*, avhengig av *hvordan de skal sendes*.
 
