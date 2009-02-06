@@ -11,6 +11,8 @@ Vil du bruke F60.py for seg selv, kan du laste modulen ned fra [http://code.goog
 
 F60.py bruker [http://www.reportlab.org/downloads.html reportlab til å lage PDF-filer]. Denne pakken må du installere (den heter python-reportlab i linux).
 
+<wiki:toc max_depth="2" />
+
 = Eksempel =
 
 {{{
@@ -67,6 +69,12 @@ Kontrollsifferet regnes ut etter mod10 eller mod11-algoritmen, slik BBS Nordic o
 
 Siden f60 bruker kundenummer for å generere KID, må du huske å sette kundeinfoen (`.settKundeinfo()`) *før* du setter fakturainfoen dersom du skal autogenerere KID.
 
+
+== Datoformat ==
+
+Standard datoformat er `%Y-%m-%d`, for eksempel *2009-01-31*. Du kan oppgi ditt eget datoformat. Da bruker du metoden `.settDatoformat(_nytt format_)`. 
+
+Lista over [http://www.python.org/doc/2.5.2/lib/module-time.html#l2h-2826 gyldige formatteringskoder finner du på python.org].
 
 = Format =
 
