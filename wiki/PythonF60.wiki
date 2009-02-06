@@ -78,7 +78,7 @@ Lista over [http://www.python.org/doc/2.5.2/lib/module-time.html#l2h-2826 gyldig
 
 = Format =
 
-Fakturaene produseres i filformatet [http://en.wikipedia.org/wiki/PDF PDF] gjennom [http://www.reportlab.org/downloads.html hjelpebiblioteket reportlab]. [http://pdfreaders.org/ Last ned en åpen pdf-leser].
+Fakturaene produseres i filformatet [http://en.wikipedia.org/wiki/PDF PDF] gjennom [http://www.reportlab.org/downloads.html hjelpebiblioteket reportlab]. [http://pdfreaders.org/index.nb.html Last ned en åpen pdf-leser].
 
 Videre kan fakturaene få *ulike layout*, avhengig av *hvordan de skal sendes*.
 
