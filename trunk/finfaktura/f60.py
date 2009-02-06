@@ -555,6 +555,10 @@ Side: %i av %i
         firmaadresse.textLines(split("%(firmanavn)s\n%(kontaktperson)s\n%(adresse)s\n%(postnummer)04i %(poststed)s" % (self.firma), '\n'))
         self.canvas.drawText(firmaadresse)
 
+        # Den fortrykte H -- innstillingsmerke
+        # (se http://code.google.com/p/finfaktura/issues/detail?id=38)
+        self.canvas.drawString(4*mm, 21*mm, 'H')
+
         # KID
         if self.faktura['kid'] and self.sjekkKid(self.faktura['kid']):
             self.canvas.drawString(14*mm, 21*mm, str(self.faktura['kid']))
