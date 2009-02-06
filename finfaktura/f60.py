@@ -215,7 +215,7 @@ class f60:
         if not self.kunde.has_key('nr'):
             raise f60Feil(u'Kundeinfo er ikke satt. Behøves for å lage KID (bruk .settKundeinfo())')
         tallrekke = "%06i%06i" % (self.kunde['nr'], self.faktura['nr'])
-        return "%s%s" % (tallrekke, self.lagKontrollsifferMod11(tallrekke))
+        return "%s%s" % (tallrekke, self.lagKontrollsifferMod10(tallrekke))
 
     def sjekkKid(self, kid):
         "Sjekk at kontrollsifferet i KID-en stemmer (alias for .sjekkKontrollsiffer())"
