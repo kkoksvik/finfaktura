@@ -70,7 +70,7 @@ class f60InstallasjonsFeil(Exception): pass
 try:
     import reportlab
     from reportlab.pdfgen import canvas
-    from reportlab.lib.units import mm
+    from reportlab.lib.units import mm, inch
     from reportlab.lib.colors import yellow, pink, white
     REPORTLAB=True
 except ImportError:
@@ -555,20 +555,25 @@ Side: %i av %i
         firmaadresse.textLines(split("%(firmanavn)s\n%(kontaktperson)s\n%(adresse)s\n%(postnummer)04i %(poststed)s" % (self.firma), '\n'))
         self.canvas.drawText(firmaadresse)
 
+        # Blankettens underkant
+        # (se http://code.google.com/p/finfaktura/issues/detail?id=38, punkt A)
+        #underkant = 21*mm
+        underkant = 5.0/6.0 * inch
+        
         # Den fortrykte H -- innstillingsmerke
         # (se http://code.google.com/p/finfaktura/issues/detail?id=38)
-        self.canvas.drawString(4*mm, 21*mm, 'H')
+        self.canvas.drawString(4*mm, underkant, 'H')
 
         # KID
         if self.faktura['kid'] and self.sjekkKid(self.faktura['kid']):
-            self.canvas.drawString(14*mm, 21*mm, str(self.faktura['kid']))
+            self.canvas.drawString(14*mm, underkant, str(self.faktura['kid']))
 
         # SUM
         kr = int(totalBelop)
         ore = int((totalBelop - kr) * 100)
-        self.canvas.drawString(90*mm, 21*mm, str(kr))
-        self.canvas.drawString(108*mm, 21*mm, "%02d" % ore)
-        self.canvas.drawString(135*mm, 21*mm, str(self.firma['kontonummer']))
+        self.canvas.drawString(90*mm, underkant, str(kr))
+        self.canvas.drawString(108*mm, underkant, "%02d" % ore)
+        self.canvas.drawString(135*mm, underkant, str(self.firma['kontonummer']))
 
         # KONTROLLSIFFER FOR SUM
         # BBS' brukerhåndbok sier at kontrollsiffer skal utregnes for 'beløp'
@@ -576,7 +581,7 @@ Side: %i av %i
         # Håndboka sier også at mod10 skal brukes, testing viser at mange
         # fakturaer som er i omløp bruker mod11
         siffer = self.lagKontrollsifferMod10("%s%s" % (kr, ore))
-        self.canvas.drawString(120*mm, 21*mm, siffer)
+        self.canvas.drawString(120*mm, underkant, siffer)
 
     def _settSammen(self):
         "Setter sammen fakturaen. Ikke for eksternt bruk. Bruk .lag*()-metodene"
