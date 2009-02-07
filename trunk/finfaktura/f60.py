@@ -60,7 +60,7 @@ Se forøvrig http://code.google.com/p/finfaktura/wiki/PythonF60
 
 import sys,  time, os, types
 from string import join, split
-import logging, subprocess
+import logging, subprocess, locale
 
 class f60Eksisterer(Exception): pass
 class f60Feil(Exception): pass
@@ -72,6 +72,7 @@ try:
     from reportlab.pdfgen import canvas
     from reportlab.lib.units import mm, inch
     from reportlab.lib.colors import yellow, pink, white
+    from reportlab.lib.pagesizes import A4
     REPORTLAB=True
 except ImportError:
     REPORTLAB=False
@@ -88,6 +89,15 @@ except AttributeError, IndexError:
 
 PDFUTSKRIFT = '/usr/bin/okular'
 
+# sett norsk tegngiving (bl.a. for ',' som desimal)
+try:
+    locale.setlocale(locale.LC_ALL, 'no')
+except:
+    try:
+        locale.setlocale(locale.LC_ALL, 'no_NO')
+    except:
+        pass
+
 class f60:
     standardskrift = "Helvetica"
     standardstorrelse = 10
@@ -103,8 +113,8 @@ class f60:
             self.filnavn = self.lagTempFilnavn()
         else:
             self.filnavn = self.sjekkFilnavn(filnavn)
-        self.buffer = open(self.filnavn, 'wb') # lager en buffer for reportlab, siden den har problemer med utf8-stier
-        from reportlab.lib.pagesizes import A4
+        # lager en buffer for reportlab, siden den har problemer med utf8-stier
+        self.buffer = open(self.filnavn, 'wb')
         self.canvas = canvas.Canvas(filename=self.buffer, pagesize=A4)
 
     def data(self):
@@ -472,9 +482,9 @@ Side: %i av %i
                 mvagrunnlag[vare.mva] += [brutto,]
 
                 self.canvas.drawString(tekstX, Y, self._s(vare.detaljertBeskrivelse()))
-                self.canvas.drawRightString(bruttoX, Y, "%.2f" % (brutto))
-                self.canvas.drawRightString(mvaX, Y, "%.2f" % (mva))
-                self.canvas.drawRightString(prisX, Y, "%.2f" % (pris))
+                self.canvas.drawRightString(bruttoX, Y, locale.currency(brutto))
+                self.canvas.drawRightString(mvaX, Y, locale.currency(mva))
+                self.canvas.drawRightString(prisX, Y, locale.currency(pris))
                 Y -= 3*mm
         elif type(self.ordrelinje) == types.ListType:
             for vare in self.ordrelinje:
@@ -493,9 +503,9 @@ Side: %i av %i
                 mvagrunnlag[vare[3]] += [brutto,]
 
                 self.canvas.drawString(tekstX, Y, "%s %s a kr %s" % (vare[1], vare[0], vare[2]))
-                self.canvas.drawRightString(bruttoX, Y, "%.2f" % (brutto))
-                self.canvas.drawRightString(mvaX, Y, "%.2f" % (mva))
-                self.canvas.drawRightString(prisX, Y, "%.2f" % (pris))
+                self.canvas.drawRightString(bruttoX, Y, locale.currency(brutto))
+                self.canvas.drawRightString(mvaX, Y, locale.currency(mva))
+                self.canvas.drawRightString(prisX, Y, locale.currency(pris))
                 Y -= 3*mm
 
         #logging.debug("Nå har vi kommet til Y: %i (%i)" % (Y/mm, Y))
@@ -506,10 +516,10 @@ Side: %i av %i
         self.canvas.line(90*mm, sumY, 190*mm, sumY)
 
         # legg sammen totalen
-        self.canvas.drawRightString(prisX-70*mm, sumY-7*mm, "Netto: %.2f" % totalBrutto)
-        self.canvas.drawRightString(prisX-40*mm, sumY-7*mm, "MVA: %.2f" % totalMva)
+        self.canvas.drawRightString(prisX-70*mm, sumY-7*mm, "Netto: %s" % locale.currency(totalBrutto))
+        self.canvas.drawRightString(prisX-40*mm, sumY-7*mm, "MVA: %s" % locale.currency(totalMva))
         self.canvas.setFont("Helvetica-Bold", 10)
-        self.canvas.drawRightString(prisX, sumY-7*mm, "TOTALT: %.2f" % totalBelop)
+        self.canvas.drawRightString(prisX, sumY-7*mm, "TOTALT: %s" % locale.currency(totalBelop))
 
         # sum mvagrunnlag
 
@@ -530,7 +540,7 @@ Side: %i av %i
         self.canvas.setFont("Courier", 10)
         self.canvas.drawString(20*mm, 105*mm, str(self.firma['kontonummer']))
 
-        self.canvas.drawString(88*mm, 105*mm, "%.2f" % totalBelop)
+        self.canvas.drawString(88*mm, 105*mm, locale.currency(totalBelop))
 
         # betalingsfrist
         from time import strftime, localtime
@@ -567,6 +577,8 @@ Side: %i av %i
         # KID
         if self.faktura['kid'] and self.sjekkKid(self.faktura['kid']):
             self.canvas.drawString(14*mm, underkant, str(self.faktura['kid']))
+        else:
+            logging.warn('Ugyldig kid, hopper over: %s', self.faktura['kid'])
 
         # SUM
         kr = int(totalBelop)
