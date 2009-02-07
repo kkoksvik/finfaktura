@@ -368,6 +368,15 @@ class f60:
 
         #firma.sjekkData() # sjekker at ndvendig firmainfo er fylt ut
 
+        # pdf-metadata
+        self.canvas.setSubject("Faktura #%s til kunde #%s" % (self.faktura['nr'],
+                                                            self.kunde['nr']))
+        self.canvas.setTitle("Elektronisk faktura fra %s, utstedt den %s" % (self.firma['firmanavn'],
+                                                                             self.faktura['utstedt']))
+                             
+        self.canvas.setAuthor("f60.py versjon %s fra Fryktelig Fin Faktura (finfaktura.googlecode.com)" % __version__)
+        
+
         # logo
         logoForskyvning = 0
         if self.firma.has_key('logo') and self.firma['logo']:
