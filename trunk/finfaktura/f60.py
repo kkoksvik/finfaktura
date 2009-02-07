@@ -99,6 +99,7 @@ except:
         pass
 
 class f60:
+    "Lager en pdf etter malen til Giro F60-1, for utskrift eller elektronisk bruk"
     standardskrift = "Helvetica"
     standardstorrelse = 10
     kunde = {}
@@ -515,13 +516,24 @@ Side: %i av %i
         sumY = 141*mm
         self.canvas.line(90*mm, sumY, 190*mm, sumY)
 
+        # sum mvagrunnlag
+        logging.debug("mvagrunnlag: %s", mvagrunnlag)
+        mvaY = 150*mm
+        mvaX = 5*mm
+        self.canvas.drawString(mvaX, mvaY+4*mm, "MVA-grunnlag:")
+        self.canvas.setFont("Helvetica", 7)
+        for i, _mva in enumerate(mvagrunnlag.keys()):
+            linjesum = sum(map(float, mvagrunnlag[_mva]))
+            self.canvas.drawString(mvaX, mvaY-(i*3*mm), "%.1f%% av %s = %s" % (_mva,
+                                                                    locale.currency(linjesum),
+                                                                    locale.currency(linjesum*_mva / 100)))
+
         # legg sammen totalen
+        self.canvas.setFont("Helvetica", 8)
         self.canvas.drawRightString(prisX-70*mm, sumY-7*mm, "Netto: %s" % locale.currency(totalBrutto))
         self.canvas.drawRightString(prisX-40*mm, sumY-7*mm, "MVA: %s" % locale.currency(totalMva))
         self.canvas.setFont("Helvetica-Bold", 10)
         self.canvas.drawRightString(prisX, sumY-7*mm, "TOTALT: %s" % locale.currency(totalBelop))
-
-        # sum mvagrunnlag
 
         # standard betalingsvilkår
         if len(self.faktura['vilkaar']): ## FIXME: krype oppover hvis teksten er mer enn en linje høy
@@ -608,7 +620,7 @@ if __name__ == '__main__':
     filnavn = './testfaktura.pdf'
     faktura = f60(filnavn, overskriv=True)
     faktura.settKundeinfo(06, "Topert\nRopertgata 33\n9022 Nissedal")
-    faktura.settFakturainfo(03, 1145542709, 1146546709, u"Rå løk", u"Takk for handelen, kom gjerne igjen. Merk at det regners 5 % rente ved for sen betaling. ", kid=True)
+    faktura.settFakturainfo(03, 1145542709, 1146546709, u"Et forsøk på en faktura", u"Takk for handelen, kom gjerne igjen. Merk at det regners 5 % rente ved for sen betaling. ", kid=True)
     faktura.settFirmainfo({'firmanavn':'Test Firma Ein',
                            'kontaktperson':'Rattatta Hansen',
                            'adresse':u'Surdalsøyra',
@@ -618,7 +630,7 @@ if __name__ == '__main__':
                            'organisasjonsnummer':876876,
                            'telefon':23233322,
                            'epost':'ratata@ta.no'})
-    faktura.settOrdrelinje([ ["Leder", 1, 300, 25], ['Reportasje', 1, 3000, 25], ])
+    faktura.settOrdrelinje([ ["Leder", 1, 300, 0], ['Fotoreportasje', 1, 3000, 25], ['Servering', 4, 80, 12.5] ])
     if faktura.lagEpost():
         print "Kvittering laget i", filnavn
     else:
