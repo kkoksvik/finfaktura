@@ -78,6 +78,7 @@ try:
     from reportlab.lib.units import mm, inch
     from reportlab.lib.colors import yellow, pink, white
     from reportlab.lib.pagesizes import A4
+    from reportlab.pdfgen.pdfimages import PDFImage
     REPORTLAB=True
 except ImportError:
     REPORTLAB=False
@@ -385,24 +386,22 @@ class f60:
         logoForskyvning = 0
         if self.firma['logo']:
             logging.debug("Har logo!")
-            if os.path.exists(self.firma['logo']): # et filnavn, last det direkte
-                logo = self.firma['logo']
-            elif REPORTLAB2: # reportlab > 2 har en egen modul for bilder
-                from reportlab.pdfgen.pdfimages import PDFImage
+            try:
+                import Image
+            except ImportError:
+                logging.warn('Kunne ikke importere PIL. Du kan få problemer hvis logoen ikke er i JPEG')
+                logo = self.firma['logo'] # la reportlab ta seg av det, kanskje det går
+                self.canvas.drawImage(logo, 10*mm, 267*mm, width=25*mm, height=25*mm)
+            else:
                 # PDFImage kan laste JPEG-data (i en str(), altså), et filnavn eller et PIL-objekt
                 # De to siste tilfellene krever at PIL er installert
-                logging.debug("Bruker reportlab.pdfgen.pdfimages.PDFImage")
-                logo = PDFImage(self.firma['logo'])
-            else:
-                try:
-                    import Image
+                if os.path.exists(self.firma['logo']): # det er et filnavn, last det direkte
+                    l = self.firma['logo']
+                else:
                     l = StringIO.StringIO(self.firma['logo'])
-                    logo = Image.open(l)
-                except ImportError:
-                    logging.warn('Kunne ikke importere PIL. Logo vises ikke')
-
-            # tegn logoen:    
-            self.canvas.drawInlineImage(logo, 10*mm, 267*mm, width=25*mm, height=25*mm)
+                self._logo = Image.open(l)
+                logo = PDFImage(self._logo, 10*mm, 267*mm, width=25*mm, height=25*mm)
+                logo.drawInlineImage(self.canvas)
             logoForskyvning = 30
 
         # firmanavn: overskrift
