@@ -60,7 +60,9 @@ http://finfaktura.googlecode.com/svn/screenshots/f60-0.10.png
 
 == Logo ==
 
-Du kan sette inn en firmalogo med metoden `.settLogo(logo)`. Argumentet er 1) _et filnavn_, 2) _bildedata_ eller 3) _et [http://www.pythonware.com/products/pil/ PIL-objekt]_. 
+*Metode: * `.settLogo(logo)`
+
+Du kan sette inn en firmalogo med metoden `.settLogo(logo)`. Argumentet *logo* er 1) _et filnavn_, 2) _bildedata_ eller 3) _et [http://www.pythonware.com/products/pil/ PIL-objekt]_. 
 
 Dersom bildefila eller bildedata ikke er i [http://en.wikipedia.org/wiki/JPEG JPEG-format], må [http://www.pythonware.com/products/pil/ PIL] være installert. 
 
@@ -68,19 +70,26 @@ Logoen blir installert oppe i venstre hjørne av fakturaen, *med maks-størrelse
 
 == KID ==
 
-f60 kan generere, kontrollere og sette [http://no.wikipedia.org/wiki/KID KID]. Hvis det ikke oppgis, lages den av _kundenummer_ + _fakturanummer_ + _kontrollsiffer_.
+*Metode: * `.lagKid()`
+*Metode: * `.sjekkKid()`
+*Metode: * `.lagKontrollsifferMod10()`
+*Metode: * `.lagKontrollsifferMod11()`
 
-Kontrollsifferet regnes ut etter mod10 eller mod11-algoritmen, slik BBS Nordic oppgir den i _Kravspek for OCR_. Se detaljer i issue#38.
+f60 kan generere, kontrollere og sette [http://no.wikipedia.org/wiki/KID KID]. `.lagKid()` setter sammen en KID av _kundenummer_ + _fakturanummer_ + _kontrollsiffer_.
 
+Kontrollsifferet skal regnes ut etter _mod10_ eller _mod11_-algoritmen, slik BBS Nordic oppgir den i _Kravspek for OCR_. I f60.py *brukes som standard mod10*. 
 
-=== Kundeinfo ===
+Se detaljer i issue#38.
+
+=== Sett kundeinfo først ===
 
 Siden f60 bruker kundenummer for å generere KID, må du huske å sette kundeinfoen (`.settKundeinfo()`) *før* du setter fakturainfoen dersom du skal autogenerere KID.
 
-
 == Datoformat ==
 
-Standard datoformat er `%Y-%m-%d`, for eksempel *2009-01-31*. Du kan oppgi ditt eget datoformat. Da bruker du metoden `.settDatoformat(_nytt format_)`. 
+*Metode: * `.settDatoformat(format)`
+
+Standard datoformat er `%Y-%m-%d`, for eksempel *2009-01-31*. Du kan oppgi ditt eget datoformat. 
 
 Lista over [http://www.python.org/doc/2.5.2/lib/module-time.html#l2h-2826 gyldige formatteringskoder finner du på python.org].
 
