@@ -92,13 +92,21 @@ Videre kan fakturaene få *ulike layout*, avhengig av *hvordan de skal sendes*.
 
 == Epost ==
 
+*Metode: * `.lagEpost()`
+
 Her imiteres en ferdig utfylt giroblankett, altså en digital kopi av et skjema F60-1 med gule felter, og betalingsinformasjon.
 
+*Vær obs på at det _ikke er lov_ å skrive denne ut til papir. Du _må_ skrive ut på en trykket blankett!* Da bruker du `.lagPost()` -- se neste punkt.
+
 == Papir/Utskrift ==
+
+*Metode: * `.lagPost()`
 
 Dette valget gir en PDF-fil som egner seg for *utskrift på et skjema F60-1*, altså bare betalingsinformasjonen. 
 
 == Kvittering ==
+
+*Metode: * `.lagKvittering()`
 
 Dette er en spesiell versjon av den imiterte giroblanketten, hvor påskriften "KVITTERING" er trykket på tvers over arket. *Dette er den kopien av fordringen du skal beholde.* 
 
