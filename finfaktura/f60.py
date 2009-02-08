@@ -401,7 +401,7 @@ class f60:
                     l = StringIO.StringIO(self.firma['logo'])
                 self._logo = Image.open(l)
                 logo = PDFImage(self._logo, 10*mm, 267*mm, width=25*mm, height=25*mm)
-                logo.drawInlineImage(self.canvas)
+                logo.drawInlineImage(self.canvas, preserveAspectRatio=True)
             logoForskyvning = 30
 
         # firmanavn: overskrift
