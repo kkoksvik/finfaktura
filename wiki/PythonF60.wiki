@@ -60,9 +60,11 @@ http://finfaktura.googlecode.com/svn/screenshots/f60-0.10.png
 
 == Logo ==
 
-Du kan sette inn en firmalogo med metoden `.settLogo(logo)`. Argumentet er 1) _et filnavn, 2) _bildedata_ eller 3) _et [http://www.pythonware.com/products/pil/ PIL-objekt]_. 
+Du kan sette inn en firmalogo med metoden `.settLogo(logo)`. Argumentet er 1) _et filnavn_, 2) _bildedata_ eller 3) _et [http://www.pythonware.com/products/pil/ PIL-objekt]_. 
 
-Dersom bildefila eller bildedataene ikke er i [http://en.wikipedia.org/wiki/JPEG JPEG-format], må [http://www.pythonware.com/products/pil/ PIL] være installert. 
+Dersom bildefila eller bildedata ikke er i [http://en.wikipedia.org/wiki/JPEG JPEG-format], må [http://www.pythonware.com/products/pil/ PIL] være installert. 
+
+Logoen blir installert oppe i venstre hjørne av fakturaen, *med maks-størrelse 25*25 mm!* Er bildet større, blir det nedskalert. _Det er likevel lurest å skalere logoen selv, siden det ofte gir bedre resultater._
 
 == KID ==
 
