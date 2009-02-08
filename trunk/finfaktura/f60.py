@@ -62,6 +62,11 @@ import sys,  time, os, types
 from string import join, split
 import logging, subprocess, locale
 
+try:
+    import cStringIO as StringIO
+except ImportError:
+    import StringIO
+
 class f60Eksisterer(Exception): pass
 class f60Feil(Exception): pass
 class f60FeilKID(Exception): pass
@@ -84,7 +89,7 @@ __license__ = 'GPLv2'
 try:
     REPORTLAB2 = (reportlab.Version[0] == '2')
 except AttributeError, IndexError:
-    logging.warn('Reportlab-versjon kunne ikke leses')
+    logging.warn('Reportlab-versjon kunne ikke leses. Dette er ikke versjon 2')
     REPORTLAB2 = False
 
 PDFUTSKRIFT = '/usr/bin/okular'
@@ -103,7 +108,7 @@ class f60:
     standardskrift = "Helvetica"
     standardstorrelse = 10
     kunde = {}
-    firma = {}
+    firma = {'logo':None, }
     faktura = {}
     filnavn = ''
     datoformat = "%Y-%m-%d"
@@ -373,23 +378,32 @@ class f60:
                                                             self.kunde['nr']))
         self.canvas.setTitle("Elektronisk faktura fra %s, utstedt den %s" % (self.firma['firmanavn'],
                                                                              self.faktura['utstedt']))
-                             
         self.canvas.setAuthor("f60.py versjon %s fra Fryktelig Fin Faktura (finfaktura.googlecode.com)" % __version__)
         
 
         # logo
         logoForskyvning = 0
-        if self.firma.has_key('logo') and self.firma['logo']:
+        if self.firma['logo']:
             logging.debug("Har logo!")
-            try: import Image
-            except ImportError:
-                logging.error('Kunne ikke importere PIL. Kan ikke skrive logo')
+            if os.path.exists(self.firma['logo']): # et filnavn, last det direkte
+                logo = self.firma['logo']
+            elif REPORTLAB2: # reportlab > 2 har en egen modul for bilder
+                from reportlab.pdfgen.pdfimages import PDFImage
+                # PDFImage kan laste JPEG-data (i en str(), altså), et filnavn eller et PIL-objekt
+                # De to siste tilfellene krever at PIL er installert
+                logging.debug("Bruker reportlab.pdfgen.pdfimages.PDFImage")
+                logo = PDFImage(self.firma['logo'])
             else:
-                import StringIO
-                l = StringIO.StringIO(self.firma['logo'])
-                logo = Image.open(l)
-                self.canvas.drawInlineImage(logo, 10*mm, 267*mm, width=25*mm, height=25*mm)
-                logoForskyvning = 30
+                try:
+                    import Image
+                    l = StringIO.StringIO(self.firma['logo'])
+                    logo = Image.open(l)
+                except ImportError:
+                    logging.warn('Kunne ikke importere PIL. Logo vises ikke')
+
+            # tegn logoen:    
+            self.canvas.drawInlineImage(logo, 10*mm, 267*mm, width=25*mm, height=25*mm)
+            logoForskyvning = 30
 
         # firmanavn: overskrift
         firmanavn = self.canvas.beginText()
@@ -564,7 +578,6 @@ Side: %i av %i
         self.canvas.drawString(88*mm, 105*mm, locale.currency(totalBelop))
 
         # betalingsfrist
-        from time import strftime, localtime
         self.canvas.drawString(170*mm, 93*mm, self.faktura['forfall'])
 
         # fakturainformasjon
@@ -616,6 +629,10 @@ Side: %i av %i
         siffer = self.lagKontrollsifferMod10("%s%s" % (kr, ore))
         self.canvas.drawString(120*mm, underkant, siffer)
 
+    #def _lagNySide(self):
+    #    "Lager en ny side"
+    #    self.canvas.showPage()
+
     def _settSammen(self):
         "Setter sammen fakturaen. Ikke for eksternt bruk. Bruk .lag*()-metodene"
         self.canvas.showPage()
@@ -640,6 +657,7 @@ if __name__ == '__main__':
                            'telefon':23233322,
                            'epost':'ratata@ta.no'})
     faktura.settOrdrelinje([ ["Leder", 1, 300, 0], ['Fotoreportasje', 1, 3000, 25], ['Servering', 4, 80, 12.5] ])
+    faktura.settLogo('logo.jpg')
     if faktura.lagEpost():
         print "Kvittering laget i", filnavn
     else:
