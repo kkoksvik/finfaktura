@@ -70,10 +70,10 @@ Logoen blir installert oppe i venstre hjørne av fakturaen, *med maks-størrelse
 
 == KID ==
 
-*Metode: * `.lagKid()`
-*Metode: * `.sjekkKid()`
-*Metode: * `.lagKontrollsifferMod10()`
-*Metode: * `.lagKontrollsifferMod11()`
+  * *Metode: * `.lagKid()`
+  * *Metode: * `.sjekkKid()`
+  * *Metode: * `.lagKontrollsifferMod10()`
+  * *Metode: * `.lagKontrollsifferMod11()`
 
 f60 kan generere, kontrollere og sette [http://no.wikipedia.org/wiki/KID KID]. `.lagKid()` setter sammen en KID av _kundenummer_ + _fakturanummer_ + _kontrollsiffer_.
 
