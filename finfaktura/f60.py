@@ -277,6 +277,22 @@ class f60:
         elif r == 0: return '0'
         else: return str(11-r)
 
+    def settBrukerbegrensning(self, passord='', utskrift=1, endringer=0, kopieringer=0, kommentarer=1):
+      """Begrenser hva som kan gjøres med PDF-fakturaen. Krever versjon 2.3 eller høyere av reportlab.
+
+      Uten argumenter lages det en PDF som kan skrives ut og kommenteres, men ikke endres eller kopieres fra.
+
+      Du kan også sette et passord for åpning av dokumentet. Et tomt passord er det samme som ingen passord.
+      """
+      try:
+          from reportlab.lib.pdfencrypt import StandardEncryption
+      except ImportError: # StandardEncryption kom i versjon 2.3 av reportlab
+          logging.warn('Kunne ikke laste kryptering (reportlab-versjonen din er nok eldre enn 2.3).')
+          return False
+      e = StandardEnctryption(userPassword=passord, canPrint=utskrift, canModify=endringer,
+              canCopy=kopieringer, canAnnotate=kommentarer, strength=128))
+      return self.canvas.setEncrypt(e)
+      
     # ==================== INTERNE FUNKSJONER ================ #
 
     def sjekkFilnavn(self, filnavn):
