@@ -289,8 +289,8 @@ class f60:
       except ImportError: # StandardEncryption kom i versjon 2.3 av reportlab
           logging.warn('Kunne ikke laste kryptering (reportlab-versjonen din er nok eldre enn 2.3).')
           return False
-      e = StandardEnctryption(userPassword=passord, canPrint=utskrift, canModify=endringer,
-              canCopy=kopieringer, canAnnotate=kommentarer, strength=128))
+      e = StandardEncryption(userPassword=passord, canPrint=utskrift, canModify=endringer,
+              canCopy=kopieringer, canAnnotate=kommentarer, strength=128)
       return self.canvas.setEncrypt(e)
       
     # ==================== INTERNE FUNKSJONER ================ #
