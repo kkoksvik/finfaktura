@@ -96,13 +96,14 @@ except AttributeError, IndexError:
 PDFUTSKRIFT = '/usr/bin/okular'
 
 # sett norsk tegngiving (bl.a. for ',' som desimal)
-try:
-    locale.setlocale(locale.LC_ALL, 'no')
-except:
+for x in ('nb_NO.UTF8', 'nn_NO.UTF8', 'nb_NO', 'nn_NO', 'no_NO', 'no'): # har ulike navn på ulike plattformer... sukk...
     try:
-        locale.setlocale(locale.LC_ALL, 'no_NO')
-    except:
-        pass
+        locale.setlocale(locale.LC_ALL, x)
+        locale.setlocale(locale.LC_ALL, locale.normalize(x))
+        break
+    except locale.Error, e:
+        logging.exception(e)
+        continue
 
 class f60:
     "Lager en pdf etter malen til Giro F60-1, for utskrift eller elektronisk bruk"
@@ -256,11 +257,11 @@ class f60:
         # Takk til cbratli
         _sum = 0
         for i, j in enumerate(map(int, reversed(tallrekke))):
-            if (i % 2) == 1:
+            if (i % 2) == 0:
                 j *= 2
                 if j > 9: j -= 9
             _sum += j
-        return str(_sum % 10)
+        return str(10 - (_sum % 10))
 
     def lagKontrollsifferMod11(self, tallrekke):
         "Lager mod11 kontrollsiffer for en tallrekke. Returnerer en tekststreng"
@@ -344,9 +345,31 @@ class f60:
             except UnicodeDecodeError:
                 return unicode(t, 'latin1').encode('latin1')
 
+    def lagKlammer(self,punktX, punktY, deltaX, deltaY, tekst=None):
+        """En fullstendig giro har hjørneklammer rundt hvert tekstfelt.
+           PunktX og punktY setter øverste venstre hjørne i "boksen".
+           deltaX og deltaY angir relativ avstand til nederste høyre hjørne."""
+
+        # Oppe i venstre  hjørne P(12,65)
+        self.canvas.setLineWidth(0.2*mm)
+        self.canvas.lines([(punktX, punktY, punktX+2*mm, punktY), (punktX, punktY-2*mm, punktX, punktY)])
+        # oppe i høyre hjørne P(98,65)
+        self.canvas.lines([(punktX+deltaX-2*mm, punktY, punktX+deltaX, punktY), (punktX+deltaX, punktY-2*mm, punktX+deltaX, punktY)])
+
+        # Nede i venstre hjørne P(12,43)
+        self.canvas.lines([(punktX, punktY+deltaY, punktX+2*mm, punktY+deltaY), (punktX, punktY+deltaY, punktX, punktY+deltaY+2*mm)])
+        # Nede i høyre hjørne P(98,43) # deltaX = 86, deltaY = -22
+        self.canvas.lines([(punktX+deltaX-2*mm, punktY+deltaY, punktX+deltaX, punktY+deltaY), (punktX+deltaX, punktY+deltaY, punktX+deltaX, punktY+deltaY+2*mm)])
+
+        if isinstance(tekst, basestring):
+            # skriv hjelpetekst til boksen
+            self.canvas.setFont("Helvetica-Bold", 6)
+            self.canvas.drawString(punktX+3*mm,punktY+1*mm, tekst)
+
     def lagBakgrunn(self):
         "Lager de gule skjemafeltene. Se .lagEpost() og .lagKvittering()"
 
+        underkant = 5.0/6.0 * inch
         # a4 format spec:
         # http://www.cl.cam.ac.uk/~mgk25/iso-paper.html
         # 210 x 297
@@ -365,13 +388,37 @@ class f60:
         self.canvas.rect(80*mm, 103*mm, 36*mm, 9*mm, stroke=0, fill=1) # beløp
         self.canvas.rect(126*mm, 103*mm, 40*mm, 9*mm, stroke=0, fill=1) # betalerens kontonummer
         self.canvas.rect(170*mm, 103*mm, 31*mm, 9*mm, stroke=0, fill=1) # blankettnummer
-
-        self.canvas.lines([(9*mm, 16*mm, 9*mm, 30*mm), (80*mm, 16*mm, 80*mm, 30*mm)])
-
         self.canvas.restoreState()
+        # skriv tekst på kvitteringen
+        self.canvas.setFont("Helvetica-Bold", 14)
+        self.canvas.drawString(15*mm, 118*mm, "KVITTERING")
+        self.canvas.setFont("Helvetica", 10)
+        self.canvas.drawString(15*mm, 110*mm, "Innbetalt til konto")
+        # skillelinjer for KID
+        self.canvas.lines([(9*mm, 16*mm, 9*mm, 30*mm), (80*mm, 16*mm, 80*mm, 30*mm)])
+        # blankettnummer
+        # TODO: tillate oppgitt blankettnummer
+        self.canvas.setFont("Courier", 10)
         blankettnr = "xxxxxxx"
         self.canvas.drawString(173*mm, 105*mm, blankettnr)
-        self.canvas.drawString(173*mm, 22*mm, blankettnr)
+        self.canvas.drawString(173*mm, underkant, blankettnr)
+        # Lag klammer for kontrollsiffer til sum.
+        self.canvas.drawString(115*mm, underkant, "<")
+        self.canvas.drawString(125*mm, underkant, ">")
+        # Lag tekst som beskriver feltene.
+        self.canvas.setFont("Helvetica-Bold", 6)
+        self.canvas.drawString(10*mm,30*mm,"Kundeidentifikasjon (KID)")
+        self.canvas.drawString(82*mm,30*mm,"Kroner")
+        self.canvas.drawString(107*mm,30*mm,"Øre")
+        self.canvas.drawString(133*mm,30*mm,"Til konto")
+        self.canvas.drawString(172*mm,30*mm,"Blankettnummer")
+        self.canvas.drawString(150*mm,98*mm,"Betalings-")
+        self.canvas.drawString(150*mm,95*mm,"frist")
+        # Lag hjørneklammer rundt alle tekstfelt
+        self.lagKlammer(12*mm,64*mm, 86*mm, -21*mm, "Betalt av")
+        self.lagKlammer(110*mm,64*mm, 86*mm, -21*mm, "Betalt til")
+        self.lagKlammer(110*mm,89*mm, 86*mm, -19*mm, "Underskrift ved girering")
+        self.lagKlammer(166*mm,99*mm, 30*mm, -6*mm)    # Betalingsfrist.
 
     def lagKopimerke(self):
         """Lager teksten "Kvittering" på skrå over fakturaen"""
@@ -583,17 +630,14 @@ Side: %i av %i
 
         # Nederste del av skjemaet
         # den gule betalingsslippen
-        self.canvas.setFont("Helvetica-Bold", 14)
-        self.canvas.drawString(15*mm, 118*mm, "KVITTERING")
-        self.canvas.setFont("Helvetica", 10)
-        self.canvas.drawString(15*mm, 110*mm, "Innbetalt til konto")
+        # skal skrives i courier 10 (se issue#38)
         self.canvas.setFont("Courier", 10)
-        self.canvas.drawString(20*mm, 105*mm, str(self.firma['kontonummer']))
+        self.canvas.drawString(20*mm, 105*mm, "%011i" % self.firma['kontonummer'])
 
         self.canvas.drawString(88*mm, 105*mm, locale.currency(totalBelop))
 
         # betalingsfrist
-        self.canvas.drawString(170*mm, 93*mm, self.faktura['forfall'])
+        self.canvas.drawString(170*mm, 95*mm, self.faktura['forfall'])
 
         # fakturainformasjon
         t = self.canvas.beginText()
@@ -621,11 +665,11 @@ Side: %i av %i
         
         # Den fortrykte H -- innstillingsmerke
         # (se http://code.google.com/p/finfaktura/issues/detail?id=38)
-        self.canvas.drawString(4*mm, underkant, 'H')
+        self.canvas.drawString(2*mm, underkant, 'H')
 
         # KID
         if self.faktura['kid'] and self.sjekkKid(self.faktura['kid']):
-            self.canvas.drawString(14*mm, underkant, str(self.faktura['kid']))
+            self.canvas.drawRightString(72*mm, underkant, str(self.faktura['kid']))
         else:
             logging.warn('Ugyldig kid, hopper over: %s', self.faktura['kid'])
 
@@ -634,7 +678,7 @@ Side: %i av %i
         ore = int((totalBelop - kr) * 100)
         self.canvas.drawString(90*mm, underkant, str(kr))
         self.canvas.drawString(108*mm, underkant, "%02d" % ore)
-        self.canvas.drawString(135*mm, underkant, str(self.firma['kontonummer']))
+        self.canvas.drawString(135*mm, underkant, "%011i" % self.firma['kontonummer'])
 
         # KONTROLLSIFFER FOR SUM
         # BBS' brukerhåndbok sier at kontrollsiffer skal utregnes for 'beløp'
