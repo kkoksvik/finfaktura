@@ -458,7 +458,14 @@ class f60:
             else:
                 # PDFImage kan laste JPEG-data (i en str(), altså), et filnavn eller et PIL-objekt
                 # De to siste tilfellene krever at PIL er installert
-                if os.path.exists(self.firma['logo']): # det er et filnavn, last det direkte
+                logging.debug(len(self.firma['logo']))
+                try:
+                  # sjekk om det er et filnavn
+                  # forutsetter at PATH_MAX=4096, sannsynligvis har ingen systemer har satt den større
+                  enfil = len(self.firma['logo']) < 4096 and os.path.exists(self.firma['logo']) 
+                except: # path.exists snubler på binær data
+                  enfil = False
+                if enfil:# det er et filnavn, last det direkte
                     l = self.firma['logo']
                 else:
                     l = StringIO.StringIO(self.firma['logo'])
