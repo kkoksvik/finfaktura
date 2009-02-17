@@ -96,14 +96,15 @@ except AttributeError, IndexError:
 PDFUTSKRIFT = '/usr/bin/okular'
 
 # sett norsk tegngiving (bl.a. for ',' som desimal)
-for x in ('nb_NO.UTF8', 'nn_NO.UTF8', 'nb_NO', 'nn_NO', 'no_NO', 'no'): # har ulike navn på ulike plattformer... sukk...
+for x in ('nb_NO.UTF8', 'nb_NO.ISO8859-1', 'nb_NO', 'nn_NO', 'no_NO', 'no', 'norwegian'): # har ulike navn på ulike plattformer... sukk...
     try:
         locale.setlocale(locale.LC_ALL, x)
-        locale.setlocale(locale.LC_ALL, locale.normalize(x))
         break
     except locale.Error, e:
-        logging.exception(e)
+        logging.debug('locale passet ikke på denne plattformen: %s', x)
         continue
+
+logging.debug('satte locale : %s', locale.getlocale())
 
 class f60:
     "Lager en pdf etter malen til Giro F60-1, for utskrift eller elektronisk bruk"
