@@ -135,10 +135,13 @@ class f60:
 
     # ============= MÅ FYLLES INN AV BRUKER =============== #
 
-    def settFakturainfo(self, fakturanr, utstedtEpoch, forfallEpoch, fakturatekst, vilkaar = '', kid = None):
+    def settFakturainfo(self, fakturanr, utstedtEpoch, forfallEpoch, fakturatekst, vilkaar = '', kid = None, levertEpoch=None):
         """Sett vital info om fakturaen. Bruk kid=True for å generere kid ut i fra kundenr og fakturanr."""
         self.faktura['nr'] = int(fakturanr)
         self.faktura['utstedt'] = time.strftime(self.datoformat, time.localtime(utstedtEpoch))
+        if levertEpoch is None:
+            levertEpoch = utstedtEpoch # vi vet ikke leveringsdato
+        self.faktura['levert'] = time.strftime(self.datoformat, time.localtime(levertEpoch))
         self.faktura['forfall'] = time.strftime(self.datoformat, time.localtime(forfallEpoch))
         self.faktura['tekst'] = self._s(fakturatekst)
         self.faktura['vilkaar'] = self._s(vilkaar)
@@ -529,7 +532,7 @@ Fakturadato: %s
 Forfallsdato: %s
 Side: %i av %i
         """ % (self.faktura['nr'],
-               self.faktura['utstedt'], ## FIXME: Endres til leveringsdato når vi har dette!
+               self.faktura['levert'], 
                self.faktura['utstedt'],
                self.faktura['forfall'],
                sidenr, # FIXME: løpe over flere sider
@@ -721,7 +724,7 @@ if __name__ == '__main__':
     filnavn = './testfaktura.pdf'
     faktura = f60(filnavn, overskriv=True)
     faktura.settKundeinfo(06, "Topert\nRopertgata 33\n9022 Nissedal")
-    faktura.settFakturainfo(03, 1145542709, 1146546709, u"Et forsøk på en faktura", u"Takk for handelen, kom gjerne igjen. Merk at det regners 5 % rente ved for sen betaling. ", kid=True)
+    faktura.settFakturainfo(03, 1145542709, 1146546709, u"Et forsøk på en faktura", u"Takk for handelen, kom gjerne igjen. Merk at det regners 5 % rente ved for sen betaling. ", kid=True, levertEpoch=1145142709)
     faktura.settFirmainfo({'firmanavn':'Test Firma Ein',
                            'kontaktperson':'Rattatta Hansen',
                            'adresse':u'Surdalsøyra',
