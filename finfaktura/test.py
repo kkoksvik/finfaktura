@@ -12,6 +12,11 @@
 import types, os, sys, os.path
 from string import join
 from time import time, strftime, localtime
+try:
+    import sqlite3 as sqlite
+except ImportError:
+    from pysqlite2 import dbapi2 as sqlite
+from pprint import pprint
 from fakturabibliotek import *
 
 if __name__ == "__main__":
@@ -21,11 +26,8 @@ if __name__ == "__main__":
     if sys.argv[1] in ("hjelp", '-h', '-help', '--help'):
         from os import execl
         execl("/bin/grep", "grep", "in test:", sys.argv[0])
-    from pysqlite2 import dbapi2 as sqlite
-    from pprint import pprint
-    logg = open("faktura.sqlite.log", "a+")
-    #enc = ("utf-8", "replace")
-    cx = sqlite.connect(finnDatabasenavn())#, encoding='utf-8', command_logfile=logg)
+
+    cx = sqlite.connect(finnDatabasenavn())
     if "kunde" in test:
         kunde = fakturaKunde(cx)
         kunde.navn = u"Havard Gulldahl"
@@ -120,6 +122,19 @@ if __name__ == "__main__":
     if "dbtest" in test:
         print "tester om %s er en sqlite-database" % sys.argv[2]
         print sjekkDatabaseVersjon(sys.argv[2])
-        
+
+    if "kid" in test:
+        print "tester kid-funksjoner i f60"
+        import f60
+        f = f60.f60(filnavn=None)
+        kid = "001234000123"
+        sjekksum = f.lagSjekksum(kid)
+        fullKid = kid+str(sjekksum)
+        print "sjekksum: %s, fullKid: %s" % (sjekksum, fullKid)
+        print "full KID (%s) stemmer: %s" % (fullKid, f.sjekkKid(fullKid))
+
+        fullKid2 = "0257270170026"
+        print "fullKid2 (%s) stemmer: %s" % (fullKid2, f.sjekkKid(fullKid2))
+        print f.lagSjekksum("12464533060099620")
 
     cx.close()
