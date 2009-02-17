@@ -96,7 +96,8 @@ except AttributeError, IndexError:
 PDFUTSKRIFT = '/usr/bin/okular'
 
 # sett norsk tegngiving (bl.a. for ',' som desimal)
-for x in ('nb_NO.UTF8', 'nb_NO.ISO8859-1', 'nb_NO', 'nn_NO', 'no_NO', 'no', 'norwegian'): # har ulike navn på ulike plattformer... sukk...
+for x in ('norwegian', 'nb_NO.UTF8', 'nb_NO.ISO8859-1', 'nb_NO', 'nn_NO', 'no_NO', 'no'): 
+    # har ulike navn på ulike plattformer... sukk...
     try:
         locale.setlocale(locale.LC_ALL, x)
         break
@@ -346,6 +347,13 @@ class f60:
             except UnicodeDecodeError:
                 return unicode(t, 'latin1').encode('latin1')
 
+    def _kr(self, i):
+        "Sørger for at et beløp skrives med riktig skilletegn og valuta. Returnerer tekst"
+        try:
+            return locale.currency(i)
+        except ValueError:
+            return "kr %.02f" % i
+
     def lagKlammer(self,punktX, punktY, deltaX, deltaY, tekst=None):
         """En fullstendig giro har hjørneklammer rundt hvert tekstfelt.
            PunktX og punktY setter øverste venstre hjørne i "boksen".
@@ -576,9 +584,9 @@ Side: %i av %i
                 mvagrunnlag[vare.mva] += [brutto,]
 
                 self.canvas.drawString(tekstX, Y, self._s(vare.detaljertBeskrivelse()))
-                self.canvas.drawRightString(bruttoX, Y, locale.currency(brutto))
-                self.canvas.drawRightString(mvaX, Y, locale.currency(mva))
-                self.canvas.drawRightString(prisX, Y, locale.currency(pris))
+                self.canvas.drawRightString(bruttoX, Y, self._kr(brutto))
+                self.canvas.drawRightString(mvaX, Y, self._kr(mva))
+                self.canvas.drawRightString(prisX, Y, self._kr(pris))
                 Y -= 3*mm
         elif type(self.ordrelinje) == types.ListType:
             for vare in self.ordrelinje:
@@ -597,9 +605,9 @@ Side: %i av %i
                 mvagrunnlag[vare[3]] += [brutto,]
 
                 self.canvas.drawString(tekstX, Y, "%s %s a kr %s" % (vare[1], vare[0], vare[2]))
-                self.canvas.drawRightString(bruttoX, Y, locale.currency(brutto))
-                self.canvas.drawRightString(mvaX, Y, locale.currency(mva))
-                self.canvas.drawRightString(prisX, Y, locale.currency(pris))
+                self.canvas.drawRightString(bruttoX, Y, self._kr(brutto))
+                self.canvas.drawRightString(mvaX, Y, self._kr(mva))
+                self.canvas.drawRightString(prisX, Y, self._kr(pris))
                 Y -= 3*mm
 
         #logging.debug("Nå har vi kommet til Y: %i (%i)" % (Y/mm, Y))
@@ -618,15 +626,15 @@ Side: %i av %i
         for i, _mva in enumerate(mvagrunnlag.keys()):
             linjesum = sum(map(float, mvagrunnlag[_mva]))
             self.canvas.drawString(mvaX, mvaY-(i*3*mm), "%.1f%% av %s = %s" % (_mva,
-                                                                    locale.currency(linjesum),
-                                                                    locale.currency(linjesum*_mva / 100)))
+                                                                    self._kr(linjesum),
+                                                                    self._kr(linjesum*_mva / 100)))
 
         # legg sammen totalen
         self.canvas.setFont("Helvetica", 8)
-        self.canvas.drawRightString(prisX-70*mm, sumY-7*mm, "Netto: %s" % locale.currency(totalBrutto))
-        self.canvas.drawRightString(prisX-40*mm, sumY-7*mm, "MVA: %s" % locale.currency(totalMva))
+        self.canvas.drawRightString(prisX-70*mm, sumY-7*mm, "Netto: %s" % self._kr(totalBrutto))
+        self.canvas.drawRightString(prisX-40*mm, sumY-7*mm, "MVA: %s" % self._kr(totalMva))
         self.canvas.setFont("Helvetica-Bold", 10)
-        self.canvas.drawRightString(prisX, sumY-7*mm, "TOTALT: %s" % locale.currency(totalBelop))
+        self.canvas.drawRightString(prisX, sumY-7*mm, "TOTALT: %s" % self._kr(totalBelop))
 
         # standard betalingsvilkår
         if len(self.faktura['vilkaar']): ## FIXME: krype oppover hvis teksten er mer enn en linje høy
@@ -642,7 +650,7 @@ Side: %i av %i
         self.canvas.setFont("Courier", 10)
         self.canvas.drawString(20*mm, 105*mm, "%011i" % self.firma['kontonummer'])
 
-        self.canvas.drawString(88*mm, 105*mm, locale.currency(totalBelop))
+        self.canvas.drawString(88*mm, 105*mm, self._kr(totalBelop))
 
         # betalingsfrist
         self.canvas.drawString(170*mm, 95*mm, self.faktura['forfall'])
