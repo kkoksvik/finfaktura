@@ -1,3 +1,15 @@
+finfaktura (2.0.5) jaunty; urgency=low
+
+  * f60.py: massive forbedringer av blanketten (stor takk til cbrattli),
+     se issue#38
+  * f60.py: skriver beløp i kroner og med kommaskilletegn
+  * f60.py: Fiks i mod10-algoritme, og inn med mod11 (KID) - igjen, takk til cbrattli. 
+  * f60.py: Spesifisert momsgrunnlag
+  * fiks utskrift av kontonummer som starter på 0 (issue#47 igjen)
+  * Laster logoer på en annen måte (forhåpentlig løser dette issue#48)
+
+ -- Håvard Gulldahl <havard@gulldahl.no>  Thu, 12 Mar 2009 23:15:01 +0100
+
 finfaktura (2.0) intrepid; urgency=low
 
   * Fikser rapport.py: utskrift av pdf og rapport fra firma med '&' i

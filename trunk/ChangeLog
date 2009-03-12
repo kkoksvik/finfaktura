@@ -1,3 +1,208 @@
+2009-02-17 22:38  havard.gulldahl
+
+	* finfaktura/f60.py: API-ENDRING: legger til argumentet lvertEpoch
+	  til metoden f60.settFakturainfo()
+
+2009-02-17 22:33  havard.gulldahl
+
+	* finfaktura/f60.py: bruker en intern metode for å skrive
+	  valutabeløp, for å være på den sikre siden
+
+2009-02-17 22:21  havard.gulldahl
+
+	* finfaktura/f60.py: forsøk på bedre locale-velger
+
+2009-02-17 22:20  havard.gulldahl
+
+	* finfaktura/test.py: test for kid
+
+2009-02-12 20:36  havard.gulldahl
+
+	* finfaktura/f60.py: ikke snuble på filsjekk av logo
+
+2009-02-12 13:27  havard.gulldahl
+
+	* finfaktura/f60.py: massive forbedringer av blanketten (stor takk
+	  til cbrattli): plassering av ulike felter er korrigert,
+	  blanketten skrives mer fullstendig. Også: bedre valg av locale.
+	  Fiks i mod10-algoritme - igjen, takk til cbrattli. fiks utskrift
+	  av kontonummer som starter på 0 (igjen)
+
+2009-02-11 12:16  havard.gulldahl
+
+	* finfaktura/f60.py: fikser typos
+
+2009-02-10 11:33  havard.gulldahl
+
+	* finfaktura/f60.py: kan sette begrensninger på bruken av pdf-en
+	  (krever reportlab > 2.3)
+
+2009-02-08 02:06  havard.gulldahl
+
+	* finfaktura/f60.py: tar vare på høyde-bredde-aspektet i logoen når
+	  den settes inn (ikke strekk den begge veger hvis det ikke er
+	  nødvendig)
+
+2009-02-08 01:48  havard.gulldahl
+
+	* finfaktura/f60.py: mer robust(?) måte å laste logoer på
+
+2009-02-08 00:57  havard.gulldahl
+
+	* finfaktura/f60.py: forbedrer logo-rutinen. kan lese jpg direkte.
+	  må teste PIL
+
+2009-02-07 23:58  havard.gulldahl
+
+	* finfaktura/f60.py: Setter pdf-metadata
+
+2009-02-07 23:48  havard.gulldahl
+
+	* finfaktura/f60.py: Regner ut og spesifiserer momsgrunnlag
+
+2009-02-07 22:27  havard.gulldahl
+
+	* finfaktura/f60.py: bruker locale.currency() på alle beløp, slik
+	  at de formatteres med riktige skilletegn og prefikses med kr
+
+2009-02-06 00:41  havard.gulldahl
+
+	* finfaktura/f60.py: bruker mod10 for å generere KID
+
+2009-02-06 00:40  havard.gulldahl
+
+	* finfaktura/f60.py: mer nøyaktig angivelse av den nederste
+	  tekstlinja på blanketten, jf issue#38, punkt A
+
+2009-02-06 00:24  havard.gulldahl
+
+	* finfaktura/f60.py: innstillingsmerket H (issue#38, punkt A)
+
+2009-02-05 23:41  havard.gulldahl
+
+	* finfaktura/f60.py: nå også kontrollsiffer etter mod11-algoritmen
+	  hos BBS (issue#38). Fjerner feilslått filnavnfiks. skriver
+	  kontrollsiffer for beløp (issue#38). småfiks.
+
+2009-02-04 21:21  havard.gulldahl
+
+	* finfaktura/f60.py: api for å bruke kid
+
+2009-02-04 21:13  havard.gulldahl
+
+	* finfaktura/f60.py: fikser typo
+
+2009-02-04 21:09  havard.gulldahl
+
+	* finfaktura/f60.py: Kan sette eget datoformat. Skifter rekkefølge
+	  på felt på giroen. Lager og sjekker kontrollsiffer for KID
+	  (mod10/luhn) som angitt i issue#38 , punkt B
+
+2009-02-02 23:17  havard.gulldahl
+
+	* finfaktura/epost.py: epost-fiksing: vedlegg (issue#24),
+	  adressesjekk og generell fiks
+
+2009-02-02 23:16  havard.gulldahl
+
+	* scripts/test_finfaktura_epost.py: logging på
+
+2009-02-02 22:34  havard.gulldahl
+
+	* scripts/test_epost.py, scripts/test_finfaktura_epost.py: test for
+	  finfakturas epostrutiner
+
+2009-02-01 22:43  havard.gulldahl
+
+	* scripts/test_epost.py: legger inn testskript for epostfeil
+	  (issue#46)
+
+2009-02-01 22:34  havard.gulldahl
+
+	* finfaktura/f60.py, finfaktura/fakturakomponenter.py,
+	  finfaktura/gui_firma.py: fikser issue#47: siffer blir borte i
+	  kontonummer som starter på 0
+
+2009-02-01 22:16  havard.gulldahl
+
+	* ., debian/finfaktura.docs, debian/finfaktura.menu, doc/REGLER,
+	  faktura.py, finfaktura-installer.nsi, finfaktura/epost.py,
+	  finfaktura/fakturabibliotek.py, finfaktura/gui.py,
+	  finfaktura/rapport.py, setup.py, testdata.db: henter r475:r485
+	  fra 2.0-greina til trunk
+
+2009-01-01 23:33  havard.gulldahl
+
+	* finfaktura/cli.py, finfaktura/fakturakomponenter.py: kan lage
+	  faktura fra kommandolinja igjen
+
+2008-12-17 19:11  havard.gulldahl
+
+	* scripts/forbered_ressurser.bat: fikser så det faktisk gjør noe
+
+2008-12-17 18:56  havard.gulldahl
+
+	* scripts/forbered_ressurser.bat: legger til bat-fil for å
+	  forberede ressurser på windows
+
+2008-12-14 23:40  havard.gulldahl
+
+	* finfaktura/fakturakomponenter.py: fikser alvorlig feil som gir
+	  alle ordrer/fakturaer dagens ordredato
+
+2008-12-14 23:39  havard.gulldahl
+
+	* doc/REGLER: flere snarveger til mekka
+
+2008-12-14 23:22  havard.gulldahl
+
+	* finfaktura/fakturabibliotek.py: fjerner tåpelig ide
+
+2008-12-14 23:19  havard.gulldahl
+
+	* finfaktura/fakturabibliotek.py: legger inn en hjelpetekst på
+	  finnDatabasenavn()
+
+2008-12-14 22:37  havard.gulldahl
+
+	* finfaktura/gui.py: fikser bug ifm feilmelding med ø i
+
+2008-12-14 22:23  havard.gulldahl
+
+	* finfaktura/fakturabibliotek.py: går over til intern
+	  unicode/enkoding på sqlite-databasenavn. fikser æøå-trøbbel på
+	  windows
+
+2008-12-14 21:29  havard.gulldahl
+
+	* finfaktura/fakturabibliotek.py: stabilitetsfiks
+
+2008-12-08 15:05  havard.gulldahl
+
+	* finfaktura/gui.py: feilmelding dersom kommando for
+	  pdf-utskrift/visning ikke finnes
+
+2008-12-08 15:03  havard.gulldahl
+
+	* finfaktura/ui/epost.ui, finfaktura/ui/firmainfo.ui: legger til
+	  scrollarea på epost- og firmainfo-vinduet (issue#35)
+
+2008-12-03 00:38  havard.gulldahl
+
+	* ChangeLog, debian/changelog, finfaktura/__init__.py: Gjør 2.0
+	  klar til utgivelse
+
+2008-12-02 23:53  havard.gulldahl
+
+	* finfaktura/rapport.py: fixer import-bug og issue#43: håndterer
+	  ikke & i firmanavn
+
+2008-12-02 23:48  havard.gulldahl
+
+	* faktura.py, finfaktura/f60.py,
+	  finfaktura/gui_finfaktura_oppsett.py, finfaktura/rapport.py:
+	  Fikser småbugs
+
 2008-11-25 23:36  havard.gulldahl
 
 	* finfaktura/f60.py, finfaktura/fakturabibliotek.py,
