@@ -1,5 +1,5 @@
 Source: finfaktura
-Section: utils
+Section: kde
 Priority: optional
 Maintainer: Håvard Gulldahl <havard@lurtgjort.no>
 Build-Depends: debhelper (>= 4.0.0), python (>= 2.3), python-qt4, pyqt4-dev-tools
