@@ -1,2 +1,2 @@
-?package(finfaktura):needs="X11|text|vc|wm" section="Apps/see-menu-manual"\
+?package(finfaktura):needs="X11" section="Office"\
   title="finfaktura" command="/usr/bin/finfaktura"
