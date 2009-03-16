@@ -83,26 +83,6 @@ Section "Installere Fryktelig Fin Faktura" SecInstall
   
   ;ADD YOUR OWN FILES HERE...
   File "dist\library.zip"
-  ;File "dist\_elementtree.pyd"
-  ;File "dist\_hashlib.pyd"
-  ;File "dist\_rl_accel.pyd"
-  ;File "dist\_socket.pyd"
-  ;File "dist\_sqlite3.pyd"
-  ;File "dist\_ssl.pyd"
-  ;File "dist\bz2.pyd"
-  ;File "dist\faktura.exe"
-  ;File "dist\mingwm10.dll"
-  ;File "dist\PyQt4.QtCore.pyd"
-  ;File "dist\PyQt4.QtGui.pyd"
-  ;File "dist\python25.dll"
-  ;File "dist\QtCore4.dll"
-  ;File "dist\QtGui4.dll"
-  ;File "dist\select.pyd"
-  ;File "dist\sgmlop.pyd"
-  ;File "dist\sip.pyd"
-  ;File "dist\sqlite3.dll"
-  ;File "dist\unicodedata.pyd"
-  ;File "dist\w9xpopen.exe"
   
   ;Store installation folder
   WriteRegStr HKCU "Software\Fryktelig Fin Faktura" "Install_Dir" $INSTDIR
@@ -146,6 +126,7 @@ Section "Uninstall"
 
   ; Remove files and uninstaller
   Delete "$INSTDIR\_elementtree.pyd"
+  Delete "$INSTDIR\_imaging.pyd"
   Delete "$INSTDIR\_hashlib.pyd"
   Delete "$INSTDIR\_rl_accel.pyd"
   Delete "$INSTDIR\_socket.pyd"
@@ -157,6 +138,7 @@ Section "Uninstall"
   Delete "$INSTDIR\mingwm10.dll"
   Delete "$INSTDIR\PyQt4.QtCore.pyd"
   Delete "$INSTDIR\PyQt4.QtGui.pyd"
+  Delete "$INSTDIR\pyexpat.pyd"
   Delete "$INSTDIR\python25.dll"
   Delete "$INSTDIR\QtCore4.dll"
   Delete "$INSTDIR\QtGui4.dll"
@@ -166,7 +148,7 @@ Section "Uninstall"
   Delete "$INSTDIR\sqlite3.dll"
   Delete "$INSTDIR\unicodedata.pyd"
   Delete "$INSTDIR\w9xpopen.exe"
-  Delete "$INSTDIR\finfaktura-uninstaller.exe"
+  Delete "$INSTDIR\finfaktura-uninstall.exe"
   RMDir "$INSTDIR"
 
   !insertmacro MUI_STARTMENU_GETFOLDER Application $StartMenuFolder
