@@ -78,6 +78,8 @@
 Section "Installere Fryktelig Fin Faktura" SecInstall
 
   SetOutPath "$INSTDIR"
+
+  Call SetupInstDir ;; download the program if not upgrading
   
   ;ADD YOUR OWN FILES HERE...
   File "dist\library.zip"
@@ -184,9 +186,10 @@ Function SetupInstDir
 
   ;Check for previous installation
 
-  IfFileExists $INSTDIR\faktura.exe Good
+  IfFileExists $INSTDIR\python25.dll Good
     Call DownloadFullProgram
   Good:
+    
 
 FunctionEnd
 
@@ -195,7 +198,9 @@ Function DownloadFullProgram
   Call ConnectInternet ;Make an internet connection (if no connection available)
 
   StrCpy $2 "$TEMP\finfaktura-win32-2_0_x.zip"
-  NSISdl::download http://finfaktura.googlecode.com/files/finfaktura-win32-2_0_x.zip $2
+  ;;StrCpy $3 "http://finfaktura.googlecode.com/files/finfaktura-win32-2_0_x.zip"
+  StrCpy $3 "http://kode.lurtgjort.no/finfaktura-win32-2_0_x.zip"
+  NSISdl::download $3 $2
   Pop $0
   StrCmp $0 success success
     SetDetailsView show
