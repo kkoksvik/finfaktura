@@ -1,5 +1,5 @@
 Source: finfaktura
-Section: utils
+Section: kde
 Priority: optional
 Maintainer: Håvard Gulldahl <havard@lurtgjort.no>
 Build-Depends: debhelper (>= 4.0.0), python (>= 2.3), python-qt4, pyqt4-dev-tools
@@ -10,7 +10,7 @@ Package: finfaktura
 Architecture: all
 Depends: ${shlibs:Depends}, ${misc:Depends}, ${python:Depends}, python-qt4, python-reportlab
 Recommends: qt4-qtconfig, python-imaging
-Suggests: python-psyco, python-pysqlite2
+Suggests: python-psyco
 Description: Create and manage invoices (Norwegian specs)
  Invoices, customers, products. Creates PDF invoices.
  Automatic email submission and backup.
@@ -20,8 +20,8 @@ Description: Create and manage invoices (Norwegian specs)
  icon ability for PDF invoice).
  .
  If you have python2.5, you don't need python-pysqlite2 (as python2.5
- already has it). If you're not running KDE, get and run qt4-qtconfig,
- else the interface will appear horrid!
+ already has it). You might also want to get and run qt4-qtconfig,
+ to change the looks.
  .
  Project pages: http://finfaktura.googlecode.com/
 

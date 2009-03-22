@@ -1,4 +1,4 @@
-?package(finfaktura):needs="X11" section="Office"\
+?package(finfaktura):needs="X11" section="Applications/Data Management"\
   title="Finfaktura" command="/usr/bin/faktura.py"\
   hints="Small,Business"
 

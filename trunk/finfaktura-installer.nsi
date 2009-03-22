@@ -18,7 +18,7 @@
 
   ;Name and file
   Name "Fryktelig Fin Faktura"
-  OutFile "dist\finfaktura-install.exe"
+  OutFile "dist\finfaktura-netinstaller.exe"
 
   ;Default installation folder
   InstallDir "$PROGRAMFILES\Fryktelig Fin Faktura"
@@ -136,6 +136,7 @@ Section "Uninstall"
   Delete "$INSTDIR\faktura.exe"
   Delete "$INSTDIR\library.zip"
   Delete "$INSTDIR\mingwm10.dll"
+  Delete "$INSTDIR\MSVCR71.dll"
   Delete "$INSTDIR\PyQt4.QtCore.pyd"
   Delete "$INSTDIR\PyQt4.QtGui.pyd"
   Delete "$INSTDIR\pyexpat.pyd"
@@ -169,19 +170,20 @@ Function SetupInstDir
   ;Check for previous installation
 
   IfFileExists $INSTDIR\python25.dll Good
+    ; Nothing there, get the whole shebang
     Call DownloadFullProgram
   Good:
+    ; Python runtime exists, assuming the install is good
     
-
 FunctionEnd
 
 Function DownloadFullProgram
 
   Call ConnectInternet ;Make an internet connection (if no connection available)
 
-  StrCpy $2 "$TEMP\finfaktura-win32-2_0_x.zip"
-  ;;StrCpy $3 "http://finfaktura.googlecode.com/files/finfaktura-win32-2_0_x.zip"
-  StrCpy $3 "http://kode.lurtgjort.no/finfaktura-win32-2_0_x.zip"
+  StrCpy $2 "$TEMP\finfaktura-win32-base-2_0_x.zip"
+  StrCpy $3 "http://finfaktura.googlecode.com/files/finfaktura-win32-base-2_0_x.zip"
+  ;;StrCpy $3 "http://kode.lurtgjort.no/finfaktura-win32-base-2_0_x.zip"
   NSISdl::download $3 $2
   Pop $0
   StrCmp $0 success success
