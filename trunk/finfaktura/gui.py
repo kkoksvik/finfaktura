@@ -1,5 +1,5 @@
 #!/usr/bin/python -d
-# -*- coding:utf8 -*-
+# -*- coding: utf-8 -*-
 # kate: indent-width 4;
 ###########################################################################
 #    Copyright (C) 2005-2008- Håvard Gulldahl og Håvard Sjøvoll
@@ -686,7 +686,9 @@ class FinFaktura(QtGui.QMainWindow):#Ui_MainWindow): ## leser gui fra faktura_ui
 
 ################## KUNDER ###########################
 
-    def lukkKundeinfo(self, *ev):self.gui.kundeInfo.hide()
+    def lukkKundeinfo(self, *ev):
+        self.gui.kundeInfo.hide()
+        self.gui.kundeDetaljerTekst.show()
 
     def kundeContextMenu(self, event):
         try:
@@ -757,6 +759,7 @@ class FinFaktura(QtGui.QMainWindow):#Ui_MainWindow): ## leser gui fra faktura_ui
             self.gui.kundeInfoTelefaks.setText("")
             self.gui.kundeInfoEndre.setText("&Legg inn")
 
+        self.gui.kundeDetaljerTekst.hide()
         self.gui.kundeInfo.show()
         self.gui.kundeInfoNavn.setFocus()
 
@@ -906,7 +909,9 @@ class FinFaktura(QtGui.QMainWindow):#Ui_MainWindow): ## leser gui fra faktura_ui
 
 ################## VARER #########################
 
-    def lukkVarerinfo(self, *ev):self.gui.varerInfo.hide()
+    def lukkVarerinfo(self, *ev):
+        self.gui.varerInfo.hide()
+        self.gui.varerDetaljerTekst.show()
 
     def vareContextMenu(self, event):
         try:
@@ -972,6 +977,7 @@ class FinFaktura(QtGui.QMainWindow):#Ui_MainWindow): ## leser gui fra faktura_ui
             self.gui.varerInfoPris.setSuffix("")
             self.gui.varerInfoMva.setValue(int(self.firma.mva))
             self.gui.varerInfoLegginn.setText('&Lag ny vare')
+        self.gui.varerDetaljerTekst.hide()
         self.gui.varerInfo.show()
         self.gui.varerInfoNavn.setFocus()
 
