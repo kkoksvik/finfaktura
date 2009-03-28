@@ -1,5 +1,5 @@
 #!/usr/bin/python -d
-# -*-*- coding:utf8 -*-*-
+# -*- coding: utf-8 -*-
 ###########################################################################
 #    Copyright (C) 2005-2008- Håvard Gulldahl og Håvard Sjøvoll
 #    <havard@lurtgjort.no>, <sjovoll@ntnu.no>
@@ -112,7 +112,7 @@ class FakturaBibliotek:
 
     def hentEgenskapVerdier(self, tabell, egenskap):
         self.c.execute("SELECT DISTINCT %s FROM %s" % (egenskap, tabell))
-        return [str(x[0]) for x in self.c.fetchall() if x[0]]
+        return [unicode(x[0]) for x in self.c.fetchall() if x[0]]
 
     def lagSikkerhetskopi(self, ordre):
         s = fakturaSikkerhetskopi(self.db, ordre)
