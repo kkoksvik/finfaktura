@@ -84,7 +84,7 @@ except ImportError:
     REPORTLAB=False
     raise f60InstallasjonsFeil("python-modulen `reportlab' mangler. Kan ikke lage PDF!")
 
-__version__ = '0.15'
+__version__ = '0.16'
 __license__ = 'GPLv2'
 
 try:
@@ -315,20 +315,20 @@ class f60:
 
     def paragraf(self, t, par_bredde = 80):
         """Bryter teksten med harde linjeskift på en gitt bredde, 80 tegn hvis ikke annet er oppgitt"""
-        #if not t: return ''
-        assert(type(t) in (types.StringType, types.UnicodeType))
-        if len(t) < par_bredde: return [t,]
-
-        ret = ()
-        i = par_bredde
-        while len(t) > par_bredde:
-            if t[i] == " ":
-                ret += (t[:i],)
-                t = t[i+1:]
-            else:
-                i -= 1
-        ret += (t, )
-        return list(ret)
+        assert(isinstance(t, basestring))
+        linjer = t.replace('\r\n', '\n').split('\n')
+        ret = []
+        for l in linjer:
+            i = par_bredde
+            while len(l) > par_bredde:
+                if l[i] == " ":
+                    ret += [l[:i],]
+                    l = l[i+1:]
+                else:
+                    i -= 1
+            ret += [l, ]
+        return ret
+      
 
     def kutt(self, t, lengde = 200):
         """Kutter en tekst hvis den overstiger en gitt lengde"""
