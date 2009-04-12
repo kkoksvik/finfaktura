@@ -1,4 +1,5 @@
 # -*- coding:utf-8 -*-
+# kate: indent-width: 4;
 """Denne modulen lager en PDF-faktura etter norsk standard f60
 
 PDF-filen kan skrives ut på f60-skjema (GIRO F60-1), eller sendes som en
@@ -95,17 +96,18 @@ except AttributeError, IndexError:
 
 PDFUTSKRIFT = '/usr/bin/okular'
 
+LOCALE = False
 # sett norsk tegngiving (bl.a. for ',' som desimal)
-for x in ('norwegian', 'nb_NO.UTF8', 'nb_NO.ISO8859-1', 'nb_NO', 'nn_NO', 'no_NO', 'no'): 
+for x in ('norwegian', 'nb_NO.UTF8', 'nb_NO.ISO8859-1', 'nb_NO', 'nn_NO', 'no_NO', 'no'):
     # har ulike navn på ulike plattformer... sukk...
     try:
         locale.setlocale(locale.LC_ALL, x)
+        logging.debug('satte locale : %s -> %s', x, locale.getlocale())
+        LOCALE = True
         break
     except locale.Error, e:
         logging.debug('locale passet ikke på denne plattformen: %s', x)
         continue
-
-logging.debug('satte locale : %s', locale.getlocale())
 
 class f60:
     "Lager en pdf etter malen til Giro F60-1, for utskrift eller elektronisk bruk"
@@ -353,9 +355,11 @@ class f60:
     def _kr(self, i):
         "Sørger for at et beløp skrives med riktig skilletegn og valuta. Returnerer tekst"
         try:
-            return locale.currency(i)
+            if LOCALE:
+                return locale.currency(i)
         except ValueError:
-            return "kr %.02f" % i
+            pass
+        return "kr %.02f" % i
 
     def lagKlammer(self,punktX, punktY, deltaX, deltaY, tekst=None):
         """En fullstendig giro har hjørneklammer rundt hvert tekstfelt.
