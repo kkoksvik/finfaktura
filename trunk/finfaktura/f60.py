@@ -56,7 +56,7 @@ Se forøvrig http://code.google.com/p/finfaktura/wiki/PythonF60
 #
 #    Lisens: GPL2
 #
-# $Id$
+# $Id: f60.py 541 2009-04-12 19:20:55Z havard.gulldahl $
 ###########################################################################
 
 import sys,  time, os, types
@@ -87,6 +87,8 @@ except ImportError:
 
 __version__ = '0.16'
 __license__ = 'GPLv2'
+__author__ = 'H. Gulldahl (havard@gulldahl.no)'
+__date__ = '$Date$'
 
 try:
     REPORTLAB2 = (reportlab.Version[0] == '2')
@@ -108,6 +110,8 @@ for x in ('norwegian', 'nb_NO.UTF8', 'nb_NO.ISO8859-1', 'nb_NO', 'nn_NO', 'no_NO
     except locale.Error, e:
         logging.debug('locale passet ikke på denne plattformen: %s', x)
         continue
+
+del x # rydd opp etter oss
 
 class f60:
     "Lager en pdf etter malen til Giro F60-1, for utskrift eller elektronisk bruk"
