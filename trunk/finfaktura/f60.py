@@ -97,7 +97,7 @@ except AttributeError, IndexError:
 PDFUTSKRIFT = '/usr/bin/okular'
 
 LOCALE = False
-# sett norsk tegngiving (bl.a. for ',' som desimal)
+# sett norsk tegngiving (bl.a. for ',' som desimal og 'kr')
 for x in ('norwegian', 'nb_NO.UTF8', 'nb_NO.ISO8859-1', 'nb_NO', 'nn_NO', 'no_NO', 'no'):
     # har ulike navn på ulike plattformer... sukk...
     try:
@@ -669,21 +669,25 @@ Side: %i av %i
             (self.faktura['nr'], self.kunde['nr'], self.faktura['utstedt']))
         self.canvas.drawText(t)
 
+        adresseboksY = 58*mm # øverste punkt i adressefelter
         # mottakerfelt
         kundeinfo = self.canvas.beginText()
-        kundeinfo.setTextOrigin(15*mm, 58*mm)
-        kundeinfo.textLines(split(self.kunde['adresse'], '\n'))
+        ki = split(self.kunde['adresse'], '\n')
+        kiY = adresseboksY + (3*mm * int(len(ki) > 4))
+        kundeinfo.setTextOrigin(15*mm, kiY)
+        kundeinfo.textLines(ki)
         self.canvas.drawText(kundeinfo)
 
         # avsenderfelt
         firmaadresse = self.canvas.beginText()
-        firmaadresse.setTextOrigin(115*mm, 58*mm)
-        firmaadresse.textLines(split("%(firmanavn)s\n%(kontaktperson)s\n%(adresse)s\n%(postnummer)04i %(poststed)s" % (self.firma), '\n'))
+        fa = split("%(firmanavn)s\n%(kontaktperson)s\n%(adresse)s\n%(postnummer)04i %(poststed)s" % (self.firma), '\n')
+        faY = adresseboksY + (3*mm * int(len(fa) > 4))
+        firmaadresse.setTextOrigin(115*mm, faY)
+        firmaadresse.textLines(fa)
         self.canvas.drawText(firmaadresse)
 
         # Blankettens underkant
         # (se http://code.google.com/p/finfaktura/issues/detail?id=38, punkt A)
-        #underkant = 21*mm
         underkant = 5.0/6.0 * inch
         
         # Den fortrykte H -- innstillingsmerke
@@ -731,7 +735,7 @@ if __name__ == '__main__':
     faktura.settFakturainfo(03, 1145542709, 1146546709, u"Et forsøk på en faktura", u"Takk for handelen, kom gjerne igjen. Merk at det regners 5 % rente ved for sen betaling. ", kid=True, levertEpoch=1145142709)
     faktura.settFirmainfo({'firmanavn':'Test Firma Ein',
                            'kontaktperson':'Rattatta Hansen',
-                           'adresse':u'Surdalsøyra',
+                           'adresse':u'v/Herr hei og hå\nSurdalsøyra',
                            'postnummer':8999,
                            'poststed':u'Fløya',
                            'kontonummer':99999999999,
@@ -739,7 +743,7 @@ if __name__ == '__main__':
                            'telefon':23233322,
                            'epost':'ratata@ta.no'})
     faktura.settOrdrelinje([ ["Leder", 1, 300, 0], ['Fotoreportasje', 1, 3000, 25], ['Servering', 4, 80, 12.5] ])
-    faktura.settLogo('logo.jpg')
+    #faktura.settLogo('logo.jpg')
     if faktura.lagEpost():
         print "Kvittering laget i", filnavn
     else:
