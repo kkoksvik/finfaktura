@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # kate: indent-width 2; encoding utf-8
 ###########################################################################
-#    Copyright (C) 2009 Håvard Gulldahl
+#    Copyright (C) 2005-2009 Håvard Gulldahl
 #    <havard@gulldahl.no>
 #
 #    Lisens: GPL2
@@ -26,7 +26,6 @@ class nummersetter(object):
   def lesDBInfo(self, databasenavn):
     if not os.path.exists(databasenavn): return False
     db = sqlite3.connect(databasenavn)
-
 
     mtime = os.stat(databasenavn)[ST_MTIME]
 
@@ -57,7 +56,8 @@ class nummersetter(object):
       cursor.execute('SELECT * FROM Ordrehode')
       if len(cursor.fetchall()) > 0:
         raise Exception('Det er allerede laget fakturaer i denne databasen. Kan ikke sette fakturanummer.')
-      cursor.execute('INSERT INTO Ordrehode (ID, kansellert, kundeID, ordredato, forfall) VALUES (?, 1, -1, 1, 1)', (fakturanummer-1,))
+      cursor.execute('INSERT INTO Kunde (ID, navn, slettet) VALUES (1, "Tom kunde", 1)')
+      cursor.execute('INSERT INTO Ordrehode (ID, tekst, kansellert, kundeID, ordredato, forfall) VALUES (?, "Tom faktura", 1, 1, 1, 1)', (fakturanummer-1,))
       db.commit()
       db.close()
       return True
