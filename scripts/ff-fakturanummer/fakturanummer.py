@@ -1,4 +1,4 @@
-#!/usr/bin/python -d
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 # kate: indent-width 2; encoding utf-8
 ###########################################################################
@@ -138,5 +138,3 @@ if __name__ == '__main__':
   a = QtGui.QApplication(sys.argv)
   p = nummersettergui()
   a.exec_()
-
-  
