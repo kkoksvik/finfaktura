@@ -1,3 +1,76 @@
+2009-04-12 19:27  havard.gulldahl
+
+	* finfaktura/f60.py: metadata
+
+2009-04-12 19:20  havard.gulldahl
+
+	* finfaktura/f60.py: plass til fem adresselinjer i adressefelt
+
+2009-04-12 18:52  havard.gulldahl
+
+	* finfaktura/f60.py: fikser bug#56, hvor dollar-tegn dukker opp
+	  foran valutafelt dersom locale ikke ble satt riktig
+
+2009-04-08 22:26  havard.gulldahl
+
+	* scripts/ff-fakturanummer/fakturanummer.py,
+	  scripts/ff-fakturanummer/gui.ui: gui og mesteparten av logikken
+	  på plass
+
+2009-04-08 09:53  havard.gulldahl
+
+	* scripts/ff-fakturanummer/fakturanummer.py: mer'
+
+2009-04-06 15:27  havard.gulldahl
+
+	* scripts/ff-fakturanummer,
+	  scripts/ff-fakturanummer/fakturanummer.py,
+	  scripts/ff-fakturanummer/gui.ui: legger til
+	  fiksførstefakturanummer
+
+2009-03-28 21:57  havard.gulldahl
+
+	* finfaktura/gui.py: skjuler vare- og kundeinfo når de skal
+	  redigeres - bedre for små vinduer
+
+2009-03-28 21:42  havard.gulldahl
+
+	* finfaktura/fakturabibliotek.py: fikser issue#55 - statusfelt med
+	  ikke-ascii-tegn
+
+2009-03-28 21:23  havard.gulldahl
+
+	* finfaktura/f60.py: fikser bug hvor linjeskift i fakturatekst ble
+	  erstattet med svart firkant (issue#54)
+
+2009-03-22 21:55  havard.gulldahl
+
+	* debian/control, debian/finfaktura.menu, doc/REGLER,
+	  finfaktura-installer.nsi: bedre installasjonsinstillinger på win
+	  og debian
+
+2009-03-22 21:51  havard.gulldahl
+
+	* dist, dist/finfaktura-win32-base-2_0_x.zip, dist/library.zip:
+	  legger inn win-kode for netinstaller
+
+2009-03-16 09:27  havard.gulldahl
+
+	* finfaktura-installer.nsi: mer fiks
+
+2009-03-16 03:35  havard.gulldahl
+
+	* finfaktura-installer.nsi: fiks nedlastingslogik
+
+2009-03-16 03:19  havard.gulldahl
+
+	* finfaktura-installer.nsi: webinstaller
+
+2009-03-12 22:22  havard.gulldahl
+
+	* ChangeLog, debian/changelog, finfaktura/__init__.py: Gjør 2.0.5
+	  klar til utgivelse
+
 2009-02-17 22:38  havard.gulldahl
 
 	* finfaktura/f60.py: API-ENDRING: legger til argumentet lvertEpoch

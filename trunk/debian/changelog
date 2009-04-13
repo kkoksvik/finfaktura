@@ -1,3 +1,18 @@
+finfaktura (2.0.6) jaunty; urgency=low
+
+  * f60.py: fikser bug#54, hvor linjeskift ble til sort firkant -- takk,
+    Harald!
+  * f60.py: fikser bug#56, beløp skrives med $-tegn dersom locale ikke er
+    riktig -- takk igjen, Harald!
+  * f60.py: versjon 0.16
+  * fikser bug#55, hvor ikke-ascii tegn i status-felt på kunde eller vare
+    førte til problemer -- takk, Johan!
+  * småendringer i gui for å gjøre den enklere å bruke på små skjermer
+  * bedre installasjonsinstillinger for debian-derivater og
+    netinstaller for windows
+
+ -- Håvard Gulldahl <havard@gulldahl.no>  Mon, 13 Apr 2009 22:44:48 +0200
+
 finfaktura (2.0.5) jaunty; urgency=low
 
   * f60.py: massive forbedringer av blanketten (stor takk til cbrattli),
