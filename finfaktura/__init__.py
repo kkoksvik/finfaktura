@@ -1,5 +1,4 @@
-"""Fakturafunksjoner for Fryktelig fin faktura"""
-# -*- coding:utf8 -*-
+# -*- coding: utf-8 -*-
 ###########################################################################
 #    Copyright (C) 2005-2009 Håvard Gulldahl
 #    <havard@lurtgjort.no>
@@ -9,7 +8,7 @@
 # $Id$
 ###########################################################################
 
-__version__ = "2.0.5"
+__version__ = "2.0.6"
 
 __all__ = ['fakturabibliotek','oppgradering','f60','cli', 'sikkerhetskopi', 'okonomi', 'epost', 'historikk', 'ekstra', 'fakturafeil', 'fakturakomponenter', 'rapport', 'gui']
 
