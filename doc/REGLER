@@ -1,6 +1,6 @@
 ## Hvordan utvikle finfaktura
 ## $Id$
-## Håvard Gulldahl <havard@gulldahl.no> (C) 2005-2008
+## Håvard Gulldahl <havard@gulldahl.no> (C) 2005-2009
 
 
 ### Lage ny release ###
@@ -12,7 +12,7 @@
     dch --newversion $VERSJON
     -> skrive inn hva som har skjedd siden $VERSJON-1
 
-* Laste ned svn-logg
+* Laste ned svn-logg til ./ChangeLog
     svn2cl # finnes på http://ch.tudelft.nl/~arthur/svn2cl/downloads.html
 
 * Commite endringer til svn
