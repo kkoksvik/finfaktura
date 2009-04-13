@@ -11,7 +11,6 @@
 #
 ###########################################################################
 
-
 import sys, os, os.path, logging, glob
 from time import time, strftime, localtime, mktime
 import logging
@@ -57,7 +56,7 @@ class nummersetter(object):
       if len(cursor.fetchall()) > 0:
         raise Exception('Det er allerede laget fakturaer i denne databasen. Kan ikke sette fakturanummer.')
       cursor.execute('INSERT INTO Kunde (ID, navn, slettet) VALUES (1, "Tom kunde", 1)')
-      cursor.execute('INSERT INTO Ordrehode (ID, tekst, kansellert, kundeID, ordredato, forfall) VALUES (?, "Tom faktura", 1, 1, 1, 1)', (fakturanummer-1,))
+      cursor.execute('INSERT INTO Ordrehode (ID, tekst, kansellert, kundeID, ordredato, forfall) VALUES (?, "Tom faktura", 1, 1, 1, 1)', (fakturanummer,))
       db.commit()
       db.close()
       return True
@@ -67,7 +66,8 @@ class nummersetter(object):
 class nummersettergui(object):
   def __init__(self):
     self.help = nummersetter()
-    self.gui = uic.loadUi('gui.ui')
+    p = os.path.join(os.path.dirname(__file__), 'gui.ui')
+    self.gui = uic.loadUi(p)
     self.gui.connect(self.gui.databasenavn, QtCore.SIGNAL('activated(QString)'), self.slotDatabaseValgt)
     self.gui.connect(self.gui.settFakturanummer, QtCore.SIGNAL('clicked()'), self.slotSettFakturanummer)
     self.gui.show()
@@ -134,7 +134,8 @@ class nummersettergui(object):
         QtGui.QMessageBox.information(self.gui, "Fakturanummer endret", u"Endret fakturanummer. Nå får neste faktura nummer %s" % fnr)
 
 if __name__ == '__main__':
-  logging.basicConfig(level=logging.DEBUG)
+  if '-d' in sys.argv:
+    logging.basicConfig(level=logging.DEBUG)
   a = QtGui.QApplication(sys.argv)
   p = nummersettergui()
   a.exec_()
