@@ -51,7 +51,7 @@ if faktura.lagEpost():
 Se forøvrig http://code.google.com/p/finfaktura/wiki/PythonF60
 """
 ###########################################################################
-#    Copyright (C) 2005-2008- Håvard Gulldahl
+#    Copyright (C) 2005-2009 Håvard Gulldahl
 #    <havard@lurtgjort.no>
 #
 #    Lisens: GPL2

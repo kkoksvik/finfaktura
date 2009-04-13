@@ -1,7 +1,6 @@
-#!/usr/bin/python -d
 # -*- coding: utf-8 -*-
 ###########################################################################
-#    Copyright (C) 2005-2008- Håvard Gulldahl og Håvard Sjøvoll
+#    Copyright (C) 2005-2009 Håvard Gulldahl og Håvard Sjøvoll
 #    <havard@lurtgjort.no>, <sjovoll@ntnu.no>
 #
 #    Lisens: GPL2

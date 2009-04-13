@@ -2,7 +2,7 @@
 # -*- coding:utf-8 -*-
 """cli-magi"""
 ###########################################################################
-#    Copyright (C) 2005-2008- Håvard Gulldahl
+#    Copyright (C) 2005-2009 Håvard Gulldahl
 #    <havard@lurtgjort.no>
 #
 #    Lisens: GPL2

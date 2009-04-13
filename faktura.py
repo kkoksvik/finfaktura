@@ -2,7 +2,7 @@
 # -*- coding:utf8 -*-
 # kate: indent-width 4;
 ###########################################################################
-#    Copyright (C) 2005-2008- Håvard Gulldahl og Håvard Sjøvoll
+#    Copyright (C) 2005-2009 Håvard Gulldahl og Håvard Sjøvoll
 #    <havard@gulldahl.no>, <sjovoll@ntnu.no>
 #
 #    Lisens: GPL2
