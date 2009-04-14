@@ -1,0 +1,220 @@
+<ui version="4.0" >
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>897</width>
+    <height>375</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>Dialog</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout" >
+   <item row="0" column="0" >
+    <widget class="Q3GroupBox" name="groupBox11" >
+     <property name="title" >
+      <string>Filsystem</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2" >
+      <item row="0" column="0" >
+       <widget class="QLabel" name="textLabel1_7_2" >
+        <property name="text" >
+         <string>Katalog for sikkerhetskopier</string>
+        </property>
+        <property name="wordWrap" >
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1" >
+       <widget class="QLineEdit" name="sikkerhetskopiKatalog" >
+        <property name="text" >
+         <string>~</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2" >
+       <widget class="QPushButton" name="sikkerhetskopiKatalogSok" >
+        <property name="text" >
+         <string>Søk...</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" colspan="2" >
+       <widget class="QCheckBox" name="sikkerhetskopiVedAvslutt" >
+        <property name="text" >
+         <string>Lag sikkerhetskopi automatisk hver gang jeg lukker programmet</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0" colspan="2" >
+       <widget class="QCheckBox" name="sikkerhetskopiVedFaktura" >
+        <property name="text" >
+         <string>Lag sikkerhetskopi hver gang jeg legger inn en ny faktura</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="0" >
+    <widget class="Q3GroupBox" name="groupBox17" >
+     <property name="title" >
+      <string>Gjenopprett</string>
+     </property>
+     <layout class="QGridLayout" >
+      <item row="2" column="0" >
+       <widget class="QLabel" name="textLabel2_5_2" >
+        <property name="text" >
+         <string>Tilgjengelig:</string>
+        </property>
+        <property name="wordWrap" >
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1" >
+       <widget class="QRadioButton" name="radioButton5" >
+        <property name="text" >
+         <string>Gmail</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" >
+       <widget class="QLabel" name="textLabel2_5" >
+        <property name="text" >
+         <string>Gjenopprett fra:</string>
+        </property>
+        <property name="wordWrap" >
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2" >
+       <widget class="QRadioButton" name="radioButton5_2" >
+        <property name="text" >
+         <string>Filsystem</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0" colspan="5" >
+       <widget class="QLabel" name="textLabel1_6" >
+        <property name="text" >
+         <string>Dette gjenoppretter databasen fra en &lt;b>gammel versjon&lt;/b>. Dette må du bare gjøre dersom du er sikker på hva du gjør!</string>
+        </property>
+        <property name="alignment" >
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+        </property>
+        <property name="wordWrap" >
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1" colspan="3" >
+       <widget class="QComboBox" name="comboBox10" />
+      </item>
+      <item row="3" column="0" >
+       <widget class="QLabel" name="textLabel3_3" >
+        <property name="text" >
+         <string>Informasjon:</string>
+        </property>
+        <property name="wordWrap" >
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1" colspan="4" >
+       <widget class="QLabel" name="textLabel4_3" >
+        <property name="text" >
+         <string>textLabel4</string>
+        </property>
+        <property name="textFormat" >
+         <enum>Qt::RichText</enum>
+        </property>
+        <property name="alignment" >
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+        </property>
+        <property name="wordWrap" >
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="4" >
+       <widget class="QLabel" name="textLabel5_3" >
+        <property name="text" >
+         <string>textLabel5</string>
+        </property>
+        <property name="wordWrap" >
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="3" colspan="2" >
+       <widget class="QPushButton" name="pushButton29" >
+        <property name="text" >
+         <string>Gjenopprett fra valgt sikkerhetskopi</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="2" column="0" >
+    <widget class="QDialogButtonBox" name="buttonBox" >
+     <property name="orientation" >
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons" >
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Q3GroupBox</class>
+   <extends>QGroupBox</extends>
+   <header>Qt3Support/Q3GroupBox</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>Dialog</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>248</x>
+     <y>254</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>157</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>Dialog</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>316</x>
+     <y>260</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>286</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
