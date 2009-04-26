@@ -26,6 +26,7 @@ import finfaktura.sikkerhetskopi as sikkerhetskopi
 import finfaktura.historikk as historikk
 import finfaktura.rapport
 import finfaktura.fakturakomponenter
+import finfaktura.fil
 from finfaktura.fakturafeil import *
 
 from PyQt4 import QtCore, QtGui, uic
@@ -168,8 +169,7 @@ class FinFaktura(QtGui.QMainWindow):#Ui_MainWindow): ## leser gui fra faktura_ui
         self.faktura.produksjonsversjon = PRODUKSJONSVERSJON
         if not self.faktura.oppsett.vispdf:
             self.faktura.oppsett.vispdf = PDFVIS
-        finfaktura.rapport.PDFVIS = self.faktura.oppsett.vispdf
-        finfaktura.fakturakomponenter.PDFVIS = self.faktura.oppsett.vispdf
+        finfaktura.fil.PDFVIS = self.faktura.oppsett.vispdf
 
         self.skiftTab(0)
         self.resize(880, 600)
@@ -512,7 +512,7 @@ class FinFaktura(QtGui.QMainWindow):#Ui_MainWindow): ## leser gui fra faktura_ui
             return False
         kvitt = ordre.hentSikkerhetskopi()
         try:
-            kvitt.vis(program=self.faktura.oppsett.vispdf)
+            kvitt.vis()
         except Exception, e:
             logging.debug(e)
             self.alert(unicode(e))
@@ -541,7 +541,7 @@ class FinFaktura(QtGui.QMainWindow):#Ui_MainWindow): ## leser gui fra faktura_ui
             elif Type == "papir":
                 if self.JaNei(u"Blanketten er laget fra før av. Vil du skrive den ut nå?"):
                     try:
-                        self.faktura.skrivUt(E.filnavn, program=self.faktura.oppsett.vispdf)
+                        self.faktura.skrivUt(E.filnavn)
                     except Exception, e:
                         logging.debug(e)
                         self.alert(unicode(e))
@@ -574,7 +574,7 @@ class FinFaktura(QtGui.QMainWindow):#Ui_MainWindow): ## leser gui fra faktura_ui
                 historikk.pdfPapir(ordre, True, "interaktivt")
                 if self.JaNei(u"Blanketten er laget. Vil du skrive den ut nå?"):
                     try:
-                        suksess = pdf.skrivUt(program=self.faktura.oppsett.vispdf)
+                        suksess = pdf.skrivUt()
                     except Exception, e:
                         logging.debug(e)
                         self.alert(unicode(e))
@@ -1190,7 +1190,7 @@ class FinFaktura(QtGui.QMainWindow):#Ui_MainWindow): ## leser gui fra faktura_ui
         rapport.lastOrdreliste(ordrer)
 
         try:
-            rapport.vis(program=self.faktura.oppsett.vispdf)
+            rapport.vis()
         except Exception, e:
             logging.debug(e)
             self.alert(unicode(e))

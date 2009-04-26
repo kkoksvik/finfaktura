@@ -12,7 +12,7 @@ import sys, time, os, types
 from string import join, split
 import logging, subprocess
 
-import fakturafeil
+import fakturafeil, fil
 
 try:
     import reportlab
@@ -23,8 +23,6 @@ try:
 except ImportError:
     REPORTLAB=False
     #raise
-
-PDFVIS = "/usr/bin/kpdf"
 
 class rapport:
     u'Lager økonomisk rapport på pdf'
@@ -72,19 +70,11 @@ class rapport:
         dok.build(self.flow)
         self.oppdatert = True
 
-    def vis(self, program=PDFVIS):
-        logging.debug("viser rapport '%s' med programmet '%s'", self.filnavn, program)
+    def vis(self):
+        logging.debug("viser rapport '%s'", self.filnavn)
         if not self.oppdatert:
             self.lag()
-        p = program.encode(sys.getfilesystemencoding())
-        # subprocess.call på windows takler ikke unicode!
-        f = self.filnavn.encode(sys.getfilesystemencoding())
-        if '%s' in program:
-            command = (p % f).split(' ')
-        else:
-            command = (p,  f)
-        logging.debug('kjører kommando: %s',  command)
-        subprocess.call(command)
+        return fil.vis(self.filnavn)
 
     def lastOrdreliste(self, ordreliste):
         for o in ordreliste: self.leggTilOrdre(o)

@@ -12,6 +12,7 @@ import sys, re, types, time, os.path
 from string import join
 import logging, subprocess
 
+import fil
 
 try:
     import sqlite3 as sqlite # python2.5 har sqlite3 innebygget
@@ -21,8 +22,6 @@ except ImportError:
 from PyQt4 import QtCore
 
 from fakturafeil import *
-
-PDFVIS = "/usr/bin/okular"
 
 class fakturaKomponent:
     _egenskaper = {}
@@ -509,17 +508,10 @@ class fakturaSikkerhetskopi(fakturaKomponent):
         os.close(f)
         return filnavn
 
-    def vis(self, program=PDFVIS):
+    def vis(self):
         "Dersom program inneholder %s vil den bli erstattet med filnavnet, ellers lagt til etter program"
-        logging.debug(u'Åpner sikkerhetskopi #%i med programmet "%s"', self._id, program)
-        p = program.encode(sys.getfilesystemencoding()) # subprocess.call på windows takler ikke unicode!
-        f = self.lagFil().encode(sys.getfilesystemencoding())
-        if '%s' in program:
-            command = (p % f).split(' ')
-        else:
-            command = (p,  f)
-        logging.debug('kjører kommando: %s',  command)
-        subprocess.call(command)
+        logging.debug(u'Åpner sikkerhetskopi #%i', self._id)
+        return fil.vis(self.lagFil())
 
 class fakturaEpost(fakturaKomponent):
     _tabellnavn = "Epost"
