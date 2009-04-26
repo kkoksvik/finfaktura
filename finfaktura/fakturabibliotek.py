@@ -18,7 +18,7 @@ try:
 except ImportError:
     from pysqlite2 import dbapi2 as sqlite # prøv bruker/system-installert modul
 
-import historikk
+import historikk, fil
 from fakturakomponenter import fakturaOppsett, fakturaEpost, fakturaFirmainfo, \
         fakturaOrdre, fakturaVare, fakturaKunde, fakturaSikkerhetskopi
 from fakturafeil import *
@@ -171,20 +171,8 @@ class FakturaBibliotek:
 
         return pdf
 
-    def skrivUt(self, filnavn, program='/usr/bin/kpdf'):
-        if not os.path.exists(filnavn):
-            raise Exception("Ugyldig filnavn: '%s'" % filnavn)
-        ## XXX: TODO: Skrive ut for alle os ## QPrint() ?
-        logging.debug("skriver ut '%s' vha programmet '%s'", filnavn, program)
-        p = program.encode(sys.getfilesystemencoding())
-        # subprocess.call på windows takler ikke unicode!
-        f = filnavn.encode(sys.getfilesystemencoding())
-        if '%s' in program:
-            command = (p % f).split(' ')
-        else:
-            command = (p,  f)
-        logging.debug('kjører kommando: %s',  command)
-        subprocess.call(command)
+    def skrivUt(self, filnavn):
+        return fil.vis(filnavn)
 
     def sendEpost(self, ordre, pdf, tekst=None, transport='auto'):
         import epost
