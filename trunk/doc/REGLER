@@ -58,7 +58,7 @@
    #apt-get install xbase-clients
    #export XAUTHORITY=/root/.Xauthority
    #xauth add xxx/unix:10 MIT-MAGIC-COOKIE-1 XXX
-   DISPLAY=:10 faktura.py -d
+   DISPLAY=:10 FAKTURADB=tmp/*/testdata.db faktura.py -d
 
 * Committe endringer til svn dersom .deb gikk smertefritt
     svn commit -m "pakker og klargjør $VERSJON til produksjon"
