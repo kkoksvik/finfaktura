@@ -1,4 +1,4 @@
-# -*- coding:utf8 -*-
+# -*- coding: utf-8 -*-
 # kate: indent-width 4;
 ###########################################################################
 #    Copyright (C) 2008 Håvard Gulldahl
@@ -10,7 +10,7 @@
 #
 ###########################################################################
 
-import logging
+import sys, logging, os.path, glob
 from PyQt4 import QtCore, QtGui
 from ui import finfaktura_oppsett_ui
 
@@ -33,15 +33,30 @@ class finfakturaOppsett(finfaktura_oppsett_ui.Ui_FinFakturaOppsett):
         return res
 
     def vis(self):
+        logging.debug('Fakturakatalog fra db: %s', repr(self.faktura.oppsett.fakturakatalog))
+        logging.debug('pdf-prog fra db: %s', repr(self.faktura.oppsett.vispdf))
         self.oppsettFakturakatalog.setText(self.faktura.oppsett.fakturakatalog)
-        self.oppsettProgramVisPDF.setText(self.faktura.oppsett.vispdf)
-
-    def visningsProgrammer(self):
-        p = {'kpdf (KDE3)': '/usr/bin/kpdf',
+        if self.faktura.oppsett.vispdf:
+            self.oppsettProgramVisPDF.addItem('Gjeldende valg (%s)' % self.faktura.oppsett.vispdf, QtCore.QVariant(self.faktura.oppsett.vispdf))
+        p = {
+             'kpdf (KDE3)': '/usr/bin/kpdf',
              'okular (KDE4)': '/usr/bin/okular',
-             'Acrobat reader (win)': '',
-             'Vis i Utforsker (win)': '',
+             'evince (Gnome)': '/usr/bin/evince',
+             'xpdf (X11)': '/usr/bin/xpdf',
+             'epdfview (X11)': '/usr/bin/epdfview',
+             'Acrobat reader (win)': '%SYSTEMDRIVE%\%PROGRAMFILES%\Adobe\Reader*\Reader\AcroRd32.exe',
+             'Foxit reader (win)': '%SYSTEMDRIVE%\%PROGRAMFILES%\Foxit Software\Foxit Reader\Foxit Reader.exe',
             }
+        for tekst, s in p.iteritems():
+            sti = os.path.expandvars(s)
+            logging.debug('sti %s, exists: %s', sti, os.path.exists(sti))
+            if os.path.exists(sti):
+                self.oppsettProgramVisPDF.addItem(tekst, QtCore.QVariant(sti + ' %s'))
+            elif '*' in sti:
+                for _sti in [ _s for _s in glob.glob(sti) if os.path.exists(_s) ]:
+                    self.oppsettProgramVisPDF.addItem(tekst, QtCore.QVariant(_sti+ ' %s'))
+        if sys.platform.startswith('win'):
+            self.oppsettProgramVisPDF.addItem('Vis i Utforsker (win)', QtCore.QVariant('explorer /c,%s'))
 
     def endreFakturakatalog(self):
         nu = self.oppsettFakturakatalog.text()
@@ -58,15 +73,16 @@ class finfakturaOppsett(finfaktura_oppsett_ui.Ui_FinFakturaOppsett):
 
     def endreProgramVis(self):
         ny = unicode(QtGui.QFileDialog.getOpenFileName(self.gui,
-            u"Velg et program til å åpne PDF i",
-            self.oppsettProgramVisPDF.text()))
+            u"Velg et program å åpne PDF i",
+            self.oppsettProgramVisPDF.itemData(self.oppsettProgramVisPDF.currentIndex()).toPyObject())
+            )
         if len(ny) > 0:
             logging.debug("Setter nytt visningsprogram: %s" % ny)
             self.faktura.oppsett.vispdf = ny
-            self.oppsettProgramVisPDF.setText(ny)
+            self.oppsettProgramVisPDF.insertItem(0, ny, QtCore.QVariant(ny))
 
     def oppdater(self):
         logging.debug("Lager oppsett")
         self.faktura.oppsett.fakturakatalog = unicode(self.oppsettFakturakatalog.text())
-        self.faktura.oppsett.vispdf = unicode(self.oppsettProgramVisPDF.text())
+        self.faktura.oppsett.vispdf = unicode(self.oppsettProgramVisPDF.itemData(self.oppsettProgramVisPDF.currentIndex()).toPyObject())
 
