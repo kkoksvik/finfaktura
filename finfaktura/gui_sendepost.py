@@ -1,4 +1,4 @@
-# -*- coding:utf8 -*-
+# -*- coding: utf-8 -*-
 # kate: indent-width 4;
 ###########################################################################
 #    Copyright (C) 2008 Håvard Gulldahl

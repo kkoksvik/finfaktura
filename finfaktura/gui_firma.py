@@ -9,7 +9,7 @@
 # $Id: faktura.py 260 2008-05-11 08:59:23Z havard.gulldahl $
 #
 ###########################################################################
-
+ 
 import logging
 from PyQt4 import QtCore, QtGui
 from ui import firmainfo_ui
