@@ -2,13 +2,13 @@ Source: finfaktura
 Section: kde
 Priority: optional
 Maintainer: Håvard Gulldahl <havard@lurtgjort.no>
-Build-Depends: debhelper (>= 4.0.0), python (>= 2.3), python-qt4, pyqt4-dev-tools
+Build-Depends: debhelper (>= 4.0.0), python (>= 2.3), python-qt4 (>= 4.4), pyqt4-dev-tools
 Standards-Version: 3.6.2
 Homepage: http://finfaktura.googlecode.com/
 
 Package: finfaktura
 Architecture: all
-Depends: ${shlibs:Depends}, ${misc:Depends}, ${python:Depends}, python-qt4, python-reportlab
+Depends: ${shlibs:Depends}, ${misc:Depends}, ${python:Depends}, python-qt4 (>= 4.4), python-reportlab
 Recommends: qt4-qtconfig, python-imaging
 Suggests: python-psyco
 Description: Create and manage invoices (Norwegian specs)
