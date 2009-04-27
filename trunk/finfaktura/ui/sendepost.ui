@@ -1,55 +1,142 @@
-<ui version="4.0" >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>sendEpost</class>
- <widget class="QDialog" name="sendEpost" >
-  <property name="geometry" >
+ <widget class="QDialog" name="sendEpost">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>667</width>
-    <height>378</height>
+    <width>659</width>
+    <height>474</height>
    </rect>
   </property>
-  <property name="windowTitle" >
+  <property name="windowTitle">
    <string>Send faktura per epost</string>
   </property>
-  <property name="modal" >
+  <property name="modal">
    <bool>true</bool>
   </property>
-  <layout class="QGridLayout" name="gridLayout_2" >
-   <item row="0" column="0" >
-    <layout class="QGridLayout" name="gridLayout" >
-     <item row="0" column="0" colspan="2" >
-      <widget class="QLabel" name="tittel" >
-       <property name="text" >
-        <string>Sender epost til</string>
-       </property>
-       <property name="textFormat" >
-        <enum>Qt::RichText</enum>
-       </property>
-       <property name="wordWrap" >
-        <bool>false</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0" colspan="2" >
-      <widget class="QPlainTextEdit" name="tekst" >
-       <property name="tabChangesFocus" >
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="0" >
-      <widget class="QDialogButtonBox" name="buttonBox" >
-       <property name="standardButtons" >
-        <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-       </property>
-      </widget>
-     </item>
-    </layout>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0" colspan="2">
+    <widget class="QLabel" name="tittel">
+     <property name="text">
+      <string>Sender epost til</string>
+     </property>
+     <property name="textFormat">
+      <enum>Qt::RichText</enum>
+     </property>
+     <property name="wordWrap">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0" colspan="2">
+    <widget class="QPlainTextEdit" name="tekst">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>2</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="tabChangesFocus">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0" colspan="2">
+    <widget class="QTreeWidget" name="vedlegg">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>1</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="horizontalScrollBarPolicy">
+      <enum>Qt::ScrollBarAlwaysOff</enum>
+     </property>
+     <property name="showDropIndicator" stdset="0">
+      <bool>false</bool>
+     </property>
+     <property name="alternatingRowColors">
+      <bool>true</bool>
+     </property>
+     <property name="uniformRowHeights">
+      <bool>true</bool>
+     </property>
+     <property name="itemsExpandable">
+      <bool>false</bool>
+     </property>
+     <property name="animated">
+      <bool>true</bool>
+     </property>
+     <property name="allColumnsShowFocus">
+      <bool>true</bool>
+     </property>
+     <property name="expandsOnDoubleClick">
+      <bool>false</bool>
+     </property>
+     <attribute name="headerCascadingSectionResizes">
+      <bool>true</bool>
+     </attribute>
+     <attribute name="headerCascadingSectionResizes">
+      <bool>true</bool>
+     </attribute>
+     <column>
+      <property name="text">
+       <string>Filnavn</string>
+      </property>
+      <property name="toolTip">
+       <string>Fullt navn</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Mimetype</string>
+      </property>
+      <property name="toolTip">
+       <string>Hvilken mimetype ('Content type') fila har</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Størrelse</string>
+      </property>
+      <property name="toolTip">
+       <string>Filas størrelse</string>
+      </property>
+     </column>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QPushButton" name="leggVedFil">
+     <property name="text">
+      <string>Legg ved fil...</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1">
+    <spacer name="horizontalSpacer">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>530</width>
+       <height>22</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="4" column="0" colspan="2">
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>
- <layoutdefault spacing="6" margin="11" />
+ <layoutdefault spacing="6" margin="11"/>
  <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
  <resources/>
  <connections>
@@ -59,11 +146,11 @@
    <receiver>sendEpost</receiver>
    <slot>accept()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>525</x>
      <y>356</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>503</x>
      <y>-13</y>
     </hint>
@@ -75,11 +162,11 @@
    <receiver>sendEpost</receiver>
    <slot>reject()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>566</x>
      <y>358</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>665</x>
      <y>304</y>
     </hint>
