@@ -7,7 +7,7 @@ Det kan være ulike årsaker til at programmet ikke starter eller fungerer som d
 
 Du kan enten [mailto:finfaktura@googlegroups.com sende en epost til epostlista], hvor du beskriver problemet, eller du kan [http://code.google.com/p/finfaktura/issues/list legge inn en feiloppføring], slik at vi kan finne ut av det.
 
-= Hvis noe er feil med FinFaktura =
+= Hvis noe er feil med Fryktelig Fin Faktura =
 
 For å finne ut av årsaken til problemet, må prorammet startes på en spesiell måte, slik at alle feilmeldinger kommer frem. 
 
