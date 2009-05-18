@@ -10,7 +10,7 @@
 #
 ###########################################################################
 
-import sys, os, logging
+import sys, os, logging, mimetypes, stat
 from PyQt4 import QtCore, QtGui
 from ui import sendepost_ui
 
@@ -32,11 +32,25 @@ class sendEpost(sendepost_ui.Ui_sendEpost):
             os.getenv('HOME', '.'))
         if len(f) > 0:
             self.vedlegg.show()
-            logging.debug("Legger ved fil: %s", unicode(f))
-            self._vedlegg.append(unicode(f).encode(sys.getfilesystemencoding()))
-            i = QtGui.QTreeWidgetItem([f, '', ''])
+            ff = unicode(f).encode(sys.getfilesystemencoding())
+            logging.debug("Legger ved fil: %s", ff)
+            self._vedlegg.append(ff)
+            mime = mimetypes.guess_type(ff)
+            mtype = ''
+            if mime is not None:
+                mtype = mime[0]
+            size = os.stat(ff)[stat.ST_SIZE]
+            i = QtGui.QTreeWidgetItem([f, mtype, prettySize(size)])
             self.vedlegg.addTopLevelItem(i)
             
     def exec_(self):
         res = self.gui.exec_()
         return res, unicode(self.tekst.toPlainText())
+
+def prettySize(size):
+    suffixes = [("B",2**10), ("K",2**20), ("M",2**30), ("G",2**40), ("T",2**50)]
+    for suf, lim in suffixes:
+        if size > lim:
+            continue
+        else:
+            return "%s%s" % (round(size/float(lim/2**10),2), suf)
