@@ -9,9 +9,6 @@
 # As a special exception, when this file is copied by dh-make into a
 # dh-make output file, you may use that output file without restriction.
 # This special exception was added by Craig Small in version 0.37 of dh-make.
-#
-# Modified to make a template file for a multi-binary package with separated
-# build-arch and build-indep targets  by Bill Allombert 2001
 
 # Uncomment this to turn on verbose mode.
 export DH_VERBOSE=1
@@ -21,36 +18,19 @@ export DH_OPTIONS
 
 DH_PY_INTERPRETER=/usr/bin/python
 
-configure: configure-stamp
-configure-stamp:
-	dh_testdir
-	# Add here commands to configure the package.
-
-	touch configure-stamp
-
-
 #Architecture
-build: build-stamp
-
-build-stamp: configure-stamp
+build: 
 	dh_testdir
-
 	$(DH_PY_INTERPRETER) setup.py build
-
 	touch build-stamp
-
 
 clean:
 	dh_testdir
 	dh_testroot
 	rm -f build-stamp #CONFIGURE-STAMP#
-
 	# Add here commands to clean up after the build process.
-        #$(DH_PY_INTERPRETER) setup.py clean
-	rm -rf build/
+	rm -rf build
 	find finfaktura/ -name "*.pyc" -exec rm -f {} \;
-
-
 	dh_clean
 
 install: build
@@ -58,16 +38,12 @@ install: build
 	dh_testroot
 	dh_clean -k -s
 	dh_installdirs -s
-
-	# Add here commands to install the arch part of the package into
-	# debian/tmp.
+	#$(DH_PY_INTERPRETER) setup.py install --prefix=$(CURDIR)/debian/tmp/usr
 	scripts/forbered_ressurser.sh 
-	$(DH_PY_INTERPRETER) setup.py install --prefix=$(CURDIR)/debian/tmp/usr
-
-    # Nuke *.pyc files that shouldn't be packaged
-	find debian/tmp -name "*.pyc" -exec rm {} \;
-
-	dh_install -s
+	$(DH_PY_INTERPRETER) setup.py install --install-layout deb --root $(CURDIR)/debian/tmp
+	# Nuke *.pyc files that shouldn't be packaged
+	find debian/finfaktura -name "*.pyc" -exec rm {} \;
+	dh_install -s --exclude=svn
 
 # Must not depend on anything. This is to be called by
 # binary-arch/binary-indep
@@ -94,20 +70,13 @@ binary-common:
 	dh_compress
 	dh_fixperms
 #	dh_perl
-	dh_python
+	dh_pycentral
 	dh_makeshlibs
 	dh_installdeb
 	dh_shlibdeps
 	dh_gencontrol
 	dh_md5sums
 	dh_builddeb
-# Build architecture independant packages using the common target.
-binary-indep: build install binary-common
-	#$(MAKE) -f debian/rules DH_OPTIONS=-i binary-common
-#
-# Build architecture dependant packages using the common target.
-binary-arch: build-arch install-arch
-	#$(MAKE) -f debian/rules DH_OPTIONS=-a binary-common
 
-binary: binary-indep
+binary: install binary-common
 .PHONY: build clean binary-indep binary-arch binary install install-indep install-arch configure
