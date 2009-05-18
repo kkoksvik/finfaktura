@@ -1,3 +1,9 @@
+finfaktura (2.0.6b) karmic; urgency=low
+
+  * Fikser installasjon på systemer som har både python2.5 og 2.6 installert (bl.a. Ubuntu 9.04)
+
+ -- Håvard Gulldahl <havard@gulldahl.no>  Mon, 18 May 2009 12:17:22 +0200
+
 finfaktura (2.0.6) jaunty; urgency=low
 
   * f60.py: fikser bug#54, hvor linjeskift ble til sort firkant -- takk,
