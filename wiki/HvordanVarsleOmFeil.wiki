@@ -28,5 +28,5 @@ Som over må du gjøre installasjonen fra kommandolinja for at alle relevante fe
 
   # Start et terminalvindu (se over).
   # Last ned siste versjon av _Fryktelig Fin Faktura_, og lagre installasjonsfila et sted på harddisken.
-  # Start installasjonsprogrammet. I Debian og Ubuntu-varianter kan du bruke `apt-get`: skriv `sudo apt-get install <sti til installasjonsfila>`. Bruker du Fedora, Red Hat, SuSE, Mandrake er det `rpm` som er installasjonsprogram: skriv `sudo rpm -i <sti til installasjonsfila>`.
+  # Start installasjonsprogrammet. I Debian og Ubuntu-varianter kan du bruke `dpkg`: skriv `sudo dpkg -i <sti til installasjonsfila>`. Bruker du Fedora, Red Hat, SuSE, Mandrake er det `rpm` som er installasjonsprogram: skriv `sudo rpm -i <sti til installasjonsfila>`.
   # Send inn alt som kommer i vinduet etter denne kommandoen.
